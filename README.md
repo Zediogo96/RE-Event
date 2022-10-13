@@ -4,7 +4,7 @@
 
 ## RE-Event
 
-#Project Description
+# Project Description
 
 The goal of this project is to develop a web application that will help people in organizing and/or attending events.
 Users can log in and create events, select events that they want to attend and interact with other users by inviting them for an event, for example. Attendees will also be able to comment and review events, while organizers can manage their events and even interact with attendees. 
