@@ -67,7 +67,8 @@ CREATE TABLE event (
     avg_rating integer DEFAULT 0,
     address text NOT NULL,
     tagID integer REFERENCES tag (tagID) ON UPDATE CASCADE,
-    cityID integer REFERENCES city (cityID) ON UPDATE CASCADE
+    cityID integer REFERENCES city (cityID) ON UPDATE CASCADE,
+    isPrivate boolean DEFAULT FALSE
 );
 
 CREATE TABLE event_host (
@@ -119,6 +120,7 @@ CREATE TABLE report (
 );
 
 CREATE TABLE photo (
+    photoID serial PRIMARY KEY,
     path text NOT NULL,
     eventID integer REFERENCES event (eventID) ON UPDATE CASCADE
 );
@@ -130,7 +132,7 @@ CREATE INDEX user_name ON user_ USING HASH(name);
 CREATE INDEX event_date ON event USING BTREE(date);
 
 CREATE INDEX event_rating ON event USING BTREE(date);
-CLUSTER event USING event_rating
+CLUSTER event USING event_rating;
 
 -- FTS Indexes -------------------------------
 
@@ -247,9 +249,9 @@ CREATE TRIGGER event_avg_rating
 CREATE FUNCTION check_capacity () RETURNS TRIGGER AS
 $BODY$
 BEGIN
-	SELECT capacity FROM event
+	PERFORM capacity FROM event
 	WHERE eventID = New.eventID;
-    IF (capacity = 0) THEN RAISE EXCEPTION 'This event % is already at full capacity', New.name;
+    IF (SELECT capacity FROM event WHERE eventID = New.eventID AND capacity = 0) THEN RAISE EXCEPTION 'This event is already at full capacity';
 	END IF;
 	RETURN NEW;
 END
@@ -267,7 +269,7 @@ CREATE FUNCTION _create_ticket () RETURNS TRIGGER AS
 $BODY$
 BEGIN
 	UPDATE event
-	SET capacity = capacity - 1
+	SET capacity = event.capacity - 1
 	WHERE eventID = NEW.eventID;
 	RETURN NEW;
 
@@ -279,16 +281,16 @@ CREATE FUNCTION _delete_ticket () RETURNS TRIGGER AS
 $BODY$ 
 BEGIN
 	UPDATE event
-	SET capacity = capacity + 1
-	WHERE eventID = NEW.eventID;
-	RETURN NEW;
+	SET capacity = event.capacity + 1
+	WHERE eventID = OLD.eventID;
+	RETURN OLD;
 END 
 $BODY$ 
 LANGUAGE plpgsql;
 
-CREATE TRIGGER delele_ticket BEFORE DELETE ON ticket 
+CREATE TRIGGER delete_ticket AFTER DELETE ON ticket
 EXECUTE PROCEDURE _delete_ticket();
 
-CREATE TRIGGER create_ticket BEFORE INSERT ON ticket 
+CREATE TRIGGER create_ticket BEFORE INSERT ON ticket
 EXECUTE PROCEDURE _create_ticket();
 

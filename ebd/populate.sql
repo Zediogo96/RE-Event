@@ -1,5 +1,3 @@
-set search_path to testeteste;
-
 /** Users **/
 -- Admins
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
@@ -62,6 +60,7 @@ INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic,
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (48, 'Nathan Orwig', 'Ty_Boy93@hotmail.com', '2021/12/5', '06b7fe3d366c8f3394c9a0c2e2c71968ec5eb6c663b7e2f0f0315e851fae72b1', 'O', 'assets/user_profile_photos/48.jpg', False);
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (49, 'Frank Lawless', 'Hal_Can72@yahoo.pt', '2020/11/4', 'fa52087106f92dbad59ceaab27a40583fe019e69f7db7d1598d67f6349693606', 'O', 'assets/user_profile_photos/49.jpg', False);
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (50, 'George Ebner', 'John_McC71@hotmail.com', '2020/3/30', '253622c2e4cd001279bb4e6fc77d3f903ac794bb1a46a49c0a5bcf3d2fe75e39', 'F', 'assets/user_profile_photos/50.jpg', False);
+/** +#PY'(}N **/
 
 /** Tags **/
 
@@ -98,6 +97,7 @@ INSERT INTO tag (tagID, name, symbol)
 INSERT INTO tag (tagID, name, symbol)
     VALUES (11, 'technology', 'TEC');
 
+
 /** Countries **/
 
 INSERT INTO country (countryID, name)
@@ -129,6 +129,7 @@ INSERT INTO country (countryID, name)
 
 INSERT INTO country (countryID, name)
     VALUES (10, 'Portugal');
+
 
 /** Cities **/
 INSERT INTO city (cityID, name, countryID)
@@ -173,25 +174,26 @@ INSERT INTO city (cityID, name, countryID)
 
 /** Events **/
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID) VALUES (1, 'F1 STC Saudi Arabian Grand Prix 2023', 'The brand new Jeddah Corniche Circuit has once again opened its gates to F1 drivers, teams, and fans for an exhilarating race under the lights', 100000, '2023-03-19', '2022-10-01', 50, 7, 'Jeddah Cornice Circuit, Jeddah 23512, Saudi Arabia', 2); 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID) VALUES (2, 'Coldplay', 'Music of the Spheres World Tour is the ongoing eighth concert tour currently being undertaken by Coldplay. As always, an unique experience awaits you.', 40000, '2023-05-17', '2022-08-20', 50, 1, 'Estadio Cidade de Coimbra, 3030-320 Coimbra', 11); 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID) VALUES (3, 'Web Summit 2022', 'The most important conference about internet technology, emerging technologies, and venture capitalism', 35000, '2022-11-02', '2022-01-01', 60, 11, 'Altice Arena 1990-231 Lisbon', 12);
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID) VALUES (4, 'Porto vs Benfica', 'Porto and Benfica face each other in a thrilling match that can decide the Portuguese Chmpionship', 45000, '2022-10-22', '2022-09-05', 15, 7, 'Estadio do Dragao, 4350-415 Porto', 13);
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID) VALUES (5, 'Arctic Monkeys', 'The iconic band returns to Portugal and promises to deliver the show their fans have been waiting for for a long time', 65000, '2022-12-05', '2022-07-03', 60, 1, 'Parque da Bela Vista, Lisbon', 12);
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID) VALUES (6, 'F1 Heineken Australian Grand Prix 2022', 'Formula 1 returns to the streets of Melbourne, where Charles Leclerc won last year. Will Red Bull be capable of stealing the victory this season?', 150000, '2023-04-02', '2022-10-01', 50, 7, 'Albert Park Grand Prix Circuit, Albert Park VIC 3206, Melbourne', 3); 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID) VALUES (7, 'Slipknot', 'Slipknot is heading back out on tour this Fall for KNOTFEST ROADSHOW. This is your last chance to catch Slipknot on tour in the U.S. for a while', 70000, '2023-11-21', '2022-10-01', 30, 1, 'DKR Texas Memorial Stadium, 2139 San Jacinto Blvd, Austin, TX 78712, USA', 5);
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID) VALUES (8, 'Rolex Monte-Carlo Masters', 'The Rolex Monte-Carlo Masters, which celebrated its 100th anniversary in 2006, is the first of three ATP Masters 1000 tournaments played on clay', 70000, '2023-09-04', '2022-09-10', 20, 7, 'Monte-Carlo Country Club, 155 Av. Princesse Grace', 6);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (1, 'F1 STC Saudi Arabian Grand Prix 2023', 'The brand new Jeddah Corniche Circuit has once again opened its gates to F1 drivers, teams, and fans for an exhilarating race under the lights', 100000, '2023-03-19', '2022-10-01', 50, 7, 'Jeddah Cornice Circuit, Jeddah 23512, Saudi Arabia', 2, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (2, 'Coldplay', 'Music of the Spheres World Tour is the ongoing eighth concert tour currently being undertaken by Coldplay. As always, an unique experience awaits you.', 40000, '2023-05-17', '2022-08-20', 50, 1, 'Estadio Cidade de Coimbra, 3030-320 Coimbra', 11, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (3, 'Web Summit 2022', 'The most important conference about internet technology, emerging technologies, and venture capitalism', 35000, '2022-11-02', '2022-01-01', 60, 11, 'Altice Arena 1990-231 Lisbon', 12, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (4, 'Porto vs Benfica', 'Porto and Benfica face each other in a thrilling match that can decide the Portuguese Chmpionship', 45000, '2022-10-30', '2022-09-05', 15, 7, 'Estadio do Dragao, 4350-415 Porto', 13, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (5, 'Arctic Monkeys', 'The iconic band returns to Portugal and promises to deliver the show their fans have been waiting for for a long time', 65000, '2022-12-05', '2022-07-03', 60, 1, 'Parque da Bela Vista, Lisbon', 12, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (6, 'F1 Heineken Australian Grand Prix 2022', 'Formula 1 returns to the streets of Melbourne, where Charles Leclerc won last year. Will Red Bull be capable of stealing the victory this season?', 150000, '2023-04-02', '2022-10-01', 50, 7, 'Albert Park Grand Prix Circuit, Albert Park VIC 3206, Melbourne', 3, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (7, 'Slipknot', 'Slipknot is heading back out on tour this Fall for KNOTFEST ROADSHOW. This is your last chance to catch Slipknot on tour in the U.S. for a while', 70000, '2023-11-21', '2022-10-01', 30, 1, 'DKR Texas Memorial Stadium, 2139 San Jacinto Blvd, Austin, TX 78712, USA', 5, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (8, 'Rolex Monte-Carlo Masters', 'The Rolex Monte-Carlo Masters, which celebrated its 100th anniversary in 2006, is the first of three ATP Masters 1000 tournaments played on clay', 70000, '2023-09-04', '2022-09-10', 20, 7, 'Monte-Carlo Country Club, 155 Av. Princesse Grace', 6, False);
+
 
 /** (Event) Photos **/
 
-INSERT INTO photo (path, eventID) VALUES ('event_photos/1.jpg', 1);
-INSERT INTO photo (path, eventID) VALUES ('event_photos/2.jpg', 2);
-INSERT INTO photo (path, eventID) VALUES ('event_photos/3.jpg', 3);
-INSERT INTO photo (path, eventID) VALUES ('event_photos/4.jpg', 4);
-INSERT INTO photo (path, eventID) VALUES ('event_photos/5.jpg', 5);
-INSERT INTO photo (path, eventID) VALUES ('event_photos/6.jpg', 6);
-INSERT INTO photo (path, eventID) VALUES ('event_photos/7.jpg', 7);
-INSERT INTO photo (path, eventID) VALUES ('event_photos/8.jpg', 8);
+INSERT INTO photo (photoID, path, eventID) VALUES (1, 'event_photos/1.jpg', 1);
+INSERT INTO photo (photoID, path, eventID) VALUES (2, 'event_photos/2.jpg', 2);
+INSERT INTO photo (photoID, path, eventID) VALUES (3, 'event_photos/3.jpg', 3);
+INSERT INTO photo (photoID, path, eventID) VALUES (4, 'event_photos/4.jpg', 4);
+INSERT INTO photo (photoID, path, eventID) VALUES (5, 'event_photos/5.jpg', 5);
+INSERT INTO photo (photoID, path, eventID) VALUES (6, 'event_photos/6.jpg', 6);
+INSERT INTO photo (photoID, path, eventID) VALUES (7, 'event_photos/7.jpg', 7);
+INSERT INTO photo (photoID, path, eventID) VALUES (8, 'event_photos/8.jpg', 8);
 
 /** Reviews **/
 
@@ -224,6 +226,7 @@ INSERT INTO review (rating, userID, eventID)
 
 INSERT INTO review (rating, userID, eventID)
     VALUES (1, 9, 8);
+
 
 /** Invited **/
 
@@ -287,6 +290,7 @@ INSERT INTO invited (status, userID, eventID)
 INSERT INTO invited (status, userID, eventID)
     VALUES (FALSE, 2, 4);
 
+
 /* Event hosts */
 
 INSERT INTO event_host (userID, eventID)
@@ -335,7 +339,6 @@ INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (17, '
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (18, 'I feel like this pushes too many agenda', '2020/2/13', '18:40', 18, 8);
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (19, 'Too bad the prices are like this!', '2020/8/23', '9:58', 19, 8);
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (20, 'So excited!', '2020/9/9', '10:58', 20, 4);
-
 /* Reports */
 
 INSERT INTO report (reason, description, date, time, userID, eventID, commentID)
@@ -427,6 +430,10 @@ INSERT INTO report (reason, description, date, time, userID, eventID, commentID)
 
 INSERT INTO report (reason, description, date, time, userID, eventID, commentID)
     VALUES ('Other', 'Thats kinda racist!', '2022/10/18', '16:35', 30, 8, 8);
+
+
+
+
 
 /* Tickets */
 
