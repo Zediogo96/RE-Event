@@ -10,3 +10,9 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+# Folders regarding deliveries 
+/artifacts
+/imagens_artifacts
+/img_prototipos
+
