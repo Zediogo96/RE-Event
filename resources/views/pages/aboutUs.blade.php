@@ -34,8 +34,8 @@
 
                 <div class="profile-card-body">
                     <div class="action">
-                        <button type="button" class="btn btn-blue-outline"> Github </button>
-                        <button type="button" class="btn btn-red-outline" href="mailto:up202005900@fe.up.pt"> E-mail </button>
+                        <a href="https://github.com/afonsom1719"><button type="button" class="btn btn-blue-outline"> Github </button> </a>
+                        <a href="mailto:up202005900@fe.up.pt"> <button type="button" class="btn btn-red-outline"> E-mail </button> </a>
                     </div>
                 </div>
             </div>
@@ -58,8 +58,8 @@
 
                 <div class="profile-card-body">
                     <div class="action">
-                    <button type="button" class="btn btn-blue-outline"> Github </button>
-                        <button class="btn btn-red-outline" href="mailto:up202005283@fe.up.pt"> E-mail </button>
+                        <a href="https://github.com/Eduardo79Silva"> <button type="button" class="btn btn-blue-outline"> Github </button> </a>
+                        <a href="mailto:up202005283@fe.up.pt"> <button class="btn btn-red-outline" > E-mail </button> </a>
                     </div>
                 </div>
             </div>
@@ -80,8 +80,8 @@
 
                 <div class="profile-card-body">
                     <div class="action">
-                    <button type="button" class="btn btn-blue-outline"> Github </button>
-                        <button class="btn btn-red-outline" href="mailto:up202003529@fe.up.pt"> E-mail </button>
+                        <a href="https://github.com/Zediogo96"> <button type="button" class="btn btn-blue-outline"> Github </button> </a>
+                        <a href="mailto:up202003529@fe.up.pt"> <button class="btn btn-red-outline"> E-mail </button> </a>
                     </div>
                 </div>
             </div>
@@ -103,8 +103,8 @@
 
                 <div class="profile-card-body">
                     <div class="action">
-                    <button type="button" class="btn btn-blue-outline"> Github </button>
-                        <button class="btn btn-red-outline" href="mailto:up202007928@fe.up.pt"> E-mail </button>
+                        <a href="https://github.com/matilde-silva-21"><button type="button" class="btn btn-blue-outline"> Github </button> </a>
+                        <a href="mailto:up202007928@fe.up.pt"><button class="btn btn-red-outline"> E-mail </button> </a>
                     </div>
                 </div>
             </div>

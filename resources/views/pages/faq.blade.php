@@ -2,14 +2,14 @@
 <!--Section: FAQ-->
 @section('content')
 
-<div class="container" style="padding-top: 3%; padding-bottom: 3%;">
-    <h3 class="text-center mb-4 pb-2 text-primary fw-bold" style="font-size: 50px">FAQ</h3>
+<div class="container bg-body" style="margin-top: 5rem; --bs-bg-opacity: .7; height: 40rem; border-radius: 5%;">
+    <h3 class="text-center mb-4 pb-2 text-primary fw-bold" style="font-size: 70px; margin-top: 5rem;">FAQ</h3>
     <p class="text-center mb-5">
         Find the answers for the most frequently asked questions below
     </p>
 
     <div class="row">
-        <div class="col-md-6 col-lg-4 mb-4">
+        <div class="col-md-6 col-lg-4 mb-4" >
             <h6 class="mb-3 text-primary"><i class="far fa-paper-plane text-primary pe-2"></i> Can I search for an specific Event?</h6>
             <p>
                 <strong><u>Absolutely!</u></strong> On the top of our home page you'll find a search bar, where you can input for example the name of the event you're looking for,
