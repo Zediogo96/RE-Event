@@ -14,8 +14,8 @@
                     <li class="nav-item pl-1">
                         <a class="nav-link" href="#"><i class="fa fa-info-circle fa-fw mr-1"></i> FAQ </a>
                     </li>
-                    <li class="nav-item pl-1">
-                        <a class="nav-link" href="#" href="{{ route('aboutUs.index')}}"><i class="fa fa-phone fa-fw fa-rotate-180 mr-1"></i> About Us </a>
+                    <li class="nav-item pl-1" >
+                        <a class="nav-link" href="{{route('aboutUs.index')}}""><i class="fa fa-phone fa-fw fa-rotate-180 mr-1"></i> About Us </a>
                     </li>
                     <li class="nav-item pl-1">
                         <a class="nav-link" href="#"><i class="fa fa-user-plus fa-fw mr-1"></i> Register </a>

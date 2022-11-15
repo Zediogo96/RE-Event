@@ -31,4 +31,4 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
 
-Route::get('aboutUs', 'Auth\PageController@aboutUs')->name('aboutUs.index');
+Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
