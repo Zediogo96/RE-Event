@@ -24,7 +24,6 @@ body::before {
 .navbar {
   background-color: #484848;
   overflow: hidden;
-  opacity: 0.8;
 }
 
 .navbar .navbar-nav .nav-link {
@@ -53,6 +52,8 @@ footer .cizgi {
     border-right: none;
   }
 }
+
+
 
 /* Carousel */
 
@@ -113,7 +114,7 @@ h1{
 .number {
   font-weight: 500;
   font-size: 44px;
-  color: #fbc531;
+  color: color: #fbc531;
 }
 
 div span:last-of-type{

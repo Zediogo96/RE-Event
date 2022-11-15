@@ -13,83 +13,103 @@
 <body>
 
     <div class="about-section">
-        <h1 style= "font-size: 70px;">About RE-EVENT</h1>
-        <p>Some text about who we are and what we do.</p>
+        <h1 style="font-size: 80px; margin-top: 10px;">About RE-EVENT</h1>
+        <p style="font-size: 20px;">Some text about who we are and what we do.</p>
     </div>
 
-    <h1 style="text-align:center">Our Team</h1>
+    <h1 style="text-align:center; font-size: 50px; margin-top: 30px;">Our Team</h1>
 
-    <div class="row">
-
+    <div class="container-profile-cards" style="margin-top: 10vh">
         <!-- AFONSO -->
         <div class="column">
-            <div class="card">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/000/439/863/small/Basic_Ui__28186_29.jpg" alt="" style="width:100%">
-                <div class="container">
-                    <h2>Afonso Martins</h2>
-                    <p class="title">Developer</p>
-                    <p>DESCREVER CENAS</p>
-                    <p>
-                        <a href="mailto:up202005900@fe.up.pt">
-                            <i class="fa fa-envelope">up202005900@fe.up.pt</i>
-                        </a>
-                    </p>
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
+
+                    <div class="profile-info">
+                        <h3 class="profile-name">Afonso Martins </h3>
+                        <p class="profile-desc">Developer</p>
+                    </div>
+                </div>
+
+                <div class="profile-card-body">
+                    <div class="action">
+                        <button type="button" class="btn btn-blue-outline"> Github </button>
+                        <button type="button" class="btn btn-red-outline" href="mailto:up202005900@fe.up.pt"> E-mail </button>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- END AFONSO -->
+
         <!-- EDU -->
+
         <div class="column">
-            <div class="card">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/000/439/863/small/Basic_Ui__28186_29.jpg" alt="" style="width:100%">
-                <div class="container">
-                    <h2>Eduardo Silva</h2>
-                    <p class="title">Developer</p>
-                    <p>DESCREVER CENAS</p>
-                    <p>
-                        <a href="mailto:up202005283@fe.up.pt">
-                            <i class="fa fa-envelope">up202005283@fe.up.pt</i>
-                        </a>
-                    </p>
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
+
+                    <div class="profile-info">
+                        <h3 class="profile-name">José Diogo </h3>
+                        <p class="profile-desc">Developer</p>
+                    </div>
+                </div>
+
+                <div class="profile-card-body">
+                    <div class="action">
+                    <button type="button" class="btn btn-blue-outline"> Github </button>
+                        <button class="btn btn-red-outline" href="mailto:up202005283@fe.up.pt"> E-mail </button>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- END EDU -->
 
         <!-- ZÉ -->
         <div class="column">
-            <div class="card">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/000/439/863/small/Basic_Ui__28186_29.jpg" alt="" style="width:100%">
-                <div class="container">
-                    <h2>José Diogo</h2>
-                    <p class="title">Developer</p>
-                    <p>DESCREVER CENAS</p>
-                    <p>
-                        <a href="mailto:up202003529@fe.up.pt">
-                            <i class="fa fa-envelope">up202003529@fe.up.pt</i>
-                        </a>
-                    </p>
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
+
+                    <div class="profile-info">
+                        <h3 class="profile-name">Eduardo Silva </h3>
+                        <p class="profile-desc">Developer</p>
+                    </div>
+                </div>
+
+                <div class="profile-card-body">
+                    <div class="action">
+                    <button type="button" class="btn btn-blue-outline"> Github </button>
+                        <button class="btn btn-red-outline" href="mailto:up202003529@fe.up.pt"> E-mail </button>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- END ZÉ -->
 
         <!-- MATILDE -->
 
         <div class="column">
-            <div class="card">
-                <img src="https://images.freeimages.com/vhq/images/previews/4e1/female-user-icon-clip-art-92637.png" alt="" style="width:100%">
-                <div class="container">
-                    <h2>Matilde Silva</h2>
-                    <p class="title">Developer</p>
-                    <p>DESCREVER CENAS</p>
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <img src="https://p.kindpng.com/picc/s/76-763010_female-user-icon-png-transparent-png.png" alt="" class="profile-image">
 
-                    <p>
-                        <a href="mailto:up202007928@fe.up.pt">
-                            <i class="fa fa-envelope">up202007928@fe.up.pt</i>
-                        </a>
-                    </p>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Matilde Silva </h3>
+                        <p class="profile-desc">Developer</p>
+                    </div>
+                </div>
+
+                <div class="profile-card-body">
+                    <div class="action">
+                    <button type="button" class="btn btn-blue-outline"> Github </button>
+                        <button class="btn btn-red-outline" href="mailto:up202007928@fe.up.pt"> E-mail </button>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- END MATILDE -->
     </div>
 </body>
 
