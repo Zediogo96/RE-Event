@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container" style="padding-top: 3%; padding-bottom: 3%;">
-    <h3 class="text-center mb-4 pb-2 text-primary fw-bold">FAQ</h3>
+    <h3 class="text-center mb-4 pb-2 text-primary fw-bold" style="font-size: 50px">FAQ</h3>
     <p class="text-center mb-5">
         Find the answers for the most frequently asked questions below
     </p>
