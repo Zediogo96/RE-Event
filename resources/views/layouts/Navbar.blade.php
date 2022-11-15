@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container">
        
-            <a class="navbar-brand text-white" href="#"><i class="fa fa-solid fa-camera-retro fa-lg mr-2"></i> RE-EVENT </a>
+            <a class="navbar-brand text-white" href="{{route('home.show')}}"><i class="fa fa-solid fa-camera-retro fa-lg mr-2"></i> RE-EVENT </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nvbCollapse" aria-controls="nvbCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
