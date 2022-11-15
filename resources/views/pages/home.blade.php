@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="container" style="margin-top: 20px">
+    <!-- CAROUSEL SLIDER -->
     <div id="carouselSlider" class="carousel slide">
         <ol class="carousel-indicators">
             <li data-target="#carouselSlider" data-slide-to="0" class="active"></li>
@@ -45,6 +46,7 @@
             <span>Next</span>
         </a>
     </div>
+    <!-- END CAROUSEL SLIDER -->
 
     <!-- COUNTDOWN TIMER -->
     <div class="countdown">
@@ -69,8 +71,52 @@
             <span>Seconds</span>
         </div>
     </div>
+    <!-- END COUNTDOWN TIMER -->
 
+    <!-- CREATE GRID OF CARDS WITH RANDOM IMAGES -->
+    <h1> Other Events </h1>
+    <div class="container-other-events">
+        <div class="event-card">
+            <h3 class="card-title"> METALLICA </h3>
+            <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
+        </div>
 
+        <div class="event-card">
+            <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
+            <h3 class="card-title"> METALLICA </h3>
+        </div>
+
+        <div class="event-card">
+            <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
+            <h3 class="card-title"> METALLICA </h3>
+        </div>
+
+        <div class="event-card">
+            <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
+            <h3 class="card-title"> METALLICA </h3>
+        </div>
+
+        <div class="event-card">
+            <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
+            <h3 class="card-title"> METALLICA </h3>
+        </div>
+
+        <div class="event-card">
+            <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
+            <h3 class="card-title"> METALLICA </h3>
+        </div>
+
+        <div class="event-card">
+            <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
+            <h3 class="card-title"> METALLICA </h3>
+        </div>
+
+        <div class="event-card">
+            <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
+            <h3 class="card-title"> METALLICA </h3>
+        </div>
+        
+    </div>
 </div>
 
 @endsection
