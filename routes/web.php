@@ -32,3 +32,4 @@ Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('re
 Route::post('register', 'Auth\RegisterController@register');
 
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
+Route::get('faq', 'PageController@faq')->name('faq.index');
