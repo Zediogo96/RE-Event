@@ -77,11 +77,6 @@
     <h1> Other Events </h1>
     <div class="container-other-events">
         <div class="event-card">
-            <h3 class="card-title"> METALLICA </h3>
-            <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
-        </div>
-
-        <div class="event-card">
             <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
             <h3 class="card-title"> METALLICA </h3>
         </div>
@@ -115,7 +110,12 @@
             <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
             <h3 class="card-title"> METALLICA </h3>
         </div>
-        
+
+        <div class="event-card">
+            <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" alt="" class="card-image">
+            <h3 class="card-title"> METALLICA </h3>
+        </div>
+
     </div>
 </div>
 
