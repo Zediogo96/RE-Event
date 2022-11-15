@@ -9,7 +9,7 @@
             <div class="collapse navbar-collapse" id="nvbCollapse">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item pl-1">
-                        <a class="nav-link" href="#"><i class="fa fa-home fa-fw mr-1"></i> Home </a>
+                        <a class="nav-link" href="{{route('home.show')}}"><i class="fa fa-home fa-fw mr-1"></i> Home </a>
                     </li>
                     <li class="nav-item pl-1">
                         <a class="nav-link" href="{{route('faq.index')}}"><i class="fa fa-info-circle fa-fw mr-1"></i> FAQ </a>

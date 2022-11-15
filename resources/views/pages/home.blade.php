@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container" style="margin-top: 20px">
+<div class="container" style="margin-top: 40px">
     <!-- CAROUSEL SLIDER -->
     <div id="carouselSlider" class="carousel slide">
         <ol class="carousel-indicators">
@@ -17,7 +17,7 @@
                     <h5>Metallica</h5>
                     <p>One of the most icon metal bands in the world is coming to Portugal!</p>
                     <!-- button to buy tickets -->
-                    <a href="{{route('home.show')}}" class="btn btn-primary">Buy Tickets</a>
+                    <a href="#" class="btn btn-primary">Buy Tickets</a>
                 </div>
             </div>
             <div class="carousel-item">
@@ -25,7 +25,7 @@
                 <div class="carousel-caption ">
                     <h5>Coldplay</h5>
                     <p>This is second slide</p>
-                    <a href="{{route('home.show')}}" class="btn btn-primary">Buy Tickets</a>
+                    <a href="#" class="btn btn-primary">Buy Tickets</a>
                 </div>
             </div>
             <div class="carousel-item">
@@ -33,7 +33,7 @@
                 <div class="carousel-caption ">
                     <h5>Pearl Jam</h5>
                     <p>This is third slide</p>
-                    <a href="{{route('home.show')}}" class="btn btn-primary">Buy Tickets</a>
+                    <a href="#" class="btn btn-primary">Buy Tickets</a>
                 </div>
             </div>
         </div>
