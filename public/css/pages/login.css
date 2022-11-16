@@ -75,7 +75,7 @@ input[type="radio"] {
   left: 0;
   border-radius: 5px;
   z-index: 0;
-  background: -webkit-linear-gradient(left, #a445b2, #fa4299);
+  background: -webkit-linear-gradient(left, #8432df, #fc0fc0);
   transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
@@ -155,7 +155,7 @@ form .field input[type="submit"] {
   padding-left: 0px;
   border: none;
   cursor: pointer;
-  background: -webkit-linear-gradient(left, #a445b2, #fa4299);
+  background: -webkit-linear-gradient(left, #8432df, #fc0fc0);
 }
 
 .form-select option {
