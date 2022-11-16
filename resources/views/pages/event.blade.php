@@ -29,10 +29,6 @@
 
 </div>
 
-
-
-
-
 <!-- bar to the side of the page -->
 <div id="wrapper">
     <div id="sidebar-wrapper">

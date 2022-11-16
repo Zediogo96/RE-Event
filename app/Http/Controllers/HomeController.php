@@ -13,4 +13,14 @@ class HomeController extends Controller
     {
         return view('pages.home');
     }
+
+    /**
+     * Shows the login page.
+     *
+     * @return Response
+     */
+    public function login()
+    {
+        return view('pages.login');
+    }
 }

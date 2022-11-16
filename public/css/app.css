@@ -38,23 +38,6 @@ body::before {
   color: #fbc531;
 }
 
-footer a.text-light:hover {
-  color: #fed136 !important;
-  text-decoration: none;
-}
-
-footer .cizgi {
-  border-right: 1px solid #535e67;
-}
-
-@media (max-width: 992px) {
-  footer .cizgi {
-    border-right: none;
-  }
-}
-
-
-
 /* Carousel */
 
 .carousel-item {
@@ -341,3 +324,5 @@ h3 {
 }
 
 /*** END FAQ PAGE *************************************/
+
+/* LOGIN PAGE */ 
