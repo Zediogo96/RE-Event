@@ -37,3 +37,10 @@ Route::get('home', 'HomeController@home')->name('home.show');
 // Static Pages
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
 Route::get('faq', 'PageController@faq')->name('faq.index');
+
+
+//testing database data
+
+Route::get('cities', 'CityController@index');
+Route::get('countries', 'CountryController@index');
+Route::get('events', 'EventController@index');
