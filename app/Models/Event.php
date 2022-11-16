@@ -18,7 +18,7 @@ class Event extends Model
      */
     public function city()
     {
-        return $this->hasOne('App\Models\City', 'cityid');
+        return $this->belongsTo('App\Models\City', 'cityid');
     }
 
     /**
@@ -30,30 +30,43 @@ class Event extends Model
     }
 
     /**
-     * The tags that belong to the event.
+     * The comments of the event.
      */
-    public function tags()
+    public function comments()
     {
-        return $this->hasMany('App\Models\Tag', 'tagid');
+        return $this->hasMany('App\Models\Comment', 'eventid');
     }
 
     /**
-     * The country that the event belongs to.
-     * !! DON'T KNOW IF THIS IS CORRECT !!
+     * The reviews of the event.
      */
-    public function country()
+    public function reviews()
     {
-        //return $this->belongsToThrough('App\Models\Country', 'App\Models\City', 'cityID', 'countryID');
-        return $this->belongsTo('App\Models\Country', 'eventid');
+        return $this->hasMany('App\Models\Review', 'eventid');
     }
 
-    public function comments()
-    {
-        return $this->hasMany('App\Models\Comment', 'eventID');
+    /**
+     * Hosts of the event
+     */
+    public function hosts(){
+        return $this->belongsToMany('App\Models\User', 'event_host', 'eventid', 'userid');
     }
 
-    // public function atendees()
-    // {
+    /**
+     * Users attending the event (with ticket)
+     */
+    public function participants()
+    {
+        return $this->belongsToMany('App\Models\User', 'ticket', 'eventid', 'userid');
+    }
 
-    // }
+
+    /**
+     * The tag of the event.
+     */
+    public function eventTag()
+    {
+        return $this->belongsTo('App\Models\Tag', 'tagid');
+    }
+
 }

@@ -9,7 +9,7 @@
 
         @foreach($cities as $city)
           <div>
-            {{ $city['name'] }} - {{ $city->country}}
+            {{ $city['name'] }} - {{ $city->country->name}}
           </div>
         @endforeach
 

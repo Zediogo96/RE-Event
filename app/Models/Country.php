@@ -23,7 +23,7 @@ class Country extends Model
 /*
     /**
     * The events that belong to the country.
-    * !! DON'T KNOW IF THIS IS CORRECT !!
+    * !! DON'T KNOW IF THIS IS CORRECT !!                 INCLUDE THIS?
     */
     public function events()
     {

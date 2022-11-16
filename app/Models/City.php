@@ -22,9 +22,9 @@ class City extends Model
     }
 
     /**
-     * The events that belong to the city.
+     * The events that belong to the city.      UMA CIDADE TEM VÁRIOS EVENTOS
      */
     public function events() {
-        return $this->belongsToMany('App\Models\Event');
+        return $this->hasMany('App\Models\Event');
     }
 }
