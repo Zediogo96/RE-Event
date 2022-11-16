@@ -34,6 +34,9 @@ Route::post('register', 'Auth\RegisterController@register');
 // Home Page
 Route::get('home', 'HomeController@home')->name('home.show');
 
+// Events Related
+Route::get('event', 'EventController@event')->name('event.show');
+
 // Static Pages
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
 Route::get('faq', 'PageController@faq')->name('faq.index');

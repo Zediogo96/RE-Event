@@ -17,7 +17,7 @@
                     <h5>Metallica</h5>
                     <p>One of the most icon metal bands in the world is coming to Portugal!</p>
                     <!-- button to buy tickets -->
-                    <a href="#" class="btn btn-primary">Buy Tickets</a>
+                    <a href="{{route('event.show')}}" class="btn btn-primary">Buy Tickets</a>
                 </div>
             </div>
             <div class="carousel-item">
