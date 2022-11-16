@@ -48,3 +48,7 @@ Route::get('faq', 'PageController@faq')->name('faq.index');
 Route::get('cities', 'CityController@index');
 Route::get('countries', 'CountryController@index');
 Route::get('events', 'EventController@index');
+
+Route::get('user', function() {
+    return view('pages.userPage');
+});

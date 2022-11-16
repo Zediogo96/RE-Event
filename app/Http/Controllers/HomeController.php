@@ -13,7 +13,6 @@ class HomeController extends Controller
      */
     public function home()
     {
-
         $events = Event::all();
         return view('pages.home',compact(['events'])); 
 
