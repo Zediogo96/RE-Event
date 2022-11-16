@@ -2,13 +2,13 @@
 
 namespace App\Policies;
 
-use App\Models\Comment;
+use App\Models\Ticket;
 use App\Models\User;
-
+use App\Models\Invited;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
 
-class CommentPolicy
+class TicketPolicy
 {
     use HandlesAuthorization;
 
@@ -27,12 +27,12 @@ class CommentPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Comment $comment)
+    public function view(User $user, Ticket $ticket)
     {
-        return Auth::check();
+        return $user->userID == $ticket->userID;
     }
 
     /**
@@ -43,54 +43,54 @@ class CommentPolicy
      */
     public function create(User $user)
     {
-        return Auth::check();
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Comment $comment)
+    public function update(User $user, Ticket $ticket)
     {
-        return $user->userID == $comment->userID;
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Comment $comment)
+    public function delete(User $user, Ticket $ticket)
     {
-        return $user->userID == $comment->userID;
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Comment $comment)
+    public function restore(User $user, Ticket $ticket)
     {
-        return $user->userID == $comment->userID;
+        //
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Comment $comment)
+    public function forceDelete(User $user, Ticket $ticket)
     {
-        return $user->userID == $comment->userID;
+        //
     }
 }
