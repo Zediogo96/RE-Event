@@ -8,26 +8,28 @@
     <h1> METALLICA </h1>
     <h3> 2022-05-05 </h3>
     <button class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
-               BUY TICKETS </a></button>
+            BUY TICKETS </a></button>
+
+    <nav>
+        <ul id="menu-info">
+            <li class="menu-info-item text-center">
+                <div> Location </div>
+                <p style="font-size: 15px"> Cenas </p>
+            </li>
+            <li class="menu-info-item text-center">
+                <div> Capacity </div>
+                <p style="font-size: 15px"> Cenas </p>
+            </li>
+            <li class="menu-info-item text-center">
+                <div> Outra Info </div>
+                <p style="font-size: 15px"> Cenas </p>
+            </li>
+        </ul>
+    </nav>
 
 </div>
 
-<nav>
-    <ul id="menu-info">
-        <li class="menu-info-item text-center">
-            <div> Location </div>
-            <p style="font-size: 15px"> Cenas </p>
-        </li>
-        <li class="menu-info-item text-center">
-            <div> Capacity </div>
-            <p style="font-size: 15px"> Cenas </p>
-        </li>
-        <li class="menu-info-item text-center">
-            <div> Outra Info </div>
-            <p style="font-size: 15px"> Cenas </p>
-        </li>
-    </ul>
-</nav>
+
 
 
 

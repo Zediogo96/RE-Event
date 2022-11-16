@@ -41,13 +41,16 @@ class EventController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
+     * * @param  \App\Models\Event  $event
+     * * @return \Illuminate\Http\Response
+     * 
+     * *********************************************
+     * CHANGE THIS TO BE DYNAMIC, SHOULD RECEIVE AN eventID AND DISPLAY THAT ONE
+     * *********************************************
      */
-    public function show(Event $event)
+    public function show(/* Event $event */)
     {
-        //
+        return view('pages.event');
     }
 
     /**
@@ -82,19 +85,5 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         //
-    }
-}
-class EventController extends Controller
-{
-    /**
-     * Shows the about us page.
-     * *********************************************
-     * CHANGE THIS TO BE DYNAMIC, SHOULD RECEIVE AN eventID AND DISPLAY THAT ONE
-     * *********************************************
-     * @return Response
-     */
-    public function event()
-    {
-        return view('pages.event');
     }
 }
