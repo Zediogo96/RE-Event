@@ -210,8 +210,7 @@ div span:last-of-type {
   width: 100%;
 }
 
-#event-content button 
-{
+#event-content button {
   position: absolute;
   top: 2rem;
   right: 2rem;
@@ -326,3 +325,19 @@ h3 {
   width: 15rem;
   height: 5rem;
 }
+
+/*** FAQ PAGE *****************************************/
+#faq-container {
+  margin-top: 5rem;
+  --bs-bg-opacity: .7;
+  height: 40rem;
+  border-radius: 5%;
+}
+
+@media screen and (max-width:624px) {
+  #faq-container {
+    height: 65rem;
+  }
+}
+
+/*** END FAQ PAGE *************************************/

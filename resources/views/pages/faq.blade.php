@@ -2,7 +2,7 @@
 <!--Section: FAQ-->
 @section('content')
 
-<div class="container bg-body" style="margin-top: 5rem; --bs-bg-opacity: .7; height: 40rem; border-radius: 5%;">
+<div class="container bg-body" id="faq-container">
     <h1 class="text-center mb-4 pb-2 text-primary fw-bold" style="font-size: 70px">FAQ</h3>
     <p class="text-center mb-5">
         Find the answers for the most frequently asked questions below
