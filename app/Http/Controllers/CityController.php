@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event;
+use App\Models\City;
 use Illuminate\Http\Request;
 
-class EventController extends Controller
+class CityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
-        return view('layouts.events', ['events' => $events]);
+        $cities = City::all();
+        return view('layouts.cities', ['cities' => $cities]);
     }
 
     /**
@@ -42,10 +42,10 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Event  $event
+     * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function show(Event $event)
+    public function show(City $city)
     {
         //
     }
@@ -53,10 +53,10 @@ class EventController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Event  $event
+     * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function edit(Event $event)
+    public function edit(City $city)
     {
         //
     }
@@ -65,10 +65,10 @@ class EventController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Event  $event
+     * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Event $event)
+    public function update(Request $request, City $city)
     {
         //
     }
@@ -76,25 +76,11 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Event  $event
+     * @param  \App\Models\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $event)
+    public function destroy(City $city)
     {
         //
-    }
-}
-class EventController extends Controller
-{
-    /**
-     * Shows the about us page.
-     * *********************************************
-     * CHANGE THIS TO BE DYNAMIC, SHOULD RECEIVE AN eventID AND DISPLAY THAT ONE
-     * *********************************************
-     * @return Response
-     */
-    public function event()
-    {
-        return view('pages.event');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,15 +8,17 @@ class Event extends Model
 {
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
-
+    //Explicitly associate with table name
     protected $table = 'event';
-
+    //Force primary key
+    protected $primaryKey = 'eventid';
+    
     /**
      * The city that the event belongs to.
      */
     public function city()
     {
-        return $this->belongsTo('App\Models\City', 'cityID');
+        return $this->hasOne('App\Models\City', 'cityid');
     }
 
     /**
@@ -24,7 +26,7 @@ class Event extends Model
      */
     public function photos()
     {
-        return $this->hasMany('App\Models\Photo');
+        return $this->hasMany('App\Models\Photo', 'photoid');
     }
 
     /**
@@ -32,7 +34,7 @@ class Event extends Model
      */
     public function tags()
     {
-        return $this->belongsToMany('App\Models\Tag', 'tagID');
+        return $this->hasMany('App\Models\Tag', 'tagid');
     }
 
     /**
@@ -41,7 +43,8 @@ class Event extends Model
      */
     public function country()
     {
-        return $this->belongsToThrough('App\Models\Country', 'App\Models\City', 'cityID', 'countryID');
+        //return $this->belongsToThrough('App\Models\Country', 'App\Models\City', 'cityID', 'countryID');
+        return $this->belongsTo('App\Models\Country', 'eventid');
     }
 
     public function comments()
