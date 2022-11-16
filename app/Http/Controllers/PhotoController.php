@@ -2,18 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Country;
-/*testing 
-use App\Models\Event;
-use App\Models\User;
-use App\Models\Tag;
-use App\Models\Comment;
-use App\Models\Report;
-*/
-
+use App\Models\Photo;
 use Illuminate\Http\Request;
 
-class CountryController extends Controller
+class PhotoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,15 +14,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        /*
-        $test = Comment::find(1)->reports; 
-        print_r($test);
-        die();
-        */
-
-
-        $countries = Country::all();
-        return view('layouts.countries', ['countries' => $countries]);
+        //
     }
 
     /**
@@ -57,10 +41,10 @@ class CountryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Country  $country
+     * @param  \App\Models\Photo  $photo
      * @return \Illuminate\Http\Response
      */
-    public function show(Country $country)
+    public function show(Photo $photo)
     {
         //
     }
@@ -68,10 +52,10 @@ class CountryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Country  $country
+     * @param  \App\Models\Photo  $photo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Country $country)
+    public function edit(Photo $photo)
     {
         //
     }
@@ -80,10 +64,10 @@ class CountryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Country  $country
+     * @param  \App\Models\Photo  $photo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Country $country)
+    public function update(Request $request, Photo $photo)
     {
         //
     }
@@ -91,10 +75,10 @@ class CountryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Country  $country
+     * @param  \App\Models\Photo  $photo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country)
+    public function destroy(Photo $photo)
     {
         //
     }
