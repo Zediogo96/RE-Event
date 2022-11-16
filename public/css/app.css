@@ -62,6 +62,7 @@ footer .cizgi {
   background: #000;
   border-radius: 3%;
 }
+
 .carousel-item img {
   width: 100%;
   height: 100%;
@@ -81,61 +82,65 @@ footer .cizgi {
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 
-.main{
+.main {
   height: 100vh;
   background-size: cover;
   background: url('https://i.ibb.co/jfLZFhm/Bitmap.png') no-repeat top center;
 }
 
-h1{
+h1 {
   text-align: center;
   font-weight: 400;
   font-size: 60px;
   padding-top: 30px;
 }
 
-.countdown{
+.countdown {
   display: flex;
   justify-content: center;
   gap: 20px;
 }
-.countdown > div{
+
+.countdown>div {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
-  box-shadow: 1px 1px 15px rgba(0,0,0,0.25);
+  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.25);
   width: 80px;
   height: 80px;
   border-radius: 5px;
 }
+
 .number {
   font-weight: 500;
   font-size: 44px;
-  color: color: #fbc531;
+  color: #fbc531;
 }
 
-div span:last-of-type{
+div span:last-of-type {
   font-size: 12px;
 }
 
-@media screen and (max-width:600px){
-  h1{
+@media screen and (max-width:600px) {
+  h1 {
     font-size: 40px;
   }
-  .countdown{
+
+  .countdown {
     gap: 10px;
   }
-  .countdown > div{
-  width: 60px;
-  height: 80px;
-}
-  
+
+  .countdown>div {
+    width: 60px;
+    height: 80px;
+  }
+
   .number {
-  font-size: 34px;
-}
+    font-size: 34px;
+  }
 }
 
 /* .container-other-events as inline grid */
@@ -146,15 +151,16 @@ div span:last-of-type{
   margin: 0 auto;
   padding: 5 1rem;
 }
+
 /* OTHER EVENTS CONTAINER */
 .event-card {
   width: 300px;
   height: 200px;
   background-color: #333;
   border-radius: 10px;
-  outline: 1px solid rgba(255,255,255,.5);
+  outline: 1px solid rgba(255, 255, 255, .5);
   outline-offset: -8px;
-  box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -182,7 +188,141 @@ div span:last-of-type{
   left: 15px;
   bottom: 15px;
   font-size: 22px;
-  text-shadow: 0 0 1 rgba(0,0,0,0.1);
+  text-shadow: 0 0 1 rgba(0, 0, 0, 0.1);
   font-weight: bold;
   opacity: 1;
+}
+
+/* EVENT PAGE */
+
+#event-content {
+  position: relative;
+  margin-top: 2rem;
+  --bs-bg-opacity: .7;
+  border-radius: 5%;
+}
+
+#event-content img {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: -1;
+  width: 100%;
+}
+
+#event-content button 
+{
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 12rem;
+  height: 3.5rem;
+}
+
+#event-content h1,
+h3 {
+  color: #fff;
+  position: absolute;
+}
+
+#event-content h3 {
+  font-size: 1.5rem;
+  top: 8rem;
+  left: 2rem;
+}
+
+#event-content h1 {
+  font-size: 4rem;
+  top: 1rem;
+  left: 1.7rem;
+}
+
+/* Event Page Sidebar */
+.sidebar-nav {
+  position: absolute;
+  top: 6.5rem;
+  left: 3rem;
+  width: 10rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: rgba(48, 47, 47, 0.8);
+  border-radius: 5%;
+}
+
+.sidebar-nav li {
+  text-indent: 20px;
+  line-height: 40px;
+}
+
+.sidebar-nav li a {
+  display: block;
+  text-decoration: none;
+  color: #999999;
+}
+
+.sidebar-nav li a:hover {
+  text-decoration: none;
+  color: #fff;
+  background: rgba(251, 197, 49, 0.2)
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+  text-decoration: none;
+}
+
+.sidebar-nav>.sidebar-brand {
+  height: 65px;
+  font-size: 18px;
+  line-height: 60px;
+}
+
+@media(min-width:768px) {
+  #wrapper {
+    padding-left: 250px;
+  }
+
+  #wrapper.toggled {
+    padding-left: 0;
+  }
+
+  #sidebar-wrapper {
+    width: 250px;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    width: 0;
+  }
+
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
+
+#menu-info {
+
+  font-size: 2rem;
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  list-style-type: none;
+  position: absolute;
+  top: 44rem;
+  left: 35rem;
+}
+
+.menu-info-item {
+
+  background-color: rgba(252, 207, 85, 0.8);
+  border: 2px solid orangered;
+  border-radius: 10%;
+  width: 15rem;
+  height: 5rem;
 }

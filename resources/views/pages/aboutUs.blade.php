@@ -27,7 +27,7 @@
                     <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
 
                     <div class="profile-info">
-                        <h3 class="profile-name">Afonso Martins </h3>
+                        <div class="profile-name" style="font-size: 25px; font-weight: bold">Afonso Martins </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>
@@ -44,36 +44,13 @@
         <!-- END AFONSO -->
 
         <!-- EDU -->
-
         <div class="column">
             <div class="profile-card">
                 <div class="profile-card-header">
                     <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
 
                     <div class="profile-info">
-                        <h3 class="profile-name">José Diogo </h3>
-                        <p class="profile-desc">Developer</p>
-                    </div>
-                </div>
-
-                <div class="profile-card-body">
-                    <div class="action">
-                        <a href="https://github.com/Eduardo79Silva"> <button type="button" class="btn btn-blue-outline"> Github </button> </a>
-                        <a href="mailto:up202005283@fe.up.pt"> <button class="btn btn-red-outline" > E-mail </button> </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END EDU -->
-
-        <!-- ZÉ -->
-        <div class="column">
-            <div class="profile-card">
-                <div class="profile-card-header">
-                    <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
-
-                    <div class="profile-info">
-                        <h3 class="profile-name">Eduardo Silva </h3>
+                    <div class="profile-name" style="font-size: 25px; font-weight: bold">Eduardo Silva </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>
@@ -86,6 +63,32 @@
                 </div>
             </div>
         </div>
+        
+        <!-- END EDU -->
+
+        <!-- ZÉ -->
+
+        <div class="column">
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
+
+                    <div class="profile-info">
+                    <div class="profile-name" style="font-size: 25px; font-weight: bold"> José Diogo </div>
+                        <p class="profile-desc">Developer</p>
+                    </div>
+                </div>
+
+                <div class="profile-card-body">
+                    <div class="action">
+                        <a href="https://github.com/Eduardo79Silva"> <button type="button" class="btn btn-blue-outline"> Github </button> </a>
+                        <a href="mailto:up202005283@fe.up.pt"> <button class="btn btn-red-outline"> E-mail </button> </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
         <!-- END ZÉ -->
 
         <!-- MATILDE -->
@@ -96,7 +99,7 @@
                     <img src="https://p.kindpng.com/picc/s/76-763010_female-user-icon-png-transparent-png.png" alt="" class="profile-image">
 
                     <div class="profile-info">
-                        <h3 class="profile-name">Matilde Silva </h3>
+                    <div class="profile-name" style="font-size: 25px; font-weight: bold"> Matilde Silva </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>

@@ -237,3 +237,6 @@ const countdown = setInterval(() => {
     document.querySelector(".months").innerHTML =
         month < 10 ? "0" + month : month;
 }, 1000);
+
+/* Event Page */
+
