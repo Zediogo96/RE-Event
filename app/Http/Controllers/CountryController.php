@@ -11,6 +11,9 @@ use App\Models\Comment;
 use App\Models\Report;
 */
 
+use App\Models\Event;
+use App\Models\City;
+
 use Illuminate\Http\Request;
 
 class CountryController extends Controller
@@ -27,7 +30,25 @@ class CountryController extends Controller
         print_r($test);
         die();
         */
-
+        
+/*  city event search working
+        $city_search = 'Coimbra';
+        //$test = City::search($city_search)->get()->map->only(['cityid', 'name']);
+        $test = City::search($city_search)->first();
+        dd($test->events);
+*/
+/*  country event search working
+        $country_search = 'Portugal';
+        $test = Country::search($country_search)->first()->cities;
+        foreach ($test as $t) {
+            print_r($t->events);
+        }
+*/
+/*  title event search working 
+        $title = 'F1';
+        $topics = Event::search($title)->get();
+        dd($topics);
+*/
 
         $countries = Country::all();
         return view('layouts.countries', ['countries' => $countries]);
