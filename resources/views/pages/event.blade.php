@@ -4,9 +4,9 @@
 
 <div class="container" id="event-content">
 
-    <img src="https://www.loudmagazine.net/wp-content/uploads/2022/05/Metallica.jpg" style="border-radius: 5%;">
-    <h1> METALLICA </h1>
-    <h3> 2022-05-05 </h3>
+    <img src= "{{$event -> photos[0]->path}}" style="border-radius: 5%; height:45rem;">
+    <h1> {{$event->name}} </h1>
+    <h3> {{date('Y-m-d', strtotime($event->date))}} </h3>
     <button class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
             BUY TICKETS </a></button>
 
@@ -14,11 +14,11 @@
         <ul id="menu-info">
             <li class="menu-info-item text-center">
                 <div> Location </div>
-                <p style="font-size: 15px"> Cenas </p>
+                <p style="font-size: 15px"> {{$event->city->country->name}}, {{$event->city->name}} </p>
             </li>
             <li class="menu-info-item text-center">
                 <div> Capacity </div>
-                <p style="font-size: 15px"> Cenas </p>
+                <p style="font-size: 15px"> {{$event->capacity}} places </p>
             </li>
             <li class="menu-info-item text-center">
                 <div> Outra Info </div>

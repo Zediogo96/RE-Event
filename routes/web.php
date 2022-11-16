@@ -36,7 +36,7 @@ Route::get('home', 'HomeController@home')->name('home.show');
 Route::get('login', 'HomeController@login')->name('login.show');
 
 // Events Related
-Route::get('event', 'EventController@show')->name('event.show');
+Route::get('event{eventid?}', 'EventController@show')->name('event.show');
 
 // Static Pages
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');

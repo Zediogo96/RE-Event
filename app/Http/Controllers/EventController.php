@@ -48,9 +48,10 @@ class EventController extends Controller
      * CHANGE THIS TO BE DYNAMIC, SHOULD RECEIVE AN eventID AND DISPLAY THAT ONE
      * *********************************************
      */
-    public function show(/* Event $event */)
+    public function show($id)
     {
-        return view('pages.event');
+        $event = Event::find($id);
+        return view('pages.event', ['event' => $event]);
     }
 
     /**

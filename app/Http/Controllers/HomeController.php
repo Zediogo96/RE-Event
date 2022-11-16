@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Event;
+use App\Models\Photo;
 
 class HomeController extends Controller
 {
@@ -11,7 +13,10 @@ class HomeController extends Controller
      */
     public function home()
     {
-        return view('pages.home');
+
+        $events = Event::all();
+        return view('pages.home',compact(['events'])); 
+
     }
 
     /**
@@ -23,4 +28,5 @@ class HomeController extends Controller
     {
         return view('pages.login');
     }
+
 }
