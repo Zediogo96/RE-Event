@@ -218,7 +218,7 @@ const countdown = setInterval(() => {
 
     const month = Math.floor(
         (diff % (1000 * 60 * 60 * 24 * (365.25 / 12) * 365)) /
-            (1000 * 60 * 60 * 24 * (365.25 / 12))
+        (1000 * 60 * 60 * 24 * (365.25 / 12))
     );
     const days = Math.floor(
         (diff % (1000 * 60 * 60 * 24 * (365.25 / 12))) / (1000 * 60 * 60 * 24)
@@ -269,3 +269,4 @@ loginBtn.onclick = () => {
 signupLink.onclick = () => {
     signupBtn.click();
 };
+

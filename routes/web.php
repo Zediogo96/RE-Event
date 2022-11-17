@@ -42,6 +42,8 @@ Route::get('event{eventid?}', 'EventController@show')->name('event.show');
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
 Route::get('faq', 'PageController@faq')->name('faq.index');
 
+Route::get('searchTest','SearchController@index')->name('search.test');
+Route::get('search','SearchController@search');
 
 //testing database data
 
