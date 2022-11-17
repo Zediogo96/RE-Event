@@ -34,8 +34,8 @@
 
                 <div class="profile-card-body">
                     <div class="action">
-                        <a href="https://github.com/afonsom1719"><button type="button" class="btn btn-blue-outline"> Github </button> </a>
-                        <a href="mailto:up202005900@fe.up.pt"> <button type="button" class="btn btn-red-outline"> E-mail </button> </a>
+                        <a href="https://github.com/afonsom1719"><button type="button" class="btn btn-blue-outline btn-abt"> Github </button> </a>
+                        <a href="mailto:up202005900@fe.up.pt"> <button type="button" class="btn btn-red-outline btn-abt"> E-mail </button> </a>
                     </div>
                 </div>
             </div>
@@ -57,8 +57,8 @@
 
                 <div class="profile-card-body">
                     <div class="action">
-                        <a href="https://github.com/Zediogo96"> <button type="button" class="btn btn-blue-outline"> Github </button> </a>
-                        <a href="mailto:up202003529@fe.up.pt"> <button class="btn btn-red-outline"> E-mail </button> </a>
+                        <a href="https://github.com/Zediogo96"> <button type="button" class="btn btn-blue-outline btn-abt"> Github </button> </a>
+                        <a href="mailto:up202003529@fe.up.pt"> <button class="btn btn-red-outline btn-abt"> E-mail </button> </a>
                     </div>
                 </div>
             </div>
@@ -74,15 +74,15 @@
                     <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
 
                     <div class="profile-info">
-                    <div class="profile-name" style="font-size: 25px; font-weight: bold"> José Diogo </div>
+                    <div class="profile-name" style="font-size: 25px; font-weight: bold "> José Diogo </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>
 
                 <div class="profile-card-body">
                     <div class="action">
-                        <a href="https://github.com/Eduardo79Silva"> <button type="button" class="btn btn-blue-outline"> Github </button> </a>
-                        <a href="mailto:up202005283@fe.up.pt"> <button class="btn btn-red-outline"> E-mail </button> </a>
+                        <a href="https://github.com/Eduardo79Silva"> <button type="button" class="btn btn-blue-outline btn-abt"> Github </button> </a>
+                        <a href="mailto:up202005283@fe.up.pt"> <button class="btn btn-red-outline btn-abt"> E-mail </button> </a>
                     </div>
                 </div>
             </div>
@@ -106,8 +106,8 @@
 
                 <div class="profile-card-body">
                     <div class="action">
-                        <a href="https://github.com/matilde-silva-21"><button type="button" class="btn btn-blue-outline"> Github </button> </a>
-                        <a href="mailto:up202007928@fe.up.pt"><button class="btn btn-red-outline"> E-mail </button> </a>
+                        <a href="https://github.com/matilde-silva-21"><button type="button" class="btn btn-blue-outline btn-abt"> Github </button> </a>
+                        <a href="mailto:up202007928@fe.up.pt"><button class="btn btn-red-outline btn-abt"> E-mail </button> </a>
                     </div>
                 </div>
             </div>
