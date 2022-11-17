@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+
 /*testing 
 use App\Models\Event;
 use App\Models\User;
@@ -31,24 +32,36 @@ class CountryController extends Controller
         die();
         */
         
-/*  city event search working
+  /*city event search working
         $city_search = 'Coimbra';
         //$test = City::search($city_search)->get()->map->only(['cityid', 'name']);
         $test = City::search($city_search)->first();
         dd($test->events);
 */
-/*  country event search working
+/*country event search working
+        $eventsarray = array();
+
         $country_search = 'Portugal';
         $test = Country::search($country_search)->first()->cities;
+
         foreach ($test as $t) {
-            print_r($t->events);
+            foreach ($t->events as $e) {
+                array_push($eventsarray, $e);
+            }
+            //array_push($eventsarray, $t->events);
+            //print_r($t->events);
         }
+
+        dd($eventsarray);
 */
-/*  title event search working 
+/*title event search working 
         $title = 'F1';
-        $topics = Event::search($title)->get();
-        dd($topics);
+        $events = Event::search($title)->get();
+        dd($events);
 */
+
+/*$events = Event::all();
+dd($events);*/
 
         $countries = Country::all();
         return view('layouts.countries', ['countries' => $countries]);

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -60,9 +63,10 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function edit(Event $event)
+    public function edit($id)
     {
-        //
+        $event = Event::find($id);
+        return view('pages.editEvent', ['event' => $event]);
     }
 
     /**
@@ -72,9 +76,58 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Event $event)
+    public function update(Request $request)
     {
-        //
+        $event = Event::find($request->input('eventid'));
+        $event->name = $request->input('name');
+        $event->description = $request->input('description');
+        $event->date = $request->input('date');
+        $event->capacity = $request->input('capacity');
+
+//City::find(City::where('name', $request->input('city'))->first()) == null  if antigo
+
+        if (!City::where('name', '=', $request->input('city'))->exists()) {  //se nao existir a cidade
+
+            //create a new city and country and add it to the database
+            $city = new City;
+            $city->name = $request->input('city');
+
+            //Country::find(Country::where('name', $request->input('country'))->first()) == null  if antigo
+
+            if (!Country::where('name', '=', $request->input('country'))->exists()) {
+                $country = new Country;
+                $country->name = $request->input('country');
+                $country->save();
+            }
+
+            $city->countryid = Country::where('name', $request->input('country'))->first()->countryid;
+
+            $city->save();
+        }
+
+        $cityexistsid = City::where('name', '=', $request->input('city'))->first()->cityid;
+
+        //$event->cityid = City::where('name', $request->input('city'))->first()->cityid; 
+        //$event->cityid = 1; 
+        $event->cityid = $cityexistsid;
+
+        $event->price = $request->input('price');
+
+        if (!Tag::where('name', '=', $request->input('tag'))->exists()) {
+            //create a new tag and add it to the database
+            $tag = new Tag;
+            $tag->name = $request->input('tag');
+            $tag->save();
+        }
+
+        $cityexistsid = Tag::where('name', '=', $request->input('tag'))->first()->tagid;
+
+        $event->tagid = $tagexistsid;
+ 
+        //$event->tagid = 7;
+
+        $event->save();
+        return redirect('/event'.$event->eventid);
     }
 
     /**

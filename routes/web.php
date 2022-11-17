@@ -38,6 +38,9 @@ Route::get('login', 'HomeController@login')->name('login.show');
 // Events Related
 Route::get('event{eventid?}', 'EventController@show')->name('event.show');
 
+Route::get('editEvent{eventid?}', 'EventController@edit')->name('event.edit');  //edit the details of an event
+Route::post('updateEvent/{event_id?}', 'EventController@update')->name('updateEvent'); //update the details of an event
+
 // Static Pages
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
 Route::get('faq', 'PageController@faq')->name('faq.index');
