@@ -36,7 +36,7 @@
     <!-- Full screen modal -->
     <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" data-backdrop="false" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content" style="height: 18rem;">
+            <div class="modal-content" id="modal-content-box" style="height: 18rem;">
 
                 <div class="form-group">
                     <input type="text" class="form-controller" id="searchInput" name="search"></input>
