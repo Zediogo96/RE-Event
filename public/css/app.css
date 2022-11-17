@@ -325,4 +325,83 @@ h3 {
 
 /*** END FAQ PAGE *************************************/
 
-/* LOGIN PAGE */ 
+/*** SEARCH MODAL ************************************/
+#close-modal-button {
+  top: 1rem;
+  right: 1rem;
+  overflow: hidden;
+  position: absolute;
+  border: none;
+  padding: 0;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background: transparent;
+  color: #1da1f2;
+  font: inherit;
+  text-indent: 100%;
+  cursor: pointer;
+}
+
+#close-modal-button:focus {
+  outline: solid 0 transparent;
+  box-shadow: 0 0 0 2px #8ed0f9;
+}
+
+#close-modal-button:hover {
+  background: rgba(29, 161, 142, .1);
+}
+
+#close-modal-button:before,
+#close-modal-button:after {
+  position: absolute;
+  top: 15%;
+  left: calc(50% - .0625em);
+  width: 0.125em;
+  height: 70%;
+  border-radius: 0.125em;
+  transform: rotate(45deg);
+  background: currentcolor;
+  content: '';
+}
+
+#close-modal-button:after {
+  transform: rotate(-45deg);
+}
+
+#submitsearch {
+  border: 1px solid rgb(138, 134, 134);
+  margin-left: -82px;
+  padding: 5px;
+  border-radius: 19px;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 8px;
+  padding-top: 4px;
+
+  display: none;
+  box-shadow: 0 0 1px black;
+  margin-right: 110px;
+}
+
+#searchInput {
+  width: 90%;
+  /* center input */
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 12%;
+  border: 1px solid #000;
+  border-radius: 30px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/search-24.png');
+
+  background-position: 10px 7px;
+  background-repeat: no-repeat;
+  padding: 8px 20px 8px 40px;
+  -webkit-transition: width 0.8s ease-in-out;
+  transition: width 0.8s ease-in-out;
+  outline: none;
+  opacity: 0.9;
+
+}

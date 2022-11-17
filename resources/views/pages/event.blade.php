@@ -4,7 +4,7 @@
 
 <div class="container" id="event-content">
 
-    <img src= "{{$event -> photos[0]->path}}" style="border-radius: 5%; height:45rem;">
+    <img src="{{$event -> photos[0]->path}}" style="border-radius: 5%; height:45rem;">
     <h1> {{$event->name}} </h1>
     <h3> {{date('Y-m-d', strtotime($event->date))}} </h3>
     <button class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
@@ -26,7 +26,6 @@
             </li>
         </ul>
     </nav>
-
 </div>
 
 <!-- bar to the side of the page -->
@@ -54,5 +53,7 @@
         </ul>
     </div>
 </div>
+
+
 
 @endsection
