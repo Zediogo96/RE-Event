@@ -8,6 +8,12 @@
     position: relative;
 }
 
+@media screen and (max-width:800px){
+    .userProfile {
+        flex-direction: column;
+    }
+}
+
 .profileAndDetails {
     width: 40vw;
     display: flex;
@@ -24,6 +30,8 @@
 
 #selectOptions{
     background-color: red;
+    /*width: 240px;*/
+    align-self: center;
 }
 
 .option {
@@ -73,4 +81,36 @@
 
 .optionDetailsHidden {
     display: none;
+}
+
+#profileDetailsForm {
+    width: 100%;
+}
+
+.updateProfileInputBoxes {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 40%;
+}
+
+.updateProfileInputBoxes > label {
+    size: 0.6rem;
+}
+
+.updateProfileInputBoxes > input:focus-visible {
+    background-color: red;
+}
+
+.updateProfileDetailsRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 5px 0;
+}
+
+.updateProfileTextInput > input {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 2px solid black;
 }

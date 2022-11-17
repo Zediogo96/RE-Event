@@ -16,7 +16,8 @@
     <section class = "profileAndDetails">
     
         <div class = "profile" id = "profileUserCard" >
-            imagem: John Doe 
+            <img src="profile_pictures/generic_pic.jpg" width="70" height="70" alt="Profile Picture">
+            John Doe 
         </div>
 
         <div id = "selectOptions">
@@ -48,7 +49,43 @@
     </section>
     <section id="selectDetails" class = "profile">
         <div id="myProfileDetails" class="optionDetails">
-            myProfile
+            <h4>My Profile</h4>
+            <form action="updateProfileDetails" method="post" id="profileDetailsForm">
+                <div class="updateProfileDetailsRow">
+                    <div class="updateProfileInputBoxes updateProfileTextInput">
+                        <label for="name"> Name </label>
+                        <input type="text" name="name" id="profileDetailsNameInput">
+                    </div>
+                    <div class="updateProfileInputBoxes updateProfileTextInput">
+                        <label for="email"> Email </label>
+                        <input type="email" name="email" id="profileDetailsEmailInput">
+                    </div>
+                </div>
+                <div class="updateProfileDetailsRow">
+                    <div class="updateProfileInputBoxes updateProfileTextInput">
+                        <label for="birthday"> Birthday </label>
+                        <input type="date" name="birthday" id="profileDetailsBirthdayInput">
+                    </div>
+                    <div class="updateProfileInputBoxes updateProfileTextInput">
+                        <label for="password"> Password </label>
+                        <input type="password" name="password" id="profileDetailsPasswordInput">
+                    </div>
+                </div>
+                <div class="updateProfileDetailsRow">
+                    <div class="updateProfileInputBoxes">
+                        <label for="gender"> Gender </label>
+                        <select name="gender" id="profileDetailsGenderInput">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="updateProfileInputBoxes">
+                        <label for="profilePic"> Profile Picture </label>
+                        <input type="file" name="profilePic" id="profileDetailsProfilePicInput">
+                    </div>
+                </div>
+            </form>
         </div>
         <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
             <div id="pastEvents" class="details submenuSleep">
