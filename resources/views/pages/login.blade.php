@@ -33,7 +33,8 @@
             <div class="form-inner">
 
                 <!-- Start Login Form -->
-                <form action="#" class="login">
+                <form class="login" method="POST" action="#">
+                {{ csrf_field() }}
                     <div class="field input-group">
 
                         <input type="text" class="form-control" placeholder="Username" required>

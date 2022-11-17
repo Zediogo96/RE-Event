@@ -18,13 +18,13 @@ class User extends Authenticatable
     public $timestamps = false;
 
     //The attributes that are mass assignable
-    protected $attr = [
-        'name', 'email', 'birthDate', 'password', 'gender', 'profilePic', 'admin',
+    protected $fillable = [
+        'name', 'email', 'birthDate', 'password', 'gender',
     ];
 
     //The attributes that should be hidden for arrays
     protected $hidden = [
-        'password',
+        'password', 'remember_token'
     ];
 
     public function hostedEvents()
