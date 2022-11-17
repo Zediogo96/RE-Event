@@ -29,5 +29,23 @@ class Country extends Model
     {
         return $this->hasMany('App\Models\Event', 'eventid');
     }
+
+
+
+
+
+
+
+    /**
+     * Full text search for countries
+     */
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+        return $query->whereRaw('tsvectors_country @@ to_tsquery(\'english\', ?)', [$search])
+            ->orderByRaw('ts_rank(tsvectors_country, to_tsquery(\'english\', ?)) DESC', [$search]);
+    }
     
 }

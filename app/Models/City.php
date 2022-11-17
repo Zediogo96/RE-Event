@@ -25,6 +25,23 @@ class City extends Model
      * The events that belong to the city.      UMA CIDADE TEM VÁRIOS EVENTOS
      */
     public function events() {
-        return $this->hasMany('App\Models\Event');
+        return $this->hasMany('App\Models\Event', 'cityid');
+    }
+
+
+
+
+    
+    
+    /**
+     * Full text search for events
+     */
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+        return $query->whereRaw('tsvectors_city @@ to_tsquery(\'english\', ?)', [$search])
+            ->orderByRaw('ts_rank(tsvectors_city, to_tsquery(\'english\', ?)) DESC', [$search]);
     }
 }

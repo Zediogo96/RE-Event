@@ -69,4 +69,23 @@ class Event extends Model
         return $this->belongsTo('App\Models\Tag', 'tagid');
     }
 
+
+
+
+
+
+
+
+
+    /**
+     * Full text search for events
+     */
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+        return $query->whereRaw('tsvectors @@ to_tsquery(\'english\', ?)', [$search])
+            ->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC', [$search]);
+    }
 }
