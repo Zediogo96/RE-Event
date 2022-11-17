@@ -60,6 +60,9 @@ class CountryController extends Controller
         dd($events);
 */
 
+/*$events = Event::all();
+dd($events);*/
+
         $countries = Country::all();
         return view('layouts.countries', ['countries' => $countries]);
     }
