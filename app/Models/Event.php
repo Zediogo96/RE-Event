@@ -73,10 +73,6 @@ class Event extends Model
 
 
 
-
-
-
-
     /**
      * Full text search for events
      */
