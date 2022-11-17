@@ -26,11 +26,12 @@
     background-color: red;
 }
 
-#selectOptions > ul > li:hover {
+.option {
     cursor: pointer;
 }
 
-#selectOptions > ul > li {
+
+.option {
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -38,6 +39,18 @@
     user-select: none;
 }
 
+.submenuActive {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.submenuSleep {
+    display: none;
+    position: relative;
+    overflow: hidden;
+}
 
 #selectDetails {
     background-color: aqua;
@@ -50,7 +63,7 @@
 }
 
 
-.userProfileDetails {
+.optionDetails {
     height: 100%;
     width: 100%;
     display: flex;
@@ -58,6 +71,6 @@
     align-items: center;
 }
 
-.userProfileDetailsHidden {
+.optionDetailsHidden {
     display: none;
 }
