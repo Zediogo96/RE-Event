@@ -21,8 +21,8 @@
                         <a class="nav-link" href="{{route('login.show')}}"><i class="fa fa-user-plus fa-fw mr-1"></i> Register </a>
                     </li>
                     <!-- Button trigger modal -->
-                    <a href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#basicModal">
-                        <span class="fa fa-f1 mr-1 fa-search" aria-hidden="true"></span>
+                    <a href="#" class="btn btn-lg nav-link" data-toggle="modal" data-target="#basicModal">
+                        <span class="fa mr-1 fa-search" aria-hidden="true"></span> Search
                     </a>
                     <li class="nav-item float">
                         <a class="nav-link" href="#"><i class="fa fa-sign-in-alt fa-fw mr-1"></i> Logout </a>
@@ -36,19 +36,25 @@
     <!-- Full screen modal -->
     <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" data-backdrop="false" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" style="height: 18rem;">
 
-                <div class='container'>
-                    <input type="text" id="searchInput" placeholder="Search..">
-
-                    <div class="modal-header">
-                        <h4 class="modal-title text-center" id="myModalLabel"> RESULTS DOWN HERE: TODO </h4>
-                        <button id="close-modal-button" data-dismiss="modal"></button>
-                    </div>
+                <div class="form-group">
+                    <input type="text" class="form-controller" id="searchInput" name="search"></input>
                 </div>
-
+                <table class="table table-bordered table-hover" style="margin-top:1rem;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>City</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-res">
+                    </tbody>
+                </table>
+                <button id="close-modal-button" data-dismiss="modal"></button>
 
             </div>
         </div>
     </div>
+
 </header>

@@ -327,8 +327,8 @@ h3 {
 
 /*** SEARCH MODAL ************************************/
 #close-modal-button {
-  top: 1rem;
-  right: 1rem;
+  top: 0.5rem;
+  right: 0.5rem;
   overflow: hidden;
   position: absolute;
   border: none;
@@ -389,7 +389,7 @@ h3 {
   /* center input */
   margin-left: 5%;
   margin-right: 5%;
-  margin-top: 12%;
+  margin-top: 8%;
   border: 1px solid #000;
   border-radius: 30px;
   font-size: 16px;

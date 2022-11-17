@@ -21,8 +21,8 @@
                 <p style="font-size: 15px"> {{$event->capacity}} places </p>
             </li>
             <li class="menu-info-item text-center">
-                <div> Outra Info </div>
-                <p style="font-size: 15px"> Cenas </p>
+                <div> Address </div>
+                <p style="font-size: 15px"> {{$event->address}} </p>
             </li>
         </ul>
     </nav>
