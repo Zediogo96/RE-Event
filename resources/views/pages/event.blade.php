@@ -26,33 +26,35 @@
             </li>
         </ul>
     </nav>
+
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="#">Event Host</a>
+                </li>
+                <li>
+                    <a href="#">Atendees List</a>
+                </li>
+                <li>
+                    <a href="#"> Outro 1</a>
+                </li>
+                <li>
+                    <a href="#"> Outro 2 </a>
+                </li>
+                <li>
+                    <a href="#">Outro 3</a>
+                </li>
+                <li>
+                    <a href="#"> Outro 4</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 
 <!-- bar to the side of the page -->
-<div id="wrapper">
-    <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li>
-                <a href="#">Event Host</a>
-            </li>
-            <li>
-                <a href="#">Atendees List</a>
-            </li>
-            <li>
-                <a href="#"> Outro 1</a>
-            </li>
-            <li>
-                <a href="#"> Outro 2 </a>
-            </li>
-            <li>
-                <a href="#">Outro 3</a>
-            </li>
-            <li>
-                <a href="#"> Outro 4</a>
-            </li>
-        </ul>
-    </div>
-</div>
+
 
 
 
