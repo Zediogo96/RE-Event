@@ -83,7 +83,29 @@
     @endforeach
 </div>
 
+<!-- Full screen modal -->
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" data-backdrop="false" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="height: 18rem;">
 
+            <div class="form-group">
+                <input type="text" class="form-controller" id="searchInput" name="search"></input>
+            </div>
+            <table class="table table-bordered table-hover" style="margin-top:1rem;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>City</th>
+                    </tr>
+                </thead>
+                <tbody id="table-res">
+                </tbody>
+            </table>
+            <button id="close-modal-button" data-dismiss="modal"></button>
+
+        </div>
+    </div>
+</div>
 
 </div>
 

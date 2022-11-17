@@ -45,12 +45,11 @@ Route::get('faq', 'PageController@faq')->name('faq.index');
 Route::get('searchTest','SearchController@index')->name('search.test');
 Route::get('search','SearchController@search');
 
+Route::get('user{userid?}', 'UserController@show')->name('user.show');
+
 //testing database data
 
 Route::get('cities', 'CityController@index');
 Route::get('countries', 'CountryController@index');
 Route::get('events', 'EventController@index');
 
-Route::get('user', function() {
-    return view('pages.userPage');
-});

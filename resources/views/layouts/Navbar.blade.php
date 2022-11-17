@@ -25,7 +25,7 @@
                         <span class="fa mr-1 fa-search" aria-hidden="true"></span> Search
                     </a>
                     <li class="nav-item float">
-                        <a class="nav-link" href="#"><i class="fa fa-sign-in-alt fa-fw mr-1"></i> Logout </a>
+                        <a class="nav-link" href="{{route('user.show', 1)}}"><i class="fa fa-sign-in-alt fa-fw mr-1"></i> Logout </a>
                 </ul>
             </div>
         </div>

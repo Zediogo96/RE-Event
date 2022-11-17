@@ -608,25 +608,25 @@ INSERT INTO event_host (userID, eventID)
     VALUES (1, 1);
 
 INSERT INTO event_host (userID, eventID)
-    VALUES (2, 2);
+    VALUES (1, 2);
 
 INSERT INTO event_host (userID, eventID)
-    VALUES (3, 3);
+    VALUES (1, 3);
 
 INSERT INTO event_host (userID, eventID)
-    VALUES (4, 4);
+    VALUES (1, 4);
 
 INSERT INTO event_host (userID, eventID)
-    VALUES (5, 5);
+    VALUES (2, 5);
 
 INSERT INTO event_host (userID, eventID)
-    VALUES (6, 6);
+    VALUES (2, 6);
 
 INSERT INTO event_host (userID, eventID)
-    VALUES (7, 7);
+    VALUES (2, 7);
 
 INSERT INTO event_host (userID, eventID)
-    VALUES (8, 8);
+    VALUES (2, 8);
 
 /* Comments */
 
