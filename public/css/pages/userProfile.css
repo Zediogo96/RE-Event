@@ -256,4 +256,38 @@
 
 .btn-edit-event {
     margin-right: 2rem;
+    z-index: 2;
+}
+
+#edit-modal-content {
+    /* CONTAINER */
+    height: 87vh;
+    width: 80vw;
+    position: absolute;
+    left: -30rem;
+    top: -3rem;
+}
+
+
+div.form-event-edit {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 5px;
+}
+
+#editModal form {
+    display: table;
+
+}
+
+div.form-event-edit {
+    display: table-row;
+}
+
+div.form-event-edit label {
+    display: table-cell;
+}
+
+div.form-event-edit input {
+    display: table-cell;
 }
