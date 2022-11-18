@@ -1,6 +1,10 @@
 /* create schema if not exists lbaw_bd;
 set search_path to lbaw_bd;
  */
+
+create schema if not exists lbaw;
+set search_path to lbaw;
+
 -- Remove Duplicate Tables --------------
 DROP TABLE IF EXISTS user_ CASCADE;
 DROP TABLE IF EXISTS event CASCADE;
