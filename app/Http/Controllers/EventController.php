@@ -120,7 +120,7 @@ class EventController extends Controller
             $tag->save();
         }
 
-        $cityexistsid = Tag::where('name', '=', $request->input('tag'))->first()->tagid;
+        $tagexistsid = Tag::where('name', '=', $request->input('tag'))->first()->tagid;
 
         $event->tagid = $tagexistsid;
  
