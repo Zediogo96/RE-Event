@@ -79,10 +79,23 @@ class EventController extends Controller
     public function update(Request $request)
     {
         $event = Event::find($request->input('eventid'));
-        $event->name = $request->input('name');
-        $event->description = $request->input('description');
-        $event->date = $request->input('date');
-        $event->capacity = $request->input('capacity');
+
+        if (!is_null($request->input('name'))) {
+            $event->name = $request->input('name');
+        }
+
+        if (!is_null($request->input('description'))) {
+            $event->description = $request->input('description');
+        }
+
+        if (!is_null($request->input('date'))) {
+            $event->date = $request->input('date');
+        }
+
+        if (!is_null($request->input('capacity'))) {
+            $event->capacity = $request->input('capacity');
+        }
+        
 
 //City::find(City::where('name', $request->input('city'))->first()) == null  if antigo
 
@@ -111,8 +124,10 @@ class EventController extends Controller
         //$event->cityid = 1; 
         $event->cityid = $cityexistsid;
 
-        $event->price = $request->input('price');
-
+        if (!is_null($request->input('price'))) {
+            $event->price = $request->input('price');
+        }
+        
         if (!Tag::where('name', '=', $request->input('tag'))->exists()) {
             //create a new tag and add it to the database
             $tag = new Tag;
