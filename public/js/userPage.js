@@ -1,4 +1,4 @@
-const selectOption = function(option) {
+const selectOption = function (option) {
 
     Array.from(document.getElementsByClassName('option')).forEach((element) => {
         element.classList.remove('optionSelected');
@@ -20,7 +20,7 @@ const selectOption = function(option) {
 
     switch (option) {
         case 1: {
-        
+
             document.getElementById('myProfileOption').classList.add('optionSelected');
             document.getElementById('myProfileDetails').classList.remove('optionDetailsHidden');
 
@@ -46,7 +46,7 @@ const selectOption = function(option) {
         case 3: {
             document.getElementById('myInvitesOption').classList.add('optionSelected');
             document.getElementById('myInvitesDetails').classList.remove('optionDetailsHidden');
-            
+
             /*ativar o submenu*/
             document.getElementById('myInvitesSubmenu').classList.add('submenuActive');
             document.getElementById('myInvitesSubmenu').classList.remove('submenuSleep');
@@ -62,8 +62,8 @@ const selectOption = function(option) {
     }
 }
 
-const showDetails = function(option){
-    
+const showDetails = function (option) {
+
     Array.from(document.getElementsByClassName('details')).forEach((element) => {
         element.classList.remove('optionSelected');
         element.classList.add('submenuSleep');
@@ -75,8 +75,8 @@ const showDetails = function(option){
         element.classList.remove('optionSelected');
     });
 
-    switch(option){
-       case 1: {
+    switch (option) {
+        case 1: {
             document.getElementById('pastEvents').classList.add('submenuActive');
             document.getElementById('pastEvents').classList.remove('submenuSleep');
             document.getElementById('pastEventsOption').classList.add('optionSelected');
@@ -89,7 +89,7 @@ const showDetails = function(option){
             document.getElementById('futureEventsOption').classList.add('optionSelected');
 
             break;
-        } 
+        }
         case 3: {
 
             document.getElementById('eventsCreatedByMe').classList.add('submenuActive');
@@ -98,7 +98,7 @@ const showDetails = function(option){
 
 
             break;
-        } 
+        }
         case 4: {
 
             document.getElementById('receivedInvites').classList.add('submenuActive');
@@ -114,7 +114,38 @@ const showDetails = function(option){
             document.getElementById('sentInvitesOption').classList.add('optionSelected');
 
             break;
-        }  
+        }
     }
-    
 }
+
+/** MODAL EVENT EDIT */
+
+document.getElementById('editModal').querySelector('#name').addEventListener("keyup", (event) => {
+    console.log(event.target.value);
+    document.getElementById('preview-name').innerHTML = event.target.value;
+});
+
+document.getElementById('editModal').querySelector('#capacity').addEventListener("keyup", (event) => {
+
+    document.getElementById('preview-capacity').innerHTML = event.target.value + ' places';
+});
+
+// document.getElementById('editModal').querySelector('#date').addEventListener("onSelect", (event) => {
+//     console.log(event.target.getDate());
+//     document.getElementById('preview-date').innerHTML = event.target.value;
+// });
+
+// concat data of #country and #city input on keyup event
+document.getElementById('editModal').querySelector('#country').addEventListener("keyup", (event) => {
+    document.getElementById('preview-location').innerHTML = event.target.value + ', ' + document.getElementById('editModal').querySelector('#city').value;
+});
+
+document.getElementById('editModal').querySelector('#city').addEventListener("keyup", (event) => {
+    document.getElementById('preview-location').innerHTML = document.getElementById('editModal').querySelector('#country').value + ', ' + event.target.value;
+});
+
+document.getElementById('editModal').querySelector('#address').addEventListener("keyup", (event) => {
+    document.getElementById('preview-address').innerHTML = event.target.value;
+});
+
+

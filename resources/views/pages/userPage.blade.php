@@ -291,8 +291,6 @@
                     <form method='post' action="{{ route('updateEvent', ['eventid' => $event->eventid]) }}" enctype="multipart/form-data">
 
                         @csrf
-
-                        
                         <div class="form-group mb-3 form-event-edit">
                             <label for="name" class="form-label">Event Name</label>
                             <input id="name" type="text" name="name" value="{{ $event->name }}" class="input-group form-control">
@@ -303,7 +301,7 @@
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="date" class="form-label">Date</label>
-                            <input id="date" type="datetime" name="date" value="{{ $event->date }}" class="input-group form-control">
+                            <input id="date" type="datetime-local" name="date" value="{{ $event->date }}" class="input-group form-control">
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="capacity" class="form-label">Capacity</label>
@@ -342,12 +340,39 @@
                             Submit
                         </button>
                     </form>
+
+                    <div id="preview-container" style="position:relative">
+
+                        <img src="{{$event -> photos[0]->path}}" style="border-radius: 5%;">
+                        <h1 id="preview-name"> {{$event->name}} </h1>
+                        <h3 id="preview-date"> {{date('Y-m-d', strtotime($event->date))}} </h3>
+                        <button class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
+                                BUY TICKETS </a></button>
+
+                        <nav>
+                            <ul id="menu-info">
+                                <li class="menu-info-item text-center" style="width: 11rem;">
+                                    <div> Location </div>
+                                    <p style="font-size: 15px" id="preview-location"> {{$event->city->country->name}}, {{$event->city->name}} </p>
+                                </li>
+                                <li class="menu-info-item text-center" style="width: 11rem;">
+                                    <div> Capacity </div>
+                                    <p id="preview-capacity" style="font-size: 15px"> {{$event->capacity}} places </p>
+                                </li>
+                                <li class="menu-info-item text-center" style="width: 11rem;">
+                                    <div> Address </div>
+                                    <p id="preview-address" style="font-size: 15px"> {{$event->address}} </p>
+                                </li>
+                            </ul>
+                        </nav>
+
+
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- End of Modal with bootstrap -->
     </div>
-    <!-- End of Modal with bootstrap -->
-
 
     <body>
 
