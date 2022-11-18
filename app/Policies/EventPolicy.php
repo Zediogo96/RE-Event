@@ -2,13 +2,14 @@
 
 namespace App\Policies;
 
-use App\Models\Comment;
+use App\Models\Event;
 use App\Models\User;
-
+use App\Models\Invited;
+use App\Models\EventHost;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
 
-class CommentPolicy
+class EventPolicy
 {
     use HandlesAuthorization;
 
@@ -27,12 +28,12 @@ class CommentPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\Event  $event
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Comment $comment)
+    public function view(User $user, Event $event, Invited $invited)
     {
-        return Auth::check();
+        return ($user->userID == $invited->userID && $event->eventID == $invited->eventID && $invited->status == TRUE) || ($event->isPrivate == FALSE);
     }
 
     /**
@@ -50,47 +51,48 @@ class CommentPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\Event  $event
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Comment $comment)
+    public function update(User $user, Event $event, EventHost $eventHost)
     {
-        return $user->userID == $comment->userID;
+        return $user->userID == $eventHost->userID && $event->eventID == $eventHost->eventID;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\Event  $event
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Comment $comment)
+    public function delete(User $user, Event $event, EventHost $eventHost)
     {
-        return $user->userID == $comment->userID;
+        return $user->userID == $eventHost->userID && $event->eventID == $eventHost->eventID;
     }
+    
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\Event  $event
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Comment $comment)
+    public function restore(User $user, Event $event, EventHost $eventHost)
     {
-        return $user->userID == $comment->userID;
+        return $user->userID == $eventHost->userID && $event->eventID == $eventHost->eventID;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Comment  $comment
+     * @param  \App\Models\Event  $event
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Comment $comment)
+    public function forceDelete(User $user, Event $event, EventHost $eventHost)
     {
-        return $user->userID == $comment->userID;
+        return $user->userID == $eventHost->userID && $event->eventID == $eventHost->eventID;
     }
 }
