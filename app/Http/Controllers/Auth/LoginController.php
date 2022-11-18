@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 
+use Hash;
+
 class LoginController extends Controller
 {
     /*
@@ -53,12 +55,26 @@ class LoginController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        #dd($request->only('email', 'password'));
-        
+        //dd($request->only('email', 'password'));
+
+        //DUMP PASSWORD FROM CREDENTIALS
+       // dd($credentials['password']);
+
+
+
+        $hashsedp = Hash::make($credentials['password']);
+        dd($hashsedp);
+
+        if (Hash::check($password, $user->password)) { 
+            //login failed 
+            // return proper message to user 
+            // return back();
+        }
 
         if (Auth::attempt($credentials)) {
+            dd('success');
             // Authentication passed...
-            return redirect('/home');
+            return redirect('/countries');
         }
         return redirect('/');
     }
