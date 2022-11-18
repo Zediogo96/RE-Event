@@ -1,5 +1,5 @@
-create schema if not exists lbaw_bd;
-set search_path to lbaw_bd;
+-- create schema if not exists lbaw_bd;
+-- set search_path to lbaw_bd;
 
 /*
 DROP TABLE IF EXISTS users CASCADE;

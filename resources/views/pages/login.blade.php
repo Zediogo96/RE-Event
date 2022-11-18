@@ -32,15 +32,19 @@
 
             <div class="form-inner">
 
+            
+
+
                 <!-- Start Login Form -->
-                <form action="#" class="login">
+                <form action="{{route('auth')}}" method = POST class="login">
+                    @csrf {{ csrf_field() }} 
                     <div class="field input-group">
 
-                        <input type="text" class="form-control" placeholder="Username" required>
+                        <input type="text" name = 'email' class="form-control" placeholder="Email" required>
+                        
                     </div>
                     <div class="field input-group input-icons">
-                        <input type="password" class="form-control" placeholder="Password" required></input>
-
+                        <input type="password" name = 'password' class="form-control" placeholder="Password" required></input>
                     </div>
                     <div class="pass-link">
                         <a href="#">
