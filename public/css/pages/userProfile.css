@@ -261,7 +261,7 @@
 
 #edit-modal-content {
     /* CONTAINER */
-    height: 70vh;
+    height: 80vh;
     width: 90rem;
     position: absolute;
     left: -30rem;
@@ -307,8 +307,8 @@ div#preview-container {
 }
 
 div#preview-container img {
-    width: 55%;
-    height: 55%;
+    width: 50rem;
+    height: 33rem;
 }
 #preview-container h1 {
     position: absolute;
@@ -329,12 +329,12 @@ div#preview-container img {
 #preview-container button {
     position: absolute;
     top: 2rem;
-    right: 42rem;
+    right: 2rem;
     text-align: left;
 }
 
 #preview-container nav {
     position: absolute;
     top: -12rem;
-    left: -11rem;
+    left: -9rem;
 }
