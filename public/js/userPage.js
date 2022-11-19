@@ -138,7 +138,7 @@ function handleLocationChange(id) {
     const modal = document.getElementById('editModal' + id);
 
     modal.querySelector('#city').addEventListener("keyup", (event) => {
-        modal.querySelector('#preview-location').innerHTML = modal.querySelector('#country').value + ',' + event.target.value;
+        modal.querySelector('#preview-location').innerHTML = modal.querySelector('#country').value + ', ' + event.target.value;
     });
 
     modal.querySelector('#country').addEventListener("keyup", (event) => {
@@ -151,4 +151,31 @@ function handleAddressChange(id) {
     modal.querySelector('#address').addEventListener("keyup", (event) => {
         modal.querySelector('#preview-address').innerHTML = event.target.value;
     });
+}
+
+/* CREATE MODAL HANDLING */
+const c_modal = document.getElementById('createEventModal');
+
+c_modal.querySelector('#name').addEventListener("keyup", (event) => {
+    c_modal.querySelector('#preview-name').innerHTML = event.target.value;
+});
+
+c_modal.querySelector('#capacity').addEventListener("keyup", (event) => {
+    c_modal.querySelector('#preview-capacity').innerHTML = event.target.value + ' people';
+});
+
+c_modal.querySelector('#city').addEventListener("keyup", (event) => {
+    c_modal.querySelector('#preview-location').innerHTML = c_modal.querySelector('#country').value + ', ' + event.target.value;
+});
+
+c_modal.querySelector('#country').addEventListener("keyup", (event) => {
+    c_modal.querySelector('#preview-location').innerHTML = event.target.value + ', ' + c_modal.querySelector('#city').value;
+});
+
+c_modal.querySelector('#address').addEventListener("keyup", (event) => {
+    c_modal.querySelector('#preview-address').innerHTML = event.target.value;
+});
+
+function preview_image() {
+    c_modal.querySelector("#preview-image").src=URL.createObjectURL(event.target.files[0]);
 }
