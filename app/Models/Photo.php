@@ -14,7 +14,7 @@ class Photo extends Model
     protected $primaryKey = 'photoid';
 
 
-
+    
     /**
      * The event that the photo belongs to.
      */

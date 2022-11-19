@@ -49,7 +49,7 @@
           'search': $value
         },
         success: function(data) {
-          $('tbody').html(data);
+          $('#table-res').html(data);
         }
       });
     })

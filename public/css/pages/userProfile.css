@@ -256,4 +256,99 @@
 
 .btn-edit-event {
     margin-right: 2rem;
+    z-index: 2;
+}
+
+#edit-modal-content {
+    /* CONTAINER */
+    height: 80vh;
+    width: 90rem;
+    position: absolute;
+    left: -30rem;
+    top: -3rem;
+    overflow: hidden;
+}
+
+
+div.form-event-edit {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 5px;
+}
+
+#editModal form {
+    display: table;
+}
+
+div.form-event-edit {
+    display: table-row;
+}
+
+div.form-event-edit label {
+    display: table-cell;
+}
+
+div.form-event-edit input {
+    display: table-cell;
+    width: 25rem;
+    padding-top: 0.5rem;
+    margin-top: 1rem;
+}
+
+div.form-event-edit:first-child {
+    margin-top: 5rem;
+}
+
+div#preview-container {
+    position: absolute;
+    bottom: 35rem;
+    left: 37em;
+    display: inline-block;
+}
+
+div#preview-container img {
+    width: 50rem;
+    height: 33rem;
+}
+
+#preview-container h1 {
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    text-align: left;
+    color: white;
+}
+
+#preview-container h3 {
+    position: absolute;
+    top: 5rem;
+    left: 1rem;
+    text-align: left;
+    color: white;
+}
+
+#preview-container button {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    text-align: left;
+}
+
+#preview-container nav {
+    position: absolute;
+    top: -12rem;
+    left: -9rem;
+}
+
+#teste-form button {
+    width: 10rem;
+    left: 20.5rem;
+}
+
+.single-post-title h2 {
+    display: inline-block;
+}
+
+.single-post-title button {
+    margin-left: 54rem;
 }
