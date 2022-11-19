@@ -120,60 +120,35 @@ const showDetails = function (option) {
 
 /** MODAL EVENT EDIT */
 
-document.getElementById('editModal').querySelector('#name').addEventListener("keyup", (event) => {
-    console.log(event.target.value);
-    document.getElementById('preview-name').innerHTML = event.target.value;
-});
-
-document.getElementById('editModal').querySelector('#capacity').addEventListener("keyup", (event) => {
-
-    document.getElementById('preview-capacity').innerHTML = event.target.value + ' places';
-});
-
-// document.getElementById('editModal').querySelector('#date').addEventListener("onSelect", (event) => {
-//     console.log(event.target.getDate());
-//     document.getElementById('preview-date').innerHTML = event.target.value;
-// });
-
-// concat data of #country and #city input on keyup event
-document.getElementById('editModal').querySelector('#country').addEventListener("keyup", (event) => {
-    document.getElementById('preview-location').innerHTML = event.target.value + ', ' + document.getElementById('editModal').querySelector('#city').value;
-});
-
-document.getElementById('editModal').querySelector('#city').addEventListener("keyup", (event) => {
-    document.getElementById('preview-location').innerHTML = document.getElementById('editModal').querySelector('#country').value + ', ' + event.target.value;
-});
-
-document.getElementById('editModal').querySelector('#address').addEventListener("keyup", (event) => {
-    document.getElementById('preview-address').innerHTML = event.target.value;
-});
-
-// eventLister for button with class btn-edit-event
-Array.from(document.getElementsByClassName('btn-edit-event')).forEach((element) => {
-    element.addEventListener("click", (event) => {
-        // get input that is brother element to button
-        var data = document.getElementById('hidden-data-' + event.target.value);
-        document.getElementById('teste-form').action = "updateEvent?eventid=" + event.target.value;
-        // get data from object
-        document.getElementById('preview-name').innerHTML = data.getAttribute('data-name').valueOf();
-        document.getElementById('preview-capacity').innerHTML = data.getAttribute('data-capacity').valueOf();
-        document.getElementById('preview-date').innerHTML = data.getAttribute('data-date').valueOf();
-        document.getElementById('preview-location').innerHTML = data.getAttribute('data-country').valueOf() + ', ' + data.getAttribute('data-city').valueOf();
-        document.getElementById('preview-address').innerHTML = data.getAttribute('data-address').valueOf();
-        document.getElementById('preview-image').src = data.getAttribute('data-image').valueOf();
-
-
-        // set data to input
-        document.getElementById('name').value = data.getAttribute('data-name').valueOf();
-        document.getElementById('capacity').value = data.getAttribute('data-capacity').valueOf();
-        document.getElementById('date').value = data.getAttribute('data-date').valueOf();
-        document.getElementById('city').value = data.getAttribute('data-city').valueOf();
-        document.getElementById('country').value = data.getAttribute('data-country').valueOf();
-        document.getElementById('address').value = data.getAttribute('data-address').valueOf();
-        document.getElementById('description').value = data.getAttribute('data-description').valueOf();
-        document.getElementById('price').value = data.getAttribute('data-price').valueOf();
-        console.log(data.getAttribute('data-tag').valueOf());
-        document.getElementById('tag').value = data.getAttribute('data-tag').valueOf();
-
+function handleNameChange(id) {
+    const modal = document.getElementById('editModal' + id);
+    modal.querySelector('#name').addEventListener("keyup", (event) => {
+        modal.querySelector('#preview-name').innerHTML = event.target.value;
     });
-});
+}
+
+function handleCapacityChange(id) {
+    const modal = document.getElementById('editModal' + id);
+    modal.querySelector('#capacity').addEventListener("keyup", (event) => {
+        modal.querySelector('#preview-capacity').innerHTML = event.target.value + ' people';
+    });
+}
+
+function handleLocationChange(id) {
+    const modal = document.getElementById('editModal' + id);
+
+    modal.querySelector('#city').addEventListener("keyup", (event) => {
+        modal.querySelector('#preview-location').innerHTML = modal.querySelector('#country').value + ',' + event.target.value;
+    });
+
+    modal.querySelector('#country').addEventListener("keyup", (event) => {
+        modal.querySelector('#preview-location').innerHTML = event.target.value + ', ' + modal.querySelector('#city').value;
+    });
+}
+
+function handleAddressChange(id) {
+    const modal = document.getElementById('editModal' + id);
+    modal.querySelector('#address').addEventListener("keyup", (event) => {
+        modal.querySelector('#preview-address').innerHTML = event.target.value;
+    });
+}
