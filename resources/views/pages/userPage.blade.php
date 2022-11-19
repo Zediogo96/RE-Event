@@ -55,21 +55,21 @@
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="name"> Name </label>
-                            <input type="text" name="name" id="profileDetailsNameInput">
+                            <input type="text" name="name" id="profileDetailsNameInput" placeholder="{{$user->name}}">
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="email"> Email </label>
-                            <input type="email" name="email" id="profileDetailsEmailInput">
+                            <input type="email" name="email" id="profileDetailsEmailInput" placeholder="{{$user->email}}">
                         </div>
                     </div>
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="birthday"> Birthday </label>
-                            <input type="date" name="birthday" id="profileDetailsBirthdayInput">
+                            <input type="date" name="birthday" id="profileDetailsBirthdayInput" placeholder="{{$user->birthDate}}">
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="password"> Password </label>
-                            <input type="password" name="password" id="profileDetailsPasswordInput">
+                            <input type="password" name="password" id="profileDetailsPasswordInput" placeholder="New Password">
                         </div>
                     </div>
                     <div class="updateProfileDetailsRow">
@@ -86,6 +86,8 @@
                             <input type="file" name="profilePic" id="profileDetailsProfilePicInput">
                         </div>
                     </div>
+
+                    <button type="submit" id="updateProfileDetailsButton" style="margin-left:80%" class="btn btn-success" >Update Profile Details</button>
                 </form>
             </div>
             <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
