@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Models\User;
 
 /*testing 
 use App\Models\Event;
@@ -62,6 +63,9 @@ class CountryController extends Controller
 
 /*$events = Event::all();
 dd($events);*/
+
+// $users = User::where('userid', '>', 1)->get();
+// dd($users);
 
         $countries = Country::all();
         return view('layouts.countries', ['countries' => $countries]);
