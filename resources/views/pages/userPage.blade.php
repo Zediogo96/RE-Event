@@ -260,7 +260,7 @@
                                     </tr>
                                     @endforeach
 
-                                    </table>
+                                </table>
 
                             </div>
                         </div>
@@ -303,7 +303,7 @@
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="description" class="form-label">Description</label>
-                            <input id="description" type="text" name="description"  value="{{$event->description}}" class="input-group form-control">
+                            <input id="description" type="text" name="description" value="{{$event->description}}" class="input-group form-control">
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="date" class="form-label">Date</label>
@@ -334,12 +334,12 @@
                             <input id="tag" type="text" name="tag" value="{{$event->eventTag->name}}" class="input-group form-control">
                         </div>
                         <div class="input-group switch round blue-white-switch mt-2">
-                            <label>
-                                Public
-                                <input type="checkbox" checked="checked">
-                                <span class="lever"></span>
-                                Private
-                            </label>
+                            <div class="form-check form-switch" style="padding-top: 0.7rem;">
+
+                                <input class="form-check-input" type="checkbox" role="switch" style='height: 1.5rem; width: 3rem;' id="flexSwitchCheckChecked" checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked" style="padding-left: 2.1rem; font-size: 1.5rem"> Is the Event private? </label>
+
+                            </div>
                         </div>
 
                         <button type="submit" class="input-group btn btn-primary">
@@ -359,7 +359,7 @@
                             <ul id="menu-info">
                                 <li class="menu-info-item text-center" style="width: 11rem;">
                                     <div> Location </div>
-                                    <p style="font-size: 15px" id="preview-location"> {{$event->city->country->name}} ,  {{$event->city->name}} </p>
+                                    <p style="font-size: 15px" id="preview-location"> {{$event->city->country->name}} , {{$event->city->name}} </p>
                                 </li>
                                 <li class="menu-info-item text-center" style="width: 11rem;">
                                     <div> Capacity </div>

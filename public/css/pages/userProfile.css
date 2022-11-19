@@ -303,13 +303,14 @@ div#preview-container {
     position: absolute;
     bottom: 35rem;
     left: 37em;
-    display:inline-block;
+    display: inline-block;
 }
 
 div#preview-container img {
     width: 50rem;
     height: 33rem;
 }
+
 #preview-container h1 {
     position: absolute;
     top: 0;
@@ -337,4 +338,9 @@ div#preview-container img {
     position: absolute;
     top: -12rem;
     left: -9rem;
+}
+
+#teste-form button {
+    width: 10rem;
+    left: 20.5rem;
 }
