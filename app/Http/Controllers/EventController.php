@@ -185,7 +185,7 @@ class EventController extends Controller
         }
         
 
-//City::find(City::where('name', $request->input('city'))->first()) == null  if antigo
+        //City::find(City::where('name', $request->input('city'))->first()) == null  if antigo
 
         if (!City::where('name', '=', $request->input('city'))->exists()) {  //se nao existir a cidade
 
@@ -227,11 +227,11 @@ class EventController extends Controller
         $tagexistsid = Tag::where('name', '=', $request->input('tag'))->first()->tagid;
 
         $event->tagid = $tagexistsid;
- 
+
         //$event->tagid = 7;
 
         $event->save();
-        return redirect('/event'.$event->eventid);
+        return redirect('/event' . $event->eventid);
     }
 
     /**
