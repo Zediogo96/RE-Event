@@ -110,7 +110,7 @@
                                             </td>
                                             <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Siemens Arena</td>
 
-                                            <td><button href="#" class="btn btn-info btn-sm btn-edit-event">Edit Event</button></td>
+                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -124,7 +124,7 @@
                                             </td>
                                             <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Nike Arena</td>
 
-                                            <td><button href="#" class="btn btn-info btn-sm btn-edit-event">Edit Event</button></td>
+                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -137,7 +137,7 @@
                                                 Ut consectetur commodo justo, sed sollicitudin massa venenatis ut 2013.
                                             </td>
                                             <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Samsung Arena</td>
-                                            <td><button href="#" class="btn btn-info btn-sm btn-edit-event">Edit Event</button></td>
+                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -150,7 +150,7 @@
                                                 Pellentesque justo turpis, fringilla sit amet pulvinar ut, tincidunt nec leo.
                                             </td>
                                             <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Samsung Arena</td>
-                                            <td><button href="#" class="btn btn-info btn-sm btn-edit-event">Edit Event</button></td>
+                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -164,7 +164,7 @@
                                             </td>
                                             <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Siemens Arena</td>
 
-                                            <td><button href="#" class="btn btn-info btn-sm btn-edit-event">Edit Event</button></td>
+                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -177,7 +177,7 @@
                                                 Phasellus et est quis diam iaculis fringilla id nec sapien.
                                             </td>
                                             <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Nike Arena</td>
-                                            <td><button href="#" class="btn btn-info btn-sm btn-edit-event">Edit Event</button></td>
+                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -190,7 +190,7 @@
                                                 Ut consectetur commodo justo, sed sollicitudin massa venenatis ut 2013.
                                             </td>
                                             <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Samsung Arena</td>
-                                            <td><button href="#" class="btn btn-info btn-sm btn-edit-event">Edit Event</button></td>
+                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
                                         </tr>
 
 
@@ -222,7 +222,7 @@
                                                 {{$event->name}}
                                             </td>
                                             <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> {{$event->city->name}}</td>
-                                            <td><button href="#" class="btn btn-info btn-sm btn-edit-event">Edit Event</button></td>
+                                            <td><button href="#" class="btn btn-danger btn-sm btn-edit-event">Leave Event</button></td>
                                         </tr>
                                         @endforeach
                                     </table>
@@ -256,8 +256,8 @@
                                             {{$event->name}}
                                         </td>
                                         <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> {{$event->city->name}}</td>
-                                        <input type="hidden" id="hidden-data-{{$event->eventid}}" data-name="{{$event->name}}" data-capacity="{{$event->capacity}}" data-date="{{$event->date}}" data-country="{{$event->city->country->name}}" data-city="{{$event->city->name}}" data-address="{{$event->address}}" data-image="{{$event->photos[0]->path}}" data-description="{{$event->description}}" data-price="{{$event->price}}" data-tag="{{$event->eventTag->name}}">
-                                        <td><button href=" #" class="btn btn-info btn-sm btn-edit-event" data-toggle="modal" data-target="#editModal" value="{{$event->eventid}}">Edit Event</button></td>
+                                        <input type="hidden" id="hidden-data-{{$event->eventid}}" value="{{$event->eventid}}" data-name="{{$event->name}}" data-capacity="{{$event->capacity}}" data-date="{{$event->date}}" data-country="{{$event->city->country->name}}" data-city="{{$event->city->name}}" data-address="{{$event->address}}" data-image="{{$event->photos[0]->path}}" data-description="{{$event->description}}" data-price="{{$event->price}}" data-tag="{{$event->eventTag->name}}">
+                                        <td><button href=" #" class="btn btn-warning btn-sm btn-edit-event" data-toggle="modal" data-target="#editModal" value="{{$event->eventid}}">Edit Event</button></td>
                                     </tr>
                                     @endforeach
 

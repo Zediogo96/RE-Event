@@ -153,8 +153,7 @@ Array.from(document.getElementsByClassName('btn-edit-event')).forEach((element) 
     element.addEventListener("click", (event) => {
         // get input that is brother element to button
         var data = document.getElementById('hidden-data-' + event.target.value);
-        let input = event.target.parentElement.previousElementSibling.previousElementSibling;
-        document.getElementById('teste-form').action = "updateEvent?eventid=" + input.value;
+        document.getElementById('teste-form').action = "updateEvent?eventid=" + event.target.value;
         // get data from object
         document.getElementById('preview-name').innerHTML = data.getAttribute('data-name').valueOf();
         document.getElementById('preview-capacity').innerHTML = data.getAttribute('data-capacity').valueOf();
@@ -175,9 +174,6 @@ Array.from(document.getElementsByClassName('btn-edit-event')).forEach((element) 
         document.getElementById('price').value = data.getAttribute('data-price').valueOf();
         console.log(data.getAttribute('data-tag').valueOf());
         document.getElementById('tag').value = data.getAttribute('data-tag').valueOf();
-
-
-
 
     });
 });
