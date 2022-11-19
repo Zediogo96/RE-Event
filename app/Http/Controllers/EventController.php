@@ -83,7 +83,7 @@ class EventController extends Controller
             $event->price = $request->input('price');
         } */
 
-        if (!is_null($request->input('price'))) {
+        if (($request->input('price')) >= 0) {
             $event->price = $request->input('price');
         }
 
@@ -96,8 +96,17 @@ class EventController extends Controller
 
         $event->tagid = Tag::where('name', '=', $request->input('tag'))->first()->tagid;
 
-        //$event->isprivate = $request->input('isprivate');
-        $event->isprivate = false;  //for testing - implement switch later
+        //dd($request->input('isprivate'));
+
+        $event->isprivate = $request->input('isprivate');
+
+        if (is_null($request->input('isprivate'))) {
+            $event->isprivate = false;
+        } else {
+            $event->isprivate = true;
+        }
+
+        //$event->isprivate = false;  //for testing - implement switch later
 
         if ($request->hasFile('img')) {
             $file = $request->file('img');

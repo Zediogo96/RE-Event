@@ -34,7 +34,7 @@
 </div>
 <div class="form-group mb-3">
     <label for="price" class="form-label">Price</label>
-    <input id="price" type="number " min= "1" step="any" name="Price" placeholder="Price" class="input-group form-control">
+    <input id="price" type="number " min= "1" step="any" name="price" placeholder="Price" class="input-group form-control">
 </div>
 <div class="form-group mb-3">
     <label for="address" class="form-label">Address</label>
@@ -48,14 +48,20 @@
     <label for="img" class="form-label">Event Image</label>
     <input id="img" type="file" name="img" placeholder="Upload an image for you event" class="input-group form-control">
 </div>
-<div class="input-group switch round blue-white-switch mt-2">
+<div class="input-group form-check form-switch">
+  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name = "isprivate">
+  <span class="lever"></span>
+  </span>
+  <label class="form-check-label" for="flexSwitchCheckDefault">Private</label>
+</div>
+<!-- <div class="input-group form-check form-switch">
       <label>
         Public
-        <input type="checkbox" checked="checked">
+        <input type="checkbox" role = "switch" checked="checked">
         <span class="lever"></span>
         Private
       </label>
-    </div>
+    </div> -->
 
 <button type="submit" class="input-group btn btn-primary">
     Submit
