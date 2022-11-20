@@ -27,7 +27,7 @@
                     <li class="nav-item float">
                         <a class="nav-link" href="{{route('user.show', 1)}}"><i class="fa fa-sign-in-alt fa-fw mr-1"></i> Logout </a>
                     </li>
-                    {{Auth::user()->name}}
+                    @if (Auth::check()) {{Auth::user()->name}} @endif 
                 </ul>
             </div>
         </div>
