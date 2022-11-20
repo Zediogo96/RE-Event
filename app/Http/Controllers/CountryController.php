@@ -14,6 +14,7 @@ use App\Models\Report;
 
 use App\Models\Event;
 use App\Models\City;
+use App\Models\Ticket;
 
 use Illuminate\Http\Request;
 
@@ -62,6 +63,12 @@ class CountryController extends Controller
 
 /*$events = Event::all();
 dd($events);*/
+/* 
+        $tickets = Ticket::all();
+        dd($tickets) */;
+
+        $usertest = Event::find(8);
+        dd($usertest->participants);
 
         $countries = Country::all();
         return view('layouts.countries', ['countries' => $countries]);
