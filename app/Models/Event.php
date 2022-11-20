@@ -69,10 +69,6 @@ class Event extends Model
         return $this->belongsTo('App\Models\Tag', 'tagid');
     }
 
-
-
-
-
     /**
      * Full text search for events
      */
