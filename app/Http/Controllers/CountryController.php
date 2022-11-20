@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Models\User;
 
 /*testing 
 use App\Models\Event;
@@ -14,6 +15,7 @@ use App\Models\Report;
 
 use App\Models\Event;
 use App\Models\City;
+use App\Models\Ticket;
 
 use Illuminate\Http\Request;
 
@@ -62,6 +64,15 @@ class CountryController extends Controller
 
 /*$events = Event::all();
 dd($events);*/
+/* 
+        $tickets = Ticket::all();
+        dd($tickets) */;
+
+        $usertest = Event::find(8);
+        dd($usertest->participants);
+
+// $users = User::where('userid', '>', 1)->get();
+// dd($users);
 
         $countries = Country::all();
         return view('layouts.countries', ['countries' => $countries]);

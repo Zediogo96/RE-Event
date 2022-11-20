@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     //Explicitly associate with table name
-    protected $table = 'ticekt';
+    protected $table = 'ticket';
     //Force primary key
     protected $primaryKey = ['userid', 'eventid'];
     //Disable increment - composed key
@@ -30,4 +30,5 @@ class Ticket extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
 }

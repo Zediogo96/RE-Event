@@ -33,15 +33,24 @@
             <div class="form-inner">
 
                 <!-- Start Login Form -->
-                <form class="login" method="POST" action="#">
+                <form class="login" method="POST" action="{{ route('login') }}">
                 {{ csrf_field() }}
                     <div class="field input-group">
 
-                        <input type="text" class="form-control" placeholder="Username" required>
+                        <input type="email" class="form-control" placeholder="Email" id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
+                        @if ($errors->has('email'))
+                            <span class="error">
+                            {{ $errors->first('email') }}
+                            </span>
+                        @endif
                     </div>
                     <div class="field input-group input-icons">
-                        <input type="password" class="form-control" placeholder="Password" required></input>
-
+                        <input class="form-control" placeholder="Password" id="password" type="password" name="password" required></input>
+                        @if ($errors->has('password'))
+                            <span class="error">
+                                {{ $errors->first('password') }}
+                            </span>
+                        @endif
                     </div>
                     <div class="pass-link">
                         <a href="#">
@@ -57,7 +66,7 @@
                 </form>
 
                 <!-- Start Signup Form -->
-                <form action="#" class="signup">
+                <form action="{{ route('register') }}" class="signup">
                     <div class="field input-group">
                         <input type="text" class="form-control" placeholder="User Name" required>
                     </div>
