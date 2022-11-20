@@ -19,7 +19,7 @@ class User extends Authenticatable
 
     //The attributes that are mass assignable
     protected $fillable = [
-        'name', 'email', 'birthDate', 'password', 'gender',
+        'name', 'email', 'birthdate', 'password', 'gender',
     ];
 
     //The attributes that should be hidden for arrays

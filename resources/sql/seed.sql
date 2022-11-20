@@ -1,6 +1,6 @@
-/*create schema if not exists lbaw_bd;
-set search_path to lbaw_bd;
-*/
+-- create schema if not exists lbaw_bd;
+-- set search_path to lbaw_bd;
+
  
 -- Remove Duplicate Tables --------------
 DROP TABLE IF EXISTS user_ CASCADE;
@@ -371,8 +371,10 @@ INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic,
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (47, 'Alex Haworth', 'Steve_Boy82@gmail.com', '2021/1/12', 'fe14adb6950368a8e1fe764ae31c0dbc86dc6e615c2d48d2960a7f74ff5dc911', 'O', 'assets/user_profile_photos/47.jpg', False);
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (48, 'Nathan Orwig', 'Ty_Boy93@hotmail.com', '2021/12/5', '06b7fe3d366c8f3394c9a0c2e2c71968ec5eb6c663b7e2f0f0315e851fae72b1', 'O', 'assets/user_profile_photos/48.jpg', False);
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (49, 'Frank Lawless', 'Hal_Can72@yahoo.pt', '2020/11/4', 'fa52087106f92dbad59ceaab27a40583fe019e69f7db7d1598d67f6349693606', 'O', 'assets/user_profile_photos/49.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (50, 'George Ebner', 'John_McC71@hotmail.com', '2020/3/30', '253622c2e4cd001279bb4e6fc77d3f903ac794bb1a46a49c0a5bcf3d2fe75e39', 'F', 'assets/user_profile_photos/50.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (50, 'George Ebner', 'john_McC71@hotmail.com', '2020/3/30', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'F', 'assets/user_profile_photos/50.jpg', False);
 /** +#PY'(}N **/
+
+SELECT setval('user__userID_seq', (SELECT MAX(userID) from "user_"));
 
 /** Tags **/
 
