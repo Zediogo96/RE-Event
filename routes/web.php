@@ -76,4 +76,11 @@ Route::get('debug/invites', function() {
     return App\Models\Invited::get();
 });
 
+
+Route::get('play', function() {
+    return view('pages.play');
+});
+
+Route::get('auth', 'Auth\LoginController@getUser');
+
 //nice

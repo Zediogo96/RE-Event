@@ -42,6 +42,7 @@ class InvitedController extends Controller
     }
 
     public function create(InviteRequest $request) {
+        return response($request, 201);
         $this->validated();
         if (!Auth::check()) return redirect('/login');
 

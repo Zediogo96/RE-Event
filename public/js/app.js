@@ -50,6 +50,7 @@ function sendAjaxRequest(method, url, data, handler) {
         "application/x-www-form-urlencoded"
     );
     request.addEventListener("load", handler);
+    console.log("data ", data, document.querySelector('meta[name="csrf-token"]').content)
     request.send(encodeForAjax(data));
 }
 
@@ -270,3 +271,19 @@ signupLink.onclick = () => {
     signupBtn.click();
 };
 
+
+function createInvite() {
+    sendAjaxRequest(
+        "post",
+        "/api/invite",
+        { invited_user: 3,
+            event_id: 8},
+        itemUpdatedHandler2,
+    );
+}
+
+const thiserror = function(req, err){ console.log('my message' + err); }
+
+function itemUpdatedHandler2() {
+    console.log("result: ", this, this.responseText)
+}
