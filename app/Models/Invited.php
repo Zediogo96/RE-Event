@@ -11,6 +11,31 @@ class Invited extends Model
     //Explicitly associate with table name
     protected $table = 'invited';
     //Force primary key
-    protected $primaryKey = ['userid','eventid'];
+    protected $primaryKey = ['invitedUserid', 'inviterUserID','eventid'];
     //to check if a user is invited to an event, just check if a record in this table exists
+
+    public $incrementing = false;
+
+    /**
+    * User who made the invite
+    */
+    public function inviter() {
+        return $this->belongsToMany('App\Models\User', 'inviterUserID');
+    }
+
+    /**
+    * User who made the invite
+    */
+    public function invited() {
+        return $this->belongsToMany('App\Models\User', 'invitedUserid');
+    }
+
+    /**
+    * Event to which the invite was made
+    */
+    public function event(){
+        return $this->belongsToMany('App\Models\Event', 'eventid');
+    }
+
+
 }

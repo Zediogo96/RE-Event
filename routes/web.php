@@ -58,3 +58,12 @@ Route::get('cities', 'CityController@index');
 Route::get('countries', 'CountryController@index');
 Route::get('events', 'EventController@index');
 
+//Invites
+Route::post('api/invite', 'InvitedController@create');
+Route::put('api/invite', 'InvitedController@accept');
+Route::delete('api/invite', 'InvitedController@reject');
+Route::get('debug/invites', function() {
+    return App\Models\Invited::get();
+});
+
+//nice

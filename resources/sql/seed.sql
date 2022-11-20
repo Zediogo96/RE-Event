@@ -98,9 +98,10 @@ CREATE TABLE event_host (
 
 CREATE TABLE invited (
     status boolean DEFAULT FALSE,
-    userID integer REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
+    invitedUserID integer REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
+    inviterUserID integer REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
     eventID integer REFERENCES event (eventID) ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY (userID, eventID)
+    PRIMARY KEY (invitedUserID, inviterUserID, eventID)
 );
 
 CREATE TABLE ticket (
@@ -325,7 +326,7 @@ INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic,
     VALUES (3, 'AfonsoFarr', 'af_farroco@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'assets/user_profile_photos/3', TRUE);
 
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
-    VALUES (4, 'MatildeSilva', 'mat_silva@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'assets/user_profile_photos/4', TRUE);
+    VALUES (4, 'MatildeSilva', 'mat_silva@hotmail.com', '2022/12/19', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'M', 'assets/user_profile_photos/4', TRUE);
 
 /* Users */
 
@@ -563,65 +564,65 @@ INSERT INTO review (rating, userID, eventID)
 
 /** Invited **/
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 2, 7);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 2, 7, 8);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 3, 8);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 3, 4, 8);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 1, 5);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 1, 3, 5);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 7, 2);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 7, 3, 2);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 8, 1);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 8, 3, 1);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 3, 7);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 3, 2, 7);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 10, 1);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 10, 8,  1);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 3, 5);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 3, 6, 5);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 1, 4);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 1, 5, 4);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 5, 8);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 5, 2, 8);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 8, 5);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 8, 2, 5);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 10, 7);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 10, 3, 7);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 2, 8);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 2, 8, 8);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 1, 1);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 1, 3, 1);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 7, 6);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 7, 1, 6);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 1, 3);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 1, 7, 3);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 6, 3);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 6, 2, 3);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 1, 6);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 1, 5, 6);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 5, 5);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 5, 7, 5);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 2, 4);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 2, 6, 4);
 
 /* Event hosts */
 

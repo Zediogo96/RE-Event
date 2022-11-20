@@ -66,11 +66,13 @@ class Event extends Model
      */
     public function eventTag()
     {
-        return $this->belongsTo('App\Models\Tag', 'tagid');
+        return $this->belongsTo('App\Models\Tag');
     }
+    
 
-
-
+    public function invites() {
+        return $this->hasMany('App\Models\Invited');
+    }
 
 
     /**
@@ -84,4 +86,10 @@ class Event extends Model
         return $query->whereRaw('tsvectors @@ to_tsquery(\'english\', ?)', [$search])
             ->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC', [$search]);
     }
+
+    public function isNotFull(){
+        return $this->capacity > 0 ;
+    }
+
 }
+

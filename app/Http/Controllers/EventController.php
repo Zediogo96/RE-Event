@@ -10,6 +10,7 @@ use App\Models\Country;
 use App\Models\Tag;
 use App\Models\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -79,7 +80,7 @@ class EventController extends Controller
             $event->address = $request->input('address');
         }
 
-/*         if (($request->input('price')) >= 0) {
+        /*         if (($request->input('price')) >= 0) {
             $event->price = $request->input('price');
         } */
 
@@ -244,4 +245,15 @@ class EventController extends Controller
     {
         //
     }
+
+    public function join($event_id)
+    {
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($event_id);
+        $this->authorize('join', $event);
+        $user = Auth::user();
+        $event->participants()->attach($user->userID);
+        return redirect('event' . $event->eventID);
+    }
+
 }
