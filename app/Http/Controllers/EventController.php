@@ -135,11 +135,11 @@ class EventController extends Controller
 
         $event->save();
 
-        /* //also create a new entry in eventhost with user id and event id - test when login is done
+        //also create a new entry in eventhost with user id and event id - test when login is done
         $eventhost = new EventHost;
         $eventhost->userid = Auth::user()->userid;
         $eventhost->eventid = $event->eventid;
-        $eventhost->save(); */
+        $eventhost->save(); 
 
         return redirect('/event'.$event->eventid);
     }

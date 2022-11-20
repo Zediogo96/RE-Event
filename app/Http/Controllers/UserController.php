@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\Event;
 
 use Auth;
 
@@ -71,4 +72,7 @@ class UserController extends Controller
         $user->save();
         return redirect('/user' . $user->userid);
     }
+
+
+
 }

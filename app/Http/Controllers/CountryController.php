@@ -71,6 +71,9 @@ dd($events);*/
         // $usertest = Event::find(8);
         // dd($usertest->participants);
 
+        //$eventHosts = EventHost::all();
+        //dd($eventHosts);
+
 $users = User::where('userid', '>', 45)->get();
 dd($users);
 
