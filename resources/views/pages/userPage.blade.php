@@ -51,21 +51,23 @@
         <section id="selectDetails" class="profile">
             <div id="myProfileDetails" class="optionDetails">
                 <h4>My Profile</h4>
-                <form action="updateProfileDetails" method="post" id="profileDetailsForm">
+                <form action="{{route('updateUser', ['userid' => $user->userid])}}" method="post" id="profileDetailsForm" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="userid" value="{{$user->userid}}">
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="name"> Name </label>
-                            <input type="text" name="name" id="profileDetailsNameInput" placeholder="{{$user->name}}">
+                            <input type="text" name="name" id="profileDetailsNameInput" value="{{$user->name}}">
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="email"> Email </label>
-                            <input type="email" name="email" id="profileDetailsEmailInput" placeholder="{{$user->email}}">
+                            <input type="email" name="email" id="profileDetailsEmailInput" value="{{$user->email}}">
                         </div>
                     </div>
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="birthday"> Birthday </label>
-                            <input type="date" name="birthday" id="profileDetailsBirthdayInput" placeholder="{{$user->birthDate}}">
+                            <input type="date" name="birthday" id="profileDetailsBirthdayInput" value="{{$user->birthdate}}">
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="password"> Password </label>

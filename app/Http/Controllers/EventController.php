@@ -36,6 +36,7 @@ class EventController extends Controller
      */
     public function create(Request $request)
     {
+        if (!Auth::check()) return redirect('/login');
         return view('pages.createEvent');
     }
 
@@ -47,6 +48,7 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Event::class);
         $event = new Event;
 
         if (!is_null($request->input('name'))) {
@@ -165,6 +167,7 @@ class EventController extends Controller
      */
     public function edit($id)
     {
+        if (!Auth::check()) return redirect('/login');
         $event = Event::find($id);
         return view('pages.editEvent', ['event' => $event]);
     }
@@ -178,8 +181,14 @@ class EventController extends Controller
      */
     public function update(Request $request)
     {
+
+        //authorize user to update the event information
+
+        if (!Auth::check()) return redirect('/login');
         //dd($request->all());
         $event = Event::find($request->input('eventid'));
+
+        //$this->authorize('update', $event, Auth::);
 
         if (!is_null($request->input('name'))) {
             $event->name = $request->input('name');
