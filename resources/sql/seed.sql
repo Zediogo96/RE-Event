@@ -1,5 +1,5 @@
-create schema if not exists lbaw_bd;
-set search_path to lbaw_bd;
+-- create schema if not exists lbaw_bd;
+-- set search_path to lbaw_bd;
 
  
 -- Remove Duplicate Tables --------------
@@ -373,6 +373,8 @@ INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic,
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (49, 'Frank Lawless', 'Hal_Can72@yahoo.pt', '2020/11/4', 'fa52087106f92dbad59ceaab27a40583fe019e69f7db7d1598d67f6349693606', 'O', 'assets/user_profile_photos/49.jpg', False);
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (50, 'George Ebner', 'john_McC71@hotmail.com', '2020/3/30', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'F', 'assets/user_profile_photos/50.jpg', False);
 /** +#PY'(}N **/
+
+SELECT setval('user__userID_seq', (SELECT MAX(userID) from "user_"));
 
 /** Tags **/
 

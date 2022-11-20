@@ -18,7 +18,7 @@
                         <a class="nav-link" href="{{route('aboutUs.index')}}"><i class="fa fa-phone fa-fw fa-rotate-180 mr-1"></i> About Us </a>
                     </li>
                     <li class="nav-item pl-1">
-                        <a class="nav-link" href="{{route('login')}}"><i class="fa fa-user-plus fa-fw mr-1"></i> Register </a>
+                        <a class="nav-link" href="{{route('register')}}"><i class="fa fa-user-plus fa-fw mr-1"></i> Register </a>
                     </li>
                     <!-- Button trigger modal -->
                     <a href="#" class="btn btn-lg nav-link" data-toggle="modal" data-target="#basicModal">
