@@ -52,17 +52,22 @@ class UserController extends Controller
             $user->name = $request->input('name');
         }
 
-        if (!is_null($request->input('description'))) {
+        if (!is_null($request->input('email'))) {
             $user->email= $request->input('email');
         }
 
-        if (!is_null($request->input('birthday'))) {
-            $user->birthDay = $request->input('birthday');
+        if (!is_null($request->input('birthdate'))) {
+            $user->birthdate = $request->input('birthdate');
         }
 
         if (!is_null($request->input('password'))) {
             $user->capacity = bcrypt($request->input('password'));
         }
+
+        if (!is_null($request->input('gender'))) {
+            $user->gender= $request->input('gender');
+        }
+
         $user->save();
         return redirect('/user' . $user->userid);
     }
