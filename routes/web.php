@@ -51,6 +51,7 @@ Route::get('searchTest','SearchController@index')->name('search.test');
 Route::get('search','SearchController@search');
 
 Route::get('user{userid?}', 'UserController@show')->name('user.show');
+Route::post('updateUser/{userid?}', 'UserController@update')->name('updateUser'); //update the details of an event
 
 //testing database data
 

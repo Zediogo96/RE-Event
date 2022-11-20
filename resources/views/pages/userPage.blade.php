@@ -51,7 +51,9 @@
         <section id="selectDetails" class="profile">
             <div id="myProfileDetails" class="optionDetails">
                 <h4>My Profile</h4>
-                <form action="updateProfileDetails" method="post" id="profileDetailsForm">
+                <form action="{{route('updateUser', ['userid' => $user->userid])}}" method="post" id="profileDetailsForm" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="userid" value="{{$user->userid}}">
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="name"> Name </label>

@@ -184,7 +184,6 @@ class EventController extends Controller
             $event->capacity = $request->input('capacity');
         }
         
-
         //City::find(City::where('name', $request->input('city'))->first()) == null  if antigo
 
         if (!City::where('name', '=', $request->input('city'))->exists()) {  //se nao existir a cidade

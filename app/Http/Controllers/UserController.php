@@ -29,4 +29,34 @@ class UserController extends Controller
         $user = User::find($id);
         return view('pages.userPage', ['user' => $user]);
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Event  $event
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {   
+        $user = User::find($request->input('userid'));
+
+        if (!is_null($request->input('name'))) {
+            $user->name = $request->input('name');
+        }
+
+        if (!is_null($request->input('description'))) {
+            $user->email= $request->input('email');
+        }
+
+        if (!is_null($request->input('birthday'))) {
+            $user->birthDay = $request->input('birthday');
+        }
+
+        if (!is_null($request->input('password'))) {
+            $user->capacity = bcrypt($request->input('password'));
+        }
+        $user->save();
+        return redirect('/user' . $user->userid);
+    }
 }
