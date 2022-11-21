@@ -201,22 +201,24 @@ div span:last-of-type {
   height: 3.5rem;
 }
 
-#event-content h1,
-h3 {
+#event-content div#event-name {
+  font-size: 4.5rem;
   color: #fff;
-  position: absolute;
+  inline-size: 75%;
+  overflow-wrap: break-all;
+  margin-top: 1rem;
+  margin-left: 2rem;
 }
 
-#event-content h3 {
-  font-size: 1.5rem;
-  top: 8rem;
-  left: 2rem;
+/* put #event-content div#event-date bellow #event-content div#event-name  */
+#event-content div#event-date {
+  font-size: 2rem;
+  color: #fff;
+  margin-left: 2.5rem;
 }
-
-#event-content h1 {
-  font-size: 4rem;
-  top: 1rem;
-  left: 1.7rem;
+.wrapper-res {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Event Page Sidebar */
@@ -325,8 +327,45 @@ h3 {
 }
 
 #outroDiv {
-  background-color: white;
+  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+  ;
   width: 70rem;
+  border-radius: 2rem;
+  border: 2px solid blue;
+}
+
+#info-navbar-container div table {
+  width: 90%;
+  font-size: 0.9em;
+  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+  margin: 0 auto;
+}
+
+#info-navbar-container div table thead {
+  background-color: blue;
+}
+
+#info-navbar-container div table tr td {
+  padding: 5px 20px 10px 10px;
+}
+
+#info-navbar-container div table tr:nth-child(odd) {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+#info-navbar-container div table tr:nth-child(even) {
+
+  background-color: rgba(202, 160, 229, 0.7);
+  color: #000;
+}
+
+#info-navbar-container div table tr td:last-child {
+  padding: 5px 0;
+  text-align: right;
+}
+
+#info-navbar-container div table tr td {
+  vertical-align: middle;
 }
 
 /* END EVENT SIDEBAR */
@@ -345,11 +384,27 @@ h3 {
 
 .menu-info-item {
 
-  background-color: rgba(252, 207, 85, 0.8);
-  border: 2px solid orangered;
+  background-image: linear-gradient(62deg, #fbb040 0%, #fbb079 50%);
+  border: 1px solid orangered;
   border-radius: 10%;
   width: 15rem;
   height: 5rem;
+}
+
+.menu-info-item p {
+  margin: 0px 10px 0px 10px;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.menu-info-item:last-child p:hover {
+  overflow: visible;
+  white-space: inherit;
+  background-image: linear-gradient(62deg, #fbb040 0%, #fbb079 50%);
+  border: 1px solid blue;
+  border-radius: 10%;
 }
 
 /*** FAQ PAGE *****************************************/
@@ -435,7 +490,8 @@ h3 {
   margin-right: 110px;
 }
 
-#searchInput {
+#searchInput,
+#search-users {
   width: 90%;
   /* center input */
   margin-left: 5%;
@@ -454,7 +510,10 @@ h3 {
   transition: width 0.8s ease-in-out;
   outline: none;
   opacity: 0.9;
+}
 
+#search-users {
+  margin-top: 1%;
 }
 
 .modal-content {

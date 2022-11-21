@@ -13,13 +13,13 @@
 <body>
 
     <div class="about-section">
-        <h1 style="font-size: 80px; margin-top: 10px;">About RE-EVENT</h1>
+        <h1 style="font-size: 80px; margin-top: 5px;">About RE-EVENT</h1>
         <p style="font-size: 20px;">Some text about who we are and what we do.</p>
     </div>
 
-    <h1 style="text-align:center; font-size: 50px; margin-top: 30px;">Our Team</h1>
+    <h1 style="text-align:center; font-size: 50px; margin-top: -5px;">Our Team</h1>
 
-    <div class="container-profile-cards" style="margin-top: 10vh">
+    <div class="container-profile-cards" style="margin-top: 8vh">
         <!-- AFONSO -->
         <div class="column">
             <div class="profile-card">
@@ -47,7 +47,7 @@
         <div class="column">
             <div class="profile-card">
                 <div class="profile-card-header">
-                    <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
+                    <img src="profile_pictures/2.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
                     <div class="profile-name" style="font-size: 25px; font-weight: bold">Eduardo Silva </div>
@@ -57,7 +57,7 @@
 
                 <div class="profile-card-body">
                     <div class="action">
-                        <a href="https://github.com/Zediogo96"> <button type="button" class="btn btn-blue-outline btn-abt"> Github </button> </a>
+                        <a href="https://github.com/Eduardo79Silva"> <button type="button" class="btn btn-blue-outline btn-abt"> Github </button> </a>
                         <a href="mailto:up202003529@fe.up.pt"> <button class="btn btn-red-outline btn-abt"> E-mail </button> </a>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
         <div class="column">
             <div class="profile-card">
                 <div class="profile-card-header">
-                    <img src="https://p.kindpng.com/picc/s/76-763010_female-user-icon-png-transparent-png.png" alt="" class="profile-image">
+                    <img src="profile_pictures/4.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
                     <div class="profile-name" style="font-size: 25px; font-weight: bold"> Matilde Silva </div>
