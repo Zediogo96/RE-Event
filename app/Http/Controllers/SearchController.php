@@ -61,8 +61,7 @@ class SearchController extends Controller
                         }
                     }
                     return Response($output);
-                }
-            }
+                }          }
         }
     }
 
@@ -78,7 +77,7 @@ class SearchController extends Controller
 
                 if ($users) {
                     foreach ($users as $key => $user) {
-                        $output .= '<tr><td>' . $user->userid . '</td><td>' . "<a href='" . route('user.show', $user->userid) . "'>" .
+                        $output .= '<tr><td>' . $user->userid . '</td><td><a>'.
                             $user->name . '</a></td>' . '<td>' . $user->email . "</td> <td><form method='get' action='" . route('user.show', $user->userid) . "'><button style='margin-right: 1rem' type='submit' class='btn btn-success'> View Page </button> </form> </td></tr>";
                     }
                     return Response($output);

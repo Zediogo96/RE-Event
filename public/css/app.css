@@ -358,6 +358,7 @@ h3 {
   --bs-bg-opacity: .7;
   height: 40rem;
   border-radius: 5%;
+  border: 3px solid blue;
 }
 
 @media screen and (max-width:624px) {
