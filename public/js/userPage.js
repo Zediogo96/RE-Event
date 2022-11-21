@@ -59,7 +59,15 @@ const selectOption = function (option) {
 
             break;
         }
+
+        case 4: {
+            document.getElementById('usersSearchOption').classList.add('optionSelected');
+            document.getElementById('userSearch').classList.remove('submenuSleep');
+            document.getElementById('userSearch').classList.add('submenuActive');
+
+        }
     }
+
 }
 
 const showDetails = function (option) {
@@ -177,5 +185,5 @@ c_modal.querySelector('#address').addEventListener("keyup", (event) => {
 });
 
 function preview_image() {
-    c_modal.querySelector("#preview-image").src=URL.createObjectURL(event.target.files[0]);
+    c_modal.querySelector("#preview-image").src = URL.createObjectURL(event.target.files[0]);
 }

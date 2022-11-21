@@ -44,7 +44,13 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+
+                @if($user->admin)
+                <div>
+                    <div id="usersSearchOption" onclick="selectOption(4)" class="option">Search Users
+                    </div>
+                    @endif
+                </div>
 
 
         </section>
@@ -77,7 +83,7 @@
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes">
                             <label for="gender"> Gender </label>
-                            <select name="gender" id="profileDetailsGenderInput" selected = "{{$user->gender}}" >
+                            <select name="gender" id="profileDetailsGenderInput" selected="{{$user->gender}}">
                                 <option value='M' @if ($user->gender === 'M') selected @endif >Male</option>
                                 <option value='F' @if ($user->gender === 'F') selected @endif>Female </option>
                                 <option value='O' @if ($user->gender === 'O') selected @endif>Other</option>
@@ -89,7 +95,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" id="updateProfileDetailsButton" style="margin-left:80%" class="btn btn-success" >Update Profile Details</button>
+                    <button type="submit" id="updateProfileDetailsButton" style="margin-left:80%" class="btn btn-success">Update Profile Details</button>
                 </form>
             </div>
             <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
@@ -170,34 +176,6 @@
 
                                             <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day">5</div>
-                                                    <div class="event-month">APR</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Phasellus et est quis diam iaculis fringilla id nec sapien.
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Nike Arena</td>
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day">31</div>
-                                                    <div class="event-month">MAY</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Ut consectetur commodo justo, sed sollicitudin massa venenatis ut 2013.
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Samsung Arena</td>
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
-
-
                                     </table>
 
                                 </div>
@@ -272,6 +250,38 @@
                     </div>
                 </div>
             </div>
+            @if ($user->admin)
+            <div id="userSearch" class="details submenuSleep">
+                <div class="container">
+                    <div class="section">
+                        <div class="blog-post blog-single-post">
+                            <div class="single-post-title" style="padding-bottom: 1rem;">
+                                <h2>User Search Tool</h2>
+                                <button class="btn btn-success" data-toggle="modal" data-target="#createEventModal"> User Event </button>
+                            </div>
+                            <div class="single-post-content">
+                                <input type="text" class="form-controller" id="search-users-admin" name="search" placeholder="Search for the user.."></input>
+                                <table class="events-list" style="margin-top: 2rem;">
+
+                                    <thead>
+                                        <tr>
+                                            <th>UserID</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th> </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="search-admin-users-res">
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @endif
 
             <div id="myInvitesDetails" class="optionDetails optionDetailsHidden">
                 <div id="receivedInvites" class="details submenuSleep">
@@ -485,6 +495,22 @@
     </div>
 
     <body>
+
+        <script type="text/javascript" defer>
+            $('#search-users-admin').on('keyup', function() {
+                $value = $(this).val();
+                $.ajax({
+                    type: 'get',
+                    url: '{{URL::to('searchUsersAdmin')}}',
+                    data: {
+                        'search': $value,
+                    },
+                    success: function(data) {
+                        $('#search-admin-users-res').html(data);
+                    }
+                });
+            })
+        </script>
 
 </html>
 

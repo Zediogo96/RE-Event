@@ -72,15 +72,15 @@
     <div id="outroDiv" style="display:none;" class="answer_list">
 
         <input type="text" class="form-controller" id="search-users" name="search"></input>
-        <table class="table table-bordered table-hover" id="table-user-res" style="margin-top:1rem;">
+        <table class="table table-bordered table-hover"  style="margin-top:1rem;">
             <thead>
                 <tr>
                     <th>UserName</th>
                     <th>Email</th>
-                    <th> ACTION </th>
+                    <th>ACTION </th>
                 </tr>
             </thead>
-            <tbody id="table-res">
+            <tbody id="table-user-res">
             </tbody>
         </table>
         <button id="close-modal-button"></button>
@@ -111,8 +111,6 @@
         }
     });
 </script>
-
-
 
 <script type="text/javascript">
     const list = document.querySelectorAll('.list')
