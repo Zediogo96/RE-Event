@@ -51,9 +51,13 @@ class SearchController extends Controller
 
                         // if user is not invited to event
                         if (is_null($ticket)) {
-                            $output .= '<tr>' . '<td>' . "<a href='" . route('user.show', $user->userid) . "'>" . $user->name . '</a></td>' . '<td>' . $user->email . '</td>' . '<td>' . "<form method='get' action='" . route('addUser', ['eventid' => $request->event_id, 'userid' => $user->userid]) . "'><button type='submit' class='btn btn-success'> Add to Event </button> </form>" . '</td>' . '</tr>';
+                            $output .= '<tr>' . '<td>' . "<a href='" . route('user.show', $user->userid) . "'>" . $user->name . '</a></td>' . '<td>' .
+                            $user->email . '</td>' . '<td>' . "<form method='get' action='" . route('addUser', ['eventid' => $request->event_id, 'userid' => $user->userid])
+                            . "'><button type='submit' class='btn btn-success'> Add to Event </button> </form>" . '</td>' . '</tr>';
                         } else {
-                            $output .= '<tr>' . '<td>' . "<a href='" . route('user.show', $user->userid) . "'>" . $user->name . '</a></td>' . '<td>' . $user->email . '</td>' . '<td>' . "<button class='btn btn-danger'> Remove From Event </button>" . '</td>' . '</tr>';
+                            $output .= '<tr>' . '<td>' . "<a href='" . route('user.show', $user->userid) . "'>" . $user->name . '</a></td>' . '<td>' .
+                            $user->email . '</td>' . '<td>' . "<form method='get' action='" . route('removeUser', ['eventid' => $request->event_id, 'userid' => $user->userid])
+                            . "'><button class='btn btn-danger'> Remove From Event </button> </form>" . '</td>' . '</tr>';
                         }
                     }
                     return Response($output);
