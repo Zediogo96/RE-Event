@@ -95,4 +95,14 @@ class EventPolicy
     {
         return $user->userID == $eventHost->userID && $event->eventID == $eventHost->eventID;
     }
+
+
+
+    public function isHost(User $user, Event $event, EventHost $eventHost)
+    {
+        //dd($user->userid === $eventHost->userid);
+        return $user->userid === $eventHost->userid && $event->eventid === $eventHost->eventid;
+    }
+
+
 }

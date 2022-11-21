@@ -269,7 +269,19 @@ class EventController extends Controller
 
     public function addUser(Request $request)
     {
-
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($request->eventid);
+        //dd($event);
+        $user = User::find(Auth::user()->userid);
+        //dd($user);
+        //find the eventhost entry with the eventid and userid
+        $eventhost = EventHost::where('eventid', $event->eventid)->where('userid', $user->userid)->first();
+        //dd($eventhost);
+        //authorize only if the user is host of the event
+        //dd($user->userid === $eventhost->userid);
+        //dd($event->eventid === $eventhost->eventid);
+        
+        //$this->authorize('isHost', $user, $event, $eventhost);  //not working?
 
         //create a new ticket with user userid and event eventid
         $ticket = new Ticket;
@@ -290,7 +302,20 @@ class EventController extends Controller
 
     public function removeUser(Request $request)
     {
-
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($request->eventid);
+        //dd($event);
+        $user = User::find(Auth::user()->userid);
+        //dd($user);
+        //find the eventhost entry with the eventid and userid
+        $eventhost = EventHost::where('eventid', $event->eventid)->where('userid', $user->userid)->first();
+        //dd($eventhost);
+        //authorize only if the user is host of the event
+        //dd($user->userid === $eventhost->userid);
+        //dd($event->eventid === $eventhost->eventid);
+        
+        //$this->authorize('isHost', $user, $event, $eventhost);  //not working?
+        
         //delete ticket record with user userid and event eventid
         $ticket = Ticket::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
         $ticket->delete();
