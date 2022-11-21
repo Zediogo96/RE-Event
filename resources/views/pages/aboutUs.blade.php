@@ -13,13 +13,13 @@
 <body>
 
     <div class="about-section">
-        <h1 style="font-size: 80px; margin-top: 10px;">About RE-EVENT</h1>
+        <h1 style="font-size: 80px; margin-top: 5px;">About RE-EVENT</h1>
         <p style="font-size: 20px;">Some text about who we are and what we do.</p>
     </div>
 
-    <h1 style="text-align:center; font-size: 50px; margin-top: 30px;">Our Team</h1>
+    <h1 style="text-align:center; font-size: 50px; margin-top: -5px;">Our Team</h1>
 
-    <div class="container-profile-cards" style="margin-top: 10vh">
+    <div class="container-profile-cards" style="margin-top: 8vh">
         <!-- AFONSO -->
         <div class="column">
             <div class="profile-card">
