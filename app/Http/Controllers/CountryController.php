@@ -71,6 +71,7 @@ dd($events);*/
         // $usertest = Event::find(8);
         // dd($usertest->participants);
 
+
         $tickets = Ticket::all();
         dd($tickets);
 

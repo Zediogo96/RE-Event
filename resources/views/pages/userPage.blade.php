@@ -57,17 +57,17 @@
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="name"> Name </label>
-                            <input type="text" name="name" id="profileDetailsNameInput" placeholder="{{$user->name}}">
+                            <input type="text" name="name" id="profileDetailsNameInput" value="{{$user->name}}">
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="email"> Email </label>
-                            <input type="email" name="email" id="profileDetailsEmailInput" placeholder="{{$user->email}}">
+                            <input type="email" name="email" id="profileDetailsEmailInput" value="{{$user->email}}">
                         </div>
                     </div>
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="birthday"> Birthday </label>
-                            <input type="date" name="birthday" id="profileDetailsBirthdayInput" placeholder="{{$user->birthDate}}">
+                            <input type="date" name="birthdate" id="profileDetailsBirthdayInput" value="{{$user->birthdate}}">
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="password"> Password </label>
@@ -77,10 +77,10 @@
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes">
                             <label for="gender"> Gender </label>
-                            <select name="gender" id="profileDetailsGenderInput">
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
+                            <select name="gender" id="profileDetailsGenderInput" selected = "{{$user->gender}}" >
+                                <option value='M' @if ($user->gender === 'M') selected @endif >Male</option>
+                                <option value='F' @if ($user->gender === 'F') selected @endif>Female </option>
+                                <option value='O' @if ($user->gender === 'O') selected @endif>Other</option>
                             </select>
                         </div>
                         <div class="updateProfileInputBoxes">

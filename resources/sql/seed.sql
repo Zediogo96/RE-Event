@@ -313,7 +313,7 @@ EXECUTE PROCEDURE _create_ticket();
 /** Users **/
 -- Admins
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
-    VALUES (1, 'Zediogo96', 'zediogox@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'assets/user_profile_photos/1', TRUE);
+    VALUES (1, 'Zediogo96', 'zediogox@hotmail.com', '2022/12/19', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'M', 'assets/user_profile_photos/1', TRUE);
 
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
     VALUES (2, 'EduSilva', 'edu_silva@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab','M', 'assets/user_profile_photos/2', TRUE);
