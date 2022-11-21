@@ -70,8 +70,8 @@ Route::get('events', 'EventController@index');
 
 //Invites
 Route::post('api/invite', 'InvitedController@create');
-Route::put('api/invite', 'InvitedController@accept');
-Route::delete('api/invite', 'InvitedController@reject');
+Route::put('api/inviteAccept', 'InvitedController@accept');
+Route::delete('api/inviteReject', 'InvitedController@reject');
 
 Route::get('debug/invites', function() {
     return App\Models\Invited::get();

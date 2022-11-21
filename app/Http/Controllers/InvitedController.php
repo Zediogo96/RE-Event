@@ -42,6 +42,7 @@ class InvitedController extends Controller
     /**
     * Rejects an invite by removing it from the database
     */
+    //TODO pedir o inviter_user_id e se rejeitar 1 fica com todos os outros para esse evento mas se aceitar 1, todos os outros invites para esse evento de pessoas diferentes apagam se
     public function reject(Request $request) {
         if (!Auth::check()) {return response(route('login'), 302);}
 
@@ -50,14 +51,13 @@ class InvitedController extends Controller
 
         $invite = Invited::where('invited.inviteduserid', '=',  $invited_user_id)
                         ->where('invited.eventid', '=', $event_id)
-                        ->first();
+                        ->firstOrFail();
         
         if(!$invite){
             return response("invite doesnt exist", 313);
         }
         
         $this->authorize('delete', $invite);
-        return $invite;
         $invite->delete();
         
         return response(null, 200);

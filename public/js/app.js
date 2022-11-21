@@ -296,13 +296,13 @@ function inviteHandler() {
 }
 
 function rejectInvite(eventID){
-    sendAjaxRequest("delete", "/api/invite", {event_id: eventID}, inviteHandler);
+    sendAjaxRequest("delete", "/api/inviteReject", {event_id: eventID}, inviteHandler);
 }
 
 function acceptInvite(event_id){
     sendAjaxRequest(
         "put",
-        "/api/invite",
+        "/api/inviteAccept",
         {event_id: event_id},
         inviteHandler,
     );
