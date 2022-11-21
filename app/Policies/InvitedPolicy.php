@@ -53,7 +53,7 @@ class InvitedPolicy
      */
     public function update(User $user, Invited $invited)
     {
-        return $user->userID === $invite->invitedUserID;
+        return $user->userid === $invited->inviteduserid;
     }
 
     /**
@@ -65,7 +65,7 @@ class InvitedPolicy
      */
     public function delete(User $user, Invited $invited)
     {
-        return $user->userID === $invite->invitedUserID;
+        return $user->userid === $invited->inviteduserid;
     }
 
     /**
