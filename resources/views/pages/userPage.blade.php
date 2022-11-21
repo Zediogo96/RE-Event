@@ -17,7 +17,7 @@
         <section class="profileAndDetails">
 
             <div class="profile" id="profileUserCard">
-                <img src="profile_pictures/generic_pic.jpg" width="70" height="70" alt="Profile Picture">
+                <img src="{{$user->profilepic}}.jpg" width="70" height="70" alt="Profile Picture">
                 <p>{{$user->name}}</p>
             </div>
 

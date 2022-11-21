@@ -24,7 +24,7 @@
         <div class="column">
             <div class="profile-card">
                 <div class="profile-card-header">
-                    <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
+                    <img src="profile_pictures/3.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
                         <div class="profile-name" style="font-size: 25px; font-weight: bold">Afonso Martins </div>
@@ -71,7 +71,7 @@
         <div class="column">
             <div class="profile-card">
                 <div class="profile-card-header">
-                    <img src="https://p.kindpng.com/picc/s/78-785805_computer-icons-user-download-avatar-male-male-user.png" alt="" class="profile-image">
+                    <img src="profile_pictures/1.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
                     <div class="profile-name" style="font-size: 25px; font-weight: bold "> José Diogo </div>
