@@ -44,13 +44,8 @@ Route::post('updateEvent/{event_id?}', 'EventController@update')->name('updateEv
 Route::get('createEvent', 'EventController@create')->name('event.create');  //edit the details of an event - display form
 Route::post('storeEvent', 'EventController@store')->name('storeEvent'); //create a new event
 
-Route::get('addUser{eventid?}', 'EventController@addUserForm')->name('event.addUserForm');  //edit the details of an event - display form
-Route::post('addEventUsers/{event_id?}', 'EventController@addUser')->name('addUser'); //update the details of an event 
-
-Route::get('removeUser{eventid?}', 'EventController@removeUserForm')->name('event.removeUserForm');  //edit the details of an event - display form
-Route::post('removeEventUsers/{event_id?}', 'EventController@removeUser')->name('removeUser'); //update the details of an event 
-
-
+Route::get('addEventUsers/{eventid?}/{userid?}', 'EventController@addUser')->name('addUser'); //update the details of an event
+Route::get('removeEventUsers/{eventid?}/{userid?}', 'EventController@removeUser')->name('removeUser'); //update the details of an event 
 
 
 // Static Pages
@@ -59,6 +54,7 @@ Route::get('faq', 'PageController@faq')->name('faq.index');
 
 Route::get('searchTest','SearchController@index')->name('search.test');
 Route::get('search','SearchController@search');
+ROute::get('searchUsers','SearchController@searchUsers');
 
 Route::get('user{userid?}', 'UserController@show')->name('user.show');
 Route::post('updateUser/{userid?}', 'UserController@update')->name('updateUser'); //update the details of an event

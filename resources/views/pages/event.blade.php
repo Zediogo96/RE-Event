@@ -27,35 +27,116 @@
         </ul>
     </nav>
 
-    <div id="wrapper">
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li>
-                    <a href="#">Event Host</a>
-                </li>
-                <li>
-                    <a href="#">Atendees List</a>
-                </li>
-                <li>
-                    <a href="#"> Outro 1</a>
-                </li>
-                <li>
-                    <a href="#"> Outro 2 </a>
-                </li>
-                <li>
-                    <a href="#">Outro 3</a>
-                </li>
-                <li>
-                    <a href="#"> Outro 4</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
 </div>
 
-<!-- bar to the side of the page -->
+<div class="navigation">
+    <ul>
+        <li class="list active">
+            <a href="#">
+                <span class="icon">
+                    <ion-icon name="home-outline"></ion-icon>
+                </span>
+                <span class="title" onclick="showUserDiv()">Event Host</span>
+            </a>
+        </li>
+        <li class="list">
+            <a href="#">
+                <span class="icon">
+                    <ion-icon name="person-outline"></ion-icon>
+                </span>
+                <span class="title" onclick="showOutroDiv()">Attendees</span>
+            </a>
+        </li>
+        <li class="list">
+            <a href="#">
+                <span class="icon">
+                    <ion-icon name="call-outline"></ion-icon>
+                </span>
+                <span class="title">Contact</span>
+            </a>
+        </li>
+
+    </ul>
+
+
+</div>
+
+<div id="info-navbar-container">
+
+    <div id="userDiv" style="display:none;" class="answer_list"> WELCOME
+        <button id="close-modal-button"></button>
+    </div>
+    <div id="outroDiv" style="display:none;" class="answer_list">
+
+        <input type="text" class="form-controller" id="search-users" name="search"></input>
+        <table class="table table-bordered table-hover" id="table-user-res" style="margin-top:1rem;">
+            <thead>
+                <tr>
+                    <th>UserName</th>
+                    <th>Email</th>
+                    <th> ACTION </th>
+                </tr>
+            </thead>
+            <tbody id="table-res">
+            </tbody>
+        </table>
+        <button id="close-modal-button"></button>
+    </div>
+
+</div>
+
+<script type="text/javascript" defer>
+    $('#search-users').on('keyup', function() {
+        $value = $(this).val();
+        $.ajax({
+            type: 'get',
+            url: '{{URL::to('searchUsers')}}',
+            data: {
+                'search': $value,
+                'event_id': '{{$event->eventid}}'
+            },
+            success: function(data) {
+                $('#table-user-res').html(data);
+            }
+        });
+    })
+</script>
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'csrftoken': '{{ csrf_token() }}'
+        }
+    });
+</script>
 
 
 
+<script type="text/javascript">
+    const list = document.querySelectorAll('.list')
+
+    function activeLink() {
+        list.forEach((item) => item.classList.remove('active'))
+        this.classList.add('active')
+    }
+
+    list.forEach((item) => item.addEventListener('click', activeLink))
+
+    function showUserDiv() {
+        document.getElementById("info-navbar-container").querySelectorAll('div').forEach(n => n.style.display = 'none');
+        document.getElementById('userDiv').style.display = "block";
+    }
+
+    function showOutroDiv() {
+        document.getElementById("info-navbar-container").querySelectorAll('div').forEach(n => n.style.display = 'none');
+        document.getElementById('outroDiv').style.display = "block";
+    }
+
+    document.querySelector('#outroDiv > button').addEventListener('click', function() {
+        document.getElementById('outroDiv').style.display = "none";
+    })
+</script>
 
 @endsection

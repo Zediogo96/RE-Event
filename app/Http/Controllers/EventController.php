@@ -52,7 +52,7 @@ class EventController extends Controller
         if (!is_null($request->input('name'))) {
             $event->name = $request->input('name');
         }
-        
+
         $event->description = $request->input('description');
 
         if (!is_null($request->input('date'))) {
@@ -63,7 +63,7 @@ class EventController extends Controller
             $event->capacity = $request->input('capacity');
         }
 
-        if (!City::where('name', '=', $request->input('city'))->exists()) {  
+        if (!City::where('name', '=', $request->input('city'))->exists()) {
 
             $city = new City;
             $city->name = $request->input('city');
@@ -77,14 +77,14 @@ class EventController extends Controller
             $city->countryid = Country::where('name', $request->input('country'))->first()->countryid;
             $city->save();
         }
-        
+
         $event->cityid = City::where('name', '=', $request->input('city'))->first()->cityid;
 
         if (!is_null($request->input('address'))) {
             $event->address = $request->input('address');
         }
 
-/*         if (($request->input('price')) >= 0) {
+        /*         if (($request->input('price')) >= 0) {
             $event->price = $request->input('price');
         } */
 
@@ -118,13 +118,13 @@ class EventController extends Controller
 
             $photo = new Photo;
 
-            $evid = $results = DB::select( DB::raw("SELECT MAX(eventid) FROM event"))[0]->max;
+            $evid = $results = DB::select(DB::raw("SELECT MAX(eventid) FROM event"))[0]->max;
             $evid = $evid + 1;
 
-            $filename = "$evid".'.'.$file->getClientOriginalExtension();
-            $file -> move(public_path('/event_photos'), $filename);
+            $filename = "$evid" . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('/event_photos'), $filename);
 
-            $photo->path = 'event_photos/'."$evid".'.jpg';
+            $photo->path = 'event_photos/' . "$evid" . '.jpg';
             $photo->eventid = $event->id;
             $photo->save();
         }
@@ -139,7 +139,7 @@ class EventController extends Controller
         $eventhost->eventid = $event->eventid;
         $eventhost->save(); */
 
-        return redirect('/event'.$event->eventid);
+        return redirect('/event' . $event->eventid);
     }
 
     /**
@@ -196,7 +196,7 @@ class EventController extends Controller
         if (!is_null($request->input('capacity'))) {
             $event->capacity = $request->input('capacity');
         }
-        
+
         //City::find(City::where('name', $request->input('city'))->first()) == null  if antigo
 
         if (!City::where('name', '=', $request->input('city'))->exists()) {  //se nao existir a cidade
@@ -227,7 +227,7 @@ class EventController extends Controller
         if (!is_null($request->input('price'))) {
             $event->price = $request->input('price');
         }
-        
+
         if (!Tag::where('name', '=', $request->input('tag'))->exists()) {
             //create a new tag and add it to the database
             $tag = new Tag;
@@ -258,50 +258,33 @@ class EventController extends Controller
     }
 
 
-
-    public function addUserForm ($id)
+    public function addUser(Request $request)
     {
-        $event = Event::find($id);
-        return view('pages.addUserToEvent', ['event' => $event]);
-    }
-    
-    public function addUser (Request $request) {
 
-        $user = User::where('email', '=', $request->input('usremail'))->first();
-        //dd($user);
-
-        //dd(request()->all());
 
         //create a new ticket with user userid and event eventid
         $ticket = new Ticket;
         $ticket->qr_genstring = '527b93cdc6fcf912f9d9e0f018ab784deb4dc672ac8b6e07fcd65ef7b00160ea';  //for testing
-        $ticket->userid = $user->userid;
+        $ticket->userid = $request->userid;
         $ticket->eventid = $request->eventid;
-
-        //dd($ticket);
         $ticket->save();
 
         return redirect('/event' . $request->eventid);
     }
 
-    public function removeUserForm ($id)
+    public function removeUserForm($id)
     {
         $event = Event::find($id);
         return view('pages.removeUserFromEvent', ['event' => $event]);
     }
 
 
-    public function removeUser (Request $request) {
-        
-        $user = User::where('email', '=', $request->input('usremail'))->first();
-        //dd($user);
+    public function removeUser(Request $request)
+    {
 
         //delete ticket record with user userid and event eventid
-        $ticket = Ticket::where('userid', '=', $user->userid)->where('eventid', '=', $request->eventid);
-        //dd($ticket);
+        $ticket = Ticket::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
         $ticket->delete();
-
-        //dd(request()->all());
 
         return redirect('/event' . $request->eventid);
     }
