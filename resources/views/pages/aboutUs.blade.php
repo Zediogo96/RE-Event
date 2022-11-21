@@ -96,7 +96,7 @@
         <div class="column">
             <div class="profile-card">
                 <div class="profile-card-header">
-                    <img src="https://p.kindpng.com/picc/s/76-763010_female-user-icon-png-transparent-png.png" alt="" class="profile-image">
+                    <img src="profile_pictures/4.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
                     <div class="profile-name" style="font-size: 25px; font-weight: bold"> Matilde Silva </div>
