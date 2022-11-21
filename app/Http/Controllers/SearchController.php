@@ -52,12 +52,12 @@ class SearchController extends Controller
                         // if user is not invited to event
                         if (is_null($ticket)) {
                             $output .= '<tr>' . '<td>' . "<a href='" . route('user.show', $user->userid) . "'>" . $user->name . '</a></td>' . '<td>' .
-                            $user->email . '</td>' . '<td>' . "<form method='get' action='" . route('addUser', ['eventid' => $request->event_id, 'userid' => $user->userid])
-                            . "'><button type='submit' class='btn btn-success'> Add to Event </button> </form>" . '</td>' . '</tr>';
+                            $user->email . '</td>' . "<td>" . "<form method='get' action='" . route('addUser', ['eventid' => $request->event_id, 'userid' => $user->userid])
+                            . "'><button type='submit' style='margin-right: 25%' class='btn btn-success'> Add to Event </button> </form>" . '</td>' . '</tr>';
                         } else {
                             $output .= '<tr>' . '<td>' . "<a href='" . route('user.show', $user->userid) . "'>" . $user->name . '</a></td>' . '<td>' .
                             $user->email . '</td>' . '<td>' . "<form method='get' action='" . route('removeUser', ['eventid' => $request->event_id, 'userid' => $user->userid])
-                            . "'><button class='btn btn-danger'> Remove From Event </button> </form>" . '</td>' . '</tr>';
+                            . "'><button type='submit' style='margin-right: 25%; width: 8rem;' class='btn btn-danger'> Remove </button> </form>" . '</td>' . '</tr>';
                         }
                     }
                     return Response($output);
@@ -78,7 +78,7 @@ class SearchController extends Controller
                 if ($users) {
                     foreach ($users as $key => $user) {
                         $output .= '<tr><td>' . $user->userid . '</td><td><a>'.
-                            $user->name . '</a></td>' . '<td>' . $user->email . "</td> <td><form method='get' action='" . route('user.show', $user->userid) . "'><button style='margin-right: 1rem' type='submit' class='btn btn-success'> View Page </button> </form> </td></tr>";
+                            $user->name . '</a></td>' . '<td>' . $user->email . "</td> <td ><form method='get' action='" . route('user.show', $user->userid) . "'><button style='margin-right: 1rem' type='submit' class='btn btn-success '> View Page </button> </form> </td></tr>";
                     }
                     return Response($output);
                 }
