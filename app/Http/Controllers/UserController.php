@@ -71,7 +71,7 @@ class UserController extends Controller
 
 
         if ($request->hasFile('profilePic')) {
-            
+
             $file = $request->file('profilePic');
             $filename = Auth::user()->userid . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('/profile_pictures'), $filename);
@@ -80,6 +80,65 @@ class UserController extends Controller
 
         $user->save();
         return redirect('/user' . $user->userid);
+    }
+
+
+     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+/*     public function create(Request $request)
+    {
+        if (!Auth::check()) return redirect('/login');
+        return view('pages.createEvent');
+    } */
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        if (!Auth::check()) return redirect('/login');
+        //$user = User::find($request->input('userid'));
+        $creating_user = Auth::user();
+        $this->authorize('update', $creating_user);
+        $user = new User;
+
+        if (!is_null($request->input('name'))) {
+            $user->name = $request->input('name');
+        }
+
+        if (!is_null($request->input('email'))) {
+            $user->email= $request->input('email');
+        }
+
+        if (!is_null($request->input('birthdate'))) {
+            $user->birthdate = $request->input('birthdate');
+        }
+
+        if (!is_null($request->input('password'))) {
+            $user->capacity = bcrypt($request->input('password'));
+        }
+
+        if (!is_null($request->input('gender'))) {
+            $user->gender= $request->input('gender');
+        }
+
+        if ($request->hasFile('profilePic')) {
+
+            $file = $request->file('profilePic');
+            $filename = Auth::user()->userid . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('/profile_pictures'), $filename);
+
+        }
+
+        $user->save();
+        return redirect('/user' . $user->userid);
+
     }
 
 

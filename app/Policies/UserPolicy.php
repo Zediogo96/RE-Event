@@ -44,7 +44,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        //
+        $this->isAdmin($user);  //só pode criar um novo User (sem ser por register) se for admin
     }
 
     /**
