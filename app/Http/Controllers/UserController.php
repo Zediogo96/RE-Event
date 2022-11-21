@@ -69,6 +69,15 @@ class UserController extends Controller
             $user->gender= $request->input('gender');
         }
 
+
+        if ($request->hasFile('profilePic')) {
+            
+            $file = $request->file('profilePic');
+            $filename = Auth::user()->userid . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('/profile_pictures'), $filename);
+
+        }
+
         $user->save();
         return redirect('/user' . $user->userid);
     }
