@@ -5,8 +5,10 @@
 <div class="container" id="event-content">
 
     <img src="{{$event -> photos[0]->path}}" style="border-radius: 5%; height:45rem;">
-    <h1> {{$event->name}} </h1>
-    <h3> {{date('Y-m-d', strtotime($event->date))}} </h3>
+    <div class="wrapper-res">
+        <div id="event-name"> {{$event->name}} </div>
+        <div id="event-date"> {{date('Y-m-d', strtotime($event->date))}} </div>
+    </div>
     <button class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
             BUY TICKETS </a></button>
 
@@ -14,15 +16,15 @@
         <ul id="menu-info">
             <li class="menu-info-item text-center">
                 <div> Location </div>
-                <p style="font-size: 15px"> {{$event->city->country->name}}, {{$event->city->name}} </p>
+                <p> {{$event->city->country->name}}, {{$event->city->name}} </p>
             </li>
             <li class="menu-info-item text-center">
                 <div> Capacity </div>
-                <p style="font-size: 15px"> {{$event->capacity}} places </p>
+                <p> {{$event->capacity}} places </p>
             </li>
             <li class="menu-info-item text-center">
                 <div> Address </div>
-                <p style="font-size: 15px"> {{$event->address}} </p>
+                <p> {{$event->address}} </p>
             </li>
         </ul>
     </nav>
@@ -72,7 +74,7 @@
     <div id="outroDiv" style="display:none;" class="answer_list">
 
         <input type="text" class="form-controller" id="search-users" name="search"></input>
-        <table class="table table-bordered table-hover"  style="margin-top:1rem;">
+        <table class="table table-bordered table-hover" style="margin-top:1rem;">
             <thead>
                 <tr>
                     <th>UserName</th>
@@ -93,7 +95,8 @@
         $value = $(this).val();
         $.ajax({
             type: 'get',
-            url: '{{URL::to('searchUsers')}}',
+            url: '{{URL::to('
+            searchUsers ')}}',
             data: {
                 'search': $value,
                 'event_id': '{{$event->eventid}}'

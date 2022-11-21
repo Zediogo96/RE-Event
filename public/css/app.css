@@ -201,22 +201,24 @@ div span:last-of-type {
   height: 3.5rem;
 }
 
-#event-content h1,
-h3 {
+#event-content div#event-name {
+  font-size: 4.5rem;
   color: #fff;
-  position: absolute;
+  inline-size: 75%;
+  overflow-wrap: break-all;
+  margin-top: 1rem;
+  margin-left: 2rem;
 }
 
-#event-content h3 {
-  font-size: 1.5rem;
-  top: 8rem;
-  left: 2rem;
+/* put #event-content div#event-date bellow #event-content div#event-name  */
+#event-content div#event-date {
+  font-size: 2rem;
+  color: #fff;
+  margin-left: 2.5rem;
 }
-
-#event-content h1 {
-  font-size: 4rem;
-  top: 1rem;
-  left: 1.7rem;
+.wrapper-res {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Event Page Sidebar */
@@ -332,7 +334,6 @@ h3 {
   border: 2px solid blue;
 }
 
-
 #info-navbar-container div table {
   width: 90%;
   font-size: 0.9em;
@@ -383,11 +384,27 @@ h3 {
 
 .menu-info-item {
 
-  background-color: rgba(252, 207, 85, 0.8);
-  border: 2px solid orangered;
+  background-image: linear-gradient(62deg, #fbb040 0%, #fbb079 50%);
+  border: 1px solid orangered;
   border-radius: 10%;
   width: 15rem;
   height: 5rem;
+}
+
+.menu-info-item p {
+  margin: 0px 10px 0px 10px;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.menu-info-item:last-child p:hover {
+  overflow: visible;
+  white-space: inherit;
+  background-image: linear-gradient(62deg, #fbb040 0%, #fbb079 50%);
+  border: 1px solid blue;
+  border-radius: 10%;
 }
 
 /*** FAQ PAGE *****************************************/
