@@ -44,6 +44,8 @@
                 <span class="title" onclick="showUserDiv()">Event Host</span>
             </a>
         </li>
+
+        @if (Auth::user() != NULL &&Auth::user()->userid == $host->userid)
         <li class="list">
             <a href="#">
                 <span class="icon">
@@ -52,6 +54,7 @@
                 <span class="title" onclick="showOutroDiv()">Attendees</span>
             </a>
         </li>
+        @endif
         <li class="list">
             <a href="#">
                 <span class="icon">
@@ -77,18 +80,20 @@
 <div id="info-navbar-container">
 
     <div id="userDiv" style="display:none; text-align:center;" class="answer_list">
-            <div class="svg-background"></div>
-            <div class="svg-background2"></div>
-            <div class="circle"></div>
+        <div class="svg-background"></div>
+        <div class="svg-background2"></div>
+        <div class="circle"></div>
 
-            <img class="profile-img" src="{{$host->profilepic}}">
-            <div class="text-container">
-                <p class="title-text"> {{$host->name}}</p>
-                <p class="info-text">Event Host</p>
-                <p class="desc-text"> {{count($host->hostedEvents)}} events hosted </p>
+        <img class="profile-img" src="{{$host->profilepic}}">
+        <div class="text-container">
+            <p class="title-text"> {{$host->name}}</p>
+            <p class="info-text">Event Host</p>
+            <p class="desc-text"> {{count($host->hostedEvents)}} events hosted </p>
         </div>
         <button id="close-modal-button"></button>
     </div>
+
+    @if (Auth::user() != NULL &&Auth::user()->userid == $host->userid)
     <div id="outroDiv" data-mdb-animation="slide-in-right" style="display:none;" class="answer_list">
 
         <input type="text" class="form-controller" id="search-users" name="search"></input>
@@ -105,6 +110,8 @@
         </table>
         <button id="close-modal-button"></button>
     </div>
+
+    @endif
 
     <div id="inviteDiv" data-mdb-animation="slide-in-right" style="display:none; text-align:center;" class="answer_list"> Please enter the email of the user you wish to invite
         <!--@csrf-->
@@ -221,6 +228,12 @@
 
     function showUserDiv() {
         document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+        let d = document.getElementById('userDiv');
+        d.classList.add("animate");
+        setTimeout(function() {
+            d.classList.remove("animate");
+        }, 500);
+        d.style.display = "block";
         document.getElementById('userDiv').style.display = "block";
     }
 
