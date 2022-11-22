@@ -11,9 +11,9 @@
         <div id="event-name"> {{$event->name}} </div>
         <div id="event-date"> {{date('Y-m-d', strtotime($event->date))}} </div>
     </div>
-    
+
     @if (Auth::user() != NULL && !Auth::user()->attendingEvents->contains($event->eventid))
-    
+
     <button onclick="ajax_selfAddUser({{Auth::user()->userid}}, {{$event->eventid}})" class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
             Enroll Event </a></button>
     @else
@@ -125,11 +125,13 @@
     </div>
     @endif
 
-    <div id="inviteDiv" data-mdb-animation="slide-in-right" style="display:none; text-align:center;" class="answer_list"> Please enter the email of the user you wish to invite
+    <div id="inviteDiv" data-mdb-animation="slide-in-right" style="display:none; text-align:center; width: 500px; height: 500px;" class="answer_list">
+     Please enter the email of the user you wish to invite
         <!--@csrf-->
+        <button class="skrr" id="close-modal-button"></button>
         <input type="text" class="form-controller" id="sendInvite" name="email"></input>
         <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick="createInvite({{$event->eventid}})">Send Invite</button>
-        <button id="close-modal-button"></button>
+        
     </div>
 
 </div>
@@ -248,6 +250,17 @@
             console.log(error);
         });
     });
+
+    document.querySelector('#outroDiv > button').addEventListener('click', function() {
+        let d = document.getElementById('outroDiv');
+        d.classList.add("animate-out");
+        setTimeout(function() {
+            d.classList.remove("animate-out");
+        }, 500);
+        setTimeout(function() {
+            d.style.display = "none";
+        }, 450);
+    })
 </script>
 @endif
 
@@ -327,24 +340,8 @@
             d.style.display = "none";
         }, 500);
     })
-
-    document.querySelector('#outroDiv > button').addEventListener('click', function() {
-        let d = document.getElementById('outroDiv');
-        d.classList.add("animate-out");
-        setTimeout(function() {
-            d.classList.remove("animate-out");
-        }, 500);
-        setTimeout(function() {
-            d.style.display = "none";
-        }, 450);
-    })
-
-    document.querySelector('#userDiv > button').addEventListener('click', function() {
-        let d = document.getElementById('userDiv');
-        d.style.display = "none";
-    })
-
-    document.querySelector('#inviteDiv > button').addEventListener('click', function() {
+    
+    document.querySelector('#inviteDiv > .skrr').addEventListener('click', function() {
         let d = document.getElementById('inviteDiv');
         d.classList.add("animate-out");
         setTimeout(function() {
@@ -352,8 +349,10 @@
         }, 500);
         setTimeout(function() {
             d.style.display = "none";
-        }, 450);
+        }, 500);
     })
+
+
 </script>
 
 @endsection

@@ -13,17 +13,6 @@
 // Home
 Route::get('/', 'Auth\LoginController@home');
 
-// Cards
-Route::get('cards', 'CardController@list');
-// Route::get('cards/{id}', 'CardController@show');
-
-// API
-Route::put('api/cards', 'CardController@create');
-Route::delete('api/cards/{card_id}', 'CardController@delete');
-Route::put('api/cards/{card_id}/', 'ItemController@create');
-Route::post('api/item/{id}', 'ItemController@update');
-Route::delete('api/item/{id}', 'ItemController@delete');
-
 // Authentication
 Route::get('login', 'HomeController@login')->name('login');
 Route::post('login', 'Auth\LoginController@login');
@@ -31,10 +20,8 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('register', 'HomeController@login')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
 
-
 // Home Page
 Route::get('home', 'HomeController@home')->name('home.show');
-//Route::get('login', 'HomeController@login')->name('login.show');
 
 // Events Related
 Route::get('event{eventid?}', 'EventController@show')->name('event.show');
