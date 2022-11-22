@@ -50,7 +50,7 @@ function sendAjaxRequest(method, url, data, handler) {
         "application/x-www-form-urlencoded"
     );
     request.addEventListener("load", handler);
-    console.log("data ", data, document.querySelector('meta[name="csrf-token"]').content)
+    //console.log("data ", data, document.querySelector('meta[name="csrf-token"]').content)
     request.send(encodeForAjax(data));
 }
 
@@ -275,26 +275,40 @@ signupLink.onclick = () => {
 };
 
 
-function createInvite() {
+function createInvite(invited_user, event_id) {
     sendAjaxRequest(
         "post",
         "/api/invite",
-        { invited_user: 3,
-            event_id: 8},
-        itemUpdatedHandler2,
+        { invited_user: invited_user,
+            event_id: event_id},
+        inviteHandler,
     );
 }
 
-const thiserror = function(req, err){ console.log('my message' + err); }
-
-function itemUpdatedHandler2() {
+function inviteHandler() {
     console.log("result: ", this, this.responseText)
+    if(this.status === 302){
+        window.location.href = this.responseText;
+    }
+    if(this.status === 313){
+        console.log("YOU NOT WHO YOU ARE");
+    }
+    if(this.status === 405){
+        console.log("dbjhewygjgfyu");
+    }
 }
 
-/* AJAX REQUESTS */
+function rejectInvite(eventID){
+    sendAjaxRequest("delete", "/api/inviteReject", {event_id: eventID}, inviteHandler);
+}
 
-// AJAX REQUEST TO SEARCH FOR EVENTS
+function acceptInvite(event_id){
+    sendAjaxRequest(
+        "put",
+        "/api/inviteAccept",
+        {event_id: event_id},
+        inviteHandler,
+    );
 
-
-
-/* END AJAX REQUESTS */
+    
+}

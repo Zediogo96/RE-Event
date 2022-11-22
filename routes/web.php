@@ -60,24 +60,22 @@ Route::get('user{userid?}', 'UserController@show')->name('user.show');
 Route::post('updateUser/{userid?}', 'UserController@update')->name('updateUser'); //update the details of an event
 
 //testing database data
-
 Route::get('cities', 'CityController@index');
 Route::get('countries', 'CountryController@index');
 Route::get('events', 'EventController@index');
+//nice
 
 //Invites
 Route::post('api/invite', 'InvitedController@create');
-Route::put('api/invite', 'InvitedController@accept');
-Route::delete('api/invite', 'InvitedController@reject');
+Route::put('api/inviteAccept', 'InvitedController@accept');
+Route::delete('api/inviteReject', 'InvitedController@reject');
+
 Route::get('debug/invites', function() {
     return App\Models\Invited::get();
 });
 
-
-Route::get('play', function() {
+/* Route::get('play', function() {
     return view('pages.play');
-});
+}); */
 
 Route::get('auth', 'Auth\LoginController@getUser');
-
-//nice
