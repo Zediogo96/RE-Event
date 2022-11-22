@@ -155,7 +155,10 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
-        return view('pages.event', ['event' => $event]);
+        $step = EventHost::where('eventid', $id)->first()->step;
+        $host = User::find(EventHost::where('eventid', $id)->first()->userid);
+
+        return view('pages.event', ['event' => $event, 'host' => $host]);
     }
 
     /**
