@@ -1,7 +1,7 @@
 create schema if not exists lbaw_bd;
 set search_path to lbaw_bd;
 
- 
+
 -- Remove Duplicate Tables --------------
 DROP TABLE IF EXISTS user_ CASCADE;
 DROP TABLE IF EXISTS event CASCADE;
@@ -95,9 +95,10 @@ CREATE TABLE event_host (
 
 CREATE TABLE invited (
     status boolean DEFAULT FALSE,
-    userID integer REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
+    invitedUserID integer REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
+    inviterUserID integer REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
     eventID integer REFERENCES event (eventID) ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY (userID, eventID)
+    PRIMARY KEY (invitedUserID, inviterUserID, eventID)
 );
 
 CREATE TABLE ticket (
@@ -562,65 +563,65 @@ INSERT INTO review (rating, userID, eventID)
 
 /** Invited **/
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 2, 7);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 2, 7, 8);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 3, 8);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 3, 4, 8);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 1, 5);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 1, 3, 5);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 7, 2);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 7, 3, 2);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 8, 1);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 8, 3, 1);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 3, 7);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 3, 2, 7);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 10, 1);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 10, 8,  1);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 3, 5);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 3, 6, 5);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 1, 4);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 1, 5, 4);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 5, 8);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 5, 2, 8);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 8, 5);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 8, 2, 5);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 10, 7);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 10, 3, 7);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 2, 8);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 2, 8, 8);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 1, 1);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 1, 3, 1);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 7, 6);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 7, 1, 6);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 1, 3);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 1, 7, 3);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (TRUE, 6, 3);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, 6, 2, 3);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 1, 6);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 1, 5, 6);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 5, 5);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 5, 7, 5);
 
-INSERT INTO invited (status, userID, eventID)
-    VALUES (FALSE, 2, 4);
+INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, 2, 6, 4);
 
 /* Event hosts */
 

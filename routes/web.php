@@ -44,11 +44,8 @@ Route::post('updateEvent/{event_id?}', 'EventController@update')->name('updateEv
 Route::get('createEvent', 'EventController@create')->name('event.create');  //edit the details of an event - display form
 Route::post('storeEvent', 'EventController@store')->name('storeEvent'); //create a new event
 
-Route::get('addEventUsers/{eventid?}/{userid?}', 'EventController@addUser')->name('addUser'); //update the details of an event
-Route::get('removeEventUsers/{eventid?}/{userid?}', 'EventController@removeUser')->name('removeUser'); //update the details of an event
-
-Route::get('attendEvent/{eventid?}/{userid?}', 'EventController@attendEvent')->name('attendEvent'); //make an user attend an event (add ticket) 
-Route::get('leaveEvent/{eventid?}/{userid?}', 'EventController@leaveEvent')->name('leaveEvent'); //make an user leave an event (delete ticket)
+Route::post('addEventUsers', 'EventController@addUser')->name('addUser'); //update the details of an event
+Route::post('removeEventUsers', 'EventController@removeUser')->name('removeUser'); //update the details of an event 
 
 // Static Pages
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
@@ -63,8 +60,22 @@ Route::get('user{userid?}', 'UserController@show')->name('user.show');
 Route::post('updateUser/{userid?}', 'UserController@update')->name('updateUser'); //update the details of an event
 
 //testing database data
-
 Route::get('cities', 'CityController@index');
 Route::get('countries', 'CountryController@index');
 Route::get('events', 'EventController@index');
+//nice
 
+//Invites
+Route::post('api/invite', 'InvitedController@create');
+Route::put('api/inviteAccept', 'InvitedController@accept');
+Route::delete('api/inviteReject', 'InvitedController@reject');
+
+Route::get('debug/invites', function() {
+    return App\Models\Invited::get();
+});
+
+/* Route::get('play', function() {
+    return view('pages.play');
+}); */
+
+Route::get('auth', 'Auth\LoginController@getUser');

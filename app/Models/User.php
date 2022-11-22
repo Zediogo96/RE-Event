@@ -41,6 +41,21 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Event', 'ticket', 'userid', 'eventid');
     }
 
+
+    /**
+    * User who received the invite
+    */
+    public function invited() {
+        return $this->hasMany('App\Models\Invited');
+    }
+
+    /**
+    * User who made the invite
+    */
+    public function inviter() {
+        return $this->hasMany('App\Models\Invited');
+    }
+
     // CHECK AGAIN IF THIS IS THE INDENTED ROUTE /////////////////
     // REMOVE COMMENTS AFTER   ///////////////////////////////////
     //////////////////////////////////////////////////////////////

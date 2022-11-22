@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use DB;
 
-use Illuminate\Support\Facades\Auth;
-
 use App\Models\User;
 use App\Models\Event;
 use App\Models\City;
@@ -15,6 +13,7 @@ use App\Models\Photo;
 use App\Models\Ticket;
 use App\Models\EventHost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -268,6 +267,17 @@ class EventController extends Controller
         //
     }
 
+    //Join an event
+    public function join($event_id)
+    {
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($event_id);
+        $this->authorize('join', $event);
+        $user = Auth::user();
+        $event->participants()->attach($user->userID);
+        return redirect('event' . $event->eventID);
+    }
+
 
     public function addUser(Request $request)
     {
@@ -286,7 +296,7 @@ class EventController extends Controller
         $ticket->eventid = $request->eventid;
         $ticket->save();
 
-        return redirect('/event' . $request->eventid);
+        // return redirect('/event' . $request->eventid);
     }
 
     public function removeUser(Request $request)
@@ -303,6 +313,6 @@ class EventController extends Controller
         $ticket = Ticket::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
         $ticket->delete();
 
-        return redirect('/event' . $request->eventid);
+        // return redirect('/event' . $request->eventid);
     }
 }

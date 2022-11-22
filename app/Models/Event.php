@@ -68,6 +68,12 @@ class Event extends Model
     {
         return $this->belongsTo('App\Models\Tag', 'tagid');
     }
+    
+
+    public function invites() {
+        return $this->hasMany('App\Models\Invited');
+    }
+
 
     /**
      * Full text search for events
@@ -80,4 +86,10 @@ class Event extends Model
         return $query->whereRaw('tsvectors @@ to_tsquery(\'english\', ?)', [$search])
             ->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC', [$search]);
     }
+
+    public function isNotFull(){
+        return $this->capacity > 0 ;
+    }
+
 }
+

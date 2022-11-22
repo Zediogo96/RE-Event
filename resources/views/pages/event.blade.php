@@ -60,6 +60,14 @@
                 <span class="title">Contact</span>
             </a>
         </li>
+        <li class="list">
+            <a href="#">
+                <span class="icon">
+                    <ion-icon name="mail-outline"></ion-icon>
+                </span>
+                <span class="title" onclick="showInviteDiv()">Send Invite</span>
+            </a>
+        </li>
 
     </ul>
 
@@ -88,10 +96,61 @@
         <button id="close-modal-button"></button>
     </div>
 
+    <div id="inviteDiv" data-mdb-animation="slide-in-right" style="display:none; text-align:center;" class="answer_list"> Please enter the email of the user you wish to invite
+        <!--@csrf-->
+            <input type="text" class="form-controller" id="sendInvite" name="email"></input>
+            <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick = "createInvite({{$event->eventid}})">Send Invite</button>
+            <button id="close-modal-button"></button>
+    </div>
+
 </div>
 
-<!-- AJAX REQUEST -->
+<!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
+
 <script type="text/javascript">
+    function ajax_addUser(userid, eventid) {
+        fetch("addEventUsers", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                userid: userid,
+                eventid: eventid
+            })
+        }).then(function(data) {
+            refreshDiv();
+        }).catch(function(error) {
+            console.log(error);
+        });
+    };
+
+    function ajax_remUser(userid, eventid) {
+        fetch("removeEventUsers", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                userid: userid,
+                eventid: eventid
+            })
+        }).then(function(data) {
+            refreshDiv();
+        }).catch(function(error) {
+            console.log(error);
+        });
+    };
+
+
     document.getElementById("search-users").addEventListener("keyup", function(e) {
         fetch("searchUsers", {
             headers: {
@@ -103,7 +162,8 @@
             method: "post",
             credentials: "same-origin",
             body: JSON.stringify({
-                search: e.target.value
+                search: e.target.value,
+                event_id: '{{$event->eventid}}'
             })
         }).then(function(data) {
             return data.text();
@@ -113,14 +173,33 @@
             console.log(error);
         });
     });
-</script>
-
-<script type=text/javascript>
 
 
-</script>
+    function refreshDiv() {
+        fetch("searchUsers", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                search: document.getElementById("search-users").value,
+                event_id: '{{$event->eventid}}'
+            })
+        }).then(function(data) {
+            return data.text();
+        }).then(function(data) {
+            document.getElementById("table-user-res").innerHTML = data;
+        }).catch(function(error) {
+            console.log(error);
+        });
+    };
 
-<script type="text/javascript">
+    //////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
+
     const list = document.querySelectorAll('.list')
 
     function activeLink() {
@@ -145,6 +224,16 @@
         d.style.display = "block";
     }
 
+    function showInviteDiv() {
+        document.getElementById("info-navbar-container").querySelectorAll('div').forEach(n => n.style.display = 'none');
+        let d = document.getElementById('inviteDiv');
+        d.classList.add("animate");
+        setTimeout(function() {
+            d.classList.remove("animate");
+        }, 500);
+        d.style.display = "block";
+    }
+
     document.querySelector('#outroDiv > button').addEventListener('click', function() {
         let d = document.getElementById('outroDiv');
         d.classList.add("animate-out");
@@ -161,7 +250,16 @@
         d.style.display = "none";
     })
 
-
+    document.querySelector('#inviteDiv > button').addEventListener('click', function() {
+        let d = document.getElementById('inviteDiv');
+        d.classList.add("animate-out");
+        setTimeout(function() {
+            d.classList.remove("animate-out");
+        }, 500);
+        setTimeout(function() {
+            d.style.display = "none";
+        }, 450);
+    })
 </script>
 
 @endsection
