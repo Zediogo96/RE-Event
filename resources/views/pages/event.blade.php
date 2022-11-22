@@ -68,10 +68,10 @@
 
 <div id="info-navbar-container">
 
-    <div id="userDiv" style="display:none;" class="answer_list"> WELCOME
+    <div id="userDiv" style="display:none; text-align:center;" class="answer_list"> TO DO: EVENT HOST CARD
         <button id="close-modal-button"></button>
     </div>
-    <div id="outroDiv" style="display:none;" class="answer_list">
+    <div id="outroDiv" data-mdb-animation="slide-in-right" style="display:none;" class="answer_list">
 
         <input type="text" class="form-controller" id="search-users" name="search"></input>
         <table class="table table-bordered table-hover" style="margin-top:1rem;">
@@ -90,6 +90,7 @@
 
 </div>
 
+<!-- AJAX REQUEST -->
 <script type="text/javascript">
     document.getElementById("search-users").addEventListener("keyup", function(e) {
         fetch("searchUsers", {
@@ -114,6 +115,11 @@
     });
 </script>
 
+<script type=text/javascript>
+
+
+</script>
+
 <script type="text/javascript">
     const list = document.querySelectorAll('.list')
 
@@ -131,12 +137,31 @@
 
     function showOutroDiv() {
         document.getElementById("info-navbar-container").querySelectorAll('div').forEach(n => n.style.display = 'none');
-        document.getElementById('outroDiv').style.display = "block";
+        let d = document.getElementById('outroDiv');
+        d.classList.add("animate");
+        setTimeout(function() {
+            d.classList.remove("animate");
+        }, 500);
+        d.style.display = "block";
     }
 
     document.querySelector('#outroDiv > button').addEventListener('click', function() {
-        document.getElementById('outroDiv').style.display = "none";
+        let d = document.getElementById('outroDiv');
+        d.classList.add("animate-out");
+        setTimeout(function() {
+            d.classList.remove("animate-out");
+        }, 500);
+        setTimeout(function() {
+            d.style.display = "none";
+        }, 450);
     })
+
+    document.querySelector('#userDiv > button').addEventListener('click', function() {
+        let d = document.getElementById('userDiv');
+        d.style.display = "none";
+    })
+
+
 </script>
 
 @endsection
