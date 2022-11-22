@@ -1,4 +1,4 @@
-@extends('errors::illustrated-layout')
+@extends('errors::forbidden-layout')
 
 @section('code', '404')
 

@@ -211,7 +211,7 @@
 
 .events-list tr:nth-child(even) {
 
-    background-color: rgba(202, 160, 229, 0.7);
+    background-color: #cba1e6b3;
     color: #000;
 }
 
