@@ -1324,7 +1324,7 @@ paths:
   /aboutUs:
     get:
       operationId: R701
-      summary: 'R601: About Us'
+      summary: 'R701: About Us'
       description: 'Allows a user to view the about us page. Access: PUB'
       tags:
         - 'M07: Static Pages'
