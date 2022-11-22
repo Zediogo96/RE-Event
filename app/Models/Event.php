@@ -66,7 +66,7 @@ class Event extends Model
      */
     public function eventTag()
     {
-        return $this->belongsTo('App\Models\Tag');
+        return $this->belongsTo('App\Models\Tag', 'tagid');
     }
     
 

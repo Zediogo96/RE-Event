@@ -310,7 +310,6 @@
                         {{ csrf_field() }}
                         @csrf
                         <!-- get value from event-id2 in laravel  -->
-
                         <div class="form-group mb-3 form-event-edit">
                             <label for="name" class="form-label">Event Name</label>
                             <input id="name" type="text" name="name" onKeyUp="handleNameChange({{$event->eventid}})" value="{{$event->name}}" class="input-group form-control">
