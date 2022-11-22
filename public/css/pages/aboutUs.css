@@ -8,6 +8,7 @@
 	padding: 1px;
 	text-align: center;
 	color: #000;
+	position:relative;
 }
 
 .container-profile-cards {
@@ -25,6 +26,25 @@
 
 .title {
 	color: grey;
+}
+
+.about-section span {
+
+
+	position: relative;
+	display: inline-block;
+	font-size: 90px;
+	text-transform: uppercase;
+	animation: flip 4s infinite;
+	animation-delay: calc(.2s * var(--i))
+}
+
+@keyframes flip {
+
+	0%,
+	80% {
+		transform: rotateY(360deg)
+	}
 }
 
 
@@ -128,4 +148,12 @@
 
 .btn-red-outline:hover {
 	background: #b82151;
+}
+
+@keyframes flip {
+
+	0%,
+	80% {
+		transform: rotateY(360deg)
+	}
 }

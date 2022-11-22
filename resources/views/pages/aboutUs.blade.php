@@ -13,7 +13,16 @@
 <body>
 
     <div class="about-section">
-        <h1 style="font-size: 80px; margin-top: 5px;">About RE-EVENT</h1>
+        <span style="--i:1">R</span>
+        <span style="--i:2">E</span>
+        <span style="--i:3">-</span>
+        <span style="--i:4">E</span>
+        <span style="--i:5">V</span>
+        <span style="--i:6">E</span>
+        <span style="--i:7">N</span>
+        <span style="--i:8">T</span>
+        <span style="--i:9"></span>
+
         <p style="font-size: 20px;">Some text about who we are and what we do.</p>
     </div>
 
@@ -50,7 +59,7 @@
                     <img src="profile_pictures/2.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
-                    <div class="profile-name" style="font-size: 25px; font-weight: bold">Eduardo Silva </div>
+                        <div class="profile-name" style="font-size: 25px; font-weight: bold">Eduardo Silva </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>
@@ -63,7 +72,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- END EDU -->
 
         <!-- ZÉ -->
@@ -74,7 +83,7 @@
                     <img src="profile_pictures/1.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
-                    <div class="profile-name" style="font-size: 25px; font-weight: bold "> José Diogo </div>
+                        <div class="profile-name" style="font-size: 25px; font-weight: bold "> José Diogo </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>
@@ -88,7 +97,7 @@
             </div>
         </div>
 
-        
+
         <!-- END ZÉ -->
 
         <!-- MATILDE -->
@@ -99,7 +108,7 @@
                     <img src="profile_pictures/4.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
-                    <div class="profile-name" style="font-size: 25px; font-weight: bold"> Matilde Silva </div>
+                        <div class="profile-name" style="font-size: 25px; font-weight: bold"> Matilde Silva </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>
