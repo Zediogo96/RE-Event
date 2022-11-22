@@ -60,6 +60,14 @@
                 <span class="title">Contact</span>
             </a>
         </li>
+        <li class="list">
+            <a href="#">
+                <span class="icon">
+                    <ion-icon name="mail-outline"></ion-icon>
+                </span>
+                <span class="title" onclick="showInviteDiv()">Send Invite</span>
+            </a>
+        </li>
 
     </ul>
 
@@ -86,6 +94,13 @@
             </tbody>
         </table>
         <button id="close-modal-button"></button>
+    </div>
+
+    <div id="inviteDiv" data-mdb-animation="slide-in-right" style="display:none; text-align:center;" class="answer_list"> Please enter the email of the user you wish to invite
+        <!--@csrf-->
+            <input type="text" class="form-controller" id="sendInvite" name="email"></input>
+            <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick = "createInvite({{$event->eventid}})">Send Invite</button>
+            <button id="close-modal-button"></button>
     </div>
 
 </div>
@@ -209,6 +224,16 @@
         d.style.display = "block";
     }
 
+    function showInviteDiv() {
+        document.getElementById("info-navbar-container").querySelectorAll('div').forEach(n => n.style.display = 'none');
+        let d = document.getElementById('inviteDiv');
+        d.classList.add("animate");
+        setTimeout(function() {
+            d.classList.remove("animate");
+        }, 500);
+        d.style.display = "block";
+    }
+
     document.querySelector('#outroDiv > button').addEventListener('click', function() {
         let d = document.getElementById('outroDiv');
         d.classList.add("animate-out");
@@ -223,6 +248,17 @@
     document.querySelector('#userDiv > button').addEventListener('click', function() {
         let d = document.getElementById('userDiv');
         d.style.display = "none";
+    })
+
+    document.querySelector('#inviteDiv > button').addEventListener('click', function() {
+        let d = document.getElementById('inviteDiv');
+        d.classList.add("animate-out");
+        setTimeout(function() {
+            d.classList.remove("animate-out");
+        }, 500);
+        setTimeout(function() {
+            d.style.display = "none";
+        }, 450);
     })
 </script>
 

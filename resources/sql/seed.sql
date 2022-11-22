@@ -323,11 +323,7 @@ INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic,
     VALUES (3, 'AfonsoFarr', 'af_farroco@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'profile_pictures/3.jpg', TRUE);
 
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
-<<<<<<< HEAD
-    VALUES (4, 'MatildeSilva', 'mat_silva@hotmail.com', '2022/12/19', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'M', 'assets/user_profile_photos/4', TRUE);
-=======
     VALUES (4, 'MatildeSilva', 'mat_silva@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'profile_pictures/4.jpg', TRUE);
->>>>>>> 094ce1f8b8015f98eef5cf7f7a6dd0c84a0a6708
 
 /* Users */
 

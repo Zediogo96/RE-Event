@@ -275,7 +275,10 @@ signupLink.onclick = () => {
 };
 
 
-function createInvite(invited_user, event_id) {
+function createInvite(event_id) {
+    let invited_user = document.getElementById("sendInvite").value;
+    console.log(invited_user);
+    console.log(event_id);
     sendAjaxRequest(
         "post",
         "/api/invite",

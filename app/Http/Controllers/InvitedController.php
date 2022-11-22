@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invited;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 
@@ -17,6 +18,12 @@ class InvitedController extends Controller
     /**
      * Accepts an invite by updating accept boolean of invite to true
      */
+    public function get_id_from_email($email){
+        $user = User::where('user_.email', '=',  $email)
+                        ->firstOrFail();
+        return $user->userid;
+    }
+
     public function accept(Request $request){
         if (!Auth::check()) {return response(route('login'), 302);}
 
@@ -45,7 +52,7 @@ class InvitedController extends Controller
     //TODO pedir o inviter_user_id e se rejeitar 1 fica com todos os outros para esse evento mas se aceitar 1, todos os outros invites para esse evento de pessoas diferentes apagam se
     public function reject(Request $request) {
         if (!Auth::check()) {return response(route('login'), 302);}
-
+        
         $invited_user_id = Auth::user()->userid;
         $event_id = $request['event_id'];
 
@@ -67,19 +74,19 @@ class InvitedController extends Controller
         //$this->validate($request); 
         if (!Auth::check()) {return response(route('login'), 302);}
 
-        $invited_user_id = $request['invited_user'];
+        $eventid = $request['event_id'];
+        $invited_user_id = InvitedController::get_id_from_email($request['invited_user']);
         $inviter_user_id = Auth::user()->userid;
-        $event_id = $request['event_id'];
 
         $invite = Invited::where('invited.inviteduserid', '=',  $invited_user_id)
                         ->where('invited.inviteruserid', '=', $inviter_user_id)
-                        ->where('invited.eventid', '=', $event_id)
+                        ->where('invited.eventid', '=', $eventid)
                         ->first();
         if(!$invite){
             $inv = new Invited;
             $inv->inviteduserid = $invited_user_id;
             $inv->inviteruserid = $inviter_user_id;
-            $inv->eventid = $event_id;
+            $inv->eventid = $eventid;
             $inv->save();
             return response(null, 200);
         }
