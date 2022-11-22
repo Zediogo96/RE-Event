@@ -657,8 +657,6 @@ INSERT INTO event_host (userID, eventID)
 INSERT INTO event_host (userID, eventID)
     VALUES (1, 9);
 
-
-
 /* Comments */
 
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (1, 'Just cant believe!!', '2021/4/13', '3:20', 1, 6);
@@ -777,6 +775,10 @@ INSERT INTO report (reason, description, date, time, userID, eventID, commentID)
 /* Tickets */
 
 INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('9e25bc6c893e75664de8316a2b24f703c475c7c38a5b6b4057caec6a5922e9ed', 1,1);
+INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('9e25bc6c893e75664de8316a2b24f703c475c7c38a5b6b4057caec6a5922e9ed', 1,2);
+INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('9e25bc6c893e75664de8316a2b24f703c475c7c38a5b6b4057caec6a5922e9ed', 1,3);
+INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('9e25bc6c893e75664de8316a2b24f703c475c7c38a5b6b4057caec6a5922e9ed', 1,4);
+INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('9e25bc6c893e75664de8316a2b24f703c475c7c38a5b6b4057caec6a5922e9ed', 1,5);
 INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('8056a38b89cdd91596af02f941a575dfd5d100ae9fff098e0694275fdd2115e9', 2,2);
 INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('96047ed3338190c0bef12ad3056c209bd697859e3d9fc48cbc0872c9375f6c1e', 3,3);
 INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('b737fdb3af65fb6ca162272339543a14a0bade2502784a3412d31f078d92f092', 4,4);

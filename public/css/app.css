@@ -445,6 +445,16 @@ div span:last-of-type {
   margin: 0 auto;
 }
 
+tbody tr {
+  border-bottom: 1px solid whitesmoke;
+  border-top: 1px solid whitesmoke;
+}
+
+/* css select every td element except last child */
+tbody tr td:not(:last-child) {
+  border-right: 1px solid whitesmoke;
+}
+
 #info-navbar-container div table thead, .events-list thead {
   background-color: blue;
 }

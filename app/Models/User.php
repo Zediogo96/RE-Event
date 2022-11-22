@@ -41,7 +41,6 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Event', 'ticket', 'userid', 'eventid');
     }
 
-
     /**
     * User who received the invite
     */
