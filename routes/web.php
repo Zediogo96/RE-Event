@@ -45,7 +45,10 @@ Route::get('createEvent', 'EventController@create')->name('event.create');  //ed
 Route::post('storeEvent', 'EventController@store')->name('storeEvent'); //create a new event
 
 Route::get('addEventUsers/{eventid?}/{userid?}', 'EventController@addUser')->name('addUser'); //update the details of an event
-Route::get('removeEventUsers/{eventid?}/{userid?}', 'EventController@removeUser')->name('removeUser'); //update the details of an event 
+Route::get('removeEventUsers/{eventid?}/{userid?}', 'EventController@removeUser')->name('removeUser'); //update the details of an event
+
+Route::get('attendEvent/{eventid?}/{userid?}', 'EventController@attendEvent')->name('attendEvent'); //make an user attend an event (add ticket) 
+Route::get('leaveEvent/{eventid?}/{userid?}', 'EventController@leaveEvent')->name('leaveEvent'); //make an user leave an event (delete ticket)
 
 // Static Pages
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
