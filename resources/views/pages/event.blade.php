@@ -68,10 +68,10 @@
 
 <div id="info-navbar-container">
 
-    <div id="userDiv" style="display:none;" class="answer_list"> WELCOME
+    <div id="userDiv" style="display:none; text-align:center;" class="answer_list"> TO DO: EVENT HOST CARD
         <button id="close-modal-button"></button>
     </div>
-    <div id="outroDiv" style="display:none;" class="answer_list">
+    <div id="outroDiv" data-mdb-animation="slide-in-right" style="display:none;" class="answer_list">
 
         <input type="text" class="form-controller" id="search-users" name="search"></input>
         <table class="table table-bordered table-hover" style="margin-top:1rem;">
@@ -90,29 +90,34 @@
 
 </div>
 
-<script type="text/javascript" defer>
-    $('#search-users').on('keyup', function() {
-        $value = $(this).val();
-        $.ajax({
-            type: 'get',
-            url: '{{URL::to('
-            searchUsers ')}}',
-            data: {
-                'search': $value,
-                'event_id': '{{$event->eventid}}'
-            },
-            success: function(data) {
-                $('#table-user-res').html(data);
-            }
-        });
-    })
-</script>
+<!-- AJAX REQUEST -->
 <script type="text/javascript">
-    $.ajaxSetup({
-        headers: {
-            'csrftoken': '{{ csrf_token() }}'
-        }
+    document.getElementById("search-users").addEventListener("keyup", function(e) {
+        fetch("searchUsers", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                search: e.target.value
+            })
+        }).then(function(data) {
+            return data.text();
+        }).then(function(data) {
+            document.getElementById("table-user-res").innerHTML = data;
+        }).catch(function(error) {
+            console.log(error);
+        });
     });
+</script>
+
+<script type=text/javascript>
+
+
 </script>
 
 <script type="text/javascript">
@@ -132,12 +137,31 @@
 
     function showOutroDiv() {
         document.getElementById("info-navbar-container").querySelectorAll('div').forEach(n => n.style.display = 'none');
-        document.getElementById('outroDiv').style.display = "block";
+        let d = document.getElementById('outroDiv');
+        d.classList.add("animate");
+        setTimeout(function() {
+            d.classList.remove("animate");
+        }, 500);
+        d.style.display = "block";
     }
 
     document.querySelector('#outroDiv > button').addEventListener('click', function() {
-        document.getElementById('outroDiv').style.display = "none";
+        let d = document.getElementById('outroDiv');
+        d.classList.add("animate-out");
+        setTimeout(function() {
+            d.classList.remove("animate-out");
+        }, 500);
+        setTimeout(function() {
+            d.style.display = "none";
+        }, 450);
     })
+
+    document.querySelector('#userDiv > button').addEventListener('click', function() {
+        let d = document.getElementById('userDiv');
+        d.style.display = "none";
+    })
+
+
 </script>
 
 @endsection

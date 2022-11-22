@@ -317,22 +317,54 @@ div span:last-of-type {
 
 #info-navbar-container div {
   position: relative;
-  top: 1rem;
   left: 15rem;
   height: 500px;
+  border-radius: 2rem;
+  border: 2px solid blue;
 }
 
 #userDiv {
-  background-color: white;
+  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
   width: 30rem;
+  top: -14rem;
 }
 
 #outroDiv {
   background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
-  ;
   width: 70rem;
-  border-radius: 2rem;
-  border: 2px solid blue;
+  top: -10rem;
+}
+
+.animate {
+  animation: fadeIn 500ms ease-out backwards;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateX(250px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
+.animate-out {
+  animation: fadeOut 500ms ease-out backwards;
+}
+
+@keyframes fadeOut {
+  from {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(250px);
+    opacity: 0;
+  }
 }
 
 #info-navbar-container div table {

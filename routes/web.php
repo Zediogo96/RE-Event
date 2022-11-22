@@ -55,9 +55,9 @@ Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
 Route::get('faq', 'PageController@faq')->name('faq.index');
 
 Route::get('searchTest','SearchController@index')->name('search.test');
-Route::get('search','SearchController@search');
-Route::get('searchUsers','SearchController@searchUsers');
-ROute::get('searchUsersAdmin','SearchController@searchUsersAdmin');
+Route::post('search','SearchController@search');
+Route::post('searchUsers','SearchController@searchUsers');
+ROute::post('searchUsersAdmin','SearchController@searchUsersAdmin');
 
 Route::get('user{userid?}', 'UserController@show')->name('user.show');
 Route::post('updateUser/{userid?}', 'UserController@update')->name('updateUser'); //update the details of an event
