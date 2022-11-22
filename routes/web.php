@@ -79,3 +79,4 @@ Route::get('debug/invites', function() {
 }); */
 
 Route::get('auth', 'Auth\LoginController@getUser');
+
