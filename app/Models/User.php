@@ -38,6 +38,7 @@ class User extends Authenticatable
      */
     public function attendingEvents()
     {
+        
         return $this->belongsToMany('App\Models\Event', 'ticket', 'userid', 'eventid');
     }
 

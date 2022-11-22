@@ -58,6 +58,9 @@ ROute::post('searchUsersAdmin','SearchController@searchUsersAdmin');
 
 Route::get('user{userid?}', 'UserController@show')->name('user.show');
 Route::post('updateUser/{userid?}', 'UserController@update')->name('updateUser'); //update the details of an event
+Route::post('selfAddUser', 'UserController@attendEvent')->name('selfAddUser');
+Route::post('selfRemoveUser', 'UserController@leaveEvent')->name('selfRemoveUser');
+Route::post('storeUser', 'UserController@store')->name('storeUser');
 
 //testing database data
 Route::get('cities', 'CityController@index');
