@@ -17,7 +17,7 @@
         <section class="profileAndDetails">
 
             <div class="profile" id="profileUserCard">
-                <img src="profile_pictures/generic_pic.jpg" width="70" height="70" alt="Profile Picture">
+                <img src="{{$user->profilepic}}" width="70" height="70" alt="Profile Picture">
                 <p>{{$user->name}}</p>
             </div>
 
@@ -44,28 +44,36 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+
+                @if($user->admin)
+                <div>
+                    <div id="usersSearchOption" onclick="selectOption(4)" class="option">Search Users
+                    </div>
+                    @endif
+                </div>
 
 
         </section>
         <section id="selectDetails" class="profile">
             <div id="myProfileDetails" class="optionDetails">
                 <h4>My Profile</h4>
-                <form action="updateProfileDetails" method="post" id="profileDetailsForm">
+                <form action="{{route('updateUser', ['userid' => $user->userid])}}" method="post" id="profileDetailsForm" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="userid" value="{{$user->userid}}">
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="name"> Name </label>
-                            <input type="text" name="name" id="profileDetailsNameInput" placeholder="{{$user->name}}">
+                            <input type="text" name="name" id="profileDetailsNameInput" value="{{$user->name}}">
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="email"> Email </label>
-                            <input type="email" name="email" id="profileDetailsEmailInput" placeholder="{{$user->email}}">
+                            <input type="email" name="email" id="profileDetailsEmailInput" value="{{$user->email}}">
                         </div>
                     </div>
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="birthday"> Birthday </label>
-                            <input type="date" name="birthday" id="profileDetailsBirthdayInput" placeholder="{{$user->birthDate}}">
+                            <input type="date" name="birthdate" id="profileDetailsBirthdayInput" value="{{$user->birthdate}}">
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="password"> Password </label>
@@ -75,10 +83,10 @@
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes">
                             <label for="gender"> Gender </label>
-                            <select name="gender" id="profileDetailsGenderInput">
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
+                            <select name="gender" id="profileDetailsGenderInput" selected="{{$user->gender}}">
+                                <option value='M' @if ($user->gender === 'M') selected @endif >Male</option>
+                                <option value='F' @if ($user->gender === 'F') selected @endif>Female </option>
+                                <option value='O' @if ($user->gender === 'O') selected @endif>Other</option>
                             </select>
                         </div>
                         <div class="updateProfileInputBoxes">
@@ -87,7 +95,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" id="updateProfileDetailsButton" style="margin-left:80%" class="btn btn-success" >Update Profile Details</button>
+                    <button type="submit" id="updateProfileDetailsButton" style="margin-left:80%" class="btn btn-success">Update Profile Details</button>
                 </form>
             </div>
             <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
@@ -168,34 +176,6 @@
 
                                             <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day">5</div>
-                                                    <div class="event-month">APR</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Phasellus et est quis diam iaculis fringilla id nec sapien.
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Nike Arena</td>
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day">31</div>
-                                                    <div class="event-month">MAY</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Ut consectetur commodo justo, sed sollicitudin massa venenatis ut 2013.
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Samsung Arena</td>
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
-
-
                                     </table>
 
                                 </div>
@@ -270,7 +250,38 @@
                     </div>
                 </div>
             </div>
+            @if ($user->admin)
+            <div id="userSearch" class="details submenuSleep">
+                <div class="container">
+                    <div class="section">
+                        <div class="blog-post blog-single-post">
+                            <div class="single-post-title" style="padding-bottom: 1rem;">
+                                <h2>User Search Tool</h2>
+                                <button class="btn btn-success" data-toggle="modal" data-target="#createEventModal"> User Event </button>
+                            </div>
+                            <div class="single-post-content">
+                                <input type="text" class="form-controller" id="search-users-admin" name="search" placeholder="Search for the user.."></input>
+                                <table class="events-list" style="margin-top: 2rem;">
 
+                                    <thead>
+                                        <tr>
+                                            <th>UserID</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th> </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="search-admin-users-res">
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @endif
             <div id="myInvitesDetails" class="optionDetails optionDetailsHidden">
                 <div id="receivedInvites" class="details submenuSleep">
                     No invites Received :(
@@ -483,6 +494,30 @@
     </div>
 
     <body>
+
+        <script type="text/javascript">
+            document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
+                fetch("searchUsersAdmin", {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "X-CSRF-Token": '{{ csrf_token() }}'
+                    },
+                    method: "post",
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        search: e.target.value
+                    })
+                }).then(function(data) {
+                    return data.text();
+                }).then(function(data) {
+                    document.getElementById("search-admin-users-res").innerHTML = data;
+                }).catch(function(error) {
+                    console.log(error);
+                });
+            });
+        </script>
 
 </html>
 

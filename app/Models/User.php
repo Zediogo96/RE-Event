@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+
 class User extends Authenticatable
 {
 
@@ -19,12 +20,12 @@ class User extends Authenticatable
 
     //The attributes that are mass assignable
     protected $fillable = [
-        'name', 'email', 'birthDate', 'password', 'gender',
+        'name', 'email', 'birthdate', 'password', 'gender',
     ];
 
     //The attributes that should be hidden for arrays
     protected $hidden = [
-        'password', 'remember_token'
+        'password', 'remember_token', 'userid',
     ];
 
     public function hostedEvents()

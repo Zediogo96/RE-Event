@@ -1,6 +1,5 @@
-
-create schema if not exists lbaw_bd;
-set search_path to lbaw_bd;
+-- create schema if not exists lbaw_bd;
+-- set search_path to lbaw_bd;
 
 
 -- Remove Duplicate Tables --------------
@@ -52,7 +51,7 @@ CREATE TABLE user_ (
     birthDate date NOT NULL,
     password TEXT NOT NULL,
     gender Gender NOT NULL,
-    profilePic text DEFAULT 'assets/user_profile_photos/default_user_profile.png',
+    profilePic text DEFAULT 'profile_pictures/generic_pic.png',
     admin boolean DEFAULT FALSE
 );
 
@@ -315,66 +314,72 @@ EXECUTE PROCEDURE _create_ticket();
 /** Users **/
 -- Admins
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
-    VALUES (1, 'Zediogo96', 'zediogox@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'assets/user_profile_photos/1', TRUE);
+    VALUES (1, 'Zediogo96', 'zediogox@hotmail.com', '2022/12/19', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'M', 'profile_pictures/1.jpg', TRUE);
 
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
-    VALUES (2, 'EduSilva', 'edu_silva@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab','M', 'assets/user_profile_photos/2', TRUE);
+    VALUES (2, 'EduSilva', 'edu_silva@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab','M', 'profile_pictures/2.jpg', TRUE);
 
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
-    VALUES (3, 'AfonsoFarr', 'af_farroco@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'assets/user_profile_photos/3', TRUE);
+    VALUES (3, 'AfonsoFarr', 'af_farroco@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'profile_pictures/3.jpg', TRUE);
 
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
+<<<<<<< HEAD
     VALUES (4, 'MatildeSilva', 'mat_silva@hotmail.com', '2022/12/19', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'M', 'assets/user_profile_photos/4', TRUE);
+=======
+    VALUES (4, 'MatildeSilva', 'mat_silva@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'profile_pictures/4.jpg', TRUE);
+>>>>>>> 094ce1f8b8015f98eef5cf7f7a6dd0c84a0a6708
 
 /* Users */
 
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (5, 'Thomas Orwig', 'Paul_Pak78@hotmail.com', '2020/12/11', '9644949e2bbdf42153ee331ef896b0f6120339bca2027442604af3d9c0c3eb56', 'O', 'assets/user_profile_photos/5.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (6, 'Frank Miller', 'Ike_Can93@gmail.com', '2021/12/26', '779dcd499d7988e1939e4dcdb4738f2c57fe953498a9bea2db9682da201828fb', 'M', 'assets/user_profile_photos/6.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (7, 'Fred Cannon', 'Ty_Law93@yahoo.pt', '2021/12/8', '352ea9e27fb3b8e1c16cda3027ddf82cc655ed3ce39c1b302e987cb066fcea32', 'O', 'assets/user_profile_photos/7.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (8, 'Alex Nugent', 'Steve_Nug89@hotmail.com', '2022/7/1', 'f13cd9be3e9a8d9701ea5fcd2e4b38c027e03410faba96893fa93967e53275d4', 'F', 'assets/user_profile_photos/8.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (9, 'Tim Knutson', 'George_Nug88@hotmail.com', '2021/12/14', 'bad35a58c5baf00cdf7eca85f29cb160ad58ea9fc3bb5b7e112198f7027fe39e', 'F', 'assets/user_profile_photos/9.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (10, 'Tim Hesch', 'Fred_Dei77@hotmail.com', '2021/11/1', '922aa4976cfd717be112e1cb351d8fefac85f53a56d582aaabbe3de054ffaf2e', 'O', 'assets/user_profile_photos/10.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (11, 'George Boyd', 'Steve_McC96@hotmail.com', '2022/8/3', 'a32f293eee304390ed6da23ae4ab0590df1badcc473ae31ac363335dddd1a303', 'F', 'assets/user_profile_photos/11.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (12, 'Fred McCormack', 'Walter_Bat96@yahoo.pt', '2020/5/22', '122d3e811d54aec7dd9c383e28cfe41814cb86de810c5fa9e3d4577df9404d53', 'M', 'assets/user_profile_photos/12.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (13, 'Ty Ebner', 'David_And96@yahoo.pt', '2020/3/26', '922cad714594f58883ceccf409b64673921f2754718a73ffedd5f2a940ec9003', 'O', 'assets/user_profile_photos/13.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (14, 'Joe Ashwoon', 'Dan_Hes84@yahoo.pt', '2020/8/20', '139eba792e702794e3bbea815d4a29714ebb334e68704f17976e61c69c562ae8', 'F', 'assets/user_profile_photos/14.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (15, 'Fred Lawicki', 'Roger_Aik88@hotmail.com', '2020/1/11', '445960f22ccade2bbc48dca89574e4b04e378b4be9e671acc9e896e9be4a90ca', 'O', 'assets/user_profile_photos/15.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (16, 'Mark Deitz', 'Jack_Aik95@gmail.com', '2022/12/14', '3f8800d771e57f2b4ff96de4abbf003bf174452ea6083b0213a60473947afbe0', 'M', 'assets/user_profile_photos/16.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (17, 'Steve Knutson', 'David_Orw83@hotmail.com', '2020/8/16', 'f6d642c0a06524720de2be173938cff675682f96caa5282deee9a6995bb49b3c', 'M', 'assets/user_profile_photos/17.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (18, 'Matthew Quinn', 'Adam_Qui94@gmail.com', '2020/1/8', '1aa5c97b42d3bc6b4700e4080c801edac54d9ec30f901c4f40ff86ffa509ba1d', 'O', 'assets/user_profile_photos/18.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (19, 'Frank Ebner', 'Roger_Dei73@hotmail.com', '2022/4/7', '2f7a3b2a67a6855f4b49feaa7b7e8f2fff24315fc2c1a743168f1db3c5ef51a8', 'M', 'assets/user_profile_photos/19.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (20, 'John Ebner', 'Paul_Bow79@gmail.com', '2020/5/4', 'bd5479f8e2004b5bb78033425ea93d9793806f45f3eb638416564206ceb9abe5', 'O', 'assets/user_profile_photos/20.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (21, 'Hal Quinn', 'Monte_Mcc80@hotmail.com', '2022/4/16', '1b5232a2e0bcc326698673978afc2c73e61ef25c35bd030781cf964959f3311f', 'O', 'assets/user_profile_photos/21.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (22, 'Aaron Lawless', 'Alex_Mcc77@gmail.com', '2021/7/23', 'c426f6564ff3fe43262fb80919164b628e9cbed0689b2baad181d00bc81fb8f6', 'M', 'assets/user_profile_photos/22.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (23, 'David Paiser', 'Adam_Pet98@hotmail.com', '2021/2/5', '18139f04d65e32e7ba88278ceb04d37ae778919c01b25081c8f5d1e55df8858e', 'M', 'assets/user_profile_photos/23.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (24, 'Roger Ebner', 'Aaron_McC87@yahoo.pt', '2020/10/20', '3d8aad9c272b2deadd95cda08af36258275a06bd16611fb7ff28675aeea77ffc', 'O', 'assets/user_profile_photos/24.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (25, 'Walter Paiser', 'Aaron_Orw88@yahoo.pt', '2022/10/29', '2ab13944e0c68d7711827aa5745df82864578e3735660d557bfdf785a6585210', 'M', 'assets/user_profile_photos/25.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (26, 'Aaron Myers', 'Paul_Aik86@gmail.com', '2022/6/24', 'c5a9facb04d5d9a718ca051829e7d14ae95c56a4e49d11a4196a77eb52c7d8d7', 'M', 'assets/user_profile_photos/26.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (27, 'Hank Deitz', 'Roger_Mcc72@yahoo.pt', '2022/7/4', '540e50b6791811ac0d3543a8cffdddcd23b06979b1faebd9c1fe29099832e499', 'F', 'assets/user_profile_photos/27.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (28, 'Ike Orwig', 'Edward_Bat83@gmail.com', '2022/11/6', 'db665c32a8da636aa5ab51c36d0ff13377b78dde38c6c232adb8c50fd833ae87', 'O', 'assets/user_profile_photos/28.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (29, 'Carl Ortiz', 'Dan_Aik85@yahoo.pt', '2020/8/20', '710061e0f7a143f23afeefaca6bf03f864406846bb7d07b74c37e5e83d54e460', 'M', 'assets/user_profile_photos/29.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (30, 'Peter Ashwoon', 'Ty_Hof70@hotmail.com', '2020/1/23', '8dba5e63966fb272f559dccdc5cf1c680cdceb9d806db675744112febba740c2', 'M', 'assets/user_profile_photos/30.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (31, 'John Cannon', 'Thomas_Haw83@hotmail.com', '2020/3/2', '606ce7c94159e59dcdf5c5de805b146c6a8860f37b815c5bebb3b74e24e0e4e4', 'O', 'assets/user_profile_photos/31.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (32, 'Peter Lawicki', 'Roger_Bat93@gmail.com', '2020/3/1', '56a68e287d32395a30a1e97f31dbb47beaf3f14c6f63fce5858f8fd3a9e39e26', 'O', 'assets/user_profile_photos/32.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (33, 'Frank Frick', 'Fred_Qui96@gmail.com', '2021/6/10', '60aa464cd09bcf6343cb5186e88d9b7c2b735c2929379843b670a13bb467ac72', 'O', 'assets/user_profile_photos/33.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (34, 'Adam Bateman', 'Edward_Qui81@hotmail.com', '2022/9/26', '319b4a8073489120daf23966dbc4318b9ecf3c7624bbb591e34a106164202535', 'F', 'assets/user_profile_photos/34.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (35, 'Hal Kassing', 'Steve_Mil89@gmail.com', '2021/4/16', '0d73af7d297096e3e9d360c14189c192e664d1383ec3f2aa65bf4da7e9d35b5c', 'O', 'assets/user_profile_photos/35.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (36, 'Adam Haworth', 'Roger_Ory87@hotmail.com', '2022/4/23', '69c6a296d7e7fac5ef03893b2da899672640c3a8d978fef3b384fbbba557432e', 'O', 'assets/user_profile_photos/36.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (37, 'Carl Orwig', 'Jack_Kas84@gmail.com', '2020/8/22', 'ca9796a5be1c082214027081765562fbe6cd103e5de15fb3688c219edc1b8785', 'O', 'assets/user_profile_photos/37.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (38, 'Paul Quinn', 'Ike_Mil74@yahoo.pt', '2020/10/3', '552a8d48c1c0a691f21de1cc04cba4310fab707e0d6cbf409b0e7fb848d43956', 'M', 'assets/user_profile_photos/38.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (39, 'Roger Frick', 'Aaron_Bow72@yahoo.pt', '2022/2/26', 'd79998dd9271329f11e5bb248b274da5b9bff79f9ec9f00c03323feb88fa009e', 'F', 'assets/user_profile_photos/39.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (40, 'Nathan Deitz', 'Fred_Aik90@hotmail.com', '2021/9/5', '7bb368f7f697084d9d682a9694127304eac06f9b42d20cea1250703b9c0ed7bf', 'F', 'assets/user_profile_photos/40.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (41, 'Roger McCormack', 'Matthew_Nug97@yahoo.pt', '2021/6/17', '5289899450d8c2b03f89c4a9f6936801c13a05982c0b0f5c8547237a779493af', 'O', 'assets/user_profile_photos/41.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (42, 'Ty Boyd', 'Aaron_Pet90@yahoo.pt', '2022/10/5', 'b5df7550709a0cc4e054be75a9046ef4227e493cb885994c381d172e433e552b', 'M', 'assets/user_profile_photos/42.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (43, 'Aaron Pak', 'Peter_Mye96@hotmail.com', '2022/2/9', 'f0cb14d1d2d63197bc93047ddb993fba2661111cdb83b258a7359979dfa6e3c1', 'M', 'assets/user_profile_photos/43.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (44, 'George Nugent', 'Ben_Cas83@gmail.com', '2022/4/28', '4e4b1a50e531380ba48f8cb95927c119558955613e50b86413b1b64de4bf058b', 'M', 'assets/user_profile_photos/44.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (45, 'Carl Kassing', 'Steve_Law89@hotmail.com', '2022/3/15', 'dab6a8176fa718f523c78b9cafd184d398eff4b41dc4ddb60f1e3487989a80c7', 'O', 'assets/user_profile_photos/45.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (46, 'David Bowers', 'David_Fri73@hotmail.com', '2020/7/9', '14760187fce728b7316dda6cde9f35896b4eb4716d3944d697ad41461f7b8323', 'F', 'assets/user_profile_photos/46.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (47, 'Alex Haworth', 'Steve_Boy82@gmail.com', '2021/1/12', 'fe14adb6950368a8e1fe764ae31c0dbc86dc6e615c2d48d2960a7f74ff5dc911', 'O', 'assets/user_profile_photos/47.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (48, 'Nathan Orwig', 'Ty_Boy93@hotmail.com', '2021/12/5', '06b7fe3d366c8f3394c9a0c2e2c71968ec5eb6c663b7e2f0f0315e851fae72b1', 'O', 'assets/user_profile_photos/48.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (49, 'Frank Lawless', 'Hal_Can72@yahoo.pt', '2020/11/4', 'fa52087106f92dbad59ceaab27a40583fe019e69f7db7d1598d67f6349693606', 'O', 'assets/user_profile_photos/49.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (50, 'George Ebner', 'john_McC71@hotmail.com', '2020/3/30', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'F', 'assets/user_profile_photos/50.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (5, 'Thomas Orwig', 'Paul_Pak78@hotmail.com', '2020/12/11', '9644949e2bbdf42153ee331ef896b0f6120339bca2027442604af3d9c0c3eb56', 'O', 'profile_pictures/5.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (6, 'Frank Miller', 'Ike_Can93@gmail.com', '2021/12/26', '779dcd499d7988e1939e4dcdb4738f2c57fe953498a9bea2db9682da201828fb', 'M', 'profile_pictures/6.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (7, 'Fred Cannon', 'Ty_Law93@yahoo.pt', '2021/12/8', '352ea9e27fb3b8e1c16cda3027ddf82cc655ed3ce39c1b302e987cb066fcea32', 'O', 'profile_pictures/7.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (8, 'Alex Nugent', 'Steve_Nug89@hotmail.com', '2022/7/1', 'f13cd9be3e9a8d9701ea5fcd2e4b38c027e03410faba96893fa93967e53275d4', 'F', 'profile_pictures/8.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (9, 'Tim Knutson', 'George_Nug88@hotmail.com', '2021/12/14', 'bad35a58c5baf00cdf7eca85f29cb160ad58ea9fc3bb5b7e112198f7027fe39e', 'F', 'profile_pictures/9.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (10, 'Tim Hesch', 'Fred_Dei77@hotmail.com', '2021/11/1', '922aa4976cfd717be112e1cb351d8fefac85f53a56d582aaabbe3de054ffaf2e', 'O', 'profile_pictures/10.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (11, 'George Boyd', 'Steve_McC96@hotmail.com', '2022/8/3', 'a32f293eee304390ed6da23ae4ab0590df1badcc473ae31ac363335dddd1a303', 'F', 'profile_pictures/11.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (12, 'Fred McCormack', 'Walter_Bat96@yahoo.pt', '2020/5/22', '122d3e811d54aec7dd9c383e28cfe41814cb86de810c5fa9e3d4577df9404d53', 'M', 'profile_pictures/12.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (13, 'Ty Ebner', 'David_And96@yahoo.pt', '2020/3/26', '922cad714594f58883ceccf409b64673921f2754718a73ffedd5f2a940ec9003', 'O', 'profile_pictures/13.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (14, 'Joe Ashwoon', 'Dan_Hes84@yahoo.pt', '2020/8/20', '139eba792e702794e3bbea815d4a29714ebb334e68704f17976e61c69c562ae8', 'F', 'profile_pictures/14.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (15, 'Fred Lawicki', 'Roger_Aik88@hotmail.com', '2020/1/11', '445960f22ccade2bbc48dca89574e4b04e378b4be9e671acc9e896e9be4a90ca', 'O', 'profile_pictures/15.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (16, 'Mark Deitz', 'Jack_Aik95@gmail.com', '2022/12/14', '3f8800d771e57f2b4ff96de4abbf003bf174452ea6083b0213a60473947afbe0', 'M', 'profile_pictures/16.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (17, 'Steve Knutson', 'David_Orw83@hotmail.com', '2020/8/16', 'f6d642c0a06524720de2be173938cff675682f96caa5282deee9a6995bb49b3c', 'M', 'profile_pictures/17.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (18, 'Matthew Quinn', 'Adam_Qui94@gmail.com', '2020/1/8', '1aa5c97b42d3bc6b4700e4080c801edac54d9ec30f901c4f40ff86ffa509ba1d', 'O', 'profile_pictures/18.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (19, 'Frank Ebner', 'Roger_Dei73@hotmail.com', '2022/4/7', '2f7a3b2a67a6855f4b49feaa7b7e8f2fff24315fc2c1a743168f1db3c5ef51a8', 'M', 'profile_pictures/19.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (20, 'John Ebner', 'Paul_Bow79@gmail.com', '2020/5/4', 'bd5479f8e2004b5bb78033425ea93d9793806f45f3eb638416564206ceb9abe5', 'O', 'profile_pictures/20.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (21, 'Hal Quinn', 'Monte_Mcc80@hotmail.com', '2022/4/16', '1b5232a2e0bcc326698673978afc2c73e61ef25c35bd030781cf964959f3311f', 'O', 'profile_pictures/21.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (22, 'Aaron Lawless', 'Alex_Mcc77@gmail.com', '2021/7/23', 'c426f6564ff3fe43262fb80919164b628e9cbed0689b2baad181d00bc81fb8f6', 'M', 'profile_pictures/22.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (23, 'David Paiser', 'Adam_Pet98@hotmail.com', '2021/2/5', '18139f04d65e32e7ba88278ceb04d37ae778919c01b25081c8f5d1e55df8858e', 'M', 'profile_pictures/23.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (24, 'Roger Ebner', 'Aaron_McC87@yahoo.pt', '2020/10/20', '3d8aad9c272b2deadd95cda08af36258275a06bd16611fb7ff28675aeea77ffc', 'O', 'profile_pictures/24.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (25, 'Walter Paiser', 'Aaron_Orw88@yahoo.pt', '2022/10/29', '2ab13944e0c68d7711827aa5745df82864578e3735660d557bfdf785a6585210', 'M', 'profile_pictures/25.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (26, 'Aaron Myers', 'Paul_Aik86@gmail.com', '2022/6/24', 'c5a9facb04d5d9a718ca051829e7d14ae95c56a4e49d11a4196a77eb52c7d8d7', 'M', 'profile_pictures/26.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (27, 'Hank Deitz', 'Roger_Mcc72@yahoo.pt', '2022/7/4', '540e50b6791811ac0d3543a8cffdddcd23b06979b1faebd9c1fe29099832e499', 'F', 'profile_pictures/27.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (28, 'Ike Orwig', 'Edward_Bat83@gmail.com', '2022/11/6', 'db665c32a8da636aa5ab51c36d0ff13377b78dde38c6c232adb8c50fd833ae87', 'O', 'profile_pictures/28.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (29, 'Carl Ortiz', 'Dan_Aik85@yahoo.pt', '2020/8/20', '710061e0f7a143f23afeefaca6bf03f864406846bb7d07b74c37e5e83d54e460', 'M', 'profile_pictures/29.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (30, 'Peter Ashwoon', 'Ty_Hof70@hotmail.com', '2020/1/23', '8dba5e63966fb272f559dccdc5cf1c680cdceb9d806db675744112febba740c2', 'M', 'profile_pictures/30.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (31, 'John Cannon', 'Thomas_Haw83@hotmail.com', '2020/3/2', '606ce7c94159e59dcdf5c5de805b146c6a8860f37b815c5bebb3b74e24e0e4e4', 'O', 'profile_pictures/31.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (32, 'Peter Lawicki', 'Roger_Bat93@gmail.com', '2020/3/1', '56a68e287d32395a30a1e97f31dbb47beaf3f14c6f63fce5858f8fd3a9e39e26', 'O', 'profile_pictures/32.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (33, 'Frank Frick', 'Fred_Qui96@gmail.com', '2021/6/10', '60aa464cd09bcf6343cb5186e88d9b7c2b735c2929379843b670a13bb467ac72', 'O', 'profile_pictures/33.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (34, 'Adam Bateman', 'Edward_Qui81@hotmail.com', '2022/9/26', '319b4a8073489120daf23966dbc4318b9ecf3c7624bbb591e34a106164202535', 'F', 'profile_pictures/34.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (35, 'Hal Kassing', 'Steve_Mil89@gmail.com', '2021/4/16', '0d73af7d297096e3e9d360c14189c192e664d1383ec3f2aa65bf4da7e9d35b5c', 'O', 'profile_pictures/35.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (36, 'Adam Haworth', 'Roger_Ory87@hotmail.com', '2022/4/23', '69c6a296d7e7fac5ef03893b2da899672640c3a8d978fef3b384fbbba557432e', 'O', 'profile_pictures/36.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (37, 'Carl Orwig', 'Jack_Kas84@gmail.com', '2020/8/22', 'ca9796a5be1c082214027081765562fbe6cd103e5de15fb3688c219edc1b8785', 'O', 'profile_pictures/37.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (38, 'Paul Quinn', 'Ike_Mil74@yahoo.pt', '2020/10/3', '552a8d48c1c0a691f21de1cc04cba4310fab707e0d6cbf409b0e7fb848d43956', 'M', 'profile_pictures/38.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (39, 'Roger Frick', 'Aaron_Bow72@yahoo.pt', '2022/2/26', 'd79998dd9271329f11e5bb248b274da5b9bff79f9ec9f00c03323feb88fa009e', 'F', 'profile_pictures/39.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (40, 'Nathan Deitz', 'Fred_Aik90@hotmail.com', '2021/9/5', '7bb368f7f697084d9d682a9694127304eac06f9b42d20cea1250703b9c0ed7bf', 'F', 'profile_pictures/40.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (41, 'Roger McCormack', 'Matthew_Nug97@yahoo.pt', '2021/6/17', '5289899450d8c2b03f89c4a9f6936801c13a05982c0b0f5c8547237a779493af', 'O', 'profile_pictures/41.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (42, 'Ty Boyd', 'Aaron_Pet90@yahoo.pt', '2022/10/5', 'b5df7550709a0cc4e054be75a9046ef4227e493cb885994c381d172e433e552b', 'M', 'profile_pictures/42.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (43, 'Aaron Pak', 'Peter_Mye96@hotmail.com', '2022/2/9', 'f0cb14d1d2d63197bc93047ddb993fba2661111cdb83b258a7359979dfa6e3c1', 'M', 'profile_pictures/43.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (44, 'George Nugent', 'Ben_Cas83@gmail.com', '2022/4/28', '4e4b1a50e531380ba48f8cb95927c119558955613e50b86413b1b64de4bf058b', 'M', 'profile_pictures/44.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (45, 'Carl Kassing', 'Steve_Law89@hotmail.com', '2022/3/15', 'dab6a8176fa718f523c78b9cafd184d398eff4b41dc4ddb60f1e3487989a80c7', 'O', 'profile_pictures/45.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (46, 'David Bowers', 'David_Fri73@hotmail.com', '2020/7/9', '14760187fce728b7316dda6cde9f35896b4eb4716d3944d697ad41461f7b8323', 'F', 'profile_pictures/46.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (47, 'Alex Haworth', 'Steve_Boy82@gmail.com', '2021/1/12', 'fe14adb6950368a8e1fe764ae31c0dbc86dc6e615c2d48d2960a7f74ff5dc911', 'O', 'profile_pictures/47.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (48, 'Nathan Orwig', 'Ty_Boy93@hotmail.com', '2021/12/5', '06b7fe3d366c8f3394c9a0c2e2c71968ec5eb6c663b7e2f0f0315e851fae72b1', 'O', 'profile_pictures/48.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (49, 'Frank Lawless', 'Hal_Can72@yahoo.pt', '2020/11/4', 'fa52087106f92dbad59ceaab27a40583fe019e69f7db7d1598d67f6349693606', 'O', 'profile_pictures/49.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (50, 'George Ebner', 'john_McC71@hotmail.com', '2020/3/30', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'F', 'profile_pictures/50.jpg', False);
 /** +#PY'(}N **/
+
+SELECT setval('user__userID_seq', (SELECT MAX(userID) from "user_"));
 
 /** Tags **/
 

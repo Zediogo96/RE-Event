@@ -17,17 +17,27 @@
                     <li class="nav-item pl-1">
                         <a class="nav-link" href="{{route('aboutUs.index')}}"><i class="fa fa-phone fa-fw fa-rotate-180 mr-1"></i> About Us </a>
                     </li>
-                    <li class="nav-item pl-1">
-                        <a class="nav-link" href="{{route('login')}}"><i class="fa fa-user-plus fa-fw mr-1"></i> Register </a>
-                    </li>
                     <!-- Button trigger modal -->
                     <a href="#" class="btn btn-lg nav-link" data-toggle="modal" data-target="#basicModal">
                         <span class="fa mr-1 fa-search" aria-hidden="true"></span> Search
                     </a>
+                    @if (Auth::check())
+                    <li class="nav-item pl-1">
+                        <a class="nav-link" href="{{route('user.show', Auth::user()->userid)}}"><i class="fa fa-user fa-fw mr-1"></i> {{Auth::user()->name}} </a>
+                    </li>
                     <li class="nav-item float">
                         <a class="nav-link" href="{{route('logout')}}"><i class="fa fa-sign-in-alt fa-fw mr-1"></i> Logout </a>
                     </li>
-                    @if (Auth::check()) {{Auth::user()->name}} @endif 
+                    @else
+                    <li class="nav-item pl-1">
+                        <a class="nav-link" href="{{route('login')}}"><i class="fa fa-user fa-fw mr-1"></i> Login </a>
+                    </li>
+                    @endif
+{{-- 
+                    <li class="nav-item float">
+                        <a class="nav-link" href="{{route('logout')}}"><i class="fa fa-sign-in-alt fa-fw mr-1"></i> Logout </a>
+                    </li> --}}
+                     
                 </ul>
             </div>
         </div>

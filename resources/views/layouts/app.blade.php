@@ -19,17 +19,13 @@
 
 
   <!-- SCRIPTS -->
-  <script type="text/javascript" src={{ asset('js/app.js') }} defer> </script>
+  <script type="text/javascript" src="{{ asset('js/app.js') }}" defer> </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
-
 
 </head>
 
 
 <body>
-
-
 
   @include('layouts.Navbar')
   <main>
@@ -38,29 +34,30 @@
     </section>
   </main>
 
-
   <script type="text/javascript">
-    $('#searchInput').on('keyup', function() {
-      $value = $(this).val();
-      $.ajax({
-        type: 'get',
-        url: '{{URL::to('search')}}',
-        data: {
-          'search': $value
+    document.getElementById("searchInput").addEventListener("keyup", function(e) {
+      fetch("search", {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          "X-CSRF-Token": '{{ csrf_token() }}'
         },
-        success: function(data) {
-          $('#table-res').html(data);
-        }
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+          search: e.target.value
+        })
+      }).then(function(data) {
+        return data.text();
+      }).then(function(data) {
+        document.getElementById("table-res").innerHTML = data;
+      }).catch(function(error) {
+        console.log(error);
       });
-    })
-  </script>
-  <script type="text/javascript">
-    $.ajaxSetup({
-      headers: {
-        'csrftoken': '{{ csrf_token() }}'
-      }
     });
   </script>
+
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js " integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx " crossorigin="anonymous "></script>

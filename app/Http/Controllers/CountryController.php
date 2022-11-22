@@ -68,11 +68,15 @@ dd($events);*/
         $tickets = Ticket::all();
         dd($tickets) */;
 
-        $usertest = Event::find(8);
-        dd($usertest->participants);
+        // $usertest = Event::find(8);
+        // dd($usertest->participants);
 
-// $users = User::where('userid', '>', 1)->get();
-// dd($users);
+
+        $tickets = Ticket::all();
+        dd($tickets);
+
+$users = User::where('userid', '>', 45)->get();
+dd($users);
 
         $countries = Country::all();
         return view('layouts.countries', ['countries' => $countries]);

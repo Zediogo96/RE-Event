@@ -211,8 +211,11 @@ function createItem(item) {
 addEventListeners();
 
 /* COUNTDOWN TIMER */
+/* let string = "9 12 23 23:59:59"
+const newDate = new Date(string).getTime();
+// 1694559599000
 
-const newDate = new Date("sep 12 23 23:59:59").getTime();
+
 const countdown = setInterval(() => {
     const date = new Date().getTime();
     const diff = newDate - date;
@@ -237,7 +240,7 @@ const countdown = setInterval(() => {
     document.querySelector(".days").innerHTML = days < 10 ? "0" + days : days;
     document.querySelector(".months").innerHTML =
         month < 10 ? "0" + month : month;
-}, 1000);
+}, 1000); */
 
 /* Event Page */
 
@@ -287,3 +290,11 @@ const thiserror = function(req, err){ console.log('my message' + err); }
 function itemUpdatedHandler2() {
     console.log("result: ", this, this.responseText)
 }
+
+/* AJAX REQUESTS */
+
+// AJAX REQUEST TO SEARCH FOR EVENTS
+
+
+
+/* END AJAX REQUESTS */
