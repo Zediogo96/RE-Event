@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Event;
+use App\Models\Ticket;
 
 use Auth;
 
@@ -142,5 +143,39 @@ class UserController extends Controller
     }
 
 
+    public function attendEvent(Request $request) {
+        if (!Auth::check()) return redirect('/login');
+        $user = Auth::user();  //o user atual
+        $event = Event::find($request->eventid);  //o evento que o user quer participar
+
+        //autorizar se o evento for private ou se já estiver no evento
+        $this->authorize('attend', $event);
+
+        //Se o authorize nao fizer sentido, passsar o codigo para aqui
+
+        $user_ticket = new Ticket;
+        $user_ticket->qr_genstring = '527b93cdc6fcf912f9d9e0f018ab784deb4dc672ac8b6e07fcd65ef7b00160ea';  //for testing
+        $user_ticket->userid = $user->userid;
+        $user_ticket->eventid = $event->eventid;
+        $user_ticket->save();
+
+        return redirect('/event' . $event->eventid);
+    }
+
+    public function leaveEvent(Request $request) {
+        if (!Auth::check()) return redirect('/login');
+        $user = Auth::user();  //o user atual
+        $event = Event::find($request->eventid);  //o evento que o user quer deixar de participar
+
+        //autorizar se o evento for private ou se já estiver no evento
+        $this->authorize('leave', $event);
+
+        //Se o authorize nao fizer sentido, passsar o codigo para aqui
+        
+        $user_ticket = Ticket::where('userid', $user->userid)->where('eventid', $event->eventid)->first();
+        $user_ticket->delete();
+
+        return redirect('/event' . $event->eventid);
+    }
 
 }

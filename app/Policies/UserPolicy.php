@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Event;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -44,7 +45,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        $this->isAdmin($user);  //só pode criar um novo User (sem ser por register) se for admin
+        $this->isAdmin($user);  //só pode criar um novo User (sem ser por register) se for admin  //mudar isto como no event?
     }
 
     /**
@@ -93,5 +94,24 @@ class UserPolicy
     public function forceDelete(User $user, User $model)
     {
         //
+    }
+
+
+    
+    public function attend(User $user, Event $event)
+    {
+        //check if user is already attending and event is not private
+        $ticket = Ticket::where('userid', $user->userid)->where('eventid', $event->eventid)->first();
+
+        return is_null($ticket) && !($event->isprivate);
+    }
+
+
+    public function leave(User $user, User $model)
+    {
+        //check if user is attending event and event is not private
+        $ticket = Ticket::where('userid', $user->userid)->where('eventid', $event->eventid)->first();
+
+        return !is_null($ticket) && !($event->isprivate);
     }
 }
