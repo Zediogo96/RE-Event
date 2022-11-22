@@ -39,7 +39,7 @@ Route::get('home', 'HomeController@home')->name('home.show');
 // Events Related
 Route::get('event{eventid?}', 'EventController@show')->name('event.show');
 
-Route::get('editEvent{eventid?}', 'EventController@edit')->name('event.edit');  //edit the details of an event - display form
+Route::get('api/editEvent{eventid?}', 'EventController@edit')->name('event.edit');  //edit the details of an event - display form
 Route::post('updateEvent/{event_id?}', 'EventController@update')->name('updateEvent'); //update the details of an event
 Route::get('createEvent', 'EventController@create')->name('event.create');  //edit the details of an event - display form
 Route::post('storeEvent', 'EventController@store')->name('storeEvent'); //create a new event
@@ -66,7 +66,7 @@ Route::get('events', 'EventController@index');
 //nice
 
 //Invites
-Route::post('api/invite', 'InvitedController@create');
+Route::post('api/invite', 'InvitedController@create')->name('createInvite');
 Route::put('api/inviteAccept', 'InvitedController@accept');
 Route::delete('api/inviteReject', 'InvitedController@reject');
 

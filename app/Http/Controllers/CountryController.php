@@ -16,7 +16,7 @@ use App\Models\Report;
 use App\Models\Event;
 use App\Models\City;
 use App\Models\Ticket;
-
+use App\Models\Invited;
 use Illuminate\Http\Request;
 
 class CountryController extends Controller
@@ -64,8 +64,7 @@ class CountryController extends Controller
 
 /*$events = Event::all();
 dd($events);*/
-/* 
-        $tickets = Ticket::all();
+/*         $tickets = Invited::all();
         dd($tickets) */;
 
         // $usertest = Event::find(8);
