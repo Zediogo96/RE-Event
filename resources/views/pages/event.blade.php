@@ -76,7 +76,17 @@
 
 <div id="info-navbar-container">
 
-    <div id="userDiv" style="display:none; text-align:center;" class="answer_list"> TO DO: EVENT HOST CARD
+    <div id="userDiv" style="display:none; text-align:center;" class="answer_list">
+            <div class="svg-background"></div>
+            <div class="svg-background2"></div>
+            <div class="circle"></div>
+
+            <img class="profile-img" src="{{$host->profilepic}}">
+            <div class="text-container">
+                <p class="title-text"> {{$host->name}}</p>
+                <p class="info-text">Event Host</p>
+                <p class="desc-text"> {{count($host->hostedEvents)}} events hosted </p>
+        </div>
         <button id="close-modal-button"></button>
     </div>
     <div id="outroDiv" data-mdb-animation="slide-in-right" style="display:none;" class="answer_list">
@@ -98,9 +108,9 @@
 
     <div id="inviteDiv" data-mdb-animation="slide-in-right" style="display:none; text-align:center;" class="answer_list"> Please enter the email of the user you wish to invite
         <!--@csrf-->
-            <input type="text" class="form-controller" id="sendInvite" name="email"></input>
-            <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick = "createInvite({{$event->eventid}})">Send Invite</button>
-            <button id="close-modal-button"></button>
+        <input type="text" class="form-controller" id="sendInvite" name="email"></input>
+        <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick="createInvite({{$event->eventid}})">Send Invite</button>
+        <button id="close-modal-button"></button>
     </div>
 
 </div>
@@ -210,12 +220,12 @@
     list.forEach((item) => item.addEventListener('click', activeLink))
 
     function showUserDiv() {
-        document.getElementById("info-navbar-container").querySelectorAll('div').forEach(n => n.style.display = 'none');
+        document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
         document.getElementById('userDiv').style.display = "block";
     }
 
     function showOutroDiv() {
-        document.getElementById("info-navbar-container").querySelectorAll('div').forEach(n => n.style.display = 'none');
+        document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
         let d = document.getElementById('outroDiv');
         d.classList.add("animate");
         setTimeout(function() {
@@ -225,7 +235,7 @@
     }
 
     function showInviteDiv() {
-        document.getElementById("info-navbar-container").querySelectorAll('div').forEach(n => n.style.display = 'none');
+        document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
         let d = document.getElementById('inviteDiv');
         d.classList.add("animate");
         setTimeout(function() {
