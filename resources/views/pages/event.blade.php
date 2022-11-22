@@ -90,8 +90,52 @@
 
 </div>
 
-<!-- AJAX REQUEST -->
+////////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
+
 <script type="text/javascript">
+    function ajax_addUser(userid, eventid) {
+        fetch("addEventUsers", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                userid: userid,
+                eventid: eventid
+            })
+        }).then(function(data) {
+            refreshDiv();
+        }).catch(function(error) {
+            console.log(error);
+        });
+    };
+
+    function ajax_remUser(userid, eventid) {
+        fetch("removeEventUsers", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                userid: userid,
+                eventid: eventid
+            })
+        }).then(function(data) {
+            refreshDiv();
+        }).catch(function(error) {
+            console.log(error);
+        });
+    };
+
+
     document.getElementById("search-users").addEventListener("keyup", function(e) {
         fetch("searchUsers", {
             headers: {
@@ -103,7 +147,8 @@
             method: "post",
             credentials: "same-origin",
             body: JSON.stringify({
-                search: e.target.value
+                search: e.target.value,
+                event_id: '{{$event->eventid}}'
             })
         }).then(function(data) {
             return data.text();
@@ -113,14 +158,33 @@
             console.log(error);
         });
     });
-</script>
-
-<script type=text/javascript>
 
 
-</script>
+    function refreshDiv() {
+        fetch("searchUsers", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                search: document.getElementById("search-users").value,
+                event_id: '{{$event->eventid}}'
+            })
+        }).then(function(data) {
+            return data.text();
+        }).then(function(data) {
+            document.getElementById("table-user-res").innerHTML = data;
+        }).catch(function(error) {
+            console.log(error);
+        });
+    };
 
-<script type="text/javascript">
+    ////////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
+
     const list = document.querySelectorAll('.list')
 
     function activeLink() {
@@ -160,8 +224,6 @@
         let d = document.getElementById('userDiv');
         d.style.display = "none";
     })
-
-
 </script>
 
 @endsection

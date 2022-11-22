@@ -282,7 +282,6 @@
             </div>
 
             @endif
-
             <div id="myInvitesDetails" class="optionDetails optionDetailsHidden">
                 <div id="receivedInvites" class="details submenuSleep">
                     No invites Received :(

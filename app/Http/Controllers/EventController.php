@@ -286,7 +286,7 @@ class EventController extends Controller
         $ticket->eventid = $request->eventid;
         $ticket->save();
 
-        return redirect('/event' . $request->eventid);
+        // return redirect('/event' . $request->eventid);
     }
 
     public function removeUser(Request $request)
@@ -303,6 +303,6 @@ class EventController extends Controller
         $ticket = Ticket::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
         $ticket->delete();
 
-        return redirect('/event' . $request->eventid);
+        // return redirect('/event' . $request->eventid);
     }
 }

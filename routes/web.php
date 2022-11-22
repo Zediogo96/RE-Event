@@ -44,8 +44,8 @@ Route::post('updateEvent/{event_id?}', 'EventController@update')->name('updateEv
 Route::get('createEvent', 'EventController@create')->name('event.create');  //edit the details of an event - display form
 Route::post('storeEvent', 'EventController@store')->name('storeEvent'); //create a new event
 
-Route::get('addEventUsers/{eventid?}/{userid?}', 'EventController@addUser')->name('addUser'); //update the details of an event
-Route::get('removeEventUsers/{eventid?}/{userid?}', 'EventController@removeUser')->name('removeUser'); //update the details of an event 
+Route::post('addEventUsers', 'EventController@addUser')->name('addUser'); //update the details of an event
+Route::post('removeEventUsers', 'EventController@removeUser')->name('removeUser'); //update the details of an event 
 
 // Static Pages
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
