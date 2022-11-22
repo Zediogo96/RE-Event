@@ -19,8 +19,11 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
+            
+            // Input Sanitization 
+            $input = preg_replace('/[^A-Za-z0-9\-]/', '', strip_tags($request->input('search')));
 
-            if ($request->search != '') {
+            if ($input) {
                 $output = "";
 
                 /* EVENTS BY NAME OR DESCRIPTIONS*/

@@ -162,20 +162,6 @@
                                             <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Samsung Arena</td>
                                             <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day">16</div>
-                                                    <div class="event-month">MAR</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Donec hendrerit massa metus, a ultrices elit iaculis eu. Pellentesque ullamcorper augue lacus.
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Siemens Arena</td>
-
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
                                     </table>
 
                                 </div>
@@ -226,6 +212,17 @@
                             </div>
                             <div class="single-post-content">
                                 <table class="events-list">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Name</th>
+                                            <th>City</th>
+                                            <th>Privacy</th>
+                                            <th></th>
+
+                                        </tr>
+
+                                    </thead>
 
                                     @foreach($user->hostedEvents as $event)
                                     <tr>
@@ -239,6 +236,7 @@
                                             {{$event->name}}
                                         </td>
                                         <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> {{$event->city->name}}</td>
+                                        <td> {{$event->isprivate ? ('Private'): ('Public')}}</td>
                                         <td><button href=" #" class="btn btn-warning btn-sm btn-edit-event" data-toggle="modal" data-target="#editModal{{$event->eventid}}" value="{{$event->eventid}}">Edit Event</button></td>
                                     </tr>
                                     @endforeach

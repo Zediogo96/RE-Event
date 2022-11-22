@@ -77,15 +77,15 @@
 <div id="info-navbar-container">
 
     <div id="userDiv" style="display:none; text-align:center;" class="answer_list">
-            <div class="svg-background"></div>
-            <div class="svg-background2"></div>
-            <div class="circle"></div>
+        <div class="svg-background"></div>
+        <div class="svg-background2"></div>
+        <div class="circle"></div>
 
-            <img class="profile-img" src="{{$host->profilepic}}">
-            <div class="text-container">
-                <p class="title-text"> {{$host->name}}</p>
-                <p class="info-text">Event Host</p>
-                <p class="desc-text"> {{count($host->hostedEvents)}} events hosted </p>
+        <img class="profile-img" src="{{$host->profilepic}}">
+        <div class="text-container">
+            <p class="title-text"> {{$host->name}}</p>
+            <p class="info-text">Event Host</p>
+            <p class="desc-text"> {{count($host->hostedEvents)}} events hosted </p>
         </div>
         <button id="close-modal-button"></button>
     </div>
@@ -221,6 +221,12 @@
 
     function showUserDiv() {
         document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+        let d = document.getElementById('userDiv');
+        d.classList.add("animate");
+        setTimeout(function() {
+            d.classList.remove("animate");
+        }, 500);
+        d.style.display = "block";
         document.getElementById('userDiv').style.display = "block";
     }
 

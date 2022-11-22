@@ -514,6 +514,10 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (7, 'Slipknot', 'Slipknot is heading back out on tour this Fall for KNOTFEST ROADSHOW. This is your last chance to catch Slipknot on tour in the U.S. for a while', 70000, '2023-11-21', '2022-10-01', 30, 1, 'DKR Texas Memorial Stadium, 2139 San Jacinto Blvd, Austin, TX 78712, USA', 5, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (8, 'Rolex Monte-Carlo Masters', 'The Rolex Monte-Carlo Masters, which celebrated its 100th anniversary in 2006, is the first of three ATP Masters 1000 tournaments played on clay', 70000, '2023-09-04', '2022-09-10', 20, 7, 'Monte-Carlo Country Club, 155 Av. Princesse Grace', 6, False);
 
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (9, 'Aniversário Zé', 'Venham celebrar comigo esta importante data, amigos!', 100, '2023-12-19', '2022-09-10', 0, 9, 'Porto, Vila Nova de Gaia', 13, True);
+
+
 SELECT setval('event_eventID_seq', (SELECT MAX(eventID) from "event"));
 
 /** (Event) Photos **/
@@ -526,6 +530,7 @@ INSERT INTO photo (photoID, path, eventID) VALUES (5, 'event_photos/5.jpg', 5);
 INSERT INTO photo (photoID, path, eventID) VALUES (6, 'event_photos/6.jpg', 6);
 INSERT INTO photo (photoID, path, eventID) VALUES (7, 'event_photos/7.jpg', 7);
 INSERT INTO photo (photoID, path, eventID) VALUES (8, 'event_photos/8.jpg', 8);
+INSERT INTO photo (photoID, path, eventID) VALUES (9, 'event_photos/9.jpg', 9);
 
 SELECT setval('photo_photoID_seq', (SELECT MAX(photoID) from "photo"));
 
@@ -648,6 +653,11 @@ INSERT INTO event_host (userID, eventID)
 
 INSERT INTO event_host (userID, eventID)
     VALUES (2, 8);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (1, 9);
+
+
 
 /* Comments */
 
