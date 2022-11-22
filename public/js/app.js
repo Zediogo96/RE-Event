@@ -270,3 +270,12 @@ signupLink.onclick = () => {
     signupBtn.click();
 };
 
+
+
+/* AJAX REQUESTS */
+
+// AJAX REQUEST TO SEARCH FOR EVENTS
+
+
+
+/* END AJAX REQUESTS */

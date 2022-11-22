@@ -496,20 +496,28 @@
 
     <body>
 
-        <script type="text/javascript" defer>
-            $('#search-users-admin').on('keyup', function() {
-                $value = $(this).val();
-                $.ajax({
-                    type: 'get',
-                    url: '{{URL::to('searchUsersAdmin')}}',
-                    data: {
-                        'search': $value,
+        <script type="text/javascript">
+            document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
+                fetch("searchUsersAdmin", {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "X-CSRF-Token": '{{ csrf_token() }}'
                     },
-                    success: function(data) {
-                        $('#search-admin-users-res').html(data);
-                    }
+                    method: "post",
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        search: e.target.value
+                    })
+                }).then(function(data) {
+                    return data.text();
+                }).then(function(data) {
+                    document.getElementById("search-admin-users-res").innerHTML = data;
+                }).catch(function(error) {
+                    console.log(error);
                 });
-            })
+            });
         </script>
 
 </html>

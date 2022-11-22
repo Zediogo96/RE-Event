@@ -90,28 +90,27 @@
 
 </div>
 
-<script type="text/javascript" defer>
-    $('#search-users').on('keyup', function() {
-        $value = $(this).val();
-        $.ajax({
-            type: 'get',
-            url: '{{URL::to('
-            searchUsers ')}}',
-            data: {
-                'search': $value,
-                'event_id': '{{$event->eventid}}'
-            },
-            success: function(data) {
-                $('#table-user-res').html(data);
-            }
-        });
-    })
-</script>
 <script type="text/javascript">
-    $.ajaxSetup({
-        headers: {
-            'csrftoken': '{{ csrf_token() }}'
-        }
+    document.getElementById("search-users").addEventListener("keyup", function(e) {
+        fetch("searchUsers", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                search: e.target.value
+            })
+        }).then(function(data) {
+            return data.text();
+        }).then(function(data) {
+            document.getElementById("table-user-res").innerHTML = data;
+        }).catch(function(error) {
+            console.log(error);
+        });
     });
 </script>
 

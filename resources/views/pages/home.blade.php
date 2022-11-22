@@ -19,7 +19,7 @@
                     <h5>{{$events[0] -> name}}</h5>
                     <p>{{$events[0] -> description}}</p>
                     <!-- button to buy tickets -->
-                    <a href="{{route('event.show', $events[0]->eventid)}}" class="btn btn-primary">Buy Tickets</a>
+                    <a href="{{route('event.show', $events[0]->eventid)}}" class="btn btn-primary">View Event</a>
                 </div>
             </div>
             @for ($i = 1; $i <= 2; $i++) <div class="carousel-item">
