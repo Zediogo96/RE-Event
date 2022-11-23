@@ -7,6 +7,8 @@ use App\Models\EventHost;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+use Auth;
+
 class EventPolicy
 {
     use HandlesAuthorization;
