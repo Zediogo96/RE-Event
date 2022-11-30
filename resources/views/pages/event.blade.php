@@ -122,6 +122,73 @@
         <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick="createInvite({{$event->eventid}})">Send Invite</button>
 
     </div>
+</div>
+
+
+<div class="mx-auto col-lg-8" id="comment-section-container">
+    @if (Auth::user() != NULL)
+    <div class="p-4 mb-2" id="new-comment">
+        <!-- New Comment //-->
+        <div class="">
+            <img class="rounded-circle me-4" style="width:5rem;height:5rem; float:left;" src="{{Auth::user()->profilepic}}">
+            <div class="flex-grow-1">
+                <div class="gap-2">
+                    <p href="#" class="fw-bold">{{Auth::user()->name}}</p>
+                </div>
+                <div class="form-floating" style="margin-top: 5rem;">
+                    <textarea class="form-control w-100" placeholder="Leave a comment here" id="my-comment" style="height:5rem;"></textarea>
+                    <label for="my-comment">Leave a comment here</label>
+                </div>
+                <div class="hstack justify-content-end gap-2">
+                    <button class="btn btn-sm btn-primary text-uppercase mt-3">comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+    <div class="shadow-sm p-4" id="comments-section">
+
+        <h4 class="mb-4">7 Comments</h4>
+
+        <!-- Comment #1 //-->
+        <div class="">
+            <div class="py-3">
+                <div class="d-flex comment">
+                    <img class="rounded-circle comment-img" src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=S" />
+                    <div class="flex-grow-1 ms-3">
+                        <div class="mb-1"><a href="#" class="fw-bold link-dark me-1">Afonso Martins</a> <span class="text-muted text-nowrap">2 days ago</span></div>
+                        <div class="mb-2"> Melhor Evento do ano, boraaaa! </div>
+                        <div class="hstack align-items-center mb-2">
+                            <a class="link-primary me-2" href="#"><i class="fas fa-thumbs-up"></i></a>
+                            <span class="me-3 small">55</span>
+                            <a class="link-danger small ms-3" href="#">DELETE</a>
+                        </div>
+                        <a class="fw-bold d-flex align-items-center" href="#">
+                        </a>
+                    </div>
+                </div>
+                <!-- Comment #2 //-->
+                <div class="py-3">
+                    <div class="d-flex comment">
+                        <img class="rounded-circle comment-img" src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=S" />
+                        <div class="flex-grow-1 ms-3">
+                            <div class="mb-1"><a href="#" class="fw-bold link-dark me-1"> Zé Diogo</a> <span class="text-muted text-nowrap">2 days ago</span></div>
+                            <div class="mb-2"> Verdadeiros fãs sabem que o Hamilton ganhou o WDC em 2021! </div>
+                            <div class="hstack align-items-center mb-2">
+                                <a class="link-primary me-2" href="#"><i class="fas fa-thumbs-up"></i></a>
+                                <span class="me-3 small">53</span>
+                                <a class="link-secondary me-4" href="#"><i class="zmdi zmdi-thumb-down"></i></a>
+                                <a class="link-danger small ms-3" href="#">DELETE</a>
+                            </div>
+                            <a class="fw-bold d-flex align-items-center" href="#">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </div>
 

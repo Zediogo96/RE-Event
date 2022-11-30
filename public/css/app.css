@@ -340,7 +340,7 @@ div span:last-of-type {
   position: absolute;
   top: 0;
   left: 0;
-  background-image: linear-gradient(to right, rgba(210, 145, 255, 1) 0%, rgba(0,0,0,0.8)100%);
+  background-image: linear-gradient(to right, rgba(210, 145, 255, 1) 0%, rgba(0, 0, 0, 0.8)100%);
   -webkit-clip-path: polygon(0 0, 14% 0, 48% 100%, 0% 100%);
   clip-path: polygon(0 0, 14% 0, 48% 100%, 0% 100%);
 }
@@ -455,7 +455,8 @@ tbody tr td:not(:last-child) {
   border-right: 1px solid whitesmoke;
 }
 
-#info-navbar-container div table thead, .events-list thead {
+#info-navbar-container div table thead,
+.events-list thead {
   background-color: blue;
 }
 
@@ -639,4 +640,38 @@ tbody tr td:not(:last-child) {
 #modal-content-box {
   border-radius: 5%;
   border: 4px solid #9300ff;
+}
+
+
+/* COMMENT SECTION */
+.comment-img {
+  width: 3rem;
+  height: 3rem;
+}
+
+.comment-replies .comment-img {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+/* select div with class app and container */
+div.app {
+  margin-top: 30rem;
+}
+
+#comment-section-container {
+  margin-top: 32rem;
+}
+
+#new-comment {
+  background-color: rgba(61, 64, 91, 0.8);
+  overflow-x: hidden;
+  transition: width 0.5s;
+  border-radius: 20px;
+  box-shadow: 5px 5px 0px #d291ff;
+}
+
+#comments-section {
+  background-color: rgba(211, 188, 238, 0.9);
+  border-radius: 20px;
 }
