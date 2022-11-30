@@ -68,6 +68,10 @@ class User extends Authenticatable
     {
         return redirect()->route('home');
     }
+
+    public function getComment() {
+        return $this->belongsTo('App\Models\Comment', 'userid');
+    }
     //////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////
 }

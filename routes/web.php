@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,6 +9,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 // Home
 Route::get('/', 'Auth\LoginController@home');
 
@@ -53,7 +53,9 @@ Route::post('storeUser', 'UserController@store')->name('storeUser');
 Route::get('cities', 'CityController@index');
 Route::get('countries', 'CountryController@index');
 Route::get('events', 'EventController@index');
-//nice
+
+// Comments
+Route::post('storeComment', 'CommentController@store')->name('storeComment');
 
 //Invites
 Route::post('api/invite', 'InvitedController@create')->name('createInvite');

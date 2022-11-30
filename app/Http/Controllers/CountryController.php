@@ -4,14 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Country;
 use App\Models\User;
-
-/*testing 
-use App\Models\Event;
-use App\Models\User;
-use App\Models\Tag;
 use App\Models\Comment;
-use App\Models\Report;
-*/
 
 use App\Models\Event;
 use App\Models\City;
@@ -28,19 +21,19 @@ class CountryController extends Controller
      */
     public function index()
     {
-        /*
+            /*
         $test = Comment::find(1)->reports; 
         print_r($test);
         die();
         */
-        
-  /*city event search working
+
+            /*city event search working
         $city_search = 'Coimbra';
         //$test = City::search($city_search)->get()->map->only(['cityid', 'name']);
         $test = City::search($city_search)->first();
         dd($test->events);
 */
-/*country event search working
+            /*country event search working
         $eventsarray = array();
 
         $country_search = 'Portugal';
@@ -56,26 +49,27 @@ class CountryController extends Controller
 
         dd($eventsarray);
 */
-/*title event search working 
+            /*title event search working 
         $title = 'F1';
         $events = Event::search($title)->get();
         dd($events);
 */
 
-/*$events = Event::all();
+            /*$events = Event::all();
 dd($events);*/
-/*         $tickets = Invited::all();
+            /*         $tickets = Invited::all();
         dd($tickets) */;
 
         // $usertest = Event::find(8);
         // dd($usertest->participants);
 
 
-        $tickets = Ticket::all();
-        dd($tickets);
+        $event = Event::find(1);
+        $comments = $event->comments()->get();
+        dd($comments);
 
-$users = User::where('userid', '>', 45)->get();
-dd($users);
+        $users = User::where('userid', '>', 45)->get();
+        dd($users);
 
         $countries = Country::all();
         return view('layouts.countries', ['countries' => $countries]);

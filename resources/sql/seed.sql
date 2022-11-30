@@ -1,5 +1,5 @@
-create schema if not exists lbaw;
-set search_path to lbaw;
+-- create schema if not exists lbaw;
+-- set search_path to lbaw;
 
 
 -- Remove Duplicate Tables --------------
@@ -679,6 +679,10 @@ INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (17, '
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (18, 'I feel like this pushes too many agenda', '2020/2/13', '18:40', 18, 8);
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (19, 'Too bad the prices are like this!', '2020/8/23', '9:58', 19, 8);
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (20, 'So excited!', '2020/9/9', '10:58', 20, 4);
+INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (21, 'Real fans know Hamilton got robbed in the 2021 WDC!', '2020/9/9', '10:58', 3, 1);
+INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (22, 'So excited for this one!', '2020/9/9', '10:58', 2, 1);
+
+SELECT setval('comment_commentID_seq', (SELECT MAX(commentID) from "comment"));
 
 /* Reports */
 

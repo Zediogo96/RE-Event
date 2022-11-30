@@ -21,6 +21,10 @@ class Comment extends Model
         return $this->belongsTo('App\Models\Event', 'eventid');
     }
 
+    public function user() {
+        return $this->belongsTo('App\Models\User', 'userid');
+    }
+
     /**
      * The reports of the comment
      */

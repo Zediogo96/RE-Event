@@ -135,13 +135,15 @@
                 <div class="gap-2">
                     <p href="#" class="fw-bold">{{Auth::user()->name}}</p>
                 </div>
-                <div class="form-floating" style="margin-top: 5rem;">
+                <form action="" class="form-floating" style="margin-top: 5rem;">
                     <textarea class="form-control w-100" placeholder="Leave a comment here" id="my-comment" style="height:5rem;"></textarea>
                     <label for="my-comment">Leave a comment here</label>
-                </div>
-                <div class="hstack justify-content-end gap-2">
-                    <button class="btn btn-sm btn-primary text-uppercase mt-3">comment</button>
-                </div>
+
+                    <div class="hstack justify-content-end gap-2">
+                        <button class="btn btn-sm btn-primary text-uppercase mt-3" type="submit">comment</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -150,51 +152,81 @@
 
         <h4 class="mb-4">7 Comments</h4>
 
-        <!-- Comment #1 //-->
+
         <div class="">
+            <!-- Comment #1 //-->
+
             <div class="py-3">
+                @foreach ($event->comments()->get() as $comment)
                 <div class="d-flex comment">
-                    <img class="rounded-circle comment-img" src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=S" />
+                    <img class="rounded-circle comment-img" src="{{$comment->user->profilepic}}" />
                     <div class="flex-grow-1 ms-3">
-                        <div class="mb-1"><a href="#" class="fw-bold link-dark me-1">Afonso Martins</a> <span class="text-muted text-nowrap">2 days ago</span></div>
-                        <div class="mb-2"> Melhor Evento do ano, boraaaa! </div>
+                        <div class="mb-1"><a href="#" class="fw-bold link-dark me-1">{{$comment->user->name}}</a>
+                            <span class="text-muted text-nowrap"> {{$comment->date}}</span>
+                        </div>
+                        <div class="mb-2"> {{$comment->text}} </div>
                         <div class="hstack align-items-center mb-2">
                             <a class="link-primary me-2" href="#"><i class="fas fa-thumbs-up"></i></a>
                             <span class="me-3 small">55</span>
-                            <a class="link-danger small ms-3" href="#">DELETE</a>
-                        </div>
-                        <a class="fw-bold d-flex align-items-center" href="#">
-                        </a>
-                    </div>
-                </div>
-                <!-- Comment #2 //-->
-                <div class="py-3">
-                    <div class="d-flex comment">
-                        <img class="rounded-circle comment-img" src="https://via.placeholder.com/128/fe669e/ffcbde.png?text=S" />
-                        <div class="flex-grow-1 ms-3">
-                            <div class="mb-1"><a href="#" class="fw-bold link-dark me-1"> Zé Diogo</a> <span class="text-muted text-nowrap">2 days ago</span></div>
-                            <div class="mb-2"> Verdadeiros fãs sabem que o Hamilton ganhou o WDC em 2021! </div>
-                            <div class="hstack align-items-center mb-2">
-                                <a class="link-primary me-2" href="#"><i class="fas fa-thumbs-up"></i></a>
-                                <span class="me-3 small">53</span>
-                                <a class="link-secondary me-4" href="#"><i class="zmdi zmdi-thumb-down"></i></a>
-                                <a class="link-danger small ms-3" href="#">DELETE</a>
-                            </div>
-                            <a class="fw-bold d-flex align-items-center" href="#">
-                            </a>
+                            <a class="link-danger small ms-3" href="#">delete</a>
                         </div>
                     </div>
                 </div>
+                @endforeach
+
             </div>
-
         </div>
+
     </div>
-
 </div>
-
 <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
 
+
+
 <script type="text/javascript">
+    document.querySelector('#new-comment button').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        var comment = document.querySelector('#my-comment');
+
+        if (comment.value == '') {
+            let error = document.querySelector('#new-comment label');
+            error.innerHTML = 'Error: Comment cannot be empty';
+            error.style.color = 'red';
+            document.querySelector('#new-comment form').classList.add("apply-shake");
+            setTimeout(function() {
+                document.querySelector('#new-comment form').classList.remove("apply-shake");
+            }, 500);
+            return;
+        }
+        else {
+            fetch("{{route('storeComment')}}", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                userid: {{Auth::user()->userid}},
+                eventid: {{$event->eventid}},
+                text: document.querySelector('#my-comment').value
+            })
+        }).then(function(data) {
+            document.location.reload();
+        }).catch(function(error) {
+            console.log(error);
+        });
+        }
+      
+    });
+</script>
+
+<script type="text/javascript">
+
+
     function ajax_selfAddUser(userid, eventid) {
         fetch("{{route('selfAddUser')}}", {
             headers: {

@@ -675,3 +675,26 @@ div.app {
   background-color: rgba(211, 188, 238, 0.9);
   border-radius: 20px;
 }
+
+/* Standard syntax */
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-8px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(8px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-8px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(8px, 0, 0);
+  }
+}
+
+.apply-shake {
+    animation: shake 0.86s cubic-bezier(.36,.07,.19,.97) both;
+}
