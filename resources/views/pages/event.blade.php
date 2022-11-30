@@ -1,11 +1,8 @@
 @extends('layouts.app')
 
-
 @section('content')
 
 <div class="container" id="event-content">
-
-
     <img src="{{$event -> photos[0]->path}}" style="border-radius: 5%; height:45rem;">
     <div class="wrapper-res">
         <div id="event-name"> {{$event->name}} </div>
@@ -22,7 +19,6 @@
             Leave Event </a></button>
     @endif
     @endif
-
     <nav>
         <ul id="menu-info">
             <li class="menu-info-item text-center">
@@ -39,10 +35,8 @@
             </li>
         </ul>
     </nav>
-
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
 </div>
 
 <div class="navigation">
@@ -55,7 +49,6 @@
                 <span class="title" onclick="showUserDiv()">Event Host</span>
             </a>
         </li>
-
         @if (Auth::user() != NULL &&Auth::user()->userid == $host->userid)
         <li class="list">
             <a href="#">
@@ -66,7 +59,6 @@
             </a>
         </li>
         @endif
-
         <li class="list">
             <a href="#">
                 <span class="icon">
@@ -83,10 +75,7 @@
                 <span class="title" onclick="showInviteDiv()">Send Invite</span>
             </a>
         </li>
-
     </ul>
-
-
 </div>
 
 <div id="info-navbar-container">
@@ -126,12 +115,12 @@
     @endif
 
     <div id="inviteDiv" data-mdb-animation="slide-in-right" style="display:none; text-align:center; width: 500px; height: 500px;" class="answer_list">
-     Please enter the email of the user you wish to invite
+        Please enter the email of the user you wish to invite
         <!--@csrf-->
         <button class="skrr" id="close-modal-button"></button>
         <input type="text" class="form-controller" id="sendInvite" name="email"></input>
         <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick="createInvite({{$event->eventid}})">Send Invite</button>
-        
+
     </div>
 
 </div>
@@ -155,6 +144,7 @@
             })
         }).then(function(data) {
             document.location.reload();
+
         }).catch(function(error) {
             console.log(error);
         });
@@ -180,7 +170,6 @@
             console.log(error);
         });
     };
-
 
     function ajax_addUser(userid, eventid) {
         fetch("addEventUsers", {
@@ -289,7 +278,6 @@
     };
 
     //////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
-
     const list = document.querySelectorAll('.list')
 
     function activeLink() {
@@ -328,7 +316,6 @@
         }, 500);
         d.style.display = "block";
     }
-
     document.querySelector('#userDiv > button').addEventListener('click', function() {
 
         let d = document.getElementById('userDiv');
@@ -340,7 +327,6 @@
             d.style.display = "none";
         }, 500);
     })
-    
     document.querySelector('#inviteDiv > .skrr').addEventListener('click', function() {
         let d = document.getElementById('inviteDiv');
         d.classList.add("animate-out");
@@ -351,8 +337,6 @@
             d.style.display = "none";
         }, 500);
     })
-
-
 </script>
 
 @endsection
