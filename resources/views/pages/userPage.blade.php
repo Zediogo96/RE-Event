@@ -524,7 +524,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input id="password" type="number" name="password" value="" class="input-group form-control">
+                            <input id="password" type="password" name="password" value="" class="input-group form-control">
                         </div>
                         <div class="form-group mb-3">
                             <label for="gender" class="form-label">Gender</label>

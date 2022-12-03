@@ -105,9 +105,13 @@ class UserController extends Controller
     {
         if (!Auth::check()) return redirect('/login');
         //$user = User::find($request->input('userid'));
-        $creating_user = Auth::user();
+        // $creating_user = Auth::user();
         // $this->authorize('create', $creating_user);
         $user = new User;
+
+        $user_id = User::max('userid') + 1;
+
+        $user->userid = $user_id;
 
         if (!is_null($request->input('name'))) {
             $user->name = $request->input('name');
@@ -132,8 +136,9 @@ class UserController extends Controller
         if ($request->hasFile('profilePic')) {
 
             $file = $request->file('profilePic');
-            $filename = Auth::user()->userid . '.' . $file->getClientOriginalExtension();
+            $filename = $user_id . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('/profile_pictures'), $filename);
+            $user->profilepic = '/profile_pictures/' . $filename;
         }
 
         $user->save();
