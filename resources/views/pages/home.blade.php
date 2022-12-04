@@ -121,25 +121,26 @@
 </div>
 <!-- END COUNTDOWN TIMER -->
 
+<!-- Return false disables the page scrolling to the top automatically after the ajax request  -->
 <nav id="categories-navbar">
     <ul>
         <li>
-            <a onclick="getDataFromTag('all')">All </a>
+            <a onclick="getDataFromTag('all'); return false;">All </a>
         </li>
         <li>
-            <a onclick="getDataFromTag('sports')">Sports</a>
+            <a onclick="getDataFromTag('sports'); return false;">Sports</a>
         </li>
         <li>
-            <a onclick="getDataFromTag('music')">Music</a>
+            <a onclick="getDataFromTag('music'); return false;">Music</a>
         </li>
         <li>
-            <a onclick="getDataFromTag('family')">Family</a>
+            <a onclick="getDataFromTag('family'); return false;">Family</a>
         </li>
+<!--         <li>
+            <a onclick="getDataFromTag('books'); return false;">Books</a>
+        </li> -->
         <li>
-            <a onclick="getDataFromTag('books')">Books</a>
-        </li>
-        <li>
-            <a onclick="getDataFromTag('technology')">Technology</a>
+            <a onclick="getDataFromTag('technology'); return false;">Technology</a>
         </li>
     </ul>
 </nav>
