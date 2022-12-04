@@ -286,6 +286,17 @@ div span:last-of-type {
   margin-left: 2.5rem;
 }
 
+
+@media screen and (max-width:600px) {
+
+  #event-content div#event-name {
+    font-size: 3rem;
+  }
+
+  #event-content div#event-date {
+    font-size: 1.5rem;
+  }
+}
 .wrapper-res {
   display: flex;
   flex-direction: column;
@@ -345,7 +356,7 @@ div span:last-of-type {
 }
 
 .navigation ul li.active::after {
-  transform: translateY(-10%) scaleX(2.5);
+  transform: translateY(-10%) scaleX(1  );
   opacity: 1;
 }
 
@@ -389,8 +400,8 @@ div span:last-of-type {
     width: 5rem;
   }
 
-  .navigation ul li::after {
-    transform: translateY(-10%) scaleX();
+  .navigation ul li.active::after {
+    transform: translateY(-10%) scaleX(1);
     opacity: 1;
     width: 100%;
   }
@@ -399,7 +410,7 @@ div span:last-of-type {
   }
 
   .navigation ul li a .icon {
-    margin-left: -1rem;
+    margin-left: -1.2rem;
   }
 }
 
@@ -419,7 +430,6 @@ div span:last-of-type {
   height: 250px;
   border-radius: 10px;
   overflow: hidden;
-
 }
 
 .svg-background {
@@ -492,6 +502,31 @@ div span:last-of-type {
   background-image: linear-gradient(to right, rgba(210, 145, 255, 0.7) 0%, rgba(24, 24, 24, 0.8) 100%);
   width: 29rem;
   top: -10rem;
+}
+
+@media screen and (max-width:600px) {
+  #info-navbar-container>div {
+    position: absolute;
+    left: 4rem;
+    top: 10rem;
+  }
+
+  #outroDiv {
+    width: 33rem;
+  }
+
+  #outroDiv input {
+    width: 85%;
+  }
+  
+  #outroDiv tbody button {
+    width: 100%;
+    height: 3rem;
+  }
+
+  #outroDiv tbody td button {
+    font-size: 0.9rem;
+  }
 }
 
 .animate {
@@ -592,6 +627,17 @@ tbody tr td:not(:last-child) {
   border-radius: 10%;
   width: 15rem;
   height: 5rem;
+}
+
+@media screen and (max-width:600px) {
+
+  #menu-info {
+    left: -1rem;
+  }
+  .menu-info-item {
+    width: 10rem;
+    height: 5rem;
+  }
 }
 
 .menu-info-item p {
@@ -749,6 +795,13 @@ div.app {
 
 #comment-section-container {
   margin-top: 67vh;
+}
+
+@media screen and (max-width:600px) {
+
+  #comment-section-container {
+    margin-top: 48vh;
+  }
 }
 
 #new-comment {

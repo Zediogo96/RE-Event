@@ -42,20 +42,20 @@
 <div class="navigation">
     <ul>
         <li class="list active">
-            <a href="#">
+            <a href="#" onclick="showUserDiv()">
                 <span class="icon">
                     <ion-icon name="home-outline"></ion-icon>
                 </span>
-                <span class="title" onclick="showUserDiv()">Event Host</span>
+                <span class="title">Event Host</span>
             </a>
         </li>
         @if (Auth::user() != NULL &&Auth::user()->userid == $host->userid)
         <li class="list">
-            <a href="#">
+            <a href="#" onclick="showOutroDiv()">
                 <span class="icon">
                     <ion-icon name="person-outline"></ion-icon>
                 </span>
-                <span class="title" onclick="showOutroDiv()">Attendees</span>
+                <span class="title">Attendees</span>
             </a>
         </li>
         @endif
@@ -68,11 +68,11 @@
             </a>
         </li>
         <li class="list">
-            <a href="#">
+            <a href="#" onclick="showInviteDiv()">
                 <span class="icon">
                     <ion-icon name="mail-outline"></ion-icon>
                 </span>
-                <span class="title" onclick="showInviteDiv()">Send Invite</span>
+                <span class="title">Send Invite</span>
             </a>
         </li>
     </ul>
@@ -149,10 +149,7 @@
     </div>
     @endif
     <div class="shadow-sm p-4" id="comments-section">
-
         <h4 class="mb-4">7 Comments</h4>
-
-
         <div class="">
             <!-- Comment //-->
 
