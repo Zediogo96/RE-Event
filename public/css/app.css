@@ -152,6 +152,26 @@ div span:last-of-type {
   overflow: hidden;
 }
 
+@media screen and (max-width:600px) {
+  #container-other-events-title {
+    left: 25%;
+  }
+
+  .container-other-events {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 1rem;
+    margin: 0 auto;
+    padding: 5 1rem;
+  }
+
+  .event-card {
+    width: 250px;
+    height: 150px;
+  }
+}
+
+
 .card-image {
   position: absolute;
   inset: 0;
