@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function home()
     {
-        $events = Event::where('isprivate', 0)->get();
+        $events = Event::where('isprivate', 0)->take(24)->get();
         return view('pages.home',compact(['events'])); 
 
     }

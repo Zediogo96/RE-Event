@@ -154,7 +154,7 @@
 
 
         <div class="">
-            <!-- Comment #1 //-->
+            <!-- Comment //-->
 
             <div class="py-3">
                 @foreach ($event->comments()->get() as $comment)

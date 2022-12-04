@@ -10,7 +10,10 @@ use App\Models\Event;
 use App\Models\City;
 use App\Models\Ticket;
 use App\Models\Invited;
+use App\Models\Tag;
+
 use Illuminate\Http\Request;
+
 
 class CountryController extends Controller
 {
@@ -21,55 +24,11 @@ class CountryController extends Controller
      */
     public function index()
     {
-            /*
-        $test = Comment::find(1)->reports; 
-        print_r($test);
-        die();
-        */
 
-            /*city event search working
-        $city_search = 'Coimbra';
-        //$test = City::search($city_search)->get()->map->only(['cityid', 'name']);
-        $test = City::search($city_search)->first();
-        dd($test->events);
-*/
-            /*country event search working
-        $eventsarray = array();
-
-        $country_search = 'Portugal';
-        $test = Country::search($country_search)->first()->cities;
-
-        foreach ($test as $t) {
-            foreach ($t->events as $e) {
-                array_push($eventsarray, $e);
-            }
-            //array_push($eventsarray, $t->events);
-            //print_r($t->events);
-        }
-
-        dd($eventsarray);
-*/
-            /*title event search working 
-        $title = 'F1';
-        $events = Event::search($title)->get();
+        $tag_id = Tag::where('name', 'music')->get()->first()->tagid;
+        // find event that has tag
+        $events = Event::where('tagid', $tag_id)->get();
         dd($events);
-*/
-
-            /*$events = Event::all();
-dd($events);*/
-            /*         $tickets = Invited::all();
-        dd($tickets) */;
-
-        // $usertest = Event::find(8);
-        // dd($usertest->participants);
-
-
-        $event = Event::find(1);
-        $comments = $event->comments()->get();
-        dd($comments);
-
-        $users = User::where('userid', '>', 45)->get();
-        dd($users);
 
         $countries = Country::all();
         return view('layouts.countries', ['countries' => $countries]);

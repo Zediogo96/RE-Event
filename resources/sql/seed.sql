@@ -447,6 +447,12 @@ INSERT INTO country (countryID, name)
 INSERT INTO country (countryID, name)
     VALUES (10, 'Portugal');
 
+INSERT INTO country (countryID, name)
+    VALUES (11, 'Spain');
+
+INSERT INTO country (countryID, name)
+    VALUES (12, 'Scotland');
+
 
 SELECT setval('country_countryID_seq', (SELECT MAX(countryID) from "country"));
 
@@ -500,6 +506,20 @@ INSERT INTO city (cityID, name, countryID)
 INSERT INTO city (cityID, name, countryID)
     VALUES (13, 'Porto', 10);
 
+INSERT INTO city (cityID, name, countryID)
+    VALUES (14, 'Barcelona', 11);
+
+INSERT INTO city (cityID, name, countryID)
+    VALUES (15, 'Madrid', 11);
+
+INSERT INTO city (cityID, name, countryID)
+    VALUES (16, 'London', 9);
+
+INSERT INTO city (cityID, name, countryID)
+    VALUES (17, 'Edinburgh', 12);
+
+
+
 SELECT setval('city_cityID_seq', (SELECT MAX(cityID) from "city"));
 
 
@@ -514,11 +534,100 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (7, 'Slipknot', 'Slipknot is heading back out on tour this Fall for KNOTFEST ROADSHOW. This is your last chance to catch Slipknot on tour in the U.S. for a while', 70000, '2023-11-21', '2022-10-01', 30, 1, 'DKR Texas Memorial Stadium, 2139 San Jacinto Blvd, Austin, TX 78712, USA', 5, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (8, 'Rolex Monte-Carlo Masters', 'The Rolex Monte-Carlo Masters, which celebrated its 100th anniversary in 2006, is the first of three ATP Masters 1000 tournaments played on clay', 70000, '2023-09-04', '2022-09-10', 20, 7, 'Monte-Carlo Country Club, 155 Av. Princesse Grace', 6, False);
 
-
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (9, 'Aniversário Zé', 'Venham celebrar comigo esta importante data, amigos!', 100, '2023-12-19', '2022-09-10', 0, 9, 'Porto, Vila Nova de Gaia', 13, True);
 
+-- Family Events Boost
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(10, 'Visita Parque Biológico Gaia', 'Venham visitar o Parque Biológico de Gaia, um dos melhores parques de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(11, 'Festival Canal Panda', 'O mítico festival do Canal Panda está de volta a Portugal!', 10000, '2023-06-19', '2022-10-01', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(12, 'Festival de Verão', 'O melhor festival de verão está de volta a Portugal!', 10000, '2023-07-19', '2022-10-01', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(13, 'SEA Life Porto', 'Venham visitar o SEA Life Porto, um dos melhores aquários de Portugal!', 500, '2023-05-03', '2022-12-04', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(14, 'Buggy Ride Familiar', 'Venham fazer um passeio de buggy familiar!', 100, '2023-05-03', '2022-12-04', 200, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(15, 'Visita ao Museu do Vinho do Porto', 'Venham visitar o Museu do Vinho do Porto, um dos melhores museus de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(16, 'Visita ao Museu do Carro Elétrico', 'Venham visitar o Museu do Carro Elétrico, um dos melhores museus de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(17, 'Zoo Santo Inácio Tour', 'Venham visitar o Zoo Santo Inácio, um dos melhores zoológicos de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Zoo de Santo Inácio', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(18, 'Cruseiro Rio Douro', 'Venham fazer um cruzeiro pelo Rio Douro!', 300, '2023-05-03', '2022-12-04', 250, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+-- Sports Events Boost
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(19, 'F1 Spain Grand Prix 2022', 'Formula 1 returns to the streets of Barcelona, where Max Verstappen won last year. Will Red Bull be capable of stealing the victory this season?', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Circuit de Barcelona-Catalunya, 08100 Montmeló, Barcelona', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(20, 'F1 Monaco Grand Prix 2022', 'The Monaco Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Circuit de Monaco, 98000 Monaco', 6, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(21, 'F1 Portugal Grand Prix 2022', 'The Portuguese Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Autódromo Internacional do Algarve, 8005-139 Portimão', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(22, 'F1 Azerbaijan Grand Prix 2022', 'The Azerbaijan Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Baku City Circuit, Baku', 7, False);
 
 SELECT setval('event_eventID_seq', (SELECT MAX(eventID) from "event"));
+
+-- Music Events Boost
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(23, 'Metallica', 'Metallica is an American heavy metal band from Los Angeles, California. The band was formed in 1981 by drummer Lars Ulrich and vocalist/guitarist James Hetfield, and has been based in San Francisco for most of its career.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(24, 'Chico Buarque', 'Chico Buarque de Hollanda is a Brazilian singer-songwriter, composer, actor, and politician. He is considered one of the most important Brazilian songwriters of the 20th century.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(25, 'Red Hot Chilli Peppers', 'Red Hot Chili Peppers are an American rock band formed in Los Angeles in 1983. The groups musical style primarily consists of rock with an emphasis on funk, as well as elements from other genres such as punk rock and psychedelic rock.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(26, 'Tash Sultana', 'Tash Sultana is an Australian singer-songwriter and multi-instrumentalist. She is known for her live looping, which she uses to create complex rhythms and layers of sound.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Estadio do Dragão', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(27, 'Jorja Smith', 'Jorja Smith is an English singer and songwriter. She is signed to FAMM, a subsidiary of Black Butter Records, and has released two EPs, Project 11 and Lost & Found, and one studio album, Lost & Found.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(28, 'Iron Maiden', 'Iron Maiden are an English heavy metal band formed in Leyton, East London, in 1975 by bassist and primary songwriter Steve Harris. The band''s discography has grown to 38 albums, including 16 studio albums, 14 live albums, four EPs, and four compilations.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Estádio do Dragão, Porto', 13, False);
+
+
+-- Tech Events Boost
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(29, 'Global Metaverse Carnival', 'The Global Metaverse Carnival is a 3-day event that will bring together the most influential leaders in the Metaverse, including CEOs, founders, investors, and developers.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(30, 'Lisbon Tech Job Fair 2023', 'The Lisbon Tech Job Fair is a 3-day event that will bring together the most influential leaders in the Metaverse, including CEOs, founders, investors, and developers.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(31, 'Beer in the Bloq', 'Where the best of the tech world meets the best of the beer world.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(32, 'Mobile World Congress', 'The Mobile World Congress is the world''s largest gathering for the mobile industry, organised by the GSMA and held in the Mobile World Capital Barcelona.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Fira Gran Via', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(33, 'Cloudfest', 'Cloudfest events are a series of conferences and workshops that bring together the best minds in the cloud industry to share their knowledge and experience.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'La Nave de Espana', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(34, 'London Tech Week', 'London Tech Week is a week-long festival of technology, innovation and entrepreneurship, taking place across London in June 2023.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'ExCeL London', 16, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(35, 'Turing Fest 2023', 'Turing Fest is a dedicated conference for developers, by developers, and is the only conference in the world that is 100% focused on the Microsoft Azure cloud platform.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Scotland Arena', 17, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(36, 'AI & Big Data Expo', 'The AI & Big Data Expo is the world''s leading Artificial Intelligence and Big Data event, taking place in London on 21-22 June 2023.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'ExCeL London', 16, False);
+
+
 
 /** (Event) Photos **/
 
@@ -531,6 +640,34 @@ INSERT INTO photo (photoID, path, eventID) VALUES (6, 'event_photos/6.jpg', 6);
 INSERT INTO photo (photoID, path, eventID) VALUES (7, 'event_photos/7.jpg', 7);
 INSERT INTO photo (photoID, path, eventID) VALUES (8, 'event_photos/8.jpg', 8);
 INSERT INTO photo (photoID, path, eventID) VALUES (9, 'event_photos/9.jpg', 9);
+INSERT INTO photo (photoID, path, eventID) VALUES (10, 'event_photos/10.jpg', 10);
+INSERT INTO photo (photoID, path, eventID) VALUES (11, 'event_photos/11.jpg', 11);
+INSERT INTO photo (photoID, path, eventID) VALUES (12, 'event_photos/12.jpg', 12);
+INSERT INTO photo (photoID, path, eventID) VALUES (13, 'event_photos/13.jpg', 13);
+INSERT INTO photo (photoID, path, eventID) VALUES (14, 'event_photos/14.jpg', 14);
+INSERT INTO photo (photoID, path, eventID) VALUES (15, 'event_photos/15.jpg', 15);
+INSERT INTO photo (photoID, path, eventID) VALUES (16, 'event_photos/16.jpg', 16);
+INSERT INTO photo (photoID, path, eventID) VALUES (17, 'event_photos/17.jpg', 17);
+INSERT INTO photo (photoID, path, eventID) VALUES (18, 'event_photos/18.jpg', 18);
+INSERT INTO photo (photoID, path, eventID) VALUES (19, 'event_photos/19.jpg', 19);
+INSERT INTO photo (photoID, path, eventID) VALUES (20, 'event_photos/20.jpg', 20);
+INSERT INTO photo (photoID, path, eventID) VALUES (21, 'event_photos/21.jpg', 21);
+INSERT INTO photo (photoID, path, eventID) VALUES (22, 'event_photos/22.jpg', 22);
+INSERT INTO photo (photoID, path, eventID) VALUES (23, 'event_photos/23.jpg', 23);
+INSERT INTO photo (photoID, path, eventID) VALUES (24, 'event_photos/24.jpg', 24);
+INSERT INTO photo (photoID, path, eventID) VALUES (25, 'event_photos/25.jpg', 25);
+INSERT INTO photo (photoID, path, eventID) VALUES (26, 'event_photos/26.jpg', 26);
+INSERT INTO photo (photoID, path, eventID) VALUES (27, 'event_photos/27.jpg', 27);
+INSERT INTO photo (photoID, path, eventID) VALUES (28, 'event_photos/28.jpg', 28);
+INSERT INTO photo (photoID, path, eventID) VALUES (29, 'event_photos/29.jpg', 29);
+INSERT INTO photo (photoID, path, eventID) VALUES (30, 'event_photos/30.jpg', 30);
+INSERT INTO photo (photoID, path, eventID) VALUES (31, 'event_photos/31.jpg', 31);
+INSERT INTO photo (photoID, path, eventID) VALUES (32, 'event_photos/32.jpg', 32);
+INSERT INTO photo (photoID, path, eventID) VALUES (33, 'event_photos/33.jpg', 33);
+INSERT INTO photo (photoID, path, eventID) VALUES (34, 'event_photos/34.jpg', 34);
+INSERT INTO photo (photoID, path, eventID) VALUES (35, 'event_photos/35.jpg', 35);
+INSERT INTO photo (photoID, path, eventID) VALUES (36, 'event_photos/36.jpg', 36);
+
 
 SELECT setval('photo_photoID_seq', (SELECT MAX(photoID) from "photo"));
 
@@ -656,6 +793,94 @@ INSERT INTO event_host (userID, eventID)
 
 INSERT INTO event_host (userID, eventID)
     VALUES (1, 9);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (1, 10);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (1, 11);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (1, 12);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (2, 13);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (2, 14);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (2, 15);
+
+INSERT INTO event_host (userID, eventID) 
+    VALUES (2, 16);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (2, 17);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (3, 18);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (3, 19);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (3, 20);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (3, 21);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (3, 22);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (3, 23);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (3, 24);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (3, 25);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (3, 26);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (4, 27);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (4, 28);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (4, 29);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (4, 30);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (4, 31);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (4, 32);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (4, 33);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (4, 34);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (4, 35);
+
+INSERT INTO event_host (userID, eventID)
+    VALUES (4, 36);
+        
+
+
+
+
+
+
 
 /* Comments */
 

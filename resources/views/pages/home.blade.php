@@ -121,8 +121,32 @@
 </div>
 <!-- END COUNTDOWN TIMER -->
 
+<!-- Return false disables the page scrolling to the top automatically after the ajax request  -->
+<nav id="categories-navbar">
+    <ul>
+        <li>
+            <a onclick="getDataFromTag('all'); return false;">All </a>
+        </li>
+        <li>
+            <a onclick="getDataFromTag('sports'); return false;">Sports</a>
+        </li>
+        <li>
+            <a onclick="getDataFromTag('music'); return false;">Music</a>
+        </li>
+        <li>
+            <a onclick="getDataFromTag('family'); return false;">Family</a>
+        </li>
+<!--         <li>
+            <a onclick="getDataFromTag('books'); return false;">Books</a>
+        </li> -->
+        <li>
+            <a onclick="getDataFromTag('technology'); return false;">Technology</a>
+        </li>
+    </ul>
+</nav>
+
 <!-- CREATE GRID OF CARDS WITH RANDOM IMAGES -->
-<h1> Other Events </h1>
+<div id="container-other-events-title"> Other Events </div>
 <div class="container-other-events">
 
     @foreach ($events as $event)
@@ -160,5 +184,47 @@
 
 </div>
 
+
+<script type="text/javascript" defer>
+    function getDataFromTag(tag) {
+        fetch("{{route('searchEventsByTag')}}" + "?" + new URLSearchParams({
+            category_name: tag
+        }), {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "get",
+            credentials: "same-origin",
+        }).then(function(data) {
+            return data.json();
+        }).then(function(data) {
+            console.log(data);
+            // iterate through the data
+            let container = document.querySelector('.container-other-events');
+            container.innerHTML = "";
+            data.forEach(function(event) {
+                let a = document.createElement('a');
+                a.href = "{{route('event.show', '')}}" + event.eventid;
+                let div = document.createElement('div');
+                div.className = "event-card";
+                let img = document.createElement('img');
+                img.src = "event_photos/" + event.eventid + ".jpg";
+                img.className = "card-image";
+                let h3 = document.createElement('h3');
+                h3.className = "card-title";
+                h3.innerHTML = event.name;
+                div.appendChild(img);
+                div.appendChild(h3);
+                a.appendChild(div);
+                container.appendChild(a);
+            });
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+</script>
 
 @endsection
