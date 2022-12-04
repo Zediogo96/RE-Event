@@ -206,7 +206,7 @@
             container.innerHTML = "";
             data.forEach(function(event) {
                 let a = document.createElement('a');
-                a.href = "{{route('event.show', '')}}" + "/" + event.eventid;
+                a.href = "{{route('event.show', '')}}" + event.eventid;
                 let div = document.createElement('div');
                 div.className = "event-card";
                 let img = document.createElement('img');

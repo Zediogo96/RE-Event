@@ -514,8 +514,36 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (7, 'Slipknot', 'Slipknot is heading back out on tour this Fall for KNOTFEST ROADSHOW. This is your last chance to catch Slipknot on tour in the U.S. for a while', 70000, '2023-11-21', '2022-10-01', 30, 1, 'DKR Texas Memorial Stadium, 2139 San Jacinto Blvd, Austin, TX 78712, USA', 5, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (8, 'Rolex Monte-Carlo Masters', 'The Rolex Monte-Carlo Masters, which celebrated its 100th anniversary in 2006, is the first of three ATP Masters 1000 tournaments played on clay', 70000, '2023-09-04', '2022-09-10', 20, 7, 'Monte-Carlo Country Club, 155 Av. Princesse Grace', 6, False);
 
-
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (9, 'Aniversário Zé', 'Venham celebrar comigo esta importante data, amigos!', 100, '2023-12-19', '2022-09-10', 0, 9, 'Porto, Vila Nova de Gaia', 13, True);
+
+
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(10, 'Visita Parque Biológico Gaia', 'Venham visitar o Parque Biológico de Gaia, um dos melhores parques de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(11, 'Festival Canal Panda', 'O mítico festival do Canal Panda está de volta a Portugal!', 10000, '2023-06-19', '2022-10-01', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(12, 'Festival de Verão', 'O melhor festival de verão está de volta a Portugal!', 10000, '2023-07-19', '2022-10-01', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(13, 'SEA Life Porto', 'Venham visitar o SEA Life Porto, um dos melhores aquários de Portugal!', 500, '2023-05-03', '2022-12-04', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(14, 'Buggy Ride Familiar', 'Venham fazer um passeio de buggy familiar!', 100, '2023-05-03', '2022-12-04', 200, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(15, 'Visita ao Museu do Vinho do Porto', 'Venham visitar o Museu do Vinho do Porto, um dos melhores museus de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(16, 'Visita ao Museu do Carro Elétrico', 'Venham visitar o Museu do Carro Elétrico, um dos melhores museus de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(17, 'Zoo Santo Inácio Tour', 'Venham visitar o Zoo Santo Inácio, um dos melhores zoológicos de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Zoo de Santo Inácio', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(18, 'Cruseiro Rio Douro', 'Venham fazer um cruzeiro pelo Rio Douro!', 300, '2023-05-03', '2022-12-04', 250, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
 
 SELECT setval('event_eventID_seq', (SELECT MAX(eventID) from "event"));
@@ -531,6 +559,16 @@ INSERT INTO photo (photoID, path, eventID) VALUES (6, 'event_photos/6.jpg', 6);
 INSERT INTO photo (photoID, path, eventID) VALUES (7, 'event_photos/7.jpg', 7);
 INSERT INTO photo (photoID, path, eventID) VALUES (8, 'event_photos/8.jpg', 8);
 INSERT INTO photo (photoID, path, eventID) VALUES (9, 'event_photos/9.jpg', 9);
+INSERT INTO photo (photoID, path, eventID) VALUES (10, 'event_photos/10.jpg', 10);
+INSERT INTO photo (photoID, path, eventID) VALUES (11, 'event_photos/11.jpg', 11);
+INSERT INTO photo (photoID, path, eventID) VALUES (12, 'event_photos/12.jpg', 12);
+INSERT INTO photo (photoID, path, eventID) VALUES (13, 'event_photos/13.jpg', 13);
+INSERT INTO photo (photoID, path, eventID) VALUES (14, 'event_photos/14.jpg', 14);
+INSERT INTO photo (photoID, path, eventID) VALUES (15, 'event_photos/15.jpg', 15);
+INSERT INTO photo (photoID, path, eventID) VALUES (16, 'event_photos/16.jpg', 16);
+INSERT INTO photo (photoID, path, eventID) VALUES (17, 'event_photos/17.jpg', 17);
+INSERT INTO photo (photoID, path, eventID) VALUES (18, 'event_photos/18.jpg', 18);
+
 
 SELECT setval('photo_photoID_seq', (SELECT MAX(photoID) from "photo"));
 
