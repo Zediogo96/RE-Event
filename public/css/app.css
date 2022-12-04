@@ -41,6 +41,18 @@ body::before {
   color: #fbc531;
 }
 
+.nav-item:nth-last-child(2) {
+  margin-left: 34rem;
+}
+
+@media screen and (max-width:600px) {
+  .nav-item:nth-last-child(2) {
+    margin-left: 0rem;
+  }
+}
+
+
+
 /* Carousel */
 
 .carousel-item {
