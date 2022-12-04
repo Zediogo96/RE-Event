@@ -8,6 +8,7 @@ use App\Models\User;
 use DB;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Tag;
 
 class SearchController extends Controller
 {
@@ -19,7 +20,7 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
-            
+
             // Input Sanitization 
             $input = preg_replace('/[^A-Za-z0-9\-]/', '', strip_tags($request->input('search')));
 
@@ -85,6 +86,19 @@ class SearchController extends Controller
                     return Response($output);
                 }
             }
+        }
+    }
+
+    public function searchEventsByTag(Request $request)
+    {
+        // VERIFICAR SE EVENT CATEGORY EXISTE
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if ($request->category_name) {
+            $tag_id = Tag::where('name', $request->category_name)->get()->first()->tagid;
+            // find event that has tag
+            $events = Event::where('tagid', $tag_id)->get();
+            // $events to json
+            return Response($events);
         }
     }
 }
