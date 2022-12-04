@@ -119,7 +119,7 @@ class EventController extends Controller
 
             $photo = new Photo;
 
-            $evid = $results = DB::select(DB::raw("SELECT MAX(eventid) FROM event"))[0]->max;
+            $evid = DB::select(DB::raw("SELECT MAX(eventid) FROM event"))[0]->max;
             $evid = $evid + 1;
 
             $filename = "$evid" . '.' . $file->getClientOriginalExtension();

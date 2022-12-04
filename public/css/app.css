@@ -320,7 +320,7 @@ div span:last-of-type {
   left: 15rem;
 
   border-radius: 2rem;
-  border: 2px solid blue;
+  border: 3px solid #677ae4;
 }
 
 #userDiv {
@@ -394,14 +394,14 @@ div span:last-of-type {
 }
 
 #outroDiv {
-  background-image: linear-gradient(to right, rgba(103, 162, 218, 1) 0%, rgba(210, 145, 255, 0.8)100%);
+  background-image: linear-gradient(to right, rgba(210, 145, 255, 0.7) 0%, rgba(24, 24, 24,0.8)100%);
   width: 70rem;
   top: -10rem;
   height: 500px;
 }
 
 #inviteDiv {
-  background-image: linear-gradient(to right, rgba(103, 162, 218, 1) 0%, rgba(210, 145, 255, 0.8)100%);
+  background-image: linear-gradient(to right, rgba(210, 145, 255, 0.7) 0%, rgba(24, 24, 24, 0.8) 100%);
   width: 29rem;
   top: -10rem;
 }
@@ -660,7 +660,7 @@ div.app {
 }
 
 #comment-section-container {
-  margin-top: 40rem;
+  margin-top: 31rem;
 }
 
 #new-comment {
