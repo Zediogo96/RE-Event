@@ -51,8 +51,6 @@ body::before {
   }
 }
 
-
-
 /* Carousel */
 
 .carousel-item {
@@ -347,7 +345,7 @@ div span:last-of-type {
 }
 
 .navigation ul li.active::after {
-  transform: translateY(-10%) scaleX(1);
+  transform: translateY(-10%) scaleX(2.5);
   opacity: 1;
 }
 
@@ -384,6 +382,25 @@ div span:last-of-type {
   font-size: 18px;
   font-weight: 500;
   white-space: nowrap;
+}
+
+@media screen and (max-width:600px) {
+  .navigation {
+    width: 5rem;
+  }
+
+  .navigation ul li::after {
+    transform: translateY(-10%) scaleX();
+    opacity: 1;
+    width: 100%;
+  }
+  .navigation ul li span.title {
+    display: none;
+  }
+
+  .navigation ul li a .icon {
+    margin-left: -1rem;
+  }
 }
 
 #info-navbar-container>div {
