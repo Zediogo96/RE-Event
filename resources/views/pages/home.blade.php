@@ -121,8 +121,28 @@
 </div>
 <!-- END COUNTDOWN TIMER -->
 
+<nav id="categories-navbar">
+    <ul>
+        <li>
+            <a href="#">Sports</a>
+        </li>
+        <li>
+            <a href="#">Music</a>
+        </li>
+        <li>
+            <a href="#">Family</a>
+        </li>
+        <li>
+            <a href="#">Books</a>
+        </li>
+        <li>
+            <a href="#">Technology</a>
+        </li>
+    </ul>
+</nav>
+
 <!-- CREATE GRID OF CARDS WITH RANDOM IMAGES -->
-<h1> Other Events </h1>
+<div id="container-other-events-title"> Other Events </div>
 <div class="container-other-events">
 
     @foreach ($events as $event)
