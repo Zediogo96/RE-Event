@@ -124,22 +124,22 @@
 <nav id="categories-navbar">
     <ul>
         <li>
-            <a href="#">All </a>
+            <a onclick="getDataFromTag('all')">All </a>
         </li>
         <li>
-            <a>Sports</a>
+            <a onclick="getDataFromTag('sports')">Sports</a>
         </li>
         <li>
             <a onclick="getDataFromTag('music')">Music</a>
         </li>
         <li>
-            <a href="">Family</a>
+            <a onclick="getDataFromTag('family')">Family</a>
         </li>
         <li>
-            <a href="#">Books</a>
+            <a onclick="getDataFromTag('books')">Books</a>
         </li>
         <li>
-            <a href="#">Technology</a>
+            <a onclick="getDataFromTag('technology')">Technology</a>
         </li>
     </ul>
 </nav>
