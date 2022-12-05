@@ -94,6 +94,26 @@ class InvitedController extends Controller
         return response(null, 409);
     }
 
+    public function getMyInvites(){
+        if (!Auth::check()) {return response(route('login'), 302);}
+
+        $inviter_user_id = Auth::user()->userid;
+
+        $invite = Invited::where('invited.inviteduserid', '=',  $invited_user_id)
+                        ->where('invited.inviteruserid', '=', $inviter_user_id)
+                        ->where('invited.eventid', '=', $eventid)
+                        ->first();
+        if(!$invite){
+            $inv = new Invited;
+            $inv->inviteduserid = $invited_user_id;
+            $inv->inviteruserid = $inviter_user_id;
+            $inv->eventid = $eventid;
+            $inv->save();
+            return response(null, 200);
+        }
+
+    }
+
 }
 /* 
 TODO nao convidar a mim mesmo 

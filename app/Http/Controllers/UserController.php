@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Ticket;
+use App\Models\Invited;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +34,22 @@ class UserController extends Controller
         if (!Auth::check()) return redirect('/login');
         $user = User::find($id);
         $this->authorize('view', $user);
-        return view('pages.userPage', ['user' => $user]);
+
+
+        $sentInvites = Invited::join('event', 'event.eventid', '=', 'invited.eventid')
+                                ->join('city', 'city.cityid', '=', 'event.cityid')
+                                ->where('invited.inviteruserid', '=', $id)
+                                ->select(['city.name as cityName', '*', 'event.name as name'])->get();
+
+
+        $receivedInvites = Invited::join('event', 'event.eventid', '=', 'invited.eventid')
+                                    ->join('city', 'city.cityid', '=', 'event.cityid')
+                                    ->where('invited.inviteduserid', '=', $id)
+                                    ->select(['city.name as cityName', '*', 'event.name as name'])->get();
+                                    
+        
+
+        return view('pages.userPage', ['user' => $user, 'receivedInvites' => $receivedInvites, 'sentInvites' => $sentInvites]);
     }
 
     /**
