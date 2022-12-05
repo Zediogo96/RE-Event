@@ -39,12 +39,40 @@ class SearchController extends Controller
         }
     }
 
+    // public function searchUsers(Request $request)
+    // {
+    //     if ($request->ajax()) {
+
+    //         if ($request->search != '') {
+    //             $output = "";
+
+    //             /* EVENTS BY NAME OR DESCRIPTIONS*/
+    //             $users = User::query()->where('name', 'LIKE', "%{$request->search}%")->orWhere('email', 'LIKE', "%{$request->search}%")->take(7)->get();
+
+    //             if ($users) {
+    //                 foreach ($users as $key => $user) {
+    //                     $ticket = DB::table('ticket')->where('userid', $user->userid)->where('eventid', $request->event_id)->first();
+
+    //                     // if user is not invited to event
+    //                     if (is_null($ticket)) {
+    //                         $output .= '<tr>' . '<td>' . "<a href='" . route('user.show', $user->userid) . "'>" . $user->name . '</a></td>' . '<td>' .
+    //                             $user->email . '</td>' . "<td>" . "<button onclick='ajax_addUser(" . $user->userid . "," . $request->event_id . ")" . "'style='margin-right: 25%' class='btn btn-success'> Add to Event </button>" . '</td>' . '</tr>';
+    //                     } else {
+    //                         $output .= '<tr>' . '<td>' . "<a href='" . route('user.show', $user->userid) . "'>" . $user->name . '</a></td>' . '<td>' .
+    //                             $user->email . '</td>' . '<td>' . "<button onclick='ajax_remUser(" . $user->userid . "," . $request->event_id . ")" . "'style='margin-right: 25%' class='btn btn-danger'> Remove </button>" . '</td>' . '</tr>';
+    //                     }
+    //                 }
+    //                 return Response($output);
+    //             }
+    //         }
+    //     }
+    // }
+
     public function searchUsers(Request $request)
     {
         if ($request->ajax()) {
 
             if ($request->search != '') {
-                $output = "";
 
                 /* EVENTS BY NAME OR DESCRIPTIONS*/
                 $users = User::query()->where('name', 'LIKE', "%{$request->search}%")->orWhere('email', 'LIKE', "%{$request->search}%")->take(7)->get();
@@ -52,17 +80,10 @@ class SearchController extends Controller
                 if ($users) {
                     foreach ($users as $key => $user) {
                         $ticket = DB::table('ticket')->where('userid', $user->userid)->where('eventid', $request->event_id)->first();
-
                         // if user is not invited to event
-                        if (is_null($ticket)) {
-                            $output .= '<tr>' . '<td>' . "<a href='" . route('user.show', $user->userid) . "'>" . $user->name . '</a></td>' . '<td>' .
-                                $user->email . '</td>' . "<td>" . "<button onclick='ajax_addUser(" . $user->userid . "," . $request->event_id . ")" . "'style='margin-right: 25%' class='btn btn-success'> Add to Event </button>" . '</td>' . '</tr>';
-                        } else {
-                            $output .= '<tr>' . '<td>' . "<a href='" . route('user.show', $user->userid) . "'>" . $user->name . '</a></td>' . '<td>' .
-                                $user->email . '</td>' . '<td>' . "<button onclick='ajax_remUser(" . $user->userid . "," . $request->event_id . ")" . "'style='margin-right: 25%' class='btn btn-danger'> Remove </button>" . '</td>' . '</tr>';
-                        }
+                        (is_null($ticket)) ? ($user->attending_event = false) : ($user->attending_event = true);
                     }
-                    return Response($output);
+                    return Response($users);
                 }
             }
         }
@@ -93,9 +114,7 @@ class SearchController extends Controller
             $events = Event::where('isprivate', false)->take(24)->get();
         } else if ($request->category_name) {
             $tag_id = Tag::where('name', $request->category_name)->get()->first()->tagid;
-            // find event that has tag
             $events = Event::where('tagid', $tag_id)->where('isprivate', false)->take(12)->get();
-            // $events to json   
         }
         return Response($events);
     }

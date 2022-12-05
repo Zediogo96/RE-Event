@@ -201,7 +201,6 @@
         }).then(function(data) {
             return data.json();
         }).then(function(data) {
-            console.log(data);
             // iterate through the data
             let container = document.querySelector('.container-other-events');
             container.innerHTML = "";

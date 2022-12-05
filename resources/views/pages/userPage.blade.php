@@ -572,13 +572,10 @@
                 td4.style.textAlign = "center";
                 let btn = document.createElement("button");
                 btn.setAttribute("class", "btn btn-success");
-                btn.setAttribute("style", "margin-left: 1rem");
                 btn.innerHTML = "View Page";
                 btn.addEventListener("click", function() {
                     window.location.href = "user" + user.userid
                 });
-                // add style to btn
-
 
                 td1.innerHTML = user.userid;
                 td2.innerHTML = user.name;

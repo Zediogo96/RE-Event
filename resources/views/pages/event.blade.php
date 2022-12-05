@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="container" id="event-content">
+    <div hidden id="token_event_id">{{$event->eventid}}</div>
     <img src="{{$event -> photos[0]->path}}" style="border-radius: 5%; height:45rem;">
     <div class="wrapper-res">
         <div id="event-name"> {{$event->name}} </div>
@@ -181,6 +182,16 @@
 
 
 <script type="text/javascript">
+
+function isEmpty(obj) {
+  for(var prop in obj) {
+    if(Object.prototype.hasOwnProperty.call(obj, prop)) {
+      return false;
+    }
+  }
+
+  return JSON.stringify(obj) === JSON.stringify({});
+}
     document.querySelector('#new-comment button').addEventListener('click', function(e) {
         e.preventDefault();
 
@@ -195,35 +206,32 @@
                 document.querySelector('#new-comment form').classList.remove("apply-shake");
             }, 500);
             return;
-        }
-        else {
+        } else {
             fetch("{{route('storeComment')}}", {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-Token": '{{ csrf_token() }}'
-            },
-            method: "post",
-            credentials: "same-origin",
-            body: JSON.stringify({
-                userid: {{Auth::user()->userid}},
-                eventid: {{$event->eventid}},
-                text: document.querySelector('#my-comment').value
-            })
-        }).then(function(data) {
-            document.location.reload();
-        }).catch(function(error) {
-            console.log(error);
-        });
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-Token": '{{ csrf_token() }}'
+                },
+                method: "post",
+                credentials: "same-origin",
+                body: JSON.stringify({
+                    userid: {{Auth::user()->userid}},
+                    eventid: {{$event->eventid}},
+                    text: document.querySelector('#my-comment').value,
+                })
+            }).then(function(data) {
+                document.location.reload();
+            }).catch(function(error) {
+                console.log(error);
+            });
         }
-      
+
     });
 </script>
 
 <script type="text/javascript">
-
-
     function ajax_selfAddUser(userid, eventid) {
         fetch("{{route('selfAddUser')}}", {
             headers: {
@@ -312,25 +320,68 @@
 
 <!-- ONLY AVAILABLE FOR HOST -->
 @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
-<script type="text/javascript">
+<script type="text/javascript" defer>
     document.getElementById("search-users").addEventListener("keyup", function(e) {
-        fetch("searchUsers", {
+        if (document.getElementById("search-users").value == '') return;
+        fetch("{{route('searchUsers')}}" + "?" + new URLSearchParams({
+            search: document.getElementById("search-users").value,
+            event_id: '{{$event->eventid}}'
+        }), {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
                 "X-CSRF-Token": '{{ csrf_token() }}'
             },
-            method: "post",
+            method: "get",
             credentials: "same-origin",
-            body: JSON.stringify({
-                search: e.target.value,
-                event_id: '{{$event->eventid}}'
-            })
+
         }).then(function(data) {
-            return data.text();
+            return data.json();
         }).then(function(data) {
-            document.getElementById("table-user-res").innerHTML = data;
+
+           
+            let eventid = document.querySelector("#token_event_id").innerHTML;
+            console.log(eventid);
+            let container = document.getElementById("table-user-res");
+            container.innerHTML = "";
+            console.log(data);
+            data.forEach(function(user) {
+
+                    let tr = document.createElement("tr");
+                    let td1 = document.createElement("td");
+                    let td2 = document.createElement("td");
+                    let td3 = document.createElement("td");
+
+                    td3.style.textAlign = "center";
+                    let btn = document.createElement("button");
+
+                    if (user.attending_event == true) {
+                        btn.setAttribute("class", "btn btn-danger");
+                        btn.innerHTML = "Remove";
+                        btn.addEventListener('click', function(e) {
+                            ajax_remUser(user.userid, eventid);
+                            refreshDiv();
+                        })
+                    }
+                    else {
+                        btn.setAttribute("class", "btn btn-success");
+                        btn.innerHTML = "Add to Event";
+                        btn.addEventListener('click', function(e) {
+                            ajax_addUser(user.userid, eventid);
+                            refreshDiv();
+                        })
+                    }
+                    td1.innerHTML = user.name;
+                    td2.innerHTML = user.email;
+                    td3.appendChild(btn);
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    container.appendChild(tr);
+
+                });
         }).catch(function(error) {
             console.log(error);
         });
@@ -351,23 +402,65 @@
 
 <script type="text/javascript">
     function refreshDiv() {
-        fetch("searchUsers", {
+        fetch("{{route('searchUsers')}}" + "?" + new URLSearchParams({
+            search: document.getElementById("search-users").value,
+            event_id: '{{$event->eventid}}'
+        }), {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
                 "X-CSRF-Token": '{{ csrf_token() }}'
             },
-            method: "post",
+            method: "get",
             credentials: "same-origin",
-            body: JSON.stringify({
-                search: document.getElementById("search-users").value,
-                event_id: '{{$event->eventid}}'
-            })
+
         }).then(function(data) {
-            return data.text();
+            return data.json();
         }).then(function(data) {
-            document.getElementById("table-user-res").innerHTML = data;
+
+           
+            let eventid = document.querySelector("#token_event_id").innerHTML;
+            console.log(eventid);
+            let container = document.getElementById("table-user-res");
+            container.innerHTML = "";
+            console.log(data);
+            data.forEach(function(user) {
+
+                    let tr = document.createElement("tr");
+                    let td1 = document.createElement("td");
+                    let td2 = document.createElement("td");
+                    let td3 = document.createElement("td");
+
+                    td3.style.textAlign = "center";
+                    let btn = document.createElement("button");
+
+                    if (user.attending_event == true) {
+                        btn.setAttribute("class", "btn btn-danger");
+                        btn.innerHTML = "Remove";
+                        btn.addEventListener('click', function(e) {
+                            ajax_remUser(user.userid, eventid);
+                            refreshDiv();
+                        })
+                    }
+                    else {
+                        btn.setAttribute("class", "btn btn-success");
+                        btn.innerHTML = "Add to Event";
+                        btn.addEventListener('click', function(e) {
+                            ajax_addUser(user.userid, eventid);
+                            refreshDiv();
+                        })
+                    }
+                    td1.innerHTML = user.name;
+                    td2.innerHTML = user.email;
+                    td3.appendChild(btn);
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    container.appendChild(tr);
+
+                });
         }).catch(function(error) {
             console.log(error);
         });

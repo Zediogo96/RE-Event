@@ -40,7 +40,7 @@ Route::get('faq', 'PageController@faq')->name('faq.index');
 
 Route::get('searchTest','SearchController@index')->name('search.test');
 Route::post('search','SearchController@search');
-Route::post('searchUsers','SearchController@searchUsers');
+Route::get('searchUsers','SearchController@searchUsers')->name('searchUsers');
 Route::get('searchUsersAdmin','SearchController@searchUsersAdmin')->name('searchUsersAdmin');
 Route::get('searchEventsByTag','SearchController@searchEventsByTag')->name('searchEventsByTag');
 
