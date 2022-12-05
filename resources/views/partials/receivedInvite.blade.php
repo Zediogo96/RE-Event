@@ -13,7 +13,11 @@
 
     <td>{{ $invite->email }}</td>
     <td>
+        @if ($invite->status)
+            Invite Accepted
+        @else
         <button class="btn btn-success btn-sm" onClick="acceptInvite({{$invite->eventid}})" ><img src="icons/check.svg" alt="check-icon"><p>Accept Invite</p></button>
         <button class="btn btn-danger btn-sm" onClick="rejectInvite({{$invite->eventid}})" ><img src="icons/reject.svg" alt="reject-icon"><p>Reject Invite</p></button>
+        @endif
     </td>
 </tr>

@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Invited;
 use App\Models\User;
+use App\Models\Event;
 use Illuminate\Http\Request;
-
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,6 +23,15 @@ class InvitedController extends Controller
         return $user->userid;
     }
 
+    public function joinEvent($event_id)
+    {
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($event_id);
+        /* $this->authorize('join', $event); */
+        $user = Auth::user();
+        $event->participants()->attach($user->userID);
+    }
+
     public function accept(Request $request){
         if (!Auth::check()) {return response(route('login'), 302);}
 
@@ -32,18 +40,20 @@ class InvitedController extends Controller
 
         $invite = Invited::where('invited.inviteduserid', '=',  $invited_user_id)
                         ->where('invited.eventid', '=', $event_id)
-                        ->first();
-
-        $this->authorize('update', $invite);
+                        ->firstOrFail();
         
-        $invite->status = TRUE;
-        $invite->save();
+        $this->authorize('update', $invite);
 
-        User::join($event_id);
+        DB::table('invited')
+            ->where('invited.inviteduserid', '=',  $invited_user_id)
+            ->where('invited.eventid', '=', $event_id)
+            ->update(['status'=>TRUE]);
+        
+        
+        InvitedController::joinEvent($event_id);
 
-        app('App\Http\Controllers\EventController')->join($invite->eventid);
+        return response(route('event.show', ['eventid' => $event_id]), 302);
 
-        return response(null, 200);
     }
 
     /**
@@ -92,26 +102,6 @@ class InvitedController extends Controller
         }
 
         return response(null, 409);
-    }
-
-    public function getMyInvites(){
-        if (!Auth::check()) {return response(route('login'), 302);}
-
-        $inviter_user_id = Auth::user()->userid;
-
-        $invite = Invited::where('invited.inviteduserid', '=',  $invited_user_id)
-                        ->where('invited.inviteruserid', '=', $inviter_user_id)
-                        ->where('invited.eventid', '=', $eventid)
-                        ->first();
-        if(!$invite){
-            $inv = new Invited;
-            $inv->inviteduserid = $invited_user_id;
-            $inv->inviteruserid = $inviter_user_id;
-            $inv->eventid = $eventid;
-            $inv->save();
-            return response(null, 200);
-        }
-
     }
 
 }
