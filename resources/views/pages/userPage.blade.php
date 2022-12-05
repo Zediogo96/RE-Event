@@ -543,31 +543,57 @@
         </div>
     </div>
 
-    <body>
+</body>
+<script type="text/javascript">
+    document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
+        fetch("{{route('searchUsersAdmin')}}" + "?" + new URLSearchParams({
+            search: e.target.value
+        }), {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{csrf_token()}}'
+            },
+            method: "get",
+            credentials: "same-origin",
+        }).then(function(data) {
+            return data.json();
+        }).then(function(data) {
+            let container = document.getElementById("search-admin-users-res");
+            container.innerHTML = "";
+            data.forEach(function(user) {
 
-        <script type="text/javascript">
-            document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
-                fetch("searchUsersAdmin", {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-Requested-With": "XMLHttpRequest",
-                        "X-CSRF-Token": '{{ csrf_token() }}'
-                    },
-                    method: "post",
-                    credentials: "same-origin",
-                    body: JSON.stringify({
-                        search: e.target.value
-                    })
-                }).then(function(data) {
-                    return data.text();
-                }).then(function(data) {
-                    document.getElementById("search-admin-users-res").innerHTML = data;
-                }).catch(function(error) {
-                    console.log(error);
+                let tr = document.createElement("tr");
+                let th1 = document.createElement("th");
+                let th2 = document.createElement("th");
+                let th3 = document.createElement("th");
+                let th4 = document.createElement("th");
+                let btn = document.createElement("button");
+                btn.setAttribute("class", "btn btn-success");
+                btn.setAttribute("style", "margin-left: 1rem");
+                btn.innerHTML = "View Page";
+                btn.addEventListener("click", function() {
+                    window.location.href = "user" + user.userid
                 });
+
+                th1.innerHTML = user.userid;
+                th2.innerHTML = user.name;
+                th3.innerHTML = user.email;
+                th4.appendChild(btn);
+
+                tr.appendChild(th1);
+                tr.appendChild(th2);
+                tr.appendChild(th3);
+                tr.appendChild(th4);
+                container.appendChild(tr);
             });
-        </script>
+
+        }).catch(function(error) {
+            console.log(error);
+        });
+    });
+</script>
 
 </html>
 

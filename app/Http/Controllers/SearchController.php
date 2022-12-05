@@ -73,17 +73,12 @@ class SearchController extends Controller
         if ($request->ajax()) {
 
             if ($request->search != '') {
-                $output = "";
 
                 /* EVENTS BY NAME OR DESCRIPTIONS*/
                 $users = User::query()->where('name', 'LIKE', "%{$request->search}%")->orWhere('email', 'LIKE', "%{$request->search}%")->orWhere('userid', 'LIKE', "%{$request->search}%")->take(10)->get();
 
                 if ($users) {
-                    foreach ($users as $key => $user) {
-                        $output .= '<tr><td>' . $user->userid . '</td><td><a>' .
-                            $user->name . '</a></td>' . '<td>' . $user->email . "</td> <td ><form method='get' action='" . route('user.show', $user->userid) . "'><button style='margin-right: 1rem' type='submit' class='btn btn-success '> View Page </button> </form> </td></tr>";
-                    }
-                    return Response($output);
+                    return Response($users);
                 }
             }
         }
@@ -96,15 +91,12 @@ class SearchController extends Controller
 
         if ($request->category_name == "all") {
             $events = Event::where('isprivate', false)->take(24)->get();
-        }
-        else if ($request->category_name) {
+        } else if ($request->category_name) {
             $tag_id = Tag::where('name', $request->category_name)->get()->first()->tagid;
             // find event that has tag
             $events = Event::where('tagid', $tag_id)->where('isprivate', false)->take(12)->get();
-            // $events to json
-            
+            // $events to json   
         }
-
         return Response($events);
     }
 }
