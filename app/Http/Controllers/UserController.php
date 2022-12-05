@@ -37,18 +37,18 @@ class UserController extends Controller
 
 
         $sentInvites = Invited::join('event', 'event.eventid', '=', 'invited.eventid')
-                                ->join('city', 'city.cityid', '=', 'event.cityid')
-                                ->where('invited.inviteruserid', '=', $id)
-                                ->select(['city.name as cityName', '*', 'event.name as name'])->get();
+                                ->join('user_', 'user_.userid', '=', 'invited.inviteduserid')
+                                ->where('invited.inviteduserid', '=', $id)
+                                ->select(['user_.email as email', '*', 'event.name as name'])->get();
 
 
         $receivedInvites = Invited::join('event', 'event.eventid', '=', 'invited.eventid')
                                     ->join('city', 'city.cityid', '=', 'event.cityid')
                                     ->where('invited.inviteduserid', '=', $id)
                                     ->select(['city.name as cityName', '*', 'event.name as name'])->get();
-                                    
-        
 
+        
+        //return $sentInvites;
         return view('pages.userPage', ['user' => $user, 'receivedInvites' => $receivedInvites, 'sentInvites' => $sentInvites]);
     }
 

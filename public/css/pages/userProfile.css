@@ -370,6 +370,11 @@ div#preview-container img {
     margin-left: 51.5rem;
 }
 
+.single-post-content {
+    padding: 0 4rem 0 0;
+}
+
+
 #createUserModal form div.form-group {
     margin: 0 auto;
     width: 30rem;

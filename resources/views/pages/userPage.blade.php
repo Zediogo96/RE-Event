@@ -291,31 +291,54 @@
             @endif
             <div id="myInvitesDetails" class="optionDetails optionDetailsHidden">
                 <div id="receivedInvites" class="details submenuSleep">
-                <div class="container">
-                    <div class="section">
-                        <div class="blog-post blog-single-post">
-                            <div class="single-post-title" style="padding-bottom: 1rem;">
-                                <h2>Received Invites</h2>
-                            </div>
-                            <div class="single-post-content">
-                                <table class="events-list">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Name</th>
-                                            <th>City</th>
-                                            <th>Respond to Invite</th>
-                                        </tr>
+                    <div class="container">
+                        <div class="section">
+                            <div class="blog-post blog-single-post">
+                                <div class="single-post-title" style="padding-bottom: 1rem;">
+                                    <h2>Received Invites</h2>
+                                </div>
+                                <div class="single-post-content">
+                                    <table class="events-list">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Name of Event</th>
+                                                <th>City</th>
+                                                <th>Respond to Invite</th>
+                                            </tr>
 
-                                    </thead>
-                                    @each('partials.receivedInvite', $receivedInvites, 'invite')
-                                </table>
+                                        </thead>
+                                        @each('partials.receivedInvite', $receivedInvites, 'invite')
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="sentInvites" class="details submenuSleep">
-                    No invites sent :(
+                    <div class="container">
+                        <div class="section">
+                            <div class="blog-post blog-single-post">
+                                <div class="single-post-title" style="padding-bottom: 1rem;">
+                                    <h2>Sent Invites</h2>
+                                </div>
+                                <div class="single-post-content">
+                                    <table class="events-list">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Name of Event</th>
+                                                <th>Email of invited person</th>
+                                                <th>Invite Status</th>
+                                            </tr>
+
+                                        </thead>
+                                        @each('partials.sentInvite', $sentInvites, 'invite')
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
