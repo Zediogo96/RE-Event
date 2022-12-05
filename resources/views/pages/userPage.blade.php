@@ -544,7 +544,7 @@
     </div>
 
 </body>
-<script type="text/javascript">
+<script type="text/javascript" defer>
     document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
         fetch("{{route('searchUsersAdmin')}}" + "?" + new URLSearchParams({
             search: e.target.value
@@ -565,10 +565,11 @@
             data.forEach(function(user) {
 
                 let tr = document.createElement("tr");
-                let th1 = document.createElement("th");
-                let th2 = document.createElement("th");
-                let th3 = document.createElement("th");
-                let th4 = document.createElement("th");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
+                let td4 = document.createElement("td");
+                td4.style.textAlign = "center";
                 let btn = document.createElement("button");
                 btn.setAttribute("class", "btn btn-success");
                 btn.setAttribute("style", "margin-left: 1rem");
@@ -576,16 +577,18 @@
                 btn.addEventListener("click", function() {
                     window.location.href = "user" + user.userid
                 });
+                // add style to btn
 
-                th1.innerHTML = user.userid;
-                th2.innerHTML = user.name;
-                th3.innerHTML = user.email;
-                th4.appendChild(btn);
 
-                tr.appendChild(th1);
-                tr.appendChild(th2);
-                tr.appendChild(th3);
-                tr.appendChild(th4);
+                td1.innerHTML = user.userid;
+                td2.innerHTML = user.name;
+                td3.innerHTML = user.email;
+                td4.appendChild(btn);
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
                 container.appendChild(tr);
             });
 

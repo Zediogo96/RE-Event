@@ -376,4 +376,14 @@ div#preview-container img {
     transform: translate(-50%, -50%);
 }
 
+tbody tr {
+    border-bottom: 1px solid whitesmoke;
+    border-top: 1px solid whitesmoke;
+}
+
+/* css select every td element except last child */
+tbody tr td:not(:last-child) {
+    border-right: 1px solid whitesmoke;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap");
