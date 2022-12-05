@@ -277,8 +277,6 @@ signupLink.onclick = () => {
 
 function createInvite(event_id) {
     let invited_user = document.getElementById("sendInvite").value;
-    console.log(invited_user);
-    console.log(event_id);
     sendAjaxRequest(
         "post",
         "/api/invite",
@@ -293,11 +291,17 @@ function inviteHandler() {
     if(this.status === 302){
         window.location.href = this.responseText;
     }
-    if(this.status === 313){
-        console.log("YOU NOT WHO YOU ARE");
+    else if(this.status === 404){
+        console.log("Invite Doesn't Exist");
     }
-    if(this.status === 405){
-        console.log("dbjhewygjgfyu");
+    else if(this.status === 409){
+        console.log("User Already Invited");
+    }
+    else if(this.status === 400){
+        console.log("Not possible to invite yourself");
+    }
+    else if(this.status === 412){
+        console.log("User already attending event");
     }
 }
 
