@@ -730,7 +730,7 @@ INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
     VALUES (FALSE, 3, 6, 5);
 
 INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 1, 5, 4);
+    VALUES (FALSE, 1, 50, 4);
 
 INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
     VALUES (TRUE, 5, 2, 8);
@@ -745,7 +745,7 @@ INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
     VALUES (FALSE, 2, 8, 8);
 
 INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 1, 3, 1);
+    VALUES (FALSE, 50, 3, 1);
 
 INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
     VALUES (FALSE, 7, 1, 6);

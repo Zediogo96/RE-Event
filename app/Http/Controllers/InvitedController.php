@@ -35,12 +35,12 @@ class InvitedController extends Controller
                         ->first();
 
         $this->authorize('update', $invite);
-        $this->authorize('join', $event);
-
+        
         $invite->status = TRUE;
         $invite->save();
-        $event = $invite->event()->first();
-        
+
+        User::join($event_id);
+
         app('App\Http\Controllers\EventController')->join($invite->eventid);
 
         return response(null, 200);

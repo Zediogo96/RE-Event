@@ -11,9 +11,9 @@
     </td>
     <td class="event-venue hidden-xs"><i class="icon-map-marker"></i>  {{ $invite->cityName }}</td>
 
-
+    <td>{{ $invite->email }}</td>
     <td>
-        <button href="#" class="btn btn-success btn-sm"><img src="icons/check.svg" alt="check-icon"><p>Accept Invite</p></button>
-        <button href="#" class="btn btn-danger btn-sm"><img src="icons/reject.svg" alt="reject-icon"><p>Reject Invite</p></button>
+        <button class="btn btn-success btn-sm" onClick="acceptInvite({{$invite->eventid}})" ><img src="icons/check.svg" alt="check-icon"><p>Accept Invite</p></button>
+        <button class="btn btn-danger btn-sm" onClick="rejectInvite({{$invite->eventid}})" ><img src="icons/reject.svg" alt="reject-icon"><p>Reject Invite</p></button>
     </td>
 </tr>

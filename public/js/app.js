@@ -302,10 +302,12 @@ function inviteHandler() {
 }
 
 function rejectInvite(eventID){
+    console.log("reject");
     sendAjaxRequest("delete", "/api/inviteReject", {event_id: eventID}, inviteHandler);
 }
 
 function acceptInvite(event_id){
+    console.log("accept");
     sendAjaxRequest(
         "put",
         "/api/inviteAccept",

@@ -60,8 +60,8 @@ Route::post('storeComment', 'CommentController@store')->name('storeComment');
 
 //Invites
 Route::post('api/invite', 'InvitedController@create')->name('createInvite');
-Route::put('api/inviteAccept', 'InvitedController@accept');
-Route::delete('api/inviteReject', 'InvitedController@reject');
+Route::put('api/inviteAccept', 'InvitedController@accept')->name('acceptInvite');
+Route::delete('api/inviteReject', 'InvitedController@reject')->name('rejectInvite');
 
 Route::get('debug/invites', function() {
     return App\Models\Invited::get();
