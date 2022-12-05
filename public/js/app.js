@@ -291,6 +291,17 @@ function inviteHandler() {
     if(this.status === 302){
         window.location.href = this.responseText;
     }
+    else if(this.status === 200){
+        let d = document.getElementById('inviteDiv');
+        d.classList.add("animate-out");
+        setTimeout(function() {
+            d.classList.remove("animate-out");
+        }, 500);
+        setTimeout(function() {
+            d.style.display = "none";
+        }, 450);
+        
+    }
     else if(this.status === 404){
         console.log("Invite Doesn't Exist");
     }

@@ -96,7 +96,7 @@ class InvitedController extends Controller
         $eventid = $request['event_id'];
         $invited_user_id = InvitedController::get_id_from_email($request['invited_user']);
         $inviter_user_id = Auth::user()->userid;
-        
+
         $hasTicket = Ticket::where('ticket.eventid', '=', $eventid)
                             ->where('ticket.userid', '=',  $invited_user_id)
                             ->first();
@@ -119,7 +119,7 @@ class InvitedController extends Controller
             $inv->inviteruserid = $inviter_user_id;
             $inv->eventid = $eventid;
             $inv->save();
-            return response(route('event.show', ['eventid' => $eventid]), 302);
+            return response(null, 200);
         }
 
         return response(null, 409);
