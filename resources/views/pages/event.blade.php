@@ -114,11 +114,13 @@
     </div>
     @endif
 
-    <div id="inviteDiv" data-mdb-animation="slide-in-right" style="display:none; text-align:center; width: 500px; height: 500px;" class="answer_list">
+    <div id="inviteDiv" data-mdb-animation="slide-in-right" style="display:none;" class="answer_list">
         Please enter the email of the user you wish to invite
         <button class="skrr" id="close-modal-button"></button>
-        <input type="text" class="form-controller" id="sendInvite" name="email"></input>
-        <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick="createInvite({{$event->eventid}})">Send Invite</button>
+        <div id="emailInvite">
+            <input type="text" class="form-controller" id="sendInvite" name="email"></input>
+            <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick="createInvite({{$event->eventid}})">Send Invite</button>
+        </div>
 
     </div>
 </div>
