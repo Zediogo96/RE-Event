@@ -14,7 +14,7 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{$events[0] -> photos[0]->path}}" class="w-100 h-200 ">
+                <img src="{{$events[0] -> photos[0]->path}}" class="w-100 h-200">
                 <div class="carousel-caption ">
                     <input type="hidden" name="event-date" value="{{$events[0]->date}}">
                     <h5>{{$events[0] -> name}}</h5>

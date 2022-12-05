@@ -563,7 +563,7 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 (17, 'Zoo Santo Inácio Tour', 'Venham visitar o Zoo Santo Inácio, um dos melhores zoológicos de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Zoo de Santo Inácio', 13, False);
 
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
-(18, 'Cruseiro Rio Douro', 'Venham fazer um cruzeiro pelo Rio Douro!', 300, '2023-05-03', '2022-12-04', 250, 9, 'Porto, Vila Nova de Gaia', 13, False);
+(18, 'Cruzeiro Rio Douro', 'Venham fazer um cruzeiro pelo Rio Douro!', 300, '2023-05-03', '2022-12-04', 250, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
 -- Sports Events Boost
 

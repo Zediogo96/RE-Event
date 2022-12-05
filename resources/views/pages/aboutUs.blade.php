@@ -28,7 +28,7 @@
 
     <h1 style="text-align:center; font-size: 50px; margin-top: -5px;">Our Team</h1>
 
-    <div class="container-profile-cards" style="margin-top: 8vh">
+    <div class="container-profile-cards" >
         <!-- AFONSO -->
         <div class="column">
             <div class="profile-card">
@@ -36,7 +36,7 @@
                     <img src="profile_pictures/3.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
-                        <div class="profile-name" style="font-size: 25px; font-weight: bold">Afonso Martins </div>
+                        <div class="profile-name" >Afonso Martins </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                     <img src="profile_pictures/2.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
-                        <div class="profile-name" style="font-size: 25px; font-weight: bold">Eduardo Silva </div>
+                        <div class="profile-name">Eduardo Silva </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>
@@ -83,15 +83,15 @@
                     <img src="profile_pictures/1.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
-                        <div class="profile-name" style="font-size: 25px; font-weight: bold "> José Diogo </div>
+                        <div class="profile-name"> José Diogo </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>
 
                 <div class="profile-card-body">
                     <div class="action">
-                        <a href="https://github.com/Eduardo79Silva"> <button type="button" class="btn btn-blue-outline btn-abt"> Github </button> </a>
-                        <a href="mailto:up202005283@fe.up.pt"> <button class="btn btn-red-outline btn-abt"> E-mail </button> </a>
+                        <a href="https://github.com/Zediogo96"> <button type="button" class="btn btn-blue-outline btn-abt"> Github </button> </a>
+                        <a href="mailto:up202003529@fe.up.pt"> <button class="btn btn-red-outline btn-abt"> E-mail </button> </a>
                     </div>
                 </div>
             </div>
@@ -108,7 +108,7 @@
                     <img src="profile_pictures/4.jpg" alt="" class="profile-image">
 
                     <div class="profile-info">
-                        <div class="profile-name" style="font-size: 25px; font-weight: bold"> Matilde Silva </div>
+                        <div class="profile-name"> Matilde Silva </div>
                         <p class="profile-desc">Developer</p>
                     </div>
                 </div>
