@@ -11,12 +11,11 @@
     </div>
 
     @if (Auth::user() != NULL && !Auth::user()->attendingEvents->contains($event->eventid))
-
-    <button onclick="ajax_selfAddUser({{Auth::user()->userid}}, {{$event->eventid}})" class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
+    <button onclick="ajax_selfAddUser('{{Auth::user()->userid}}', '{{$event->eventid}}')" class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
             Enroll Event </a></button>
     @else
     @if ((Auth::user() != NULL))
-    <button onclick="ajax_selfRemoveUser({{Auth::user()->userid}}, {{$event->eventid}})" class="btn btn-danger"> <a> <i class="fa fa-layer-group fa-fw"></i>
+    <button onclick="ajax_selfRemoveUser('{{Auth::user()->userid}}', '{{$event->eventid}}')" class="btn btn-danger"> <a> <i class="fa fa-layer-group fa-fw"></i>
             Leave Event </a></button>
     @endif
     @endif
@@ -120,7 +119,7 @@
         <!--@csrf-->
         <button class="skrr" id="close-modal-button"></button>
         <input type="text" class="form-controller" id="sendInvite" name="email"></input>
-        <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick="createInvite({{$event->eventid}})">Send Invite</button>
+        <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick="createInvite('{{$event->eventid}}')">Send Invite</button>
 
     </div>
 </div>
@@ -182,16 +181,15 @@
 
 
 <script type="text/javascript">
+    function isEmpty(obj) {
+        for (var prop in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+                return false;
+            }
+        }
 
-function isEmpty(obj) {
-  for(var prop in obj) {
-    if(Object.prototype.hasOwnProperty.call(obj, prop)) {
-      return false;
+        return JSON.stringify(obj) === JSON.stringify({});
     }
-  }
-
-  return JSON.stringify(obj) === JSON.stringify({});
-}
     document.querySelector('#new-comment button').addEventListener('click', function(e) {
         e.preventDefault();
 
@@ -217,8 +215,8 @@ function isEmpty(obj) {
                 method: "post",
                 credentials: "same-origin",
                 body: JSON.stringify({
-                    userid: {{Auth::user()->userid}},
-                    eventid: {{$event->eventid}},
+                    userid: "{{Auth::user()->userid}}",
+                    eventid: "{{$event->eventid}}",
                     text: document.querySelector('#my-comment').value,
                 })
             }).then(function(data) {
@@ -340,7 +338,7 @@ function isEmpty(obj) {
             return data.json();
         }).then(function(data) {
 
-           
+
             let eventid = document.querySelector("#token_event_id").innerHTML;
             console.log(eventid);
             let container = document.getElementById("table-user-res");
@@ -348,55 +346,43 @@ function isEmpty(obj) {
             console.log(data);
             data.forEach(function(user) {
 
-                    let tr = document.createElement("tr");
-                    let td1 = document.createElement("td");
-                    let td2 = document.createElement("td");
-                    let td3 = document.createElement("td");
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
 
-                    td3.style.textAlign = "center";
-                    let btn = document.createElement("button");
+                td3.style.textAlign = "center";
+                let btn = document.createElement("button");
 
-                    if (user.attending_event == true) {
-                        btn.setAttribute("class", "btn btn-danger");
-                        btn.innerHTML = "Remove";
-                        btn.addEventListener('click', function(e) {
-                            ajax_remUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    }
-                    else {
-                        btn.setAttribute("class", "btn btn-success");
-                        btn.innerHTML = "Add to Event";
-                        btn.addEventListener('click', function(e) {
-                            ajax_addUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    }
-                    td1.innerHTML = user.name;
-                    td2.innerHTML = user.email;
-                    td3.appendChild(btn);
+                if (user.attending_event == true) {
+                    btn.setAttribute("class", "btn btn-danger");
+                    btn.innerHTML = "Remove";
+                    btn.addEventListener('click', function(e) {
+                        ajax_remUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                } else {
+                    btn.setAttribute("class", "btn btn-success");
+                    btn.innerHTML = "Add to Event";
+                    btn.addEventListener('click', function(e) {
+                        ajax_addUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                }
+                td1.innerHTML = user.name;
+                td2.innerHTML = user.email;
+                td3.appendChild(btn);
 
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    tr.appendChild(td3);
-                    container.appendChild(tr);
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                container.appendChild(tr);
 
-                });
+            });
         }).catch(function(error) {
             console.log(error);
         });
     });
-
-    document.querySelector('#outroDiv > button').addEventListener('click', function() {
-        let d = document.getElementById('outroDiv');
-        d.classList.add("animate-out");
-        setTimeout(function() {
-            d.classList.remove("animate-out");
-        }, 500);
-        setTimeout(function() {
-            d.style.display = "none";
-        }, 450);
-    })
 </script>
 @endif
 
@@ -419,7 +405,7 @@ function isEmpty(obj) {
             return data.json();
         }).then(function(data) {
 
-           
+
             let eventid = document.querySelector("#token_event_id").innerHTML;
             console.log(eventid);
             let container = document.getElementById("table-user-res");
@@ -427,105 +413,45 @@ function isEmpty(obj) {
             console.log(data);
             data.forEach(function(user) {
 
-                    let tr = document.createElement("tr");
-                    let td1 = document.createElement("td");
-                    let td2 = document.createElement("td");
-                    let td3 = document.createElement("td");
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
 
-                    td3.style.textAlign = "center";
-                    let btn = document.createElement("button");
+                td3.style.textAlign = "center";
+                let btn = document.createElement("button");
 
-                    if (user.attending_event == true) {
-                        btn.setAttribute("class", "btn btn-danger");
-                        btn.innerHTML = "Remove";
-                        btn.addEventListener('click', function(e) {
-                            ajax_remUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    }
-                    else {
-                        btn.setAttribute("class", "btn btn-success");
-                        btn.innerHTML = "Add to Event";
-                        btn.addEventListener('click', function(e) {
-                            ajax_addUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    }
-                    td1.innerHTML = user.name;
-                    td2.innerHTML = user.email;
-                    td3.appendChild(btn);
+                if (user.attending_event == true) {
+                    btn.setAttribute("class", "btn btn-danger");
+                    btn.innerHTML = "Remove";
+                    btn.addEventListener('click', function(e) {
+                        ajax_remUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                } else {
+                    btn.setAttribute("class", "btn btn-success");
+                    btn.innerHTML = "Add to Event";
+                    btn.addEventListener('click', function(e) {
+                        ajax_addUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                }
+                td1.innerHTML = user.name;
+                td2.innerHTML = user.email;
+                td3.appendChild(btn);
 
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    tr.appendChild(td3);
-                    container.appendChild(tr);
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                container.appendChild(tr);
 
-                });
+            });
         }).catch(function(error) {
             console.log(error);
         });
     };
 
     //////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
-    const list = document.querySelectorAll('.list')
-
-    function activeLink() {
-        list.forEach((item) => item.classList.remove('active'))
-        this.classList.add('active')
-    }
-
-    list.forEach((item) => item.addEventListener('click', activeLink))
-
-    function showUserDiv() {
-        document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-        let d = document.getElementById('userDiv');
-        d.classList.add("animate");
-        setTimeout(function() {
-            d.classList.remove("animate");
-        }, 500);
-        d.style.display = "block";
-    }
-
-    function showOutroDiv() {
-        document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-        let d = document.getElementById('outroDiv');
-        d.classList.add("animate");
-        setTimeout(function() {
-            d.classList.remove("animate");
-        }, 500);
-        d.style.display = "block";
-    }
-
-    function showInviteDiv() {
-        document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-        let d = document.getElementById('inviteDiv');
-        d.classList.add("animate");
-        setTimeout(function() {
-            d.classList.remove("animate");
-        }, 500);
-        d.style.display = "block";
-    }
-    document.querySelector('#userDiv > button').addEventListener('click', function() {
-
-        let d = document.getElementById('userDiv');
-        d.classList.add("animate-out");
-        setTimeout(function() {
-            d.classList.remove("animate-out");
-        }, 500);
-        setTimeout(function() {
-            d.style.display = "none";
-        }, 500);
-    })
-    document.querySelector('#inviteDiv > .skrr').addEventListener('click', function() {
-        let d = document.getElementById('inviteDiv');
-        d.classList.add("animate-out");
-        setTimeout(function() {
-            d.classList.remove("animate-out");
-        }, 500);
-        setTimeout(function() {
-            d.style.display = "none";
-        }, 500);
-    })
 </script>
 
 @endsection

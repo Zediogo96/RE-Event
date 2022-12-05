@@ -260,20 +260,6 @@ const loginText = document.querySelector(".title-text .login");
 
 const signupText = document.querySelector(".title-text .signup");
 
-// signupBtn.onclick = () => {
-//     loginForm.style.marginLeft = "-50%";
-//     loginText.style.marginLeft = "-50%";
-// };
-
-// loginBtn.onclick = () => {
-//     loginForm.style.marginLeft = "0%";
-//     loginText.style.marginLeft = "0%";
-// };
-
-// signupLink.onclick = () => {
-//     signupBtn.click();
-// };
-
 
 function createInvite(event_id) {
     let invited_user = document.getElementById("sendInvite").value;
@@ -282,36 +268,39 @@ function createInvite(event_id) {
     sendAjaxRequest(
         "post",
         "/api/invite",
-        { invited_user: invited_user,
-            event_id: event_id},
+        {
+            invited_user: invited_user,
+            event_id: event_id
+        },
         inviteHandler,
     );
 }
 
 function inviteHandler() {
     console.log("result: ", this, this.responseText)
-    if(this.status === 302){
+    if (this.status === 302) {
         window.location.href = this.responseText;
     }
-    if(this.status === 313){
+    if (this.status === 313) {
         console.log("YOU NOT WHO YOU ARE");
     }
-    if(this.status === 405){
+    if (this.status === 405) {
         console.log("dbjhewygjgfyu");
     }
 }
 
-function rejectInvite(eventID){
-    sendAjaxRequest("delete", "/api/inviteReject", {event_id: eventID}, inviteHandler);
+function rejectInvite(eventID) {
+    sendAjaxRequest("delete", "/api/inviteReject", { event_id: eventID }, inviteHandler);
 }
 
-function acceptInvite(event_id){
+function acceptInvite(event_id) {
     sendAjaxRequest(
         "put",
         "/api/inviteAccept",
-        {event_id: event_id},
+        { event_id: event_id },
         inviteHandler,
     );
 
-    
 }
+
+
