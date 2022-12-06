@@ -29,7 +29,7 @@
                         <a class="nav-link" href="{{route('logout')}}"><i class="fa fa-sign-in-alt fa-fw mr-1"></i> Logout </a>
                     </li>
                     @else
-                    <li class="nav-item>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{route('login')}}"><i class="fa fa-user fa-fw mr-1"></i> Login </a>
                     </li>
                     @endif

@@ -260,35 +260,23 @@ const loginText = document.querySelector(".title-text .login");
 
 const signupText = document.querySelector(".title-text .signup");
 
-signupBtn.onclick = () => {
-    loginForm.style.marginLeft = "-50%";
-    loginText.style.marginLeft = "-50%";
-};
-
-loginBtn.onclick = () => {
-    loginForm.style.marginLeft = "0%";
-    loginText.style.marginLeft = "0%";
-};
-
-signupLink.onclick = () => {
-    signupBtn.click();
-};
-
 
 function createInvite(event_id) {
     let invited_user = document.getElementById("sendInvite").value;
     sendAjaxRequest(
         "post",
         "/api/invite",
-        { invited_user: invited_user,
-            event_id: event_id},
+        {
+            invited_user: invited_user,
+            event_id: event_id
+        },
         inviteHandler,
     );
 }
 
 function inviteHandler() {
     console.log("result: ", this, this.responseText)
-    if(this.status === 302){
+    if (this.status === 302) {
         window.location.href = this.responseText;
     }
     else if(this.status === 200){
@@ -326,9 +314,52 @@ function acceptInvite(event_id){
     sendAjaxRequest(
         "put",
         "/api/inviteAccept",
-        {event_id: event_id},
+        { event_id: event_id },
         inviteHandler,
     );
 
+}
+
+const button = document.querySelector("#event-content button");
+
+function showAlert(type) {
+    let myAlert = document.getElementById("myAlert");
+    let alertText = document.querySelector(".myAlert-message");
+    if (type == "enroll") {
+        alertText.innerHTML = "You successfully joined the Event";
+        myAlert.style.backgroundColor = "purple";
+
+    }
+    else {
+        alertText.innerHTML = "You successfuly left the Event!";
+        myAlert.style.backgroundColor = "red";
+    }    
     
+    move();
+
+    myAlert.className = "show";
+
+    setTimeout(function () { hideAlert(); }, 5000);
+}
+
+function hideAlert() {
+    myAlert.className = myAlert.className.replace("show", "");
+}
+
+var i = 0;
+function move() {
+    if (i == 0) {
+        var elem = document.getElementById("myAlertBar");
+        var width = 1;
+        var interval = setInterval(frame, 50);
+        function frame() {
+            if (width >= 100) {
+                clearInterval(interval);
+                interval = 0;
+            } else {
+                width++;
+                elem.style.width = width + "%";
+            }
+        }
+    }
 }

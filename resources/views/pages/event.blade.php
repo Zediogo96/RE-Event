@@ -2,7 +2,10 @@
 
 @section('content')
 
+@include('partials.toast')
+
 <div class="container" id="event-content">
+    <div hidden id="token_event_id">{{$event->eventid}}</div>
     <img src="{{$event -> photos[0]->path}}" style="border-radius: 5%; height:45rem;">
     <div class="wrapper-res">
         <div id="event-name"> {{$event->name}} </div>
@@ -10,12 +13,11 @@
     </div>
 
     @if (Auth::user() != NULL && !Auth::user()->attendingEvents->contains($event->eventid))
-
-    <button onclick="ajax_selfAddUser({{Auth::user()->userid}}, {{$event->eventid}})" class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
+    <button onclick="ajax_selfAddUser('{{Auth::user()->userid}}', '{{$event->eventid}}')" class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
             Enroll Event </a></button>
     @else
     @if ((Auth::user() != NULL))
-    <button onclick="ajax_selfRemoveUser({{Auth::user()->userid}}, {{$event->eventid}})" class="btn btn-danger"> <a> <i class="fa fa-layer-group fa-fw"></i>
+    <button onclick="ajax_selfRemoveUser('{{Auth::user()->userid}}', '{{$event->eventid}}')" class="btn btn-danger"> <a> <i class="fa fa-layer-group fa-fw"></i>
             Leave Event </a></button>
     @endif
     @endif
@@ -179,8 +181,6 @@
 </div>
 <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
 
-
-
 <script type="text/javascript">
     document.querySelector('#new-comment button').addEventListener('click', function(e) {
         e.preventDefault();
@@ -196,9 +196,34 @@
                 document.querySelector('#new-comment form').classList.remove("apply-shake");
             }, 500);
             return;
-        }
-        else {
+        } else {
             fetch("{{route('storeComment')}}", {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-Token": '{{ csrf_token() }}'
+                },
+                method: "post",
+                credentials: "same-origin",
+                body: JSON.stringify({
+                    userid: "{{Auth::user()->userid}}",
+                    eventid: "{{$event->eventid}}",
+                    text: document.querySelector('#my-comment').value,
+                })
+            }).then(function(data) {
+                document.location.reload();
+            }).catch(function(error) {
+                console.log(error);
+            });
+        }
+
+    });
+</script>
+
+<script type="text/javascript" defer>
+    function ajax_selfRemoveUser(userid, eventid) {
+        fetch("selfRemoveUser", {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -208,22 +233,41 @@
             method: "post",
             credentials: "same-origin",
             body: JSON.stringify({
-                userid: {{Auth::user()->userid}},
-                eventid: {{$event->eventid}},
-                text: document.querySelector('#my-comment').value
+                userid: userid,
+                eventid: eventid
             })
         }).then(function(data) {
-            document.location.reload();
+            document.querySelector('#event-content button').remove();
+            
+            let button = document.createElement('button');
+            button.setAttribute('class', 'btn btn-info');
+            
+            let a = document.createElement('a');
+            let i = document.createElement('i');
+            button.appendChild(a);
+
+            a.innerHTML = 'Please Wait...';
+            i.setAttribute('class', 'fa fa-layer-group fa-fw')
+            a.parentElement.insertBefore(i, a);
+
+            button.setAttribute('disabled', true);
+            showAlert("leave");
+            // button.onClick = ajax_selfRemoveUser(userid, eventid);
+            setTimeout(function() {
+                button.removeAttribute('disabled');
+                button.addEventListener('click', function() {
+                    ajax_selfAddUser(userid, eventid);
+                });
+                a.innerHTML = 'Enroll Event';
+            }, 2000);
+
+            
+
+            document.querySelector('#event-content').appendChild(button);
         }).catch(function(error) {
             console.log(error);
         });
-        }
-      
-    });
-</script>
-
-<script type="text/javascript">
-
+    };
 
     function ajax_selfAddUser(userid, eventid) {
         fetch("{{route('selfAddUser')}}", {
@@ -240,29 +284,32 @@
                 eventid: eventid
             })
         }).then(function(data) {
-            document.location.reload();
+            document.querySelector('#event-content button').remove();
+            
+            let button = document.createElement('button');
+            button.setAttribute('class', 'btn btn-danger');
+            
+            let a = document.createElement('a');
+            let i = document.createElement('i');
+            button.appendChild(a);
 
-        }).catch(function(error) {
-            console.log(error);
-        });
-    };
+            a.innerHTML = 'Please Wait...';
+            i.setAttribute('class', 'fa fa-layer-group fa-fw')
+            a.parentElement.insertBefore(i, a);
 
-    function ajax_selfRemoveUser(userid, eventid) {
-        fetch("selfRemoveUser", {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-Token": '{{ csrf_token() }}'
-            },
-            method: "post",
-            credentials: "same-origin",
-            body: JSON.stringify({
-                userid: userid,
-                eventid: eventid
-            })
-        }).then(function(data) {
-            document.location.reload();
+            button.setAttribute('disabled', true);
+            showAlert("enroll");
+
+            // button.onClick = ajax_selfRemoveUser(userid, eventid);
+            setTimeout(function() {
+                button.removeAttribute('disabled');
+                button.addEventListener('click', function() {
+                    ajax_selfRemoveUser(userid, eventid);
+                });
+                a.innerHTML = 'Leave Event';
+            }, 2000);
+
+            document.querySelector('#event-content').appendChild(button);
         }).catch(function(error) {
             console.log(error);
         });
@@ -313,31 +360,73 @@
 
 <!-- ONLY AVAILABLE FOR HOST -->
 @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
-<script type="text/javascript">
+<script type="text/javascript" defer>
     document.getElementById("search-users").addEventListener("keyup", function(e) {
-        fetch("searchUsers", {
+        if (document.getElementById("search-users").value == '') return;
+        fetch("{{route('searchUsers')}}" + "?" + new URLSearchParams({
+            search: document.getElementById("search-users").value,
+            event_id: '{{$event->eventid}}'
+        }), {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
                 "X-CSRF-Token": '{{ csrf_token() }}'
             },
-            method: "post",
+            method: "get",
             credentials: "same-origin",
-            body: JSON.stringify({
-                search: e.target.value,
-                event_id: '{{$event->eventid}}'
-            })
+
         }).then(function(data) {
-            return data.text();
+            return data.json();
         }).then(function(data) {
-            document.getElementById("table-user-res").innerHTML = data;
+
+
+            let eventid = document.querySelector("#token_event_id").innerHTML;
+            console.log(eventid);
+            let container = document.getElementById("table-user-res");
+            container.innerHTML = "";
+            console.log(data);
+            data.forEach(function(user) {
+
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
+
+                td3.style.textAlign = "center";
+                let btn = document.createElement("button");
+
+                if (user.attending_event == true) {
+                    btn.setAttribute("class", "btn btn-danger");
+                    btn.innerHTML = "Remove";
+                    btn.addEventListener('click', function(e) {
+                        ajax_remUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                } else {
+                    btn.setAttribute("class", "btn btn-success");
+                    btn.innerHTML = "Add to Event";
+                    btn.addEventListener('click', function(e) {
+                        ajax_addUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                }
+                td1.innerHTML = user.name;
+                td2.innerHTML = user.email;
+                td3.appendChild(btn);
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                container.appendChild(tr);
+
+            });
         }).catch(function(error) {
             console.log(error);
         });
     });
 
-    document.querySelector('#outroDiv > button').addEventListener('click', function() {
+    document.querySelector('#outroDiv button').addEventListener('click', function() {
         let d = document.getElementById('outroDiv');
         d.classList.add("animate-out");
         setTimeout(function() {
@@ -347,34 +436,89 @@
             d.style.display = "none";
         }, 450);
     })
+
+    function showOutroDiv() {
+        document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+        let d = document.getElementById('outroDiv');
+        d.classList.add("animate");
+        setTimeout(function() {
+            d.classList.remove("animate");
+        }, 500);
+        d.style.display = "block";
+    }
 </script>
 @endif
 
 <script type="text/javascript">
     function refreshDiv() {
-        fetch("searchUsers", {
+        fetch("{{route('searchUsers')}}" + "?" + new URLSearchParams({
+            search: document.getElementById("search-users").value,
+            event_id: '{{$event->eventid}}'
+        }), {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
                 "X-CSRF-Token": '{{ csrf_token() }}'
             },
-            method: "post",
+            method: "get",
             credentials: "same-origin",
-            body: JSON.stringify({
-                search: document.getElementById("search-users").value,
-                event_id: '{{$event->eventid}}'
-            })
+
         }).then(function(data) {
-            return data.text();
+            return data.json();
         }).then(function(data) {
-            document.getElementById("table-user-res").innerHTML = data;
+
+
+            let eventid = document.querySelector("#token_event_id").innerHTML;
+            console.log(eventid);
+            let container = document.getElementById("table-user-res");
+            container.innerHTML = "";
+            console.log(data);
+            data.forEach(function(user) {
+
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
+
+                td3.style.textAlign = "center";
+                let btn = document.createElement("button");
+
+                if (user.attending_event == true) {
+                    btn.setAttribute("class", "btn btn-danger");
+                    btn.innerHTML = "Remove";
+                    btn.addEventListener('click', function(e) {
+                        ajax_remUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                } else {
+                    btn.setAttribute("class", "btn btn-success");
+                    btn.innerHTML = "Add to Event";
+                    btn.addEventListener('click', function(e) {
+                        ajax_addUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                }
+                td1.innerHTML = user.name;
+                td2.innerHTML = user.email;
+                td3.appendChild(btn);
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                container.appendChild(tr);
+
+            });
         }).catch(function(error) {
             console.log(error);
         });
     };
 
     //////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
+</script>
+
+
+<script type="text/javascript" defer>
     const list = document.querySelectorAll('.list')
 
     function activeLink() {
@@ -387,16 +531,6 @@
     function showUserDiv() {
         document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
         let d = document.getElementById('userDiv');
-        d.classList.add("animate");
-        setTimeout(function() {
-            d.classList.remove("animate");
-        }, 500);
-        d.style.display = "block";
-    }
-
-    function showOutroDiv() {
-        document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-        let d = document.getElementById('outroDiv');
         d.classList.add("animate");
         setTimeout(function() {
             d.classList.remove("animate");
@@ -434,6 +568,15 @@
             d.style.display = "none";
         }, 500);
     })
+
+    function isEmpty(obj) {
+        for (var prop in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+                return false;
+            }
+        }
+        return JSON.stringify(obj) === JSON.stringify({});
+    }
 </script>
 
 @endsection

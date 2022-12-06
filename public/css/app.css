@@ -131,7 +131,7 @@ div span:last-of-type {
   .number {
     font-size: 34px;
   }
-}
+} 
 
 #container-other-events-title {
   margin-top: -20px;
@@ -309,6 +309,10 @@ div span:last-of-type {
   display: flex;
   flex-direction: column;
 }
+
+/* EVENT PAGE TOAST NOTIFICATION  */
+
+
 
 /* Event Page Sidebar */
 

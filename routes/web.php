@@ -38,10 +38,9 @@ Route::post('removeEventUsers', 'EventController@removeUser')->name('removeUser'
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
 Route::get('faq', 'PageController@faq')->name('faq.index');
 
-Route::get('searchTest','SearchController@index')->name('search.test');
-Route::post('search','SearchController@search');
-Route::post('searchUsers','SearchController@searchUsers');
-Route::post('searchUsersAdmin','SearchController@searchUsersAdmin');
+Route::get('search','SearchController@search');
+Route::get('searchUsers','SearchController@searchUsers')->name('searchUsers');
+Route::get('searchUsersAdmin','SearchController@searchUsersAdmin')->name('searchUsersAdmin');
 Route::get('searchEventsByTag','SearchController@searchEventsByTag')->name('searchEventsByTag');
 
 Route::get('user{userid?}', 'UserController@show')->name('user.show');
