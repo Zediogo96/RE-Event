@@ -303,4 +303,45 @@ function acceptInvite(event_id) {
 
 }
 
+const button = document.querySelector("#event-content button");
 
+function showAlert(type) {
+    let myAlert = document.getElementById("myAlert");
+    let alertText = document.querySelector(".myAlert-message");
+    if (type === "enroll") {
+        alertText.innerHTML = "You successfully joined the Event";
+
+    }
+    else {
+        alertText.innerHTML = "You successfuly left the Event!";
+        myAlert.style.backgroundColor = "red";
+    }    
+    
+    move();
+
+    myAlert.className = "show";
+
+    setTimeout(function () { hideAlert(); }, 5000);
+}
+
+function hideAlert() {
+    myAlert.className = myAlert.className.replace("show", "");
+}
+
+var i = 0;
+function move() {
+    if (i == 0) {
+        var elem = document.getElementById("myAlertBar");
+        var width = 1;
+        var interval = setInterval(frame, 50);
+        function frame() {
+            if (width >= 100) {
+                clearInterval(interval);
+                interval = 0;
+            } else {
+                width++;
+                elem.style.width = width + "%";
+            }
+        }
+    }
+}
