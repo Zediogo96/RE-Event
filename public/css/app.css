@@ -511,10 +511,18 @@ div span:last-of-type {
 }
 
 #inviteDiv {
-  background-image: linear-gradient(to right, rgba(210, 145, 255, 0.7) 0%, rgba(24, 24, 24, 0.8) 100%);
+  background-color: rgba(210, 145, 255, 1);
   width: 29rem;
+  height: 12rem;
   top: -10rem;
+  padding: 2em;
 }
+
+#emailInvite{
+  padding: 2em;
+  text-align: center;
+}
+
 
 @media screen and (max-width:600px) {
   #info-navbar-container>div {

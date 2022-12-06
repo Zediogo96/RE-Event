@@ -217,7 +217,23 @@
 
 .events-list tr td:last-child {
     padding: 5px 0;
-    text-align: right;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 1rem 0;
+    align-items: center;
+}
+
+.events-list tr td:last-child p {
+    margin: 0;
+}
+
+.events-list tr td:last-child img {
+    width: 24px;
+}
+
+.events-list tr td:last-child button {
+    display: flex;
+    height: fit-content;
 }
 
 .events-list tr:hover .event-date {
@@ -353,6 +369,11 @@ div#preview-container img {
 .single-post-title button {
     margin-left: 51.5rem;
 }
+
+.single-post-content {
+    padding: 0 4rem 0 0;
+}
+
 
 #createUserModal form div.form-group {
     margin: 0 auto;

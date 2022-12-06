@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Invited;
 use App\Models\User;
+use App\Models\Event;
+use App\Models\Ticket;
+
 use Illuminate\Http\Request;
-
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,15 +16,24 @@ use App\Http\Requests\InviteRequest;
 
 class InvitedController extends Controller
 {
-    /**
-     * Accepts an invite by updating accept boolean of invite to true
-     */
     public function get_id_from_email($email){
         $user = User::where('user_.email', '=',  $email)
                         ->firstOrFail();
         return $user->userid;
     }
 
+    public function joinEvent($event_id)
+    {
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($event_id);
+        /* $this->authorize('join', $event); */
+        $user = Auth::user();
+        $event->participants()->attach($user->userID);
+    }
+
+     /**
+     * Accepts an invite by updating accept boolean of invite to true
+     */
     public function accept(Request $request){
         if (!Auth::check()) {return response(route('login'), 302);}
 
@@ -33,23 +43,27 @@ class InvitedController extends Controller
         $invite = Invited::where('invited.inviteduserid', '=',  $invited_user_id)
                         ->where('invited.eventid', '=', $event_id)
                         ->first();
+        if(!$invite){
+            return response("null", 404);
+        }
 
         $this->authorize('update', $invite);
-        $this->authorize('join', $event);
 
-        $invite->status = TRUE;
-        $invite->save();
-        $event = $invite->event()->first();
+        DB::table('invited')
+            ->where('invited.inviteduserid', '=',  $invited_user_id)
+            ->where('invited.eventid', '=', $event_id)
+            ->update(['status'=>TRUE]);
         
-        app('App\Http\Controllers\EventController')->join($invite->eventid);
+        
+        InvitedController::joinEvent($event_id);
 
-        return response(null, 200);
+        return response(route('event.show', ['eventid' => $event_id]), 302);
+
     }
 
     /**
     * Rejects an invite by removing it from the database
     */
-    //TODO pedir o inviter_user_id e se rejeitar 1 fica com todos os outros para esse evento mas se aceitar 1, todos os outros invites para esse evento de pessoas diferentes apagam se
     public function reject(Request $request) {
         if (!Auth::check()) {return response(route('login'), 302);}
         
@@ -58,18 +72,23 @@ class InvitedController extends Controller
 
         $invite = Invited::where('invited.inviteduserid', '=',  $invited_user_id)
                         ->where('invited.eventid', '=', $event_id)
-                        ->firstOrFail();
+                        ->first();
         
         if(!$invite){
-            return response("invite doesnt exist", 313);
+            return response("null", 404);
         }
         
         $this->authorize('delete', $invite);
-        $invite->delete();
         
-        return response(null, 200);
+        DB::table('invited')
+            ->where('invited.inviteduserid', '=',  $invited_user_id)
+            ->where('invited.eventid', '=', $event_id)
+            ->delete();
+        
+        return response(route('user.show', ['userid' => $invited_user_id]), 302);
     }
 
+    //TODO fazer o modal desaparecer quando botao e clicado
     public function create(InviteRequest $request) {
         //$this->validate($request); 
         if (!Auth::check()) {return response(route('login'), 302);}
@@ -78,8 +97,20 @@ class InvitedController extends Controller
         $invited_user_id = InvitedController::get_id_from_email($request['invited_user']);
         $inviter_user_id = Auth::user()->userid;
 
+        $hasTicket = Ticket::where('ticket.eventid', '=', $eventid)
+                            ->where('ticket.userid', '=',  $invited_user_id)
+                            ->first();
+
+        if($hasTicket){
+            return response(null, 412);
+        }
+
+        if($invited_user_id === $inviter_user_id){
+            return response(null, 400);
+        }
+
+
         $invite = Invited::where('invited.inviteduserid', '=',  $invited_user_id)
-                        ->where('invited.inviteruserid', '=', $inviter_user_id)
                         ->where('invited.eventid', '=', $eventid)
                         ->first();
         if(!$invite){
@@ -95,17 +126,4 @@ class InvitedController extends Controller
     }
 
 }
-/* 
-TODO nao convidar a mim mesmo 
-<div onclick="createInvite(50, 8)" style = "cursor: pointer; position: relative;">
-    SEND INVITE TO USER 50 FOR EVENT 8
-</div>
-
-<div  onclick="rejectInvite(8)" style = "cursor: pointer; position: relative;">
-    REJECT INVITE TO EVENT 8 (user that is currently logged in = 50)
-</div>
-
-<div  onclick="acceptInvite(8)" style = "cursor: pointer; position: relative;">
-    ACCEPT INVITE TO EVENT 8 (user that is currently logged in = 50)
-</div> */
 

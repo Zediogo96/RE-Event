@@ -263,8 +263,6 @@ const signupText = document.querySelector(".title-text .signup");
 
 function createInvite(event_id) {
     let invited_user = document.getElementById("sendInvite").value;
-    console.log(invited_user);
-    console.log(event_id);
     sendAjaxRequest(
         "post",
         "/api/invite",
@@ -281,19 +279,38 @@ function inviteHandler() {
     if (this.status === 302) {
         window.location.href = this.responseText;
     }
-    if (this.status === 313) {
-        console.log("YOU NOT WHO YOU ARE");
+    else if(this.status === 200){
+        let d = document.getElementById('inviteDiv');
+        d.classList.add("animate-out");
+        setTimeout(function() {
+            d.classList.remove("animate-out");
+        }, 500);
+        setTimeout(function() {
+            d.style.display = "none";
+        }, 450);
+        
     }
-    if (this.status === 405) {
-        console.log("dbjhewygjgfyu");
+    else if(this.status === 404){
+        console.log("Invite Doesn't Exist");
+    }
+    else if(this.status === 409){
+        console.log("User Already Invited");
+    }
+    else if(this.status === 400){
+        console.log("Not possible to invite yourself");
+    }
+    else if(this.status === 412){
+        console.log("User already attending event");
     }
 }
 
-function rejectInvite(eventID) {
-    sendAjaxRequest("delete", "/api/inviteReject", { event_id: eventID }, inviteHandler);
+function rejectInvite(eventID){
+    console.log("reject");
+    sendAjaxRequest("delete", "/api/inviteReject", {event_id: eventID}, inviteHandler);
 }
 
-function acceptInvite(event_id) {
+function acceptInvite(event_id){
+    console.log("accept");
     sendAjaxRequest(
         "put",
         "/api/inviteAccept",
