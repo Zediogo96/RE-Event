@@ -73,8 +73,8 @@
 }
 
 #myAlertBar {
-    height: 2px;
-    background-color: #ddd;
+    height: 4px;
+    background-color: green;
     color: white;
 }
 
@@ -82,4 +82,5 @@
     background-color: #d62828;
     margin-left: 5px;
     max-width: 95%;
+
 }
