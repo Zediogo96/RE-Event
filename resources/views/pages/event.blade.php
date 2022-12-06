@@ -6,7 +6,7 @@
 
 <div class="container" id="event-content">
     <div hidden id="token_event_id">{{$event->eventid}}</div>
-    <img src="{{$event -> photos[0]->path}}" style="border-radius: 5%; height:45rem;">
+    <img src="{{$event -> photos[0]->path}}">
     <div class="wrapper-res">
         <div id="event-name"> {{$event->name}} </div>
         <div id="event-date"> {{date('Y-m-d', strtotime($event->date))}} </div>
