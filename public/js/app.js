@@ -279,37 +279,37 @@ function inviteHandler() {
     if (this.status === 302) {
         window.location.href = this.responseText;
     }
-    else if(this.status === 200){
+    else if (this.status === 200) {
         let d = document.getElementById('inviteDiv');
         d.classList.add("animate-out");
-        setTimeout(function() {
+        setTimeout(function () {
             d.classList.remove("animate-out");
         }, 500);
-        setTimeout(function() {
+        setTimeout(function () {
             d.style.display = "none";
         }, 450);
-        
+
     }
-    else if(this.status === 404){
+    else if (this.status === 404) {
         console.log("Invite Doesn't Exist");
     }
-    else if(this.status === 409){
+    else if (this.status === 409) {
         console.log("User Already Invited");
     }
-    else if(this.status === 400){
+    else if (this.status === 400) {
         console.log("Not possible to invite yourself");
     }
-    else if(this.status === 412){
+    else if (this.status === 412) {
         console.log("User already attending event");
     }
 }
 
-function rejectInvite(eventID){
+function rejectInvite(eventID) {
     console.log("reject");
-    sendAjaxRequest("delete", "/api/inviteReject", {event_id: eventID}, inviteHandler);
+    sendAjaxRequest("delete", "/api/inviteReject", { event_id: eventID }, inviteHandler);
 }
 
-function acceptInvite(event_id){
+function acceptInvite(event_id) {
     console.log("accept");
     sendAjaxRequest(
         "put",
@@ -336,8 +336,8 @@ function showAlert(type) {
         alertText.innerHTML = "You left the Event, sad to see you go!";
         myAlert.style.backgroundColor = "blue";
         myAlert.querySelector("img").src = "../icons/unaccept.png";
-    }    
-    
+    }
+
     move();
 
     myAlert.className = "show";
@@ -365,4 +365,63 @@ function move() {
             }
         }
     }
+}
+
+const list = document.querySelectorAll('.list')
+
+function activeLink() {
+    list.forEach((item) => item.classList.remove('active'))
+    this.classList.add('active')
+}
+
+list.forEach((item) => item.addEventListener('click', activeLink))
+
+function showUserDiv() {
+    document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+    let d = document.getElementById('userDiv');
+    d.classList.add("animate");
+    setTimeout(function () {
+        d.classList.remove("animate");
+    }, 500);
+    d.style.display = "block";
+}
+
+function showInviteDiv() {
+    document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+    let d = document.getElementById('inviteDiv');
+    d.classList.add("animate");
+    setTimeout(function () {
+        d.classList.remove("animate");
+    }, 500);
+    d.style.display = "block";
+}
+document.querySelector('#userDiv > button').addEventListener('click', function () {
+
+    let d = document.getElementById('userDiv');
+    d.classList.add("animate-out");
+    setTimeout(function () {
+        d.classList.remove("animate-out");
+    }, 500);
+    setTimeout(function () {
+        d.style.display = "none";
+    }, 500);
+})
+document.querySelector('#inviteDiv > .skrr').addEventListener('click', function () {
+    let d = document.getElementById('inviteDiv');
+    d.classList.add("animate-out");
+    setTimeout(function () {
+        d.classList.remove("animate-out");
+    }, 500);
+    setTimeout(function () {
+        d.style.display = "none";
+    }, 500);
+})
+
+function isEmpty(obj) {
+    for (var prop in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+            return false;
+        }
+    }
+    return JSON.stringify(obj) === JSON.stringify({});
 }
