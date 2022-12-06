@@ -238,6 +238,8 @@ function getComments(id) {
             div.appendChild(div2);
             container.appendChild(div);
 
+            showAlert("newcomment");
+
             document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
         });
 

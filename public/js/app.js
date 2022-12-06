@@ -332,11 +332,17 @@ function showAlert(type) {
 
 
     }
-    else {
+    else if (type == "leave") {
         alertText.innerHTML = "You left the Event, sad to see you go!";
         myAlert.style.backgroundColor = "blue";
         myAlert.querySelector("img").src = "../icons/unaccept.png";
     }
+    else if (type == "newcomment") {
+        alertText.innerHTML = "You successfully posted a comment";
+        myAlert.style.backgroundColor = "green";
+        myAlert.querySelector("img").src = "../icons/accept.png";
+    }
+
 
     move();
 

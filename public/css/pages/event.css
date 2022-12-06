@@ -76,11 +76,12 @@
     border-radius: 10px;
     border: 1px solid white;
     opacity: 0.5;
+    z-index: 300 !important;
 }
 
 @media screen and (max-width:600px) {
     #myAlert {
-        opacity: 1;
+        opacity: 0.8;
     }
 }
 
