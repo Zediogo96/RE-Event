@@ -121,7 +121,7 @@
         <button class="skrr" id="close-modal-button"></button>
         <div id="emailInvite">
             <input type="text" class="form-controller" id="sendInvite" name="email"></input>
-            <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick="createInvite({{$event->eventid}})">Send Invite</button>
+            <button href="#" class="btn btn-success btn-sm btn-edit-event" type="submit" onClick="createInvite('{{$event->eventid}}')">Send Invite</button>
         </div>
 
     </div>
@@ -152,11 +152,11 @@
     </div>
     @endif
     <div class="shadow-sm p-4" id="comments-section">
-        <h4 class="mb-4">7 Comments</h4>
+        <h4 class="mb-4"> {{count($event->comments()->get())}} Comments</h4>
         <div class="">
             <!-- Comment //-->
 
-            <div class="py-3">
+            <div class="py-3" id="new-comments-container">
                 @foreach ($event->comments()->get() as $comment)
                 <div class="d-flex comment">
                     <img class="rounded-circle comment-img" src="{{$comment->user->profilepic}}" />
@@ -212,13 +212,87 @@
                     text: document.querySelector('#my-comment').value,
                 })
             }).then(function(data) {
-                document.location.reload();
+                getComments();
             }).catch(function(error) {
                 console.log(error);
             });
         }
 
     });
+
+    function getComments() {
+        fetch("{{route('getComments')}}" + "?" + new URLSearchParams({
+            event_id: '{{$event->eventid}}'
+        }), {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "get",
+            credentials: "same-origin",
+        }).then(function(data) {
+            return data.json();
+        }).then(function(data) {
+            let container = document.querySelector("#new-comments-container");
+            container.innerHTML = '';
+
+            console.log(data);
+            data.forEach(function(comment) {
+                let div = document.createElement('div');
+                div.setAttribute('class', 'd-flex comment');
+                let img = document.createElement('img');
+                img.setAttribute('class', 'rounded-circle comment-img');
+                img.src = comment.user.profilepic;
+                let div2 = document.createElement('div');
+                div2.setAttribute('class', 'flex-grow-1 ms-3');
+                let div3 = document.createElement('div');
+                div3.classList.add('mb-1');
+                let a = document.createElement('a');
+                a.setAttribute('class', 'fw-bold link-dark me-1');
+                a.innerHTML = comment.user.name;
+                let span = document.createElement('span');
+                span.setAttribute('class', 'text-muted text-nowrap');
+                span.innerHTML = comment.date;
+                let div4 = document.createElement('div');
+                div4.classList.add('mb-2');
+                div4.innerHTML = comment.text;
+                let div5 = document.createElement('div');
+                div5.setAttribute('class', 'hstack align-items-center mb-2');
+                let a2 = document.createElement('a');
+                a2.setAttribute('class', 'link-primary me-2');
+                let i = document.createElement('i');
+                i.setAttribute('class', 'fas fa-thumbs-up');
+                let span2 = document.createElement('span');
+                span2.setAttribute('class', 'me-3 small');
+                span2.innerHTML = '55';
+                let a3 = document.createElement('a');
+                a3.setAttribute('class', 'link-danger small ms-3');
+                a3.innerHTML = 'delete';
+
+                div5.appendChild(a2);
+                a2.appendChild(i);
+                div5.appendChild(span2);
+                div5.appendChild(a3);
+                div4.appendChild(div5);
+                div3.appendChild(a);
+                div3.appendChild(span);
+                div2.appendChild(div3);
+                div2.appendChild(div4);
+                div.appendChild(img);
+                div.appendChild(div2);
+                container.appendChild(div);
+
+                document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
+
+
+            });
+
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
 </script>
 
 <script type="text/javascript" defer>
@@ -238,10 +312,10 @@
             })
         }).then(function(data) {
             document.querySelector('#event-content button').remove();
-            
+
             let button = document.createElement('button');
             button.setAttribute('class', 'btn btn-info');
-            
+
             let a = document.createElement('a');
             let i = document.createElement('i');
             button.appendChild(a);
@@ -261,7 +335,7 @@
                 a.innerHTML = 'Enroll Event';
             }, 5000);
 
-            
+
 
             document.querySelector('#event-content').appendChild(button);
         }).catch(function(error) {
@@ -285,10 +359,10 @@
             })
         }).then(function(data) {
             document.querySelector('#event-content button').remove();
-            
+
             let button = document.createElement('button');
             button.setAttribute('class', 'btn btn-danger');
-            
+
             let a = document.createElement('a');
             let i = document.createElement('i');
             button.appendChild(a);
