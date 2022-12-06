@@ -29,9 +29,10 @@ class SearchController extends Controller
                 $events = Event::search($request->search)->take(3)->get();
                 if ($events) {
                     foreach ($events as $key => $event) {
-                        $output .= '<tr>' . '<td>' . "<a href='" . route('event.show', $event->eventid) . "'>" . $event->name . '</a></td>' . '<td>' . $event->city->name . '</td>' . '</tr>';
+                        $event->city_name = $event->city->name;
                     }
-                    return Response($output);
+
+                    return Response($events);
                 }
             }
         }

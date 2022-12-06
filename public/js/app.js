@@ -308,8 +308,9 @@ const button = document.querySelector("#event-content button");
 function showAlert(type) {
     let myAlert = document.getElementById("myAlert");
     let alertText = document.querySelector(".myAlert-message");
-    if (type === "enroll") {
+    if (type == "enroll") {
         alertText.innerHTML = "You successfully joined the Event";
+        myAlert.style.backgroundColor = "purple";
 
     }
     else {

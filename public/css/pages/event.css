@@ -9,6 +9,7 @@
     background: purple;
     border-radius: 10px;
     border: 1px solid white;
+    opacity: 0.5;
 }
 
 .myAlert-text-icon {
