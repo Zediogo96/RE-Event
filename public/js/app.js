@@ -328,11 +328,14 @@ function showAlert(type) {
     if (type == "enroll") {
         alertText.innerHTML = "You successfully joined the Event";
         myAlert.style.backgroundColor = "purple";
+        myAlert.querySelector("img").src = "../icons/accept.png";
+
 
     }
     else {
-        alertText.innerHTML = "You successfuly left the Event!";
-        myAlert.style.backgroundColor = "red";
+        alertText.innerHTML = "You left the Event, sad to see you go!";
+        myAlert.style.backgroundColor = "blue";
+        myAlert.querySelector("img").src = "../icons/unaccept.png";
     }    
     
     move();

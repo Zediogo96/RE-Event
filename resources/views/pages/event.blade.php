@@ -259,7 +259,7 @@
                     ajax_selfAddUser(userid, eventid);
                 });
                 a.innerHTML = 'Enroll Event';
-            }, 2000);
+            }, 5000);
 
             
 
@@ -307,7 +307,7 @@
                     ajax_selfRemoveUser(userid, eventid);
                 });
                 a.innerHTML = 'Leave Event';
-            }, 2000);
+            }, 5000);
 
             document.querySelector('#event-content').appendChild(button);
         }).catch(function(error) {
