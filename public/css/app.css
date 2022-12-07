@@ -82,11 +82,6 @@ body::before {
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 
-.main {
-  height: 100vh;
-  background-size: cover;
-  background: url('https://i.ibb.co/jfLZFhm/Bitmap.png') no-repeat top center;
-}
 
 .countdown {
   display: flex;
@@ -112,6 +107,7 @@ body::before {
   font-size: 44px;
   color: #fbc531;
 }
+
 
 div span:last-of-type {
   font-size: 12px;

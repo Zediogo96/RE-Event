@@ -18,11 +18,40 @@
 
 #event-content button {
     position: absolute;
-    top: 2rem;
-    right: 2rem;
+    top: 3rem;
+    right: 3rem;
     width: 12rem;
     height: 3.5rem;
 }
+
+.countdown-event {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    position: absolute;
+    top: 30rem;
+    left: 25rem;
+}
+
+.countdown-event>div {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 1);
+    width: 80px;
+    height: 85px;
+    border-radius: 5px;
+}
+
+.countdown-event>div span:last-child{
+    font-weight: 500;
+    font-size: 14px;
+    color: white;
+  }
+
 
 #event-content div#event-name {
     inline-size: 75%;

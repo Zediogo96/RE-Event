@@ -22,6 +22,29 @@
                 Leave Event </a></button>
         @endif
         @endif
+
+        <div class="countdown-event">
+            <div>
+                <span class="number months"></span>
+                <span>Months</span>
+            </div>
+            <div>
+                <span class="number days"></span>
+                <span>Days</span>
+            </div>
+            <div>
+                <span class="number hours"></span>
+                <span>Hours</span>
+            </div>
+            <div>
+                <span class="number minutes"></span>
+                <span>Minutes</span>
+            </div>
+            <div>
+                <span class="number seconds"></span>
+                <span>Seconds</span>
+            </div>
+        </div>
         <nav>
             <ul id="menu-info">
                 <li class="menu-info-item text-center">
@@ -181,206 +204,211 @@
 
     </div>
 </div>
-    <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
-    @if (Auth::user() != NULL)
-    <script type="text/javascript">
-        // REQUEST USED FOR THE AUTHENTICATED USER TO BE ABLE TO COMMENT IN A EVENT (IN THE EVENT PAGE)
-        document.querySelector('#new-comment button').addEventListener('click', function(e) {
-            e.preventDefault();
+<!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
+@if (Auth::user() != NULL)
+<script type="text/javascript">
+    // REQUEST USED FOR THE AUTHENTICATED USER TO BE ABLE TO COMMENT IN A EVENT (IN THE EVENT PAGE)
+    document.querySelector('#new-comment button').addEventListener('click', function(e) {
+        e.preventDefault();
 
-            var comment = document.querySelector('#my-comment');
+        var comment = document.querySelector('#my-comment');
 
-            if (comment.value == '') {
-                let error = document.querySelector('#new-comment label');
-                error.innerHTML = 'Error: Comment cannot be empty';
-                error.style.color = 'red';
-                document.querySelector('#new-comment form').classList.add("apply-shake");
-                setTimeout(function() {
-                    document.querySelector('#new-comment form').classList.remove("apply-shake");
-                }, 500);
-                return;
-            } else {
-                fetch("{{route('storeComment')}}", {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-Requested-With": "XMLHttpRequest",
-                        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    method: "post",
-                    credentials: "same-origin",
-                    body: JSON.stringify({
-                        userid: "{{Auth::user()->userid}}",
-                        eventid: "{{$event->eventid}}",
-                        text: document.querySelector('#my-comment').value,
-                    })
-                }).then(function(data) {
-                    getComments('{{$event->eventid}}');
-
-                }).catch(function(error) {
-                    console.log(error);
-                });
-            }
-        });
-    </script>
-    @endif
-
-    <!-- ONLY AVAILABLE FOR HOST -->
-    @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
-    <script type="text/javascript" defer>
-        document.getElementById("search-users").addEventListener("keyup", function(e) {
-            if (document.getElementById("search-users").value == '') return;
-            fetch("searchUsers" + "?" + new URLSearchParams({
-                search: document.getElementById("search-users").value,
-                event_id: '{{$event->eventid}}'
-            }), {
+        if (comment.value == '') {
+            let error = document.querySelector('#new-comment label');
+            error.innerHTML = 'Error: Comment cannot be empty';
+            error.style.color = 'red';
+            document.querySelector('#new-comment form').classList.add("apply-shake");
+            setTimeout(function() {
+                document.querySelector('#new-comment form').classList.remove("apply-shake");
+            }, 500);
+            return;
+        } else {
+            fetch("{{route('storeComment')}}", {
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json",
                     "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRF-Token": '{{ csrf_token() }}'
+                    "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
-                method: "get",
+                method: "post",
                 credentials: "same-origin",
-
+                body: JSON.stringify({
+                    userid: "{{Auth::user()->userid}}",
+                    eventid: "{{$event->eventid}}",
+                    text: document.querySelector('#my-comment').value,
+                })
             }).then(function(data) {
-                return data.json();
-            }).then(function(data) {
+                getComments('{{$event->eventid}}');
 
-
-                let eventid = document.querySelector("#token_event_id").innerHTML;
-                console.log(eventid);
-                let container = document.getElementById("table-user-res");
-                container.innerHTML = "";
-                console.log(data);
-                data.forEach(function(user) {
-
-                    let tr = document.createElement("tr");
-                    let td1 = document.createElement("td");
-                    let td2 = document.createElement("td");
-                    let td3 = document.createElement("td");
-
-                    td3.style.textAlign = "center";
-                    let btn = document.createElement("button");
-
-                    if (user.attending_event == true) {
-                        btn.setAttribute("class", "btn btn-danger");
-                        btn.innerHTML = "Remove";
-                        btn.addEventListener('click', function(e) {
-                            ajax_remUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    } else {
-                        btn.setAttribute("class", "btn btn-success");
-                        btn.innerHTML = "Add to Event";
-                        btn.addEventListener('click', function(e) {
-                            ajax_addUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    }
-                    td1.innerHTML = user.name;
-                    td2.innerHTML = user.email;
-                    td3.appendChild(btn);
-
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    tr.appendChild(td3);
-                    container.appendChild(tr);
-
-                });
             }).catch(function(error) {
                 console.log(error);
             });
-        });
-
-        document.querySelector('#outroDiv button').addEventListener('click', function() {
-            let d = document.getElementById('outroDiv');
-            d.classList.add("animate-out");
-            setTimeout(function() {
-                d.classList.remove("animate-out");
-            }, 500);
-            setTimeout(function() {
-                d.style.display = "none";
-            }, 450);
-        })
-
-        function showOutroDiv() {
-            document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-            let d = document.getElementById('outroDiv');
-            d.classList.add("animate");
-            setTimeout(function() {
-                d.classList.remove("animate");
-            }, 500);
-            d.style.display = "block";
         }
-    </script>
-    @endif
+    });
+</script>
+@endif
 
-    <script type="text/javascript">
-        function refreshDiv() {
-            fetch("{{route('searchUsers')}}" + "?" + new URLSearchParams({
-                search: document.getElementById("search-users").value,
-                event_id: '{{$event->eventid}}'
-            }), {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRF-Token": '{{ csrf_token() }}'
-                },
-                method: "get",
-                credentials: "same-origin",
+<!-- ONLY AVAILABLE FOR HOST -->
+@if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
+<script type="text/javascript" defer>
+    document.getElementById("search-users").addEventListener("keyup", function(e) {
+        if (document.getElementById("search-users").value == '') return;
+        fetch("searchUsers" + "?" + new URLSearchParams({
+            search: document.getElementById("search-users").value,
+            event_id: '{{$event->eventid}}'
+        }), {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "get",
+            credentials: "same-origin",
 
-            }).then(function(data) {
-                return data.json();
-            }).then(function(data) {
+        }).then(function(data) {
+            return data.json();
+        }).then(function(data) {
 
 
-                let eventid = document.querySelector("#token_event_id").innerHTML;
-                console.log(eventid);
-                let container = document.getElementById("table-user-res");
-                container.innerHTML = "";
-                console.log(data);
-                data.forEach(function(user) {
+            let eventid = document.querySelector("#token_event_id").innerHTML;
+            console.log(eventid);
+            let container = document.getElementById("table-user-res");
+            container.innerHTML = "";
+            console.log(data);
+            data.forEach(function(user) {
 
-                    let tr = document.createElement("tr");
-                    let td1 = document.createElement("td");
-                    let td2 = document.createElement("td");
-                    let td3 = document.createElement("td");
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
 
-                    td3.style.textAlign = "center";
-                    let btn = document.createElement("button");
+                td3.style.textAlign = "center";
+                let btn = document.createElement("button");
 
-                    if (user.attending_event == true) {
-                        btn.setAttribute("class", "btn btn-danger");
-                        btn.innerHTML = "Remove";
-                        btn.addEventListener('click', function(e) {
-                            ajax_remUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    } else {
-                        btn.setAttribute("class", "btn btn-success");
-                        btn.innerHTML = "Add to Event";
-                        btn.addEventListener('click', function(e) {
-                            ajax_addUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    }
-                    td1.innerHTML = user.name;
-                    td2.innerHTML = user.email;
-                    td3.appendChild(btn);
+                if (user.attending_event == true) {
+                    btn.setAttribute("class", "btn btn-danger");
+                    btn.innerHTML = "Remove";
+                    btn.addEventListener('click', function(e) {
+                        ajax_remUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                } else {
+                    btn.setAttribute("class", "btn btn-success");
+                    btn.innerHTML = "Add to Event";
+                    btn.addEventListener('click', function(e) {
+                        ajax_addUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                }
+                td1.innerHTML = user.name;
+                td2.innerHTML = user.email;
+                td3.appendChild(btn);
 
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    tr.appendChild(td3);
-                    container.appendChild(tr);
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                container.appendChild(tr);
 
-                });
-            }).catch(function(error) {
-                console.log(error);
             });
-        };
+        }).catch(function(error) {
+            console.log(error);
+        });
+    });
 
-        //////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
-    </script>
-    @endsection
+    document.querySelector('#outroDiv button').addEventListener('click', function() {
+        let d = document.getElementById('outroDiv');
+        d.classList.add("animate-out");
+        setTimeout(function() {
+            d.classList.remove("animate-out");
+        }, 500);
+        setTimeout(function() {
+            d.style.display = "none";
+        }, 450);
+    })
+
+    function showOutroDiv() {
+        document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+        let d = document.getElementById('outroDiv');
+        d.classList.add("animate");
+        setTimeout(function() {
+            d.classList.remove("animate");
+        }, 500);
+        d.style.display = "block";
+    }
+</script>
+@endif
+
+<script type="text/javascript">
+    // Polling for the Event Page Countdown display 
+    setTimeout(function() {
+        displayCountdownEvent('{{$event->date}}');
+    }, 1000);
+
+    function refreshDiv() {
+        fetch("{{route('searchUsers')}}" + "?" + new URLSearchParams({
+            search: document.getElementById("search-users").value,
+            event_id: '{{$event->eventid}}'
+        }), {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },
+            method: "get",
+            credentials: "same-origin",
+
+        }).then(function(data) {
+            return data.json();
+        }).then(function(data) {
+
+
+            let eventid = document.querySelector("#token_event_id").innerHTML;
+            console.log(eventid);
+            let container = document.getElementById("table-user-res");
+            container.innerHTML = "";
+            console.log(data);
+            data.forEach(function(user) {
+
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
+
+                td3.style.textAlign = "center";
+                let btn = document.createElement("button");
+
+                if (user.attending_event == true) {
+                    btn.setAttribute("class", "btn btn-danger");
+                    btn.innerHTML = "Remove";
+                    btn.addEventListener('click', function(e) {
+                        ajax_remUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                } else {
+                    btn.setAttribute("class", "btn btn-success");
+                    btn.innerHTML = "Add to Event";
+                    btn.addEventListener('click', function(e) {
+                        ajax_addUser(user.userid, eventid);
+                        refreshDiv();
+                    })
+                }
+                td1.innerHTML = user.name;
+                td2.innerHTML = user.email;
+                td3.appendChild(btn);
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                container.appendChild(tr);
+
+            });
+        }).catch(function(error) {
+            console.log(error);
+        });
+    };
+
+    //////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
+</script>
+@endsection
