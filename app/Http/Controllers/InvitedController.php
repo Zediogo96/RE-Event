@@ -90,8 +90,10 @@ class InvitedController extends Controller
 
     //TODO fazer o modal desaparecer quando botao e clicado
     public function create(InviteRequest $request) {
-        //$this->validate($request); 
         if (!Auth::check()) {return response(route('login'), 302);}
+        $inviter_user = Auth::user();
+        
+        $this->authorize('create', $inviter_user);
 
         $eventid = $request['event_id'];
         $invited_user_id = InvitedController::get_id_from_email($request['invited_user']);
