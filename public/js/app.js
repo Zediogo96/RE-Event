@@ -211,36 +211,6 @@ function createItem(item) {
 addEventListeners();
 
 /* COUNTDOWN TIMER */
-/* let string = "9 12 23 23:59:59"
-const newDate = new Date(string).getTime();
-// 1694559599000
-
-
-const countdown = setInterval(() => {
-    const date = new Date().getTime();
-    const diff = newDate - date;
-
-    const month = Math.floor(
-        (diff % (1000 * 60 * 60 * 24 * (365.25 / 12) * 365)) /
-        (1000 * 60 * 60 * 24 * (365.25 / 12))
-    );
-    const days = Math.floor(
-        (diff % (1000 * 60 * 60 * 24 * (365.25 / 12))) / (1000 * 60 * 60 * 24)
-    );
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    document.querySelector(".seconds").innerHTML =
-        seconds < 10 ? "0" + seconds : seconds;
-    document.querySelector(".minutes").innerHTML =
-        minutes < 10 ? "0" + minutes : minutes;
-    document.querySelector(".hours").innerHTML =
-        hours < 10 ? "0" + hours : hours;
-    document.querySelector(".days").innerHTML = days < 10 ? "0" + days : days;
-    document.querySelector(".months").innerHTML =
-        month < 10 ? "0" + month : month;
-}, 1000); */
 
 /* Event Page */
 
@@ -329,8 +299,6 @@ function showAlert(type) {
         alertText.innerHTML = "You successfully joined the Event";
         myAlert.style.backgroundColor = "purple";
         myAlert.querySelector("img").src = "../icons/accept.png";
-
-
     }
     else if (type == "leave") {
         alertText.innerHTML = "You left the Event, sad to see you go!";
