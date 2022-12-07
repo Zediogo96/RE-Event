@@ -122,7 +122,8 @@
 <!-- END COUNTDOWN TIMER -->
 
 <!-- Return false disables the page scrolling to the top automatically after the ajax request  -->
-<nav id="categories-navbar">
+
+<nav id="categories-navbar" class="">
     <ul>
         <li>
             <a onclick="getDataFromTag('all'); return false;">All </a>

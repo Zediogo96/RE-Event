@@ -373,6 +373,7 @@ INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic,
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (48, 'Nathan Orwig', 'Ty_Boy93@hotmail.com', '2021/12/5', '06b7fe3d366c8f3394c9a0c2e2c71968ec5eb6c663b7e2f0f0315e851fae72b1', 'O', 'profile_pictures/48.jpg', False);
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (49, 'Frank Lawless', 'Hal_Can72@yahoo.pt', '2020/11/4', 'fa52087106f92dbad59ceaab27a40583fe019e69f7db7d1598d67f6349693606', 'O', 'profile_pictures/49.jpg', False);
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (50, 'George Ebner', 'john_McC71@hotmail.com', '2020/3/30', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'F', 'profile_pictures/50.jpg', False);
+
 /** +#PY'(}N **/
 
 SELECT setval('user__userID_seq', (SELECT MAX(userID) from "user_"));
@@ -579,8 +580,6 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
 (22, 'F1 Azerbaijan Grand Prix 2022', 'The Azerbaijan Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Baku City Circuit, Baku', 7, False);
 
-SELECT setval('event_eventID_seq', (SELECT MAX(eventID) from "event"));
-
 -- Music Events Boost
 
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
@@ -627,7 +626,7 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
 (36, 'AI & Big Data Expo', 'The AI & Big Data Expo is the world''s leading Artificial Intelligence and Big Data event, taking place in London on 21-22 June 2023.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'ExCeL London', 16, False);
 
-
+SELECT setval('event_eventID_seq', (SELECT MAX(eventID) from "event"));
 
 /** (Event) Photos **/
 

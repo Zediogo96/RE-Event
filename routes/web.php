@@ -56,6 +56,7 @@ Route::get('events', 'EventController@index');
 
 // Comments
 Route::post('storeComment', 'CommentController@store')->name('storeComment');
+Route::get('getComments', 'CommentController@getComments')->name('getComments');
 
 //Invites
 Route::post('api/invite', 'InvitedController@create')->name('createInvite');
