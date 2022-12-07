@@ -247,3 +247,56 @@ function getComments(id) {
         console.log(error);
     });
 }
+
+// REQUEST FOR ADMIN TO BE ABLE TO SEARCH FOR USERS
+document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
+
+    if (e.target.value == "") return;
+
+    fetch("searchUsersAdmin" + "?" + new URLSearchParams({
+        search: e.target.value
+    }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "get",
+        credentials: "same-origin",
+    }).then(function(data) {
+        return data.json();
+    }).then(function(data) {
+        let container = document.getElementById("search-admin-users-res");
+        container.innerHTML = "";
+        data.forEach(function(user) {
+
+            let tr = document.createElement("tr");
+            let td1 = document.createElement("td");
+            let td2 = document.createElement("td");
+            let td3 = document.createElement("td");
+            let td4 = document.createElement("td");
+            td4.style.textAlign = "center";
+            let btn = document.createElement("button");
+            btn.setAttribute("class", "btn btn-success");
+            btn.innerHTML = "View Page";
+            btn.addEventListener("click", function() {
+                window.location.href = "user" + user.userid
+            });
+
+            td1.innerHTML = user.userid;
+            td2.innerHTML = user.name;
+            td3.innerHTML = user.email;
+            td4.appendChild(btn);
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            container.appendChild(tr);
+        });
+
+    }).catch(function(error) {
+        console.log(error);
+    });
+});
