@@ -369,3 +369,14 @@ function move() {
         }
     }
 }
+
+function blockHandler(){
+    if (this.status == 200){
+        document.getElementById("blockStatus").innerHTML = this.responseText;
+    }
+}
+
+function changeBlockStatusUser(userid, blockStatus){
+    sendAjaxRequest("put", "/api/changeBlockStatus", {userID: userid, blockStatus: blockStatus}, blockHandler); 
+}
+

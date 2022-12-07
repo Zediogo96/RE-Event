@@ -73,6 +73,10 @@ class UserPolicy
         return $user->userid === $model->userid || $this->isAdmin($user);  //só pode apagar o model User se for o próprio ou se for admin
     }
 
+    public function changeBlock(User $user){
+        return $this->isAdmin($user); //so admins podem alterar block status e nao podem bloquear a si mesmos
+    }
+
     /**
      * Determine whether the user can restore the model.
      *

@@ -372,8 +372,8 @@ INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic,
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (46, 'David Bowers', 'David_Fri73@hotmail.com', '2020/7/9', '14760187fce728b7316dda6cde9f35896b4eb4716d3944d697ad41461f7b8323', 'F', 'profile_pictures/46.jpg', False, False);
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (47, 'Alex Haworth', 'Steve_Boy82@gmail.com', '2021/1/12', 'fe14adb6950368a8e1fe764ae31c0dbc86dc6e615c2d48d2960a7f74ff5dc911', 'O', 'profile_pictures/47.jpg', False, False);
 INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (48, 'Nathan Orwig', 'Ty_Boy93@hotmail.com', '2021/12/5', '06b7fe3d366c8f3394c9a0c2e2c71968ec5eb6c663b7e2f0f0315e851fae72b1', 'O', 'profile_pictures/48.jpg', False, False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (49, 'Frank Lawless', 'Hal_Can72@yahoo.pt', '2020/11/4', 'fa52087106f92dbad59ceaab27a40583fe019e69f7db7d1598d67f6349693606', 'O', 'profile_pictures/49.jpg', False, False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (50, 'George Ebner', 'john_McC71@hotmail.com', '2020/3/30', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'F', 'profile_pictures/50.jpg', False, True);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (49, 'Frank Lawless', 'Hal_Can72@yahoo.pt', '2020/11/4', 'fa52087106f92dbad59ceaab27a40583fe019e69f7db7d1598d67f6349693606', 'O', 'profile_pictures/49.jpg', False, True);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (50, 'George Ebner', 'john_McC71@hotmail.com', '2020/3/30', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'F', 'profile_pictures/50.jpg', True, False);
 /** +#PY'(}N **/
 
 SELECT setval('user__userID_seq', (SELECT MAX(userID) from "user_"));
