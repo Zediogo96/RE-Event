@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Event;
+use App\Models\Ticket;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -34,7 +35,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return $user->userid === $model->userid || $this->isAdmin($user);  //só pode ver o model User se for o próprio ou se for admin
+        return ($user->userid === $model->userid || $this->isAdmin($user));  //só pode ver o model User se for o próprio ou se for admin
     }
 
     /**
