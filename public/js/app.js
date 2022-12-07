@@ -210,39 +210,7 @@ function createItem(item) {
 
 addEventListeners();
 
-/* COUNTDOWN TIMER */
-/* let string = "9 12 23 23:59:59"
-const newDate = new Date(string).getTime();
-// 1694559599000
-
-
-const countdown = setInterval(() => {
-    const date = new Date().getTime();
-    const diff = newDate - date;
-
-    const month = Math.floor(
-        (diff % (1000 * 60 * 60 * 24 * (365.25 / 12) * 365)) /
-        (1000 * 60 * 60 * 24 * (365.25 / 12))
-    );
-    const days = Math.floor(
-        (diff % (1000 * 60 * 60 * 24 * (365.25 / 12))) / (1000 * 60 * 60 * 24)
-    );
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    document.querySelector(".seconds").innerHTML =
-        seconds < 10 ? "0" + seconds : seconds;
-    document.querySelector(".minutes").innerHTML =
-        minutes < 10 ? "0" + minutes : minutes;
-    document.querySelector(".hours").innerHTML =
-        hours < 10 ? "0" + hours : hours;
-    document.querySelector(".days").innerHTML = days < 10 ? "0" + days : days;
-    document.querySelector(".months").innerHTML =
-        month < 10 ? "0" + month : month;
-}, 1000); */
-
-/* Event Page */
+/* COUNTDOWN TIMER EVENT PAGE */
 
 /* Login Page */
 
@@ -279,27 +247,27 @@ function inviteHandler() {
     if (this.status === 302) {
         window.location.href = this.responseText;
     }
-    else if(this.status === 200){
+    else if (this.status === 200) {
         let d = document.getElementById('inviteDiv');
         d.classList.add("animate-out");
-        setTimeout(function() {
+        setTimeout(function () {
             d.classList.remove("animate-out");
         }, 500);
-        setTimeout(function() {
+        setTimeout(function () {
             d.style.display = "none";
         }, 450);
-        
+
     }
-    else if(this.status === 404){
+    else if (this.status === 404) {
         console.log("Invite Doesn't Exist");
     }
-    else if(this.status === 409){
+    else if (this.status === 409) {
         console.log("User Already Invited");
     }
-    else if(this.status === 400){
+    else if (this.status === 400) {
         console.log("Not possible to invite yourself");
     }
-    else if(this.status === 412){
+    else if (this.status === 412) {
         console.log("User already attending event");
     }
     else if(this.status === 403){
@@ -307,12 +275,12 @@ function inviteHandler() {
     }
 }
 
-function rejectInvite(eventID){
+function rejectInvite(eventID) {
     console.log("reject");
-    sendAjaxRequest("delete", "/api/inviteReject", {event_id: eventID}, inviteHandler);
+    sendAjaxRequest("delete", "/api/inviteReject", { event_id: eventID }, inviteHandler);
 }
 
-function acceptInvite(event_id){
+function acceptInvite(event_id) {
     console.log("accept");
     sendAjaxRequest(
         "put",
@@ -332,15 +300,19 @@ function showAlert(type) {
         alertText.innerHTML = "You successfully joined the Event";
         myAlert.style.backgroundColor = "purple";
         myAlert.querySelector("img").src = "../icons/accept.png";
-
-
     }
-    else {
+    else if (type == "leave") {
         alertText.innerHTML = "You left the Event, sad to see you go!";
         myAlert.style.backgroundColor = "blue";
         myAlert.querySelector("img").src = "../icons/unaccept.png";
-    }    
-    
+    }
+    else if (type == "newcomment") {
+        alertText.innerHTML = "You successfully posted a comment";
+        myAlert.style.backgroundColor = "green";
+        myAlert.querySelector("img").src = "../icons/accept.png";
+    }
+
+
     move();
 
     myAlert.className = "show";
@@ -380,3 +352,104 @@ function changeBlockStatusUser(userid, blockStatus){
     sendAjaxRequest("put", "/api/changeBlockStatus", {userID: userid, blockStatus: blockStatus}, blockHandler); 
 }
 
+
+const list = document.querySelectorAll('.list')
+
+function activeLink() {
+    list.forEach((item) => item.classList.remove('active'))
+    this.classList.add('active')
+}
+
+list.forEach((item) => item.addEventListener('click', activeLink))
+
+function showUserDiv() {
+    document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+    let d = document.getElementById('userDiv');
+    d.classList.add("animate");
+    setTimeout(function () {
+        d.classList.remove("animate");
+    }, 500);
+    d.style.display = "block";
+}
+
+function showInviteDiv() {
+    document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+    let d = document.getElementById('inviteDiv');
+    d.classList.add("animate");
+    setTimeout(function () {
+        d.classList.remove("animate");
+    }, 500);
+    d.style.display = "block";
+}
+document.querySelector('#userDiv > button').addEventListener('click', function () {
+
+    let d = document.getElementById('userDiv');
+    d.classList.add("animate-out");
+    setTimeout(function () {
+        d.classList.remove("animate-out");
+    }, 500);
+    setTimeout(function () {
+        d.style.display = "none";
+    }, 500);
+})
+document.querySelector('#inviteDiv > .skrr').addEventListener('click', function () {
+    let d = document.getElementById('inviteDiv');
+    d.classList.add("animate-out");
+    setTimeout(function () {
+        d.classList.remove("animate-out");
+    }, 500);
+    setTimeout(function () {
+        d.style.display = "none";
+    }, 500);
+})
+
+function isEmpty(obj) {
+    for (var prop in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+            return false;
+        }
+    }
+    return JSON.stringify(obj) === JSON.stringify({});
+}
+
+// EVENT PAGE COUNTDOWN TIMER
+function displayCountdownEvent(info) {
+
+    let split_ = info.split(" ");
+    let date_ = split_[0].split("-");
+
+    let year = date_[0].slice(-2);
+    let month = date_[2];
+    let day = date_[1];
+
+    let string = day + " " + month + " " + year + " " + split_[1];
+    const newDate = Date.parse(string);
+
+
+    const countdown = setInterval(() => {
+        const date = new Date().getTime();
+        const diff = newDate - date;
+
+        const month = Math.floor(
+            (diff % (1000 * 60 * 60 * 24 * (365.25 / 12) * 365)) /
+            (1000 * 60 * 60 * 24 * (365.25 / 12))
+        );
+        const days = Math.floor(
+            (diff % (1000 * 60 * 60 * 24 * (365.25 / 12))) / (1000 * 60 * 60 * 24)
+        );
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.querySelector(".seconds").innerHTML =
+            seconds < 10 ? "0" + seconds : seconds;
+        document.querySelector(".minutes").innerHTML =
+            minutes < 10 ? "0" + minutes : minutes;
+        document.querySelector(".hours").innerHTML =
+            hours < 10 ? "0" + hours : hours;
+        document.querySelector(".days").innerHTML = days < 10 ? "0" + days : days;
+        document.querySelector(".months").innerHTML =
+            month < 10 ? "0" + month : month;
+    });
+
+}

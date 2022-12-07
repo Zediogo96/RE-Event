@@ -92,4 +92,14 @@ class CommentController extends Controller
     {
         //
     }
+
+    public function getComments(Request $request)
+    {
+        $comments = Comment::where('eventid', $request->input('event_id'))->get();
+        for ($i = 0; $i < count($comments); $i++) {
+            $comments[$i]->user_profilePic = $comments[$i]->user->profilepic;
+            $comments[$i]->user_name = $comments[$i]->user->name;
+        }
+        return Response($comments);
+    }
 }
