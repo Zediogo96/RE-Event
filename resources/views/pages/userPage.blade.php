@@ -614,7 +614,9 @@
                 let td2 = document.createElement("td");
                 let td3 = document.createElement("td");
                 let td4 = document.createElement("td");
+                
                 td4.style.textAlign = "center";
+
                 let btn = document.createElement("button");
                 btn.setAttribute("class", "btn btn-success");
                 btn.innerHTML = "View Page";
@@ -622,10 +624,24 @@
                     window.location.href = "user" + user.userid
                 });
 
+                let btn2 = document.createElement("button");
+                btn2.setAttribute("class", "btn btn-danger");
+                btn2.setAttribute("id", "blockStatus");
+                
+                if(user.isblocked){
+                    btn2.innerHTML = "Unblock User";
+                }
+                else {btn2.innerHTML = "Block User";}
+
+                btn2.addEventListener("click", function() {
+                    changeBlockStatusUser(user.userid, user.isblocked);
+                });
+
                 td1.innerHTML = user.userid;
                 td2.innerHTML = user.name;
                 td3.innerHTML = user.email;
                 td4.appendChild(btn);
+                td4.appendChild(btn2);
 
                 tr.appendChild(td1);
                 tr.appendChild(td2);

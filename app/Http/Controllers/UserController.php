@@ -9,6 +9,8 @@ use App\Models\Event;
 use App\Models\Ticket;
 use App\Models\Invited;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -192,6 +194,28 @@ class UserController extends Controller
         
         $user_ticket = Ticket::where('userid', $user->userid)->where('eventid', $event->eventid);
         $user_ticket->delete();
+    }
+
+    public function block(Request $request){
+
+        if(User::find($request->userID)->userid == Auth::user()->userid){
+            return response("Can't block self", 403);
+        }
+        
+        $this->authorize('changeBlock', Auth::user());
+        
+        $userToBlock = $request->userID;
+        $blocked = !(User::find($userToBlock)->isblocked);
+
+        DB::table('user_')
+        ->where('user_.userid', '=',  $userToBlock)
+        ->update(['isblocked'=> $blocked]);
+
+        $blocked = User::find($userToBlock)->isblocked;
+
+        $converted_res = $blocked ? 'Unblock User' : 'Block User';
+
+        return response($converted_res, 200);
     }
 
 }
