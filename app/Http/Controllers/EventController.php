@@ -265,11 +265,58 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $event)
+    public function destroy(Request $request)
     {
-        //
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($request->eventid);
+        $user = User::find(Auth::user()->userid);
+        //find the eventhost entry with the eventid and userid
+        $eventhost = EventHost::where('eventid', $event->eventid)->first();
+        //authorize
+        $this->authorize('delete', [$event, $eventhost]);  
+        $event->delete();
+        return redirect('/home');
+
+/*         //shit based on removeUser
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($request->eventid);
+        $user = User::find(Auth::user()->userid);
+        //find the eventhost entry with the eventid and userid
+        $eventhost = EventHost::where('eventid', $event->eventid)->first();
+        //authorize only if the user is host of the event
+        $this->authorize('isHost', [$event, $eventhost]);  
+        
+        //delete ticket record with user userid and event eventid
+        $ticket = Ticket::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
+        $ticket->delete();
+        // return redirect('/event' . $request->eventid); */
     }
 
+
+    public function transferOwnership(Request $request)
+    {
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($request->eventid);
+        $user = User::find(Auth::user()->userid);
+        //find the eventhost entry with the eventid and userid
+        $eventhost = EventHost::where('eventid', $event->eventid)->first();
+        //authorize only if the user is host of the event
+        $this->authorize('isHost', [$event, $eventhost]);  
+
+        //delete entry from eventhost table with user userid and event eventid
+        $eventhost = EventHost::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
+        $eventhost->delete();
+
+        //create a nw eventhost table entry with a new userid from request and eventid from request
+        $eventhost = new EventHost;
+        $eventhost->userid = $request->newuserid;
+        $eventhost->eventid = $request->eventid;
+        $eventhost->save();
+
+        // return redirect('/event' . $request->eventid);
+    }
+
+    
     //Join an event
     public function join($event_id)
     {
