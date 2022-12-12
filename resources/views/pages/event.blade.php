@@ -234,7 +234,7 @@
                 commentid: commentID
             })
         }).then(function(data) {
-            getComments('{{$event->eventid}}');
+            getComments('{{$event->eventid}}', false);
             return false;
         }).catch(function(error) {
             console.log(error);
@@ -256,7 +256,7 @@
                 commentid: commentID
             })
         }).then(function(data) {
-            getComments('{{$event->eventid}}');
+            getComments('{{$event->eventid}}', false);
             return false;
         }).catch(function(error) {
             console.log(error);
@@ -297,7 +297,7 @@
                     text: document.querySelector('#my-comment').value,
                 })
             }).then(function(data) {
-                getComments('{{$event->eventid}}');
+                getComments('{{$event->eventid}}', true);
                 showAlert("newcomment");
 
             }).catch(function(error) {

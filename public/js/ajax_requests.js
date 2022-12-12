@@ -176,7 +176,7 @@ function ajax_remUser(userid, eventid) {
 };
 
 // REQUESTS USED TO GET THE 
-function getComments(id) {
+function getComments(id, shouldScroll) {
     fetch("getComments" + "?" + new URLSearchParams({
         event_id: id
     }), {
@@ -228,16 +228,16 @@ function getComments(id) {
                 i.id = 'like';
             }
 
-            
+
             let span2 = document.createElement('span');
             span2.setAttribute('class', 'me-3 small');
             span2.innerHTML = comment.upvote_count;
             let a3 = document.createElement('a');
             if (comment.user.userid == auth_id) {
-                
+
                 a3.setAttribute('class', 'link-danger small ms-3');
                 a3.innerHTML = 'delete';
-                
+
             }
             let a4 = document.createElement('a');
             a4.setAttribute('class', 'link-danger small ms-3');
@@ -257,7 +257,7 @@ function getComments(id) {
             div.appendChild(div2);
             container.appendChild(div);
 
-            document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
+            if (shouldScroll) document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
         });
 
     }).catch(function (error) {
