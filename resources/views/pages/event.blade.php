@@ -297,6 +297,7 @@
                 })
             }).then(function(data) {
                 getComments('{{$event->eventid}}');
+                showAlert("newcomment");
 
             }).catch(function(error) {
                 console.log(error);
