@@ -87,7 +87,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        // 
     }
 
     public function getComments(Request $request)
@@ -104,6 +104,12 @@ class CommentController extends Controller
             }
         }
         return Response($comments);
+    }
+
+    public function deleteComment(Request $request)
+    {
+        $comment = Comment::where('commentid', $request->input('comment_id'))->first();
+        $comment->delete();
     }
     
 }
