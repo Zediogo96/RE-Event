@@ -261,9 +261,18 @@ function getComments(id, shouldScroll) {
             div.appendChild(div2);
             container.appendChild(div);
 
-            if (shouldScroll) document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
-            renew_btns();
+            
+
+            
+            
         });
+        if (shouldScroll) document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
+        // get length of data
+        console.log(data);
+
+
+        document.querySelector("#comments-section > h4").innerHTML = data.length + " Comments";
+        renew_btns();
 
     }).catch(function (error) {
         console.log(error);
