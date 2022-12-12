@@ -192,9 +192,9 @@
                             <div class="hstack align-items-center mb-2">
                                 <a class="link-primary me-2" href="#">
                                     @if (Auth::user() != NULL && $comment->hasUpvoted(Auth::user()->userid))
-                                    <i onclick="removeUpvote('{{Auth::user()->userid}}','{{$comment->commentid}}')" class="icon-comments" id="like-full"></i>
+                                    <i onclick="removeUpvote('{{Auth::user()->userid}}','{{$comment->commentid}}'); return false;" class="icon-comments" id="like-full"></i>
                                     @elseif (Auth::user() != NULL)
-                                    <i onclick="addUpvote('{{Auth::user()->userid}}','{{$comment->commentid}}')" class="icon-comments" id="like"></i>
+                                    <i onclick="addUpvote('{{Auth::user()->userid}}','{{$comment->commentid}}'); return false;" class="icon-comments" id="like"></i>
                                     @else 
                                     <i class="icon-comments" id="like"></i>
                                     @endif
@@ -234,7 +234,8 @@
                 commentid: commentID
             })
         }).then(function(data) {
-            alert('addUpvote')
+            getComments('{{$event->eventid}}');
+            return false;
         }).catch(function(error) {
             console.log(error);
         });
@@ -255,8 +256,8 @@
                 commentid: commentID
             })
         }).then(function(data) {
-            // document.location.reload();
-            alert('remUpvote')
+            getComments('{{$event->eventid}}');
+            return false;
         }).catch(function(error) {
             console.log(error);
         });

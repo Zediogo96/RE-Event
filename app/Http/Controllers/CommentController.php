@@ -96,6 +96,12 @@ class CommentController extends Controller
         for ($i = 0; $i < count($comments); $i++) {
             $comments[$i]->user_profilePic = $comments[$i]->user->profilepic;
             $comments[$i]->user_name = $comments[$i]->user->name;
+            $comments[$i]->upvote_count = $comments[$i]->upvotes->count();
+            if (Auth::user() && $comments[$i]->upvotes->where('userid', Auth::user()->userid)->first()) {
+                $comments[$i]->upvoted = true;
+            } else {
+                $comments[$i]->upvoted = false;
+            }
         }
         return Response($comments);
     }

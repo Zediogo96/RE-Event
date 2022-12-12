@@ -217,18 +217,30 @@ function getComments(id) {
             let a2 = document.createElement('a');
             a2.setAttribute('class', 'link-primary me-2');
             let i = document.createElement('i');
-            i.setAttribute('class', 'fas fa-thumbs-up');
+            i.setAttribute('class', 'icon-comments');
+            if (comment.upvoted) {
+                i.setAttribute('onclick', 'removeUpvote(' + comment.user.userid +','+ comment.id + ', )')
+                i.id = 'like-full';
+            }
+            else {
+                i.setAttribute('onclick', 'addUpvote(' + comment.user.userid +','+ comment.id + ', )')
+                i.id = 'like';
+            }
             let span2 = document.createElement('span');
             span2.setAttribute('class', 'me-3 small');
             span2.innerHTML = '55';
             let a3 = document.createElement('a');
             a3.setAttribute('class', 'link-danger small ms-3');
             a3.innerHTML = 'delete';
+            let a4 = document.createElement('a');
+            a4.setAttribute('class', 'link-danger small ms-3');
+            a4.innerHTML = 'report';
 
             div5.appendChild(a2);
             a2.appendChild(i);
             div5.appendChild(span2);
             div5.appendChild(a3);
+            div5.appendChild(a4);
             div4.appendChild(div5);
             div3.appendChild(a);
             div3.appendChild(span);
