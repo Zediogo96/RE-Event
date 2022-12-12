@@ -32,4 +32,27 @@ class Comment extends Model
     {
         return $this->hasMany('App\Models\Report', 'commentid');
     }
+
+    /**
+    * The upvotes of the comment
+    */
+    public function upvotes()
+    {
+        return $this->hasMany('App\Models\Upvote', 'commentid');
+    }
+
+    // check if a user has upvoted a comment
+    public function hasUpvoted($userid) {
+        $upvotes = $this->upvotes;
+        foreach ($upvotes as $upvote) {
+            if ($upvote->userid == $userid) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getUpvoteCount() {
+        return $this->upvotes->count();
+    }
 }

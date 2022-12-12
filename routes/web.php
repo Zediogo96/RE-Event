@@ -56,7 +56,12 @@ Route::get('events', 'EventController@index');
 
 // Comments
 Route::post('storeComment', 'CommentController@store')->name('storeComment');
+Route::post('deleteComment', 'CommentController@deleteComment')->name('deleteComment');
 Route::get('getComments', 'CommentController@getComments')->name('getComments');
+// Upvotes
+Route::post('addUpvote', 'UpvoteController@addUpvote')->name('addUpvote');
+Route::post('removeUpvote', 'UpvoteController@removeUpvote')->name('removeUpvote');
+
 
 //Invites
 Route::post('api/invite', 'InvitedController@create')->name('createInvite');
