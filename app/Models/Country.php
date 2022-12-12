@@ -30,12 +30,6 @@ class Country extends Model
         return $this->hasMany('App\Models\Event', 'eventid');
     }
 
-
-
-
-
-
-
     /**
      * Full text search for countries
      */

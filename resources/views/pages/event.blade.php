@@ -190,9 +190,22 @@
                             </div>
                             <div class="mb-2"> {{$comment->text}} </div>
                             <div class="hstack align-items-center mb-2">
-                                <a class="link-primary me-2" href="#"><i class="fas fa-thumbs-up"></i></a>
-                                <span class="me-3 small">55</span>
+                                <a class="link-primary me-2" href="#">
+                                    @if (Auth::user() != NULL && $comment->hasUpvoted(Auth::user()->userid))
+                                    <i onclick="removeUpvote('{{Auth::user()->userid}}','{{$comment->commentid}}')" class="icon-comments" id="like-full"></i>
+                                    @elseif (Auth::user() != NULL)
+                                    <i onclick="addUpvote('{{Auth::user()->userid}}','{{$comment->commentid}}')" class="icon-comments" id="like"></i>
+                                    @else 
+                                    <i class="icon-comments" id="like"></i>
+                                    @endif
+
+                                </a>
+                                <span class="me-3 small"> {{$comment->getUpvoteCount()}}</span>
+                                @if (Auth::user() != NULL && Auth::user()->userid == $comment->user->userid)
                                 <a class="link-danger small ms-3" href="#">delete</a>
+                                @endif
+                                <a class="link-danger small ms-3" href="#">report</a>
+
                             </div>
                         </div>
                     </div>
@@ -204,6 +217,51 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+    function addUpvote(userID, commentID) {
+        fetch("{{route('addUpvote')}}", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                userid: userID,
+                commentid: commentID
+            })
+        }).then(function(data) {
+            alert('addUpvote')
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+
+    function removeUpvote(userID, commentID) {
+        fetch("{{route('removeUpvote')}}", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                userid: userID,
+                commentid: commentID
+            })
+        }).then(function(data) {
+            // document.location.reload();
+            alert('remUpvote')
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+</script>
 <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
 @if (Auth::user() != NULL)
 <script type="text/javascript">
