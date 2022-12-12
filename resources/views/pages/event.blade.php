@@ -202,7 +202,7 @@
                                 </a>
                                 <span class="me-3 small"> {{$comment->getUpvoteCount()}}</span>
                                 @if (Auth::user() != NULL && Auth::user()->userid == $comment->user->userid)
-                                <a class="link-danger small ms-3" href="#">delete</a>
+                                <a class="link-danger small ms-3 __del_btn" href="#myModal" data-toggle="modal" value="{{$comment->commentid}}">delete</a>
                                 @endif
                                 <a class="link-danger small ms-3" href="#">report</a>
 
@@ -216,7 +216,49 @@
         </div>
 
     </div>
+
+    @include('partials.confirm_modal');
 </div>
+
+<script type="text/javascript" defer>
+    function renew_btns() {
+
+        let del_btn = document.querySelectorAll(".__del_btn");
+        del_btn.forEach((btn) => {
+
+            btn.addEventListener("click", () => {
+
+                document.getElementById('confirm-del-btn').setAttribute('onClick', 'deleteComment(' + btn.getAttribute('value') + ')');
+            });
+
+        });
+    }
+
+    renew_btns();
+
+    function deleteComment(commentID) {
+        fetch("deleteComment", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                comment_id: commentID
+            })
+        }).then(function(data) {
+            let eventID = document.getElementById('eventid').value;
+            // hide element with id myModal
+            getComments(eventID, true);
+            return false;
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+</script>
 
 <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
 @if (Auth::user() != NULL)

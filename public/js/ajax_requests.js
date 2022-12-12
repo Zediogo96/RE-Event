@@ -235,8 +235,12 @@ function getComments(id, shouldScroll) {
             let a3 = document.createElement('a');
             if (comment.user.userid == auth_id) {
 
-                a3.setAttribute('class', 'link-danger small ms-3');
+                a3.setAttribute('class', 'link-danger small ms-3 __del_btn');
                 a3.innerHTML = 'delete';
+                a3.style += 'cursor: pointer;'
+                a3.href = '#myModal';
+                a3.setAttribute('data-toggle', 'modal');
+                a3.setAttribute('value', comment.commentid);
 
             }
             let a4 = document.createElement('a');
@@ -258,12 +262,14 @@ function getComments(id, shouldScroll) {
             container.appendChild(div);
 
             if (shouldScroll) document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
+            renew_btns();
         });
 
     }).catch(function (error) {
         console.log(error);
     });
-}
+};
+
 
 // REQUEST FOR ADMIN TO BE ABLE TO SEARCH FOR USERS
 document.getElementById("search-users-admin").addEventListener("keyup", function (e) {
