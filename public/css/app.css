@@ -44,12 +44,16 @@ body::before {
   color: #fbc531;
 }
 
-.nav-item:nth-last-child(2) {
-  margin-left: 34rem;
+.nav-item:nth-last-child(3) {
+  margin-left: 28rem;
+}
+
+.nav-item > a {
+  white-space: nowrap;
 }
 
 @media screen and (max-width:600px) {
-  .nav-item:nth-last-child(2) {
+  .nav-item:nth-last-child(3) {
     margin-left: 0rem;
   }
 }

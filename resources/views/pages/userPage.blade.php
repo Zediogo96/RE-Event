@@ -36,7 +36,14 @@
                 </div>
 
                 <div>
-                    <div id="myInvitesOption" onclick="selectOption(3)" class="option">My Invites</div>
+                    <div id="myInvitesOption" onclick="selectOption(3)" class="option">
+                        <div class="optionText">
+                            <p>My Invites</p>
+                            @if ($numberInvites != 0)
+                            <span class="numberNotification">{{$numberInvites}}</span>
+                            @endif
+                        </div>
+                    </div>
                     <div id="myInvitesSubmenu" class="submenuSleep">
                         <ul>
                             <li onclick="showDetails(4)" id="receivedInvitesOption" class="optionSelected subOption">Received Invites</li>

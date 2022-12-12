@@ -26,6 +26,27 @@ function addEventListeners() {
     let cardCreator = document.querySelector("article.card form.new_card");
     if (cardCreator != null)
         cardCreator.addEventListener("submit", sendCreateCardRequest);
+    let notificationText = document.getElementById("notification_text");
+    if (notificationText != null) {
+        sendAjaxRequest('get', '/api/numberNotifications', null, notificationTextHandler);
+
+    }
+}
+
+const notificationTextHandler = function() {
+    if (this.status == 200) {
+        const count = this.responseText;
+        if(count == 0){
+            document.getElementById("notification_text").innerHTML = "";
+        }
+
+        else if(count == 1){
+            document.getElementById("notification_text").innerHTML = "You have 1 new notification!";
+        }
+        else{
+            document.getElementById("notification_text").innerHTML = "You have "+count+" new notifications!";
+        }
+    }
 }
 
 function encodeForAjax(data) {

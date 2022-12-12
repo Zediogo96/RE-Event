@@ -374,6 +374,24 @@ div#preview-container img {
     padding: 0 4rem 0 0;
 }
 
+.option .numberNotification {
+    padding: 5px 10px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+}
+
+.optionText{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.option p{
+    margin: 0;
+    padding: 0;
+}
+
 
 #createUserModal form div.form-group {
     margin: 0 auto;

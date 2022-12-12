@@ -57,6 +57,12 @@ const selectOption = function (option) {
 
             document.getElementById('receivedInvitesOption').classList.add('optionSelected');
 
+            document.getElementById("notification_text").innerHTML = "";
+
+            sendAjaxRequest("put", "/api/clearNotifications", null, readHandler);
+
+
+
             break;
         }
 
@@ -65,6 +71,7 @@ const selectOption = function (option) {
             document.getElementById('userSearch').classList.remove('submenuSleep');
             document.getElementById('userSearch').classList.add('submenuActive');
 
+            break;
         }
     }
 
@@ -186,4 +193,8 @@ c_modal.querySelector('#address').addEventListener("keyup", (event) => {
 
 function preview_image() {
     c_modal.querySelector("#preview-image").src = URL.createObjectURL(event.target.files[0]);
+}
+
+function readHandler(){
+    console.log("result: ", this, this.responseText);
 }

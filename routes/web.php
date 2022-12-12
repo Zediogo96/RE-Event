@@ -67,7 +67,8 @@ Route::post('removeUpvote', 'UpvoteController@removeUpvote')->name('removeUpvote
 Route::post('api/invite', 'InvitedController@create')->name('createInvite');
 Route::put('api/inviteAccept', 'InvitedController@accept')->name('acceptInvite');
 Route::delete('api/inviteReject', 'InvitedController@reject')->name('rejectInvite');
-
+Route::put('api/clearNotifications', 'InvitedController@read')->name('readNotifications');
+Route::get('api/numberNotifications', 'InvitedController@numberNotifications')->name('numberNotifications');
 
 Route::put('api/changeBlockStatus', 'UserController@block')->name('changeBlockStatusUser');
 

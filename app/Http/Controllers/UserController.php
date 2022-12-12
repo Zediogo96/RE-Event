@@ -37,6 +37,7 @@ class UserController extends Controller
         $user = User::find($id);
         $this->authorize('view', $user);
 
+        $number = Invited::where('invited.inviteduserid', '=',  $id)->get()->count();
 
         $sentInvites = Invited::join('event', 'event.eventid', '=', 'invited.eventid')
                                 ->join('user_', 'user_.userid', '=', 'invited.inviteduserid')
@@ -51,7 +52,7 @@ class UserController extends Controller
                                     ->select(['city.name as cityName', 'user_.email as email','*', 'event.name as name'])->get();
 
         
-        return view('pages.userPage', ['user' => $user, 'receivedInvites' => $receivedInvites, 'sentInvites' => $sentInvites]);
+        return view('pages.userPage', ['user' => $user, 'receivedInvites' => $receivedInvites, 'sentInvites' => $sentInvites, 'numberInvites' => $number]);
     }
 
     /**
