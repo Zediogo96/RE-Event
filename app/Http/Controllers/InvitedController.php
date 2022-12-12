@@ -125,5 +125,29 @@ class InvitedController extends Controller
         return response(null, 409);
     }
 
+    public function read(){
+        if (!Auth::check()) {return response(route('login'), 302);}
+        
+        $user_id = Auth::user()->userid;
+
+        DB::table('invited')
+            ->where('invited.inviteduserid', '=',  $user_id)
+            ->update(['read'=>TRUE]);
+        
+        return response(null, 200);
+
+    }
+
+    public function numberNotifications(){
+        if (!Auth::check()) {return response(route('login'), 302);}
+        
+        $id = Auth::user()->userid;
+
+        $numberNotifications = Invited::where('invited.inviteduserid', '=',  $id)
+                ->where('invited.read', '=', FALSE)->get()->count();
+        
+        return response($numberNotifications, 200);
+    }
+
 }
 
