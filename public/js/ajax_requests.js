@@ -317,3 +317,52 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
         console.log(error);
     });
 });
+
+// REQUESTS TO BE USED WHILE ADDING / REMOVING UPVOTES
+
+function addUpvote(userID, commentID) {
+    fetch("addUpvote", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+            userid: userID,
+            commentid: commentID
+        })
+    }).then(function (data) {
+        let eventID = document.getElementById('eventid').value;
+        getComments(eventID, false);
+        return false;
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+function removeUpvote(userID, commentID) {
+    fetch("removeUpvote", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+            userid: userID,
+            commentid: commentID
+        })
+    }).then(function (data) {
+        // get value of div with id "token-event-id"
+        let eventID = document.getElementById('eventid').value;
+        getComments(eventID, false);
+        return false;
+    }).catch(function (error) {
+        console.log(error);
+    });
+}

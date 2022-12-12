@@ -6,7 +6,7 @@
 
 <div class="container-event-page">
     <div class="container" id="event-content">
-        <div hidden id="token_event_id">{{$event->eventid}}</div>
+        <input type="hidden" id="eventid" value="{{$event->eventid}}">
         <img src="{{$event -> photos[0]->path}}">
         <div class="wrapper-res">
             <div id="event-name"> {{$event->name}} </div>
@@ -195,7 +195,7 @@
                                     <i onclick="removeUpvote('{{Auth::user()->userid}}','{{$comment->commentid}}'); return false;" class="icon-comments" id="like-full"></i>
                                     @elseif (Auth::user() != NULL)
                                     <i onclick="addUpvote('{{Auth::user()->userid}}','{{$comment->commentid}}'); return false;" class="icon-comments" id="like"></i>
-                                    @else 
+                                    @else
                                     <i class="icon-comments" id="like"></i>
                                     @endif
 
@@ -218,51 +218,6 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    function addUpvote(userID, commentID) {
-        fetch("{{route('addUpvote')}}", {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            method: "post",
-            credentials: "same-origin",
-            body: JSON.stringify({
-                userid: userID,
-                commentid: commentID
-            })
-        }).then(function(data) {
-            getComments('{{$event->eventid}}', false);
-            return false;
-        }).catch(function(error) {
-            console.log(error);
-        });
-    }
-
-    function removeUpvote(userID, commentID) {
-        fetch("{{route('removeUpvote')}}", {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            method: "post",
-            credentials: "same-origin",
-            body: JSON.stringify({
-                userid: userID,
-                commentid: commentID
-            })
-        }).then(function(data) {
-            getComments('{{$event->eventid}}', false);
-            return false;
-        }).catch(function(error) {
-            console.log(error);
-        });
-    }
-</script>
 <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
 @if (Auth::user() != NULL)
 <script type="text/javascript">
