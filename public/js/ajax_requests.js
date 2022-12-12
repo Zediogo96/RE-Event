@@ -218,20 +218,27 @@ function getComments(id) {
             a2.setAttribute('class', 'link-primary me-2');
             let i = document.createElement('i');
             i.setAttribute('class', 'icon-comments');
+            let auth_id = document.querySelector('meta[name="auth-check-id"]').getAttribute('content')
             if (comment.upvoted) {
-                i.setAttribute('onclick', 'removeUpvote(' + comment.user.userid +','+ comment.id + ', )')
+                i.setAttribute('onclick', 'removeUpvote(' + auth_id + ',' + comment.commentid + ')')
                 i.id = 'like-full';
             }
             else {
-                i.setAttribute('onclick', 'addUpvote(' + comment.user.userid +','+ comment.id + ', )')
+                i.setAttribute('onclick', 'addUpvote(' + auth_id + ',' + comment.commentid + ')')
                 i.id = 'like';
             }
+
+            
             let span2 = document.createElement('span');
             span2.setAttribute('class', 'me-3 small');
-            span2.innerHTML = '55';
+            span2.innerHTML = comment.upvote_count;
             let a3 = document.createElement('a');
-            a3.setAttribute('class', 'link-danger small ms-3');
-            a3.innerHTML = 'delete';
+            if (comment.user.userid == auth_id) {
+                
+                a3.setAttribute('class', 'link-danger small ms-3');
+                a3.innerHTML = 'delete';
+                
+            }
             let a4 = document.createElement('a');
             a4.setAttribute('class', 'link-danger small ms-3');
             a4.innerHTML = 'report';
@@ -259,7 +266,7 @@ function getComments(id) {
 }
 
 // REQUEST FOR ADMIN TO BE ABLE TO SEARCH FOR USERS
-document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
+document.getElementById("search-users-admin").addEventListener("keyup", function (e) {
 
     if (e.target.value == "") return;
 
@@ -274,12 +281,12 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
         },
         method: "get",
         credentials: "same-origin",
-    }).then(function(data) {
+    }).then(function (data) {
         return data.json();
-    }).then(function(data) {
+    }).then(function (data) {
         let container = document.getElementById("search-admin-users-res");
         container.innerHTML = "";
-        data.forEach(function(user) {
+        data.forEach(function (user) {
 
             let tr = document.createElement("tr");
             let td1 = document.createElement("td");
@@ -290,7 +297,7 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
             let btn = document.createElement("button");
             btn.setAttribute("class", "btn btn-success");
             btn.innerHTML = "View Page";
-            btn.addEventListener("click", function() {
+            btn.addEventListener("click", function () {
                 window.location.href = "user" + user.userid
             });
 
@@ -306,7 +313,7 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
             container.appendChild(tr);
         });
 
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log(error);
     });
 });
