@@ -8,6 +8,9 @@
 
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token()}}">
+  @if (Auth::user() != NULL)
+  <meta name="auth-check-id" content="{{(Auth::user()->userid)}}">
+  @endif
 
   <title>{{ config('app.name', 'Laravel') }}</title>
 

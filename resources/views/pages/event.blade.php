@@ -6,7 +6,7 @@
 
 <div class="container-event-page">
     <div class="container" id="event-content">
-        <div hidden id="token_event_id">{{$event->eventid}}</div>
+        <input type="hidden" id="eventid" value="{{$event->eventid}}">
         <img src="{{$event -> photos[0]->path}}">
         <div class="wrapper-res">
             <div id="event-name"> {{$event->name}} </div>
@@ -191,9 +191,22 @@
                             </div>
                             <div class="mb-2"> {{$comment->text}} </div>
                             <div class="hstack align-items-center mb-2">
-                                <a class="link-primary me-2" href="#"><i class="fas fa-thumbs-up"></i></a>
-                                <span class="me-3 small">55</span>
-                                <a class="link-danger small ms-3" href="#">delete</a>
+                                <a class="link-primary me-2" href="#">
+                                    @if (Auth::user() != NULL && $comment->hasUpvoted(Auth::user()->userid))
+                                    <i onclick="removeUpvote('{{Auth::user()->userid}}','{{$comment->commentid}}'); return false;" class="icon-comments" id="like-full"></i>
+                                    @elseif (Auth::user() != NULL)
+                                    <i onclick="addUpvote('{{Auth::user()->userid}}','{{$comment->commentid}}'); return false;" class="icon-comments" id="like"></i>
+                                    @else
+                                    <i class="icon-comments" id="like"></i>
+                                    @endif
+
+                                </a>
+                                <span class="me-3 small"> {{$comment->getUpvoteCount()}}</span>
+                                @if (Auth::user() != NULL && Auth::user()->userid == $comment->user->userid)
+                                <a class="link-danger small ms-3 __del_btn" href="#myModal" data-toggle="modal" value="{{$comment->commentid}}">delete</a>
+                                @endif
+                                <a class="link-danger small ms-3" href="#">report</a>
+
                             </div>
                         </div>
                     </div>
@@ -203,8 +216,50 @@
         </div>
 
     </div>
-    @endif
+
+    @include('partials.confirm_modal');
 </div>
+
+<script type="text/javascript" defer>
+    function renew_btns() {
+
+        let del_btn = document.querySelectorAll(".__del_btn");
+        del_btn.forEach((btn) => {
+
+            btn.addEventListener("click", () => {
+
+                document.getElementById('confirm-del-btn').setAttribute('onClick', 'deleteComment(' + btn.getAttribute('value') + ')');
+            });
+
+        });
+    }
+
+    renew_btns();
+
+    function deleteComment(commentID) {
+        fetch("deleteComment", {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            method: "post",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                comment_id: commentID
+            })
+        }).then(function(data) {
+            let eventID = document.getElementById('eventid').value;
+            // hide element with id myModal
+            getComments(eventID, true);
+            return false;
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+</script>
+
 <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
 @if (Auth::user() != NULL)
 <script type="text/javascript">
@@ -239,7 +294,8 @@
                     text: document.querySelector('#my-comment').value,
                 })
             }).then(function(data) {
-                getComments('{{$event->eventid}}');
+                getComments('{{$event->eventid}}', true);
+                showAlert("newcomment");
 
             }).catch(function(error) {
                 console.log(error);
@@ -254,9 +310,10 @@
 <script type="text/javascript" defer>
     document.getElementById("search-users").addEventListener("keyup", function(e) {
         if (document.getElementById("search-users").value == '') return;
+        let eventid = document.getElementById("eventid").value;
         fetch("searchUsers" + "?" + new URLSearchParams({
             search: document.getElementById("search-users").value,
-            event_id: '{{$event->eventid}}'
+            event_id: eventid
         }), {
             headers: {
                 "Content-Type": "application/json",
@@ -270,13 +327,8 @@
         }).then(function(data) {
             return data.json();
         }).then(function(data) {
-
-
-            let eventid = document.querySelector("#token_event_id").innerHTML;
-            console.log(eventid);
             let container = document.getElementById("table-user-res");
             container.innerHTML = "";
-            console.log(data);
             data.forEach(function(user) {
 
                 let tr = document.createElement("tr");
@@ -365,11 +417,9 @@
         }).then(function(data) {
 
 
-            let eventid = document.querySelector("#token_event_id").innerHTML;
-            console.log(eventid);
+            let eventid = document.getElementById("eventid").value;
             let container = document.getElementById("table-user-res");
             container.innerHTML = "";
-            console.log(data);
             data.forEach(function(user) {
 
                 let tr = document.createElement("tr");

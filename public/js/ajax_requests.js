@@ -87,7 +87,7 @@ function ajax_selfRemoveUser(userid, eventid) {
 
 // REQUEST USED FOR THE USER TO BE ABLE TO ENROLL AN EVENT BY HIMSELF IN THE EVENT PAGE
 function ajax_selfAddUser(userid, eventid) {
-    fetch("{{route('selfAddUser')}}", {
+    fetch("selfAddUser", {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -176,7 +176,7 @@ function ajax_remUser(userid, eventid) {
 };
 
 // REQUESTS USED TO GET THE 
-function getComments(id) {
+function getComments(id, shouldScroll) {
     fetch("getComments" + "?" + new URLSearchParams({
         event_id: id
     }), {
@@ -217,18 +217,41 @@ function getComments(id) {
             let a2 = document.createElement('a');
             a2.setAttribute('class', 'link-primary me-2');
             let i = document.createElement('i');
-            i.setAttribute('class', 'fas fa-thumbs-up');
+            i.setAttribute('class', 'icon-comments');
+            let auth_id = document.querySelector('meta[name="auth-check-id"]').getAttribute('content')
+            if (comment.upvoted) {
+                i.setAttribute('onclick', 'removeUpvote(' + auth_id + ',' + comment.commentid + ')')
+                i.id = 'like-full';
+            }
+            else {
+                i.setAttribute('onclick', 'addUpvote(' + auth_id + ',' + comment.commentid + ')')
+                i.id = 'like';
+            }
+
+
             let span2 = document.createElement('span');
             span2.setAttribute('class', 'me-3 small');
-            span2.innerHTML = '55';
+            span2.innerHTML = comment.upvote_count;
             let a3 = document.createElement('a');
-            a3.setAttribute('class', 'link-danger small ms-3');
-            a3.innerHTML = 'delete';
+            if (comment.user.userid == auth_id) {
+
+                a3.setAttribute('class', 'link-danger small ms-3 __del_btn');
+                a3.innerHTML = 'delete';
+                a3.style += 'cursor: pointer;'
+                a3.href = '#myModal';
+                a3.setAttribute('data-toggle', 'modal');
+                a3.setAttribute('value', comment.commentid);
+
+            }
+            let a4 = document.createElement('a');
+            a4.setAttribute('class', 'link-danger small ms-3');
+            a4.innerHTML = 'report';
 
             div5.appendChild(a2);
             a2.appendChild(i);
             div5.appendChild(span2);
             div5.appendChild(a3);
+            div5.appendChild(a4);
             div4.appendChild(div5);
             div3.appendChild(a);
             div3.appendChild(span);
@@ -238,18 +261,27 @@ function getComments(id) {
             div.appendChild(div2);
             container.appendChild(div);
 
-            showAlert("newcomment");
+            
 
-            document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
+            
+            
         });
+        if (shouldScroll) document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
+        // get length of data
+        console.log(data);
+
+
+        document.querySelector("#comments-section > h4").innerHTML = data.length + " Comments";
+        renew_btns();
 
     }).catch(function (error) {
         console.log(error);
     });
-}
+};
+
 
 // REQUEST FOR ADMIN TO BE ABLE TO SEARCH FOR USERS
-document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
+document.getElementById("search-users-admin").addEventListener("keyup", function (e) {
 
     if (e.target.value == "") return;
 
@@ -264,12 +296,12 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
         },
         method: "get",
         credentials: "same-origin",
-    }).then(function(data) {
+    }).then(function (data) {
         return data.json();
-    }).then(function(data) {
+    }).then(function (data) {
         let container = document.getElementById("search-admin-users-res");
         container.innerHTML = "";
-        data.forEach(function(user) {
+        data.forEach(function (user) {
 
             let tr = document.createElement("tr");
             let td1 = document.createElement("td");
@@ -280,7 +312,7 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
             let btn = document.createElement("button");
             btn.setAttribute("class", "btn btn-success");
             btn.innerHTML = "View Page";
-            btn.addEventListener("click", function() {
+            btn.addEventListener("click", function () {
                 window.location.href = "user" + user.userid
             });
 
@@ -296,7 +328,56 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
             container.appendChild(tr);
         });
 
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log(error);
     });
 });
+
+// REQUESTS TO BE USED WHILE ADDING / REMOVING UPVOTES
+
+function addUpvote(userID, commentID) {
+    fetch("addUpvote", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+            userid: userID,
+            commentid: commentID
+        })
+    }).then(function (data) {
+        let eventID = document.getElementById('eventid').value;
+        getComments(eventID, false);
+        return false;
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+function removeUpvote(userID, commentID) {
+    fetch("removeUpvote", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+            userid: userID,
+            commentid: commentID
+        })
+    }).then(function (data) {
+        // get value of div with id "token-event-id"
+        let eventID = document.getElementById('eventid').value;
+        getComments(eventID, false);
+        return false;
+    }).catch(function (error) {
+        console.log(error);
+    });
+}

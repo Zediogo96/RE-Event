@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS invited CASCADE;
 DROP TABLE IF EXISTS ticket CASCADE;
 DROP TABLE IF EXISTS review CASCADE;
 DROP TABLE IF EXISTS comment CASCADE;
+DROP TABLE IF EXISTS upvote_comment CASCADE;
 DROP TABLE IF EXISTS report CASCADE;
 DROP TABLE IF EXISTS photo CASCADE;
 DROP TABLE IF EXISTS tag CASCADE;
@@ -123,6 +124,12 @@ CREATE TABLE comment (
     time time without time zone DEFAULT CURRENT_TIME,
     userID integer NOT NULL REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
     eventID integer NOT NULL REFERENCES event (eventID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE upvote_comment (
+    userID integer NOT NULL REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
+    commentID integer NOT NULL REFERENCES comment (commentID) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (userID, commentID)
 );
 
 CREATE TABLE report (
@@ -873,14 +880,7 @@ INSERT INTO event_host (userID, eventID)
 
 INSERT INTO event_host (userID, eventID)
     VALUES (4, 36);
-        
-
-
-
-
-
-
-
+    
 /* Comments */
 
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (1, 'Just cant believe!!', '2021/4/13', '3:20', 1, 6);
@@ -905,6 +905,12 @@ INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (19, '
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (20, 'So excited!', '2020/9/9', '10:58', 20, 4);
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (21, 'Real fans know Hamilton got robbed in the 2021 WDC!', '2020/9/9', '10:58', 3, 1);
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (22, 'So excited for this one!', '2020/9/9', '10:58', 2, 1);
+INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (23, 'Btw, who yall think will win this year?', '2021/10/12', '10:58', 2, 1);
+
+INSERT INTO upvote_comment (userID, commentID) VALUES (1, 21);
+INSERT INTO upvote_comment (userID, commentID) VALUES (1, 22);
+INSERT INTO upvote_comment (userID, commentID) VALUES (2, 21);
+INSERT INTO upvote_comment (userID, commentID) VALUES (3, 21);
 
 SELECT setval('comment_commentID_seq', (SELECT MAX(commentID) from "comment"));
 
