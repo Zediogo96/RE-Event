@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 
-
+use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
@@ -36,7 +36,10 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        $user = User::find($request->input('eventid'));
+        $this->authorize('create', $user);
+        
         if ($request->input('text'))
         $comment = new Comment;
         $comment->text = $request->input('text');

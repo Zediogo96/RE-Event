@@ -153,6 +153,7 @@
 
 
     <div class="mx-auto col-lg-8" id="comment-section-container">
+        @if ($event->comments() !== null)    
         @if (Auth::user() != NULL)
         <div class="p-4 mb-2" id="new-comment">
             <!-- New Comment //-->
@@ -211,7 +212,6 @@
                     </div>
                     @endforeach
 
-                </div>
             </div>
         </div>
 

@@ -269,19 +269,7 @@ class EventController extends Controller
     {
         //
     }
-
-    //Join an event
-    public function join($event_id)
-    {
-        if (!Auth::check()) return redirect('/login');
-        $event = Event::find($event_id);
-        $this->authorize('join', $event);
-        $user = Auth::user();
-        $event->participants()->attach($user->userID);
-        return redirect('event' . $event->eventID);
-    }
-
-
+    
     public function addUser(Request $request)
     {
         if (!Auth::check()) return redirect('/login');

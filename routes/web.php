@@ -68,12 +68,7 @@ Route::post('api/invite', 'InvitedController@create')->name('createInvite');
 Route::put('api/inviteAccept', 'InvitedController@accept')->name('acceptInvite');
 Route::delete('api/inviteReject', 'InvitedController@reject')->name('rejectInvite');
 
-Route::get('debug/invites', function() {
-    return App\Models\Invited::get();
-});
 
-/* Route::get('play', function() {
-    return view('pages.play');
-}); */
+Route::put('api/changeBlockStatus', 'UserController@block')->name('changeBlockStatusUser');
 
 Route::get('auth', 'Auth\LoginController@getUser');

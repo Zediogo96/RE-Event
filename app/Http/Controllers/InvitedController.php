@@ -26,8 +26,8 @@ class InvitedController extends Controller
     {
         if (!Auth::check()) return redirect('/login');
         $event = Event::find($event_id);
-        /* $this->authorize('join', $event); */
         $user = Auth::user();
+        $this->authorize('attend', [User::class, $event, $user]);
         $event->participants()->attach($user->userID);
     }
 
@@ -48,14 +48,13 @@ class InvitedController extends Controller
         }
 
         $this->authorize('update', $invite);
+        InvitedController::joinEvent($event_id);
 
         DB::table('invited')
             ->where('invited.inviteduserid', '=',  $invited_user_id)
             ->where('invited.eventid', '=', $event_id)
             ->update(['status'=>TRUE]);
         
-        
-        InvitedController::joinEvent($event_id);
 
         return response(route('event.show', ['eventid' => $event_id]), 302);
 
@@ -88,10 +87,11 @@ class InvitedController extends Controller
         return response(route('user.show', ['userid' => $invited_user_id]), 302);
     }
 
-    //TODO fazer o modal desaparecer quando botao e clicado
     public function create(InviteRequest $request) {
-        //$this->validate($request); 
         if (!Auth::check()) {return response(route('login'), 302);}
+        $inviter_user = Auth::user();
+        
+        $this->authorize('create', $inviter_user);
 
         $eventid = $request['event_id'];
         $invited_user_id = InvitedController::get_id_from_email($request['invited_user']);
