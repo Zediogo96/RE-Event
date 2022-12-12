@@ -268,9 +268,10 @@
 <script type="text/javascript" defer>
     document.getElementById("search-users").addEventListener("keyup", function(e) {
         if (document.getElementById("search-users").value == '') return;
+        let eventid = document.getElementById("eventid").value;
         fetch("searchUsers" + "?" + new URLSearchParams({
             search: document.getElementById("search-users").value,
-            event_id: '{{$event->eventid}}'
+            event_id: eventid
         }), {
             headers: {
                 "Content-Type": "application/json",
@@ -284,13 +285,8 @@
         }).then(function(data) {
             return data.json();
         }).then(function(data) {
-
-
-            let eventid = document.querySelector("#token_event_id").innerHTML;
-            console.log(eventid);
             let container = document.getElementById("table-user-res");
             container.innerHTML = "";
-            console.log(data);
             data.forEach(function(user) {
 
                 let tr = document.createElement("tr");
@@ -379,11 +375,9 @@
         }).then(function(data) {
 
 
-            let eventid = document.querySelector("#token_event_id").innerHTML;
-            console.log(eventid);
+            let eventid = document.getElementById("eventid").value;
             let container = document.getElementById("table-user-res");
             container.innerHTML = "";
-            console.log(data);
             data.forEach(function(user) {
 
                 let tr = document.createElement("tr");
