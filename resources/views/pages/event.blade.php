@@ -218,6 +218,8 @@
     </div>
 
     @include('partials.confirm_modal');
+
+    @endif
 </div>
 
 <script type="text/javascript" defer>
