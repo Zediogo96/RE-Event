@@ -235,29 +235,6 @@
         }
 
         renew_btns();
-
-        function deleteComment(commentID) {
-            fetch("deleteComment", {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                method: "post",
-                credentials: "same-origin",
-                body: JSON.stringify({
-                    comment_id: commentID
-                })
-            }).then(function(data) {
-                let eventID = document.getElementById('eventid').value;
-                // hide element with id myModal
-                getComments(eventID, true);
-                return false;
-            }).catch(function(error) {
-                console.log(error);
-            });
-        }
     </script>
 
     <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
@@ -294,7 +271,7 @@
                         text: document.querySelector('#my-comment').value,
                     })
                 }).then(function(data) {
-                    // getComments('{{$event->eventid}}');
+                    getComments('{{$event->eventid}}', true);
                     showAlert("newcomment");
 
                 }).catch(function(error) {
@@ -397,9 +374,5 @@
         setTimeout(function() {
             displayCountdownEvent('{{$event->date}}');
         }, 1000);
-
-        
-
-        //////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
     </script>
     @endsection

@@ -376,6 +376,28 @@ function removeUpvote(userID, commentID) {
     });
 }
 
+function deleteComment(commentID) {
+    fetch("deleteComment", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+            comment_id: commentID
+        })
+    }).then(function (data) {
+        let eventID = document.getElementById('eventid').value;
+        getComments(eventID, true);
+        return false;
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
 // REFRESHES TABLE WITH USERS: TO BE USED WHEN ADDING OR REMOVING USERS FROM EVENT
 function refreshDiv() {
     fetch("searchUsers" + "?" + new URLSearchParams({

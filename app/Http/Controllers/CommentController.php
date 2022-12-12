@@ -38,7 +38,7 @@ class CommentController extends Controller
     public function store(Request $request)
     {   
         $user = User::find($request->input('eventid'));
-        $this->authorize('create', $user);
+        // $this->authorize('create', $user);
         
         if ($request->input('text'))
         $comment = new Comment;
