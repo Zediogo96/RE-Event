@@ -87,7 +87,7 @@ function ajax_selfRemoveUser(userid, eventid) {
 
 // REQUEST USED FOR THE USER TO BE ABLE TO ENROLL AN EVENT BY HIMSELF IN THE EVENT PAGE
 function ajax_selfAddUser(userid, eventid) {
-    fetch("{{route('selfAddUser')}}", {
+    fetch("selfAddUser", {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
