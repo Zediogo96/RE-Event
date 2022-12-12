@@ -153,7 +153,7 @@
 
 
     <div class="mx-auto col-lg-8" id="comment-section-container">
-        @if ($event->comments() !== null)    
+        @if ($event->comments() !== null)
         @if (Auth::user() != NULL)
         <div class="p-4 mb-2" id="new-comment">
             <!-- New Comment //-->
@@ -212,76 +212,32 @@
                     </div>
                     @endforeach
 
+                </div>
             </div>
-        </div>
 
+        </div>
+        @endif
+        @include('partials.confirm_modal');
     </div>
 
-    @include('partials.confirm_modal');
+    <script type="text/javascript" defer>
+        function renew_btns() {
 
-    @endif
-</div>
+            let del_btn = document.querySelectorAll(".__del_btn");
+            del_btn.forEach((btn) => {
 
-<script type="text/javascript" defer>
-    function renew_btns() {
+                btn.addEventListener("click", () => {
 
-        let del_btn = document.querySelectorAll(".__del_btn");
-        del_btn.forEach((btn) => {
+                    document.getElementById('confirm-del-btn').setAttribute('onClick', 'deleteComment(' + btn.getAttribute('value') + ')');
+                });
 
-            btn.addEventListener("click", () => {
-
-                document.getElementById('confirm-del-btn').setAttribute('onClick', 'deleteComment(' + btn.getAttribute('value') + ')');
             });
+        }
 
-        });
-    }
+        renew_btns();
 
-    renew_btns();
-
-    function deleteComment(commentID) {
-        fetch("deleteComment", {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            method: "post",
-            credentials: "same-origin",
-            body: JSON.stringify({
-                comment_id: commentID
-            })
-        }).then(function(data) {
-            let eventID = document.getElementById('eventid').value;
-            // hide element with id myModal
-            getComments(eventID, true);
-            return false;
-        }).catch(function(error) {
-            console.log(error);
-        });
-    }
-</script>
-
-<!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
-@if (Auth::user() != NULL)
-<script type="text/javascript">
-    // REQUEST USED FOR THE AUTHENTICATED USER TO BE ABLE TO COMMENT IN A EVENT (IN THE EVENT PAGE)
-    document.querySelector('#new-comment button').addEventListener('click', function(e) {
-        e.preventDefault();
-
-        var comment = document.querySelector('#my-comment');
-
-        if (comment.value == '') {
-            let error = document.querySelector('#new-comment label');
-            error.innerHTML = 'Error: Comment cannot be empty';
-            error.style.color = 'red';
-            document.querySelector('#new-comment form').classList.add("apply-shake");
-            setTimeout(function() {
-                document.querySelector('#new-comment form').classList.remove("apply-shake");
-            }, 500);
-            return;
-        } else {
-            fetch("{{route('storeComment')}}", {
+        function deleteComment(commentID) {
+            fetch("deleteComment", {
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json",
@@ -291,177 +247,159 @@
                 method: "post",
                 credentials: "same-origin",
                 body: JSON.stringify({
-                    userid: "{{Auth::user()->userid}}",
-                    eventid: "{{$event->eventid}}",
-                    text: document.querySelector('#my-comment').value,
+                    comment_id: commentID
                 })
             }).then(function(data) {
-                getComments('{{$event->eventid}}', true);
-                showAlert("newcomment");
-
+                let eventID = document.getElementById('eventid').value;
+                // hide element with id myModal
+                getComments(eventID, true);
+                return false;
             }).catch(function(error) {
                 console.log(error);
             });
         }
-    });
-</script>
-@endif
+    </script>
 
-<!-- ONLY AVAILABLE FOR HOST -->
-@if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
-<script type="text/javascript" defer>
-    document.getElementById("search-users").addEventListener("keyup", function(e) {
-        if (document.getElementById("search-users").value == '') return;
-        let eventid = document.getElementById("eventid").value;
-        fetch("searchUsers" + "?" + new URLSearchParams({
-            search: document.getElementById("search-users").value,
-            event_id: eventid
-        }), {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-Token": '{{ csrf_token() }}'
-            },
-            method: "get",
-            credentials: "same-origin",
+    <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
+    @if (Auth::user() != NULL)
+    <script type="text/javascript">
+        // REQUEST USED FOR THE AUTHENTICATED USER TO BE ABLE TO COMMENT IN A EVENT (IN THE EVENT PAGE)
+        document.querySelector('#new-comment button').addEventListener('click', function(e) {
+            e.preventDefault();
 
-        }).then(function(data) {
-            return data.json();
-        }).then(function(data) {
-            let container = document.getElementById("table-user-res");
-            container.innerHTML = "";
-            data.forEach(function(user) {
+            var comment = document.querySelector('#my-comment');
 
-                let tr = document.createElement("tr");
-                let td1 = document.createElement("td");
-                let td2 = document.createElement("td");
-                let td3 = document.createElement("td");
-
-                td3.style.textAlign = "center";
-                let btn = document.createElement("button");
-
-                if (user.attending_event == true) {
-                    btn.setAttribute("class", "btn btn-danger");
-                    btn.innerHTML = "Remove";
-                    btn.addEventListener('click', function(e) {
-                        ajax_remUser(user.userid, eventid);
-                        refreshDiv();
+            if (comment.value == '') {
+                let error = document.querySelector('#new-comment label');
+                error.innerHTML = 'Error: Comment cannot be empty';
+                error.style.color = 'red';
+                document.querySelector('#new-comment form').classList.add("apply-shake");
+                setTimeout(function() {
+                    document.querySelector('#new-comment form').classList.remove("apply-shake");
+                }, 500);
+                return;
+            } else {
+                fetch("{{route('storeComment')}}", {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    method: "post",
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        userid: "{{Auth::user()->userid}}",
+                        eventid: "{{$event->eventid}}",
+                        text: document.querySelector('#my-comment').value,
                     })
-                } else {
-                    btn.setAttribute("class", "btn btn-success");
-                    btn.innerHTML = "Add to Event";
-                    btn.addEventListener('click', function(e) {
-                        ajax_addUser(user.userid, eventid);
-                        refreshDiv();
-                    })
-                }
-                td1.innerHTML = user.name;
-                td2.innerHTML = user.email;
-                td3.appendChild(btn);
+                }).then(function(data) {
+                    // getComments('{{$event->eventid}}');
+                    showAlert("newcomment");
 
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                tr.appendChild(td3);
-                container.appendChild(tr);
-
-            });
-        }).catch(function(error) {
-            console.log(error);
+                }).catch(function(error) {
+                    console.log(error);
+                });
+            }
         });
-    });
+    </script>
+    @endif
 
-    document.querySelector('#outroDiv button').addEventListener('click', function() {
-        let d = document.getElementById('outroDiv');
-        d.classList.add("animate-out");
-        setTimeout(function() {
-            d.classList.remove("animate-out");
-        }, 500);
-        setTimeout(function() {
-            d.style.display = "none";
-        }, 450);
-    })
-
-    function showOutroDiv() {
-        document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-        let d = document.getElementById('outroDiv');
-        d.classList.add("animate");
-        setTimeout(function() {
-            d.classList.remove("animate");
-        }, 500);
-        d.style.display = "block";
-    }
-</script>
-@endif
-
-<script type="text/javascript">
-    // Polling for the Event Page Countdown display 
-    setTimeout(function() {
-        displayCountdownEvent('{{$event->date}}');
-    }, 1000);
-
-    function refreshDiv() {
-        fetch("{{route('searchUsers')}}" + "?" + new URLSearchParams({
-            search: document.getElementById("search-users").value,
-            event_id: '{{$event->eventid}}'
-        }), {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-Token": '{{ csrf_token() }}'
-            },
-            method: "get",
-            credentials: "same-origin",
-
-        }).then(function(data) {
-            return data.json();
-        }).then(function(data) {
-
-
+    <!-- ONLY AVAILABLE FOR HOST -->
+    @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
+    <script type="text/javascript" defer>
+        document.getElementById("search-users").addEventListener("keyup", function(e) {
+            if (document.getElementById("search-users").value == '') return;
             let eventid = document.getElementById("eventid").value;
-            let container = document.getElementById("table-user-res");
-            container.innerHTML = "";
-            data.forEach(function(user) {
+            fetch("searchUsers" + "?" + new URLSearchParams({
+                search: document.getElementById("search-users").value,
+                event_id: eventid
+            }), {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-Token": '{{ csrf_token() }}'
+                },
+                method: "get",
+                credentials: "same-origin",
 
-                let tr = document.createElement("tr");
-                let td1 = document.createElement("td");
-                let td2 = document.createElement("td");
-                let td3 = document.createElement("td");
+            }).then(function(data) {
+                return data.json();
+            }).then(function(data) {
+                let container = document.getElementById("table-user-res");
+                container.innerHTML = "";
+                data.forEach(function(user) {
 
-                td3.style.textAlign = "center";
-                let btn = document.createElement("button");
+                    let tr = document.createElement("tr");
+                    let td1 = document.createElement("td");
+                    let td2 = document.createElement("td");
+                    let td3 = document.createElement("td");
 
-                if (user.attending_event == true) {
-                    btn.setAttribute("class", "btn btn-danger");
-                    btn.innerHTML = "Remove";
-                    btn.addEventListener('click', function(e) {
-                        ajax_remUser(user.userid, eventid);
-                        refreshDiv();
-                    })
-                } else {
-                    btn.setAttribute("class", "btn btn-success");
-                    btn.innerHTML = "Add to Event";
-                    btn.addEventListener('click', function(e) {
-                        ajax_addUser(user.userid, eventid);
-                        refreshDiv();
-                    })
-                }
-                td1.innerHTML = user.name;
-                td2.innerHTML = user.email;
-                td3.appendChild(btn);
+                    td3.style.textAlign = "center";
+                    let btn = document.createElement("button");
 
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                tr.appendChild(td3);
-                container.appendChild(tr);
+                    if (user.attending_event == true) {
+                        btn.setAttribute("class", "btn btn-danger");
+                        btn.innerHTML = "Remove";
+                        btn.addEventListener('click', function(e) {
+                            ajax_remUser(user.userid, eventid);
+                            refreshDiv();
+                        })
+                    } else {
+                        btn.setAttribute("class", "btn btn-success");
+                        btn.innerHTML = "Add to Event";
+                        btn.addEventListener('click', function(e) {
+                            ajax_addUser(user.userid, eventid);
+                            refreshDiv();
+                        })
+                    }
+                    td1.innerHTML = user.name;
+                    td2.innerHTML = user.email;
+                    td3.appendChild(btn);
 
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    container.appendChild(tr);
+
+                });
+            }).catch(function(error) {
+                console.log(error);
             });
-        }).catch(function(error) {
-            console.log(error);
         });
-    };
 
-    //////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
-</script>
-@endsection
+        document.querySelector('#outroDiv button').addEventListener('click', function() {
+            let d = document.getElementById('outroDiv');
+            d.classList.add("animate-out");
+            setTimeout(function() {
+                d.classList.remove("animate-out");
+            }, 500);
+            setTimeout(function() {
+                d.style.display = "none";
+            }, 450);
+        })
+
+        function showOutroDiv() {
+            document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+            let d = document.getElementById('outroDiv');
+            d.classList.add("animate");
+            setTimeout(function() {
+                d.classList.remove("animate");
+            }, 500);
+            d.style.display = "block";
+        }
+    </script>
+    @endif
+
+    <script type="text/javascript">
+        // Polling for the Event Page Countdown display 
+        setTimeout(function() {
+            displayCountdownEvent('{{$event->date}}');
+        }, 1000);
+
+        
+
+        //////////////////////////////// END OF AJAX REQUESTS //////////////////////////////////////
+    </script>
+    @endsection

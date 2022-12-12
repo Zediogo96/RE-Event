@@ -228,7 +228,6 @@ function getComments(id, shouldScroll) {
                 i.id = 'like';
             }
 
-
             let span2 = document.createElement('span');
             span2.setAttribute('class', 'me-3 small');
             span2.innerHTML = comment.upvote_count;
@@ -260,11 +259,6 @@ function getComments(id, shouldScroll) {
             div.appendChild(img);
             div.appendChild(div2);
             container.appendChild(div);
-
-            
-
-            
-            
         });
         if (shouldScroll) document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
         // get length of data
@@ -381,3 +375,63 @@ function removeUpvote(userID, commentID) {
         console.log(error);
     });
 }
+
+// REFRESHES TABLE WITH USERS: TO BE USED WHEN ADDING OR REMOVING USERS FROM EVENT
+function refreshDiv() {
+    fetch("searchUsers" + "?" + new URLSearchParams({
+        search: document.getElementById("search-users").value,
+        event_id: document.getElementById("eventid").value
+    }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": '{{ csrf_token() }}'
+        },
+        method: "get",
+        credentials: "same-origin",
+    }).then(function (data) {
+        return data.json();
+    }).then(function (data) {
+        let eventid = document.getElementById("eventid").value;
+        let container = document.getElementById("table-user-res");
+        container.innerHTML = "";
+        data.forEach(function (user) {
+
+            let tr = document.createElement("tr");
+            let td1 = document.createElement("td");
+            let td2 = document.createElement("td");
+            let td3 = document.createElement("td");
+
+            td3.style.textAlign = "center";
+            let btn = document.createElement("button");
+
+            if (user.attending_event == true) {
+                btn.setAttribute("class", "btn btn-danger");
+                btn.innerHTML = "Remove";
+                btn.addEventListener('click', function (e) {
+                    ajax_remUser(user.userid, eventid);
+                    refreshDiv();
+                })
+            } else {
+                btn.setAttribute("class", "btn btn-success");
+                btn.innerHTML = "Add to Event";
+                btn.addEventListener('click', function (e) {
+                    ajax_addUser(user.userid, eventid);
+                    refreshDiv();
+                })
+            }
+            td1.innerHTML = user.name;
+            td2.innerHTML = user.email;
+            td3.appendChild(btn);
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            container.appendChild(tr);
+
+        });
+    }).catch(function (error) {
+        console.log(error);
+    });
+};
