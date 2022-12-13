@@ -137,9 +137,6 @@
         <li>
             <a onclick="getDataFromTag('family'); return false;">Family</a>
         </li>
-<!--         <li>
-            <a onclick="getDataFromTag('books'); return false;">Books</a>
-        </li> -->
         <li>
             <a onclick="getDataFromTag('technology'); return false;">Technology</a>
         </li>
@@ -153,13 +150,26 @@
     @foreach ($events as $event)
     <a href="{{route('event.show', $event->eventid)}}">
         <div class="event-card">
-            <img src="{{$event -> photos[0]->path}}" alt="" class="card-image">
+            <img loading="lazy" src="{{$event -> photos[0]->path}}" alt="" class="card-image">
             <h3 class="card-title"> {{$event->name}} </h3>
         </div>
     </a>
     @endforeach
 </div>
 
+<nav class="pagination-container pagination">
+    <button class="pagination-button" id="prev-button" title="Previous page" aria-label="Previous page">
+        &lt;
+    </button>
+
+    <div id="pagination-numbers">
+
+    </div>
+
+    <button class="pagination-button" id="next-button" title="Next page" aria-label="Next page">
+        &gt;
+    </button>
+</nav>
 <!-- Full screen modal -->
 <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" data-backdrop="false" aria-hidden="true">
     <div class="modal-dialog">
