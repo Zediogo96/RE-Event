@@ -10,7 +10,11 @@
             </div>
             <div class="modal-body">
 
-                <form class="row g-3 needs-validation" novalidate>
+                <form class="row g-3 needs-validation" id="report-form" novalidate>
+                    <input type="hidden" name="comment_id" id="comment_id" value="">
+                    <input type="hidden" name="event_id" id="event_id" value="">
+                    <input type="hidden" name="user_id" id="user_id" value="">
+
                     <div>
                         <label for="validationCustom01" class="form-label"> Reason</label>
 
@@ -36,7 +40,7 @@
 
                     <div class="modal-footer justify-content-center">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger" id="confirm-del-btn">Submit</button>
+                        <button type="submit" class="btn btn-danger" id="confirm-report-btn">Submit</button>
                     </div>
 
                 </form>

@@ -205,7 +205,7 @@
                                 @if (Auth::user() != NULL && Auth::user()->userid == $comment->user->userid)
                                 <a class="link-danger small ms-3 __del_btn" href="#myModal" data-toggle="modal" value="{{$comment->commentid}}">delete</a>
                                 @endif
-                                <a class="link-danger small ms-3" href="#reportModal" data-toggle="modal">report</a>
+                                <a class="link-danger small ms-3 __report_btn" href="#reportModal" data-toggle="modal" value="{{$comment->commentid}}">report</a>
 
                             </div>
                         </div>
@@ -237,6 +237,23 @@
 
 
         renew_btns();
+
+        function renew_report_btns() {
+
+            let report_btn = document.querySelectorAll(".__report_btn");
+            report_btn.forEach((btn) => {
+
+                btn.addEventListener("click", () => {
+                    let rep_form = document.getElementById('report-form');
+                    let a = rep_form.querySelector('input[name="comment_id"]').value = btn.getAttribute('value')
+                    let b = rep_form.querySelector('input[name="event_id"]').value = document.querySelector('#eventid').value;
+                    let c = rep_form.querySelector('input[name="user_id"]').value = document.querySelector('meta[name="auth-check-id"]').getAttribute('content');
+                });
+
+            });
+        }
+
+        renew_report_btns();
     </script>
 
     <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
