@@ -217,8 +217,8 @@
 
         </div>
         @endif
-        @include('partials.confirm_modal');
-        @include('partials.reportModal');
+        @include('partials.confirm_modal')
+        @include('partials.reportModal')
     </div>
 
     <script type="text/javascript" defer>

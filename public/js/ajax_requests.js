@@ -14,7 +14,7 @@ document.getElementById("searchInput").addEventListener("keyup", function (e) {
     }).then(function (data) {
         return data.json();
     }).then(function (data) {
-        console.log(data);
+
         let container = document.getElementById("table-res");
         container.innerHTML = "";
         data.forEach(function (event) {
@@ -262,7 +262,6 @@ function getComments(id, shouldScroll) {
         });
         if (shouldScroll) document.querySelector("#new-comments-container").lastElementChild.scrollIntoView();
         // get length of data
-        console.log(data);
 
 
         document.querySelector("#comments-section > h4").innerHTML = data.length + " Comments";
@@ -457,3 +456,50 @@ function refreshDiv() {
         console.log(error);
     });
 };
+
+// REQUESTS THAT ALLOWS THE USER TO SEARCH BY TAGS IN THE HOME PAGE
+function getDataFromTag(tag) {
+    fetch("searchEventsByTag" + "?" + new URLSearchParams({
+        category_name: tag
+    }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "get",
+        credentials: "same-origin",
+    }).then(function (data) {
+        return data.json();
+    }).then(function (data) {
+        // iterate through the data
+        let container = document.querySelector('.container-other-events');
+        container.innerHTML = "";
+        data.forEach(function (event) {
+            let a = document.createElement('a');
+            a.href = "event" + event.eventid;
+            let div = document.createElement('div');
+            div.className = "event-card";
+            let img = document.createElement('img');
+            img.src = "event_photos/" + event.eventid + ".jpg";
+            img.className = "card-image";
+            let h3 = document.createElement('h3');
+            h3.className = "card-title";
+            h3.innerHTML = event.name;
+            div.appendChild(img);
+            div.appendChild(h3);
+            a.appendChild(div);
+            container.appendChild(a);
+
+
+
+        });
+
+        getPaginationNumbers();
+        setCurrentPage(1);
+
+    }).catch(function (error) {
+        console.log(error);
+    });
+}

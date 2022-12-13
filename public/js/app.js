@@ -264,7 +264,7 @@ function createInvite(event_id) {
 }
 
 function inviteHandler() {
-    console.log("result: ", this, this.responseText)
+
     if (this.status === 302) {
         window.location.href = this.responseText;
     }
@@ -297,12 +297,12 @@ function inviteHandler() {
 }
 
 function rejectInvite(eventID) {
-    console.log("reject");
+    // console.log("reject");
     sendAjaxRequest("delete", "/api/inviteReject", { event_id: eventID }, inviteHandler);
 }
 
 function acceptInvite(event_id) {
-    console.log("accept");
+    // console.log("accept");
     sendAjaxRequest(
         "put",
         "/api/inviteAccept",

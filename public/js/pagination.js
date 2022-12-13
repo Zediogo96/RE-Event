@@ -1,11 +1,11 @@
 const paginationNumbers = document.getElementById("pagination-numbers");
 const paginatedList = document.querySelector(".container-other-events")
-const listItems = paginatedList.querySelectorAll("a");
+let listItems = paginatedList.querySelectorAll("a");
 const nextButton = document.getElementById("next-button");
 const prevButton = document.getElementById("prev-button");
 
 const paginationLimit = 12;
-const pageCount = Math.ceil(listItems.length / paginationLimit);
+let pageCount = Math.ceil(listItems.length / paginationLimit);
 let currentPage;
 let prevRange = 1;
 let currRange = paginationLimit;
@@ -22,6 +22,13 @@ const appendPageNumber = (index) => {
 };
 
 const getPaginationNumbers = () => {
+    while (paginationNumbers.firstChild) {
+        paginationNumbers.removeChild(paginationNumbers.firstChild);
+    }
+
+    listItems = paginatedList.querySelectorAll("a");
+    pageCount = Math.ceil(listItems.length / paginationLimit);
+
     for (let i = 1; i <= pageCount; i++) {
         appendPageNumber(i);
     }
@@ -37,6 +44,14 @@ const setCurrentPage = (pageNum) => {
     document.getElementById("page" + currentPage).classList.add("active");
 
     elementContainer.innerHTML = '';
+
+    let jsonData = [];
+    listItems.forEach((item) => {
+        jsonData.push(item);
+        
+    });
+
+    console.log(jsonData.length);
 
     jsonData.forEach((item, index) => {
 
@@ -54,17 +69,11 @@ const setCurrentPage = (pageNum) => {
             item.classList.add("hidden");
         }
     });
-
-    console.log(prevRange, currRange);
 };
 
-let jsonData = [];
-listItems.forEach((item) => {
-    jsonData.push(item);
-});
+
 
 let elementContainer = document.querySelector(".container-other-events");
-
 
 window.addEventListener("load", () => {
     getPaginationNumbers();

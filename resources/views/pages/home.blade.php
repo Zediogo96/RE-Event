@@ -2,8 +2,6 @@
 
 @section('content')
 
-
-
 <div class="container" style="margin-top: 40px">
     <!-- CAROUSEL SLIDER -->
     <div id="carouselSlider" class="carousel slide">
@@ -64,9 +62,9 @@
         let day = date_[1];
 
         let string = day + " " + month + " " + year + " " + split_[1];
-        console.log(string);
+        // console.log(string);
         const newDate = Date.parse(string);
-        console.log(newDate);
+        // console.log(newDate);
 
         const countdown = setInterval(() => {
             const date = new Date().getTime();
@@ -194,47 +192,4 @@
 </div>
 
 </div>
-
-
-<script type="text/javascript" defer>
-    function getDataFromTag(tag) {
-        fetch("{{route('searchEventsByTag')}}" + "?" + new URLSearchParams({
-            category_name: tag
-        }), {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-Token": '{{ csrf_token() }}'
-            },
-            method: "get",
-            credentials: "same-origin",
-        }).then(function(data) {
-            return data.json();
-        }).then(function(data) {
-            // iterate through the data
-            let container = document.querySelector('.container-other-events');
-            container.innerHTML = "";
-            data.forEach(function(event) {
-                let a = document.createElement('a');
-                a.href = "{{route('event.show', '')}}" + event.eventid;
-                let div = document.createElement('div');
-                div.className = "event-card";
-                let img = document.createElement('img');
-                img.src = "event_photos/" + event.eventid + ".jpg";
-                img.className = "card-image";
-                let h3 = document.createElement('h3');
-                h3.className = "card-title";
-                h3.innerHTML = event.name;
-                div.appendChild(img);
-                div.appendChild(h3);
-                a.appendChild(div);
-                container.appendChild(a);
-            });
-        }).catch(function(error) {
-            console.log(error);
-        });
-    }
-</script>
-
 @endsection

@@ -77,14 +77,13 @@ class SearchController extends Controller
 
     public function searchEventsByTag(Request $request)
     {
-        // VERIFICAR SE EVENT CATEGORY EXISTE
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
         if ($request->category_name == "all") {
-            $events = Event::where('isprivate', false)->take(24)->get();
+            // get all events
+            $events = Event::where('isprivate', 0)->get();
+            
         } else if ($request->category_name) {
             $tag_id = Tag::where('name', $request->category_name)->get()->first()->tagid;
-            $events = Event::where('tagid', $tag_id)->where('isprivate', false)->take(12)->get();
+            $events = Event::where('tagid', $tag_id)->where('isprivate', false)->get();
         }
         return Response($events);
     }
