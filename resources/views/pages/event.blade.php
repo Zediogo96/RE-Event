@@ -205,7 +205,7 @@
                                 @if (Auth::user() != NULL && Auth::user()->userid == $comment->user->userid)
                                 <a class="link-danger small ms-3 __del_btn" href="#myModal" data-toggle="modal" value="{{$comment->commentid}}">delete</a>
                                 @endif
-                                <a class="link-danger small ms-3" href="#">report</a>
+                                <a class="link-danger small ms-3" href="#reportModal" data-toggle="modal">report</a>
 
                             </div>
                         </div>
@@ -218,6 +218,7 @@
         </div>
         @endif
         @include('partials.confirm_modal');
+        @include('partials.reportModal');
     </div>
 
     <script type="text/javascript" defer>
@@ -233,6 +234,7 @@
 
             });
         }
+
 
         renew_btns();
     </script>

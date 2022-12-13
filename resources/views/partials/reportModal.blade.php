@@ -1,0 +1,77 @@
+<div id="reportModal" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header flex-column">
+                <div class="icon-box">
+                    <i class="fa fa-user-slash"></i>
+                </div>
+                <h4 class="modal-title w-100"> Report Comment </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+
+                <form class="row g-3 needs-validation" novalidate>
+                    <div>
+                        <label for="validationCustom01" class="form-label"> Reason</label>
+
+                        <select class="form-select" id="validationCustom01" required>
+                            <option selected disabled value="">Choose...</option>
+                            <option> Dangerous / Illegal </option>
+                            <option> Discriminatory </option>
+                            <option> Misinformation </option>
+                            <option> Disrespectful </option>
+                            <option> Other </option>
+                        </select>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div>
+                        <label for="validationCustom02" class="form-label">Explanation </label>
+                        <textarea style="max-height:10rem;" class="form-control" id="validationCustom02" placeholder="Comment" required></textarea>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger" id="confirm-del-btn">Submit</button>
+                    </div>
+
+                </form>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    <button type="submit" class="btn btn-danger" id="confirm-del-btn">Submit</button>
+</div>
+
+<script type="text/javascript">
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
