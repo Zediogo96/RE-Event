@@ -33,18 +33,18 @@ function addEventListeners() {
     }
 }
 
-const notificationTextHandler = function() {
+const notificationTextHandler = function () {
     if (this.status == 200) {
         const count = this.responseText;
-        if(count == 0){
+        if (count == 0) {
             document.getElementById("notification_text").innerHTML = "";
         }
 
-        else if(count == 1){
+        else if (count == 1) {
             document.getElementById("notification_text").innerHTML = "You have 1 new notification!";
         }
-        else{
-            document.getElementById("notification_text").innerHTML = "You have "+count+" new notifications!";
+        else {
+            document.getElementById("notification_text").innerHTML = "You have " + count + " new notifications!";
         }
     }
 }
@@ -291,7 +291,7 @@ function inviteHandler() {
     else if (this.status === 412) {
         console.log("User already attending event");
     }
-    else if(this.status === 403){
+    else if (this.status === 403) {
         console.log("User is blocked");
     }
 }
@@ -319,22 +319,18 @@ function showAlert(type) {
     let alertText = document.querySelector(".myAlert-message");
     if (type == "enroll") {
         alertText.innerHTML = "You successfully joined the Event";
-        myAlert.style.backgroundColor = "purple";
         myAlert.querySelector("img").src = "../icons/accept.png";
     }
     else if (type == "leave") {
         alertText.innerHTML = "You left the Event, sad to see you go!";
-        myAlert.style.backgroundColor = "blue";
         myAlert.querySelector("img").src = "../icons/unaccept.png";
     }
     else if (type == "newcomment") {
         alertText.innerHTML = "You successfully posted a comment";
-        myAlert.style.backgroundColor = "green";
         myAlert.querySelector("img").src = "../icons/accept.png";
     }
     else if (type == "newReport") {
         alertText.innerHTML = "Your report was successfully submitted!";
-        myAlert.style.backgroundColor = "purple";
         myAlert.querySelector("img").src = "../icons/accept.png";
     }
 
@@ -368,14 +364,14 @@ function move() {
     }
 }
 
-function blockHandler(){
-    if (this.status == 200){
+function blockHandler() {
+    if (this.status == 200) {
         document.getElementById("blockStatus").innerHTML = this.responseText;
     }
 }
 
-function changeBlockStatusUser(userid, blockStatus){
-    sendAjaxRequest("put", "/api/changeBlockStatus", {userID: userid, blockStatus: blockStatus}, blockHandler); 
+function changeBlockStatusUser(userid, blockStatus) {
+    sendAjaxRequest("put", "/api/changeBlockStatus", { userID: userid, blockStatus: blockStatus }, blockHandler);
 }
 
 
