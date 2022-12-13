@@ -52,7 +52,7 @@ CREATE TABLE user_ (
     birthDate date NOT NULL,
     password TEXT NOT NULL,
     gender Gender NOT NULL,
-    profilePic text DEFAULT 'profile_pictures/generic_pic.png',
+    profilePic text DEFAULT 'profile_pictures/generic_pic.jpg',
     admin boolean DEFAULT FALSE,
     isBlocked boolean DEFAULT FALSE
 );
