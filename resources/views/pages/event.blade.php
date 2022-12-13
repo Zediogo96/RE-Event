@@ -222,6 +222,23 @@
     </div>
 
     <script type="text/javascript" defer>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('#report-form').addEventListener('submit', function(event) {
+                var data = this;
+                fetch(data.getAttribute('action'), {
+                        method: data.getAttribute('method'),
+                        body: new FormData(data)
+                    }).then(res => res.text())
+                    .then(function(data) {
+                        alert('sup');
+                        console.log(data);
+                    });
+                event.preventDefault();
+            });
+        });
+    </script>
+
+    <script type="text/javascript" defer>
         function renew_btns() {
 
             let del_btn = document.querySelectorAll(".__del_btn");
@@ -234,7 +251,6 @@
 
             });
         }
-
 
         renew_btns();
 
@@ -252,11 +268,9 @@
 
             });
         }
-
         renew_report_btns();
     </script>
 
-    <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
     @if (Auth::user() != NULL)
     <script type="text/javascript">
         // REQUEST USED FOR THE AUTHENTICATED USER TO BE ABLE TO COMMENT IN A EVENT (IN THE EVENT PAGE)

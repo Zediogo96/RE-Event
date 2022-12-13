@@ -61,6 +61,8 @@ Route::get('getComments', 'CommentController@getComments')->name('getComments');
 // Upvotes
 Route::post('addUpvote', 'UpvoteController@addUpvote')->name('addUpvote');
 Route::post('removeUpvote', 'UpvoteController@removeUpvote')->name('removeUpvote');
+// Report Comment
+Route::post('storeReport', 'ReportController@store')->name('storeReport');
 
 
 //Invites

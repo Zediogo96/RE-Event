@@ -10,7 +10,8 @@
             </div>
             <div class="modal-body">
 
-                <form class="row g-3 needs-validation" id="report-form" novalidate>
+                <form class="row g-3 needs-validation" id="report-form" novalidate action="storeReport" method="post">
+                    @csrf
                     <input type="hidden" name="comment_id" id="comment_id" value="">
                     <input type="hidden" name="event_id" id="event_id" value="">
                     <input type="hidden" name="user_id" id="user_id" value="">
@@ -18,9 +19,9 @@
                     <div>
                         <label for="validationCustom01" class="form-label"> Reason</label>
 
-                        <select class="form-select" id="validationCustom01" required>
+                        <select class="form-select" name="reason" id="validationCustom01" required>
                             <option selected disabled value="">Choose...</option>
-                            <option> Dangerous / Illegal </option>
+                            <option> Dangerous/Illegal </option>
                             <option> Discriminatory </option>
                             <option> Misinformation </option>
                             <option> Disrespectful </option>
@@ -32,7 +33,7 @@
                     </div>
                     <div>
                         <label for="validationCustom02" class="form-label">Explanation </label>
-                        <textarea style="max-height:10rem;" class="form-control" id="validationCustom02" placeholder="Comment" required></textarea>
+                        <textarea name="explanation" style="max-height:10rem;" class="form-control" id="validationCustom02" placeholder="Comment" required></textarea>
                         <div class="valid-feedback">
                             Looks good!
                         </div>
@@ -45,16 +46,8 @@
 
                 </form>
             </div>
-
-
-
         </div>
     </div>
-</div>
-
-<div class="modal-footer justify-content-center">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-    <button type="submit" class="btn btn-danger" id="confirm-del-btn">Submit</button>
 </div>
 
 <script type="text/javascript">
