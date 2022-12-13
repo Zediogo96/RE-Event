@@ -332,6 +332,11 @@ function showAlert(type) {
         myAlert.style.backgroundColor = "green";
         myAlert.querySelector("img").src = "../icons/accept.png";
     }
+    else if (type == "newReport") {
+        alertText.innerHTML = "Your report was successfully submitted!";
+        myAlert.style.backgroundColor = "purple";
+        myAlert.querySelector("img").src = "../icons/accept.png";
+    }
 
 
     move();

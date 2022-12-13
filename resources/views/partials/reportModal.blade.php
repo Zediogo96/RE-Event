@@ -50,7 +50,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript" defer>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function() {
         'use strict'
