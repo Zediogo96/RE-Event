@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Models\Event;
-use App\Models\Photo;
 
 class HomeController extends Controller
 {
@@ -13,9 +12,9 @@ class HomeController extends Controller
      */
     public function home()
     {
-        $events = Event::where('isprivate', 0)->get();
-        return view('pages.home',compact(['events'])); 
+        $events = Event::where('isprivate', 0)->orderBy('avg_rating', 'desc')->get();
 
+        return view('pages.home', ['events' => $events]);
     }
 
     /**

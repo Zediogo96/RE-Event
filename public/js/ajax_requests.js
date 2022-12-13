@@ -491,9 +491,6 @@ function getDataFromTag(tag) {
             div.appendChild(h3);
             a.appendChild(div);
             container.appendChild(a);
-
-
-
         });
 
         getPaginationNumbers();

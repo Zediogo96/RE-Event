@@ -87,8 +87,6 @@ window.addEventListener("load", () => {
                 setCurrentPage(pageIndex);
             });
         }
-
-
     });
 });
 

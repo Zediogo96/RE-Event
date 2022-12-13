@@ -10,19 +10,21 @@
             <li data-target="#carouselSlider" data-slide-to="1"></li>
             <li data-target="#carouselSlider" data-slide-to="2"></li>
         </ol>
+
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{$events[0] -> photos[0]->path}}" class="w-100 h-200">
+                <img src="{{$events[0]->photos[0]->path}}" class="w-100 h-200">
                 <div class="carousel-caption ">
                     <input type="hidden" name="event-date" value="{{$events[0]->date}}">
-                    <h5>{{$events[0] -> name}}</h5>
+
+                    <h5>{{$events[0]->name}}</h5>
                     <p>{{$events[0] -> description}}</p>
                     <!-- button to buy tickets -->
                     <a href="{{route('event.show', $events[0]->eventid)}}" class="btn btn-primary">View Event</a>
                 </div>
             </div>
             @for ($i = 1; $i <= 2; $i++) <div class="carousel-item">
-                <img src="{{$events[$i] -> photos[0]->path}}" class="w-100 h-200 ">
+                <img src="{{$events[$i]->photos[0]->path}}" class="w-100 h-200 ">
                 <div class="carousel-caption ">
                     <input type="hidden" name="event-date" value="{{$events[$i]->date}}">
                     <h5>{{$events[$i] -> name}}</h5>
@@ -48,7 +50,6 @@
     setTimeout(function() {
         displayCountdown();
     }, 1000);
-
 
     function displayCountdown() {
 
@@ -91,9 +92,9 @@
             document.querySelector(".months").innerHTML =
                 month < 10 ? "0" + month : month;
         });
-
     }
 </script>
+
 <!-- COUNTDOWN TIMER -->
 <div class="countdown">
     <div>
