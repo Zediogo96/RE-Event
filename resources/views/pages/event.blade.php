@@ -205,7 +205,7 @@
                                 @if (Auth::user() != NULL && Auth::user()->userid == $comment->user->userid)
                                 <a class="link-danger small ms-3 __del_btn" href="#myModal" data-toggle="modal" value="{{$comment->commentid}}">delete</a>
                                 @endif
-                                <a class="link-danger small ms-3" href="#">report</a>
+                                <a class="link-danger small ms-3 __report_btn" href="#reportModal" data-toggle="modal" value="{{$comment->commentid}}">report</a>
 
                             </div>
                         </div>
@@ -217,8 +217,44 @@
 
         </div>
         @endif
-        @include('partials.confirm_modal');
+        @include('partials.confirm_modal')
+        @include('partials.reportModal')
     </div>
+
+    <script type="text/javascript" defer>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('#report-form').addEventListener('submit', function(event) {
+                // TO PREVENT REQUESTS BEING SET WHILE DATA IS EMPTY
+                var formData = new FormData(this);
+                var empty = false;
+                for (var value of formData.values()) {
+                    if (value == '') {
+                        empty = true;
+                    }
+                }
+                if (empty) {
+                    event.preventDefault();
+                    return;
+                }
+                var data = this;
+                fetch(data.getAttribute('action'), {
+                        method: data.getAttribute('method'),
+                        body: new FormData(data)
+                    }).then(res => res.text())
+                    .then(function(data) {
+                        hide_report_modal();
+                        showAlert('newReport');
+                    });
+                event.preventDefault();
+            });
+        });
+
+        function hide_report_modal() {
+            document.getElementById('confirm-report-btn').setAttribute('data-dismiss', 'modal');
+            document.getElementById('confirm-report-btn').click();
+            document.getElementById('confirm-report-btn').setAttribute('data-dismiss', '');
+        }
+    </script>
 
     <script type="text/javascript" defer>
         function renew_btns() {
@@ -235,9 +271,24 @@
         }
 
         renew_btns();
+
+        function renew_report_btns() {
+
+            let report_btn = document.querySelectorAll(".__report_btn");
+            report_btn.forEach((btn) => {
+
+                btn.addEventListener("click", () => {
+                    let rep_form = document.getElementById('report-form');
+                    let a = rep_form.querySelector('input[name="comment_id"]').value = btn.getAttribute('value')
+                    let b = rep_form.querySelector('input[name="event_id"]').value = document.querySelector('#eventid').value;
+                    let c = rep_form.querySelector('input[name="user_id"]').value = document.querySelector('meta[name="auth-check-id"]').getAttribute('content');
+                });
+
+            });
+        }
+        renew_report_btns();
     </script>
 
-    <!-- ////////////////////////////////// END OF AJAX REQUESTS ////////////////////////////////////// -->
     @if (Auth::user() != NULL)
     <script type="text/javascript">
         // REQUEST USED FOR THE AUTHENTICATED USER TO BE ABLE TO COMMENT IN A EVENT (IN THE EVENT PAGE)

@@ -2,8 +2,6 @@
 
 @section('content')
 
-
-
 <div class="container" style="margin-top: 40px">
     <!-- CAROUSEL SLIDER -->
     <div id="carouselSlider" class="carousel slide">
@@ -12,19 +10,21 @@
             <li data-target="#carouselSlider" data-slide-to="1"></li>
             <li data-target="#carouselSlider" data-slide-to="2"></li>
         </ol>
+
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{$events[0] -> photos[0]->path}}" class="w-100 h-200">
+                <img src="{{$events[0]->photos[0]->path}}" class="w-100 h-200">
                 <div class="carousel-caption ">
                     <input type="hidden" name="event-date" value="{{$events[0]->date}}">
-                    <h5>{{$events[0] -> name}}</h5>
+
+                    <h5>{{$events[0]->name}}</h5>
                     <p>{{$events[0] -> description}}</p>
                     <!-- button to buy tickets -->
                     <a href="{{route('event.show', $events[0]->eventid)}}" class="btn btn-primary">View Event</a>
                 </div>
             </div>
             @for ($i = 1; $i <= 2; $i++) <div class="carousel-item">
-                <img src="{{$events[$i] -> photos[0]->path}}" class="w-100 h-200 ">
+                <img src="{{$events[$i]->photos[0]->path}}" class="w-100 h-200 ">
                 <div class="carousel-caption ">
                     <input type="hidden" name="event-date" value="{{$events[$i]->date}}">
                     <h5>{{$events[$i] -> name}}</h5>
@@ -51,7 +51,6 @@
         displayCountdown();
     }, 1000);
 
-
     function displayCountdown() {
 
         let date = document.querySelector('.carousel-item.active input[name="event-date"]').value;
@@ -64,9 +63,9 @@
         let day = date_[1];
 
         let string = day + " " + month + " " + year + " " + split_[1];
-        console.log(string);
+        // console.log(string);
         const newDate = Date.parse(string);
-        console.log(newDate);
+        // console.log(newDate);
 
         const countdown = setInterval(() => {
             const date = new Date().getTime();
@@ -93,9 +92,9 @@
             document.querySelector(".months").innerHTML =
                 month < 10 ? "0" + month : month;
         });
-
     }
 </script>
+
 <!-- COUNTDOWN TIMER -->
 <div class="countdown">
     <div>
@@ -137,9 +136,6 @@
         <li>
             <a onclick="getDataFromTag('family'); return false;">Family</a>
         </li>
-<!--         <li>
-            <a onclick="getDataFromTag('books'); return false;">Books</a>
-        </li> -->
         <li>
             <a onclick="getDataFromTag('technology'); return false;">Technology</a>
         </li>
@@ -153,13 +149,26 @@
     @foreach ($events as $event)
     <a href="{{route('event.show', $event->eventid)}}">
         <div class="event-card">
-            <img src="{{$event -> photos[0]->path}}" alt="" class="card-image">
+            <img loading="lazy" src="{{$event -> photos[0]->path}}" alt="" class="card-image">
             <h3 class="card-title"> {{$event->name}} </h3>
         </div>
     </a>
     @endforeach
 </div>
 
+<nav class="pagination-container pagination">
+    <button class="pagination-button" id="prev-button" title="Previous page" aria-label="Previous page">
+        &lt;
+    </button>
+
+    <div id="pagination-numbers">
+
+    </div>
+
+    <button class="pagination-button" id="next-button" title="Next page" aria-label="Next page">
+        &gt;
+    </button>
+</nav>
 <!-- Full screen modal -->
 <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" data-backdrop="false" aria-hidden="true">
     <div class="modal-dialog">
@@ -184,47 +193,4 @@
 </div>
 
 </div>
-
-
-<script type="text/javascript" defer>
-    function getDataFromTag(tag) {
-        fetch("{{route('searchEventsByTag')}}" + "?" + new URLSearchParams({
-            category_name: tag
-        }), {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-Token": '{{ csrf_token() }}'
-            },
-            method: "get",
-            credentials: "same-origin",
-        }).then(function(data) {
-            return data.json();
-        }).then(function(data) {
-            // iterate through the data
-            let container = document.querySelector('.container-other-events');
-            container.innerHTML = "";
-            data.forEach(function(event) {
-                let a = document.createElement('a');
-                a.href = "{{route('event.show', '')}}" + event.eventid;
-                let div = document.createElement('div');
-                div.className = "event-card";
-                let img = document.createElement('img');
-                img.src = "event_photos/" + event.eventid + ".jpg";
-                img.className = "card-image";
-                let h3 = document.createElement('h3');
-                h3.className = "card-title";
-                h3.innerHTML = event.name;
-                div.appendChild(img);
-                div.appendChild(h3);
-                a.appendChild(div);
-                container.appendChild(a);
-            });
-        }).catch(function(error) {
-            console.log(error);
-        });
-    }
-</script>
-
 @endsection

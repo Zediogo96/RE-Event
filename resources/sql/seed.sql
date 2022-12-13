@@ -250,7 +250,7 @@ CREATE INDEX country_search ON Country USING GIN(tsvectors_country);
 --Trigger 01
 --When some user creates or updates a review, the event average rating must be updated so that it can be used for sorting or searching purposes. 
 
-CREATE FUNCTION update_event_rating () RETURNS TRIGGER AS
+/* CREATE FUNCTION update_event_rating () RETURNS TRIGGER AS
 $BODY$
 BEGIN
 	UPDATE event
@@ -266,8 +266,33 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER event_avg_rating
-	AFTER INSERT OR UPDATE OR DELETE ON review
-	EXECUTE PROCEDURE update_event_rating ();    
+	AFTER INSERT OR UPDATE OR DELETE ON review FOR EACH ROW
+	EXECUTE PROCEDURE update_event_rating ();    */ 
+
+-- CREATE TRIGGER TO UPDATE EVENT avg_rating after INSERT, UPDATE, DELETE on review
+CREATE OR REPLACE FUNCTION update_event_rating() RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        UPDATE event
+        SET avg_rating = (SELECT AVG(rating) FROM review WHERE eventID = NEW.eventID)
+        WHERE eventID = NEW.eventID;
+    ELSIF TG_OP = 'UPDATE' THEN
+        UPDATE event
+        SET avg_rating = (SELECT AVG(rating) FROM review WHERE eventID = NEW.eventID)
+        WHERE eventID = NEW.eventID;
+    ELSIF TG_OP = 'DELETE' THEN
+        UPDATE event
+        SET avg_rating = (SELECT AVG(rating) FROM review WHERE eventID = OLD.eventID)
+        WHERE eventID = OLD.eventID;
+    END IF;
+    RETURN NULL;
+END;
+
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_event_rating
+AFTER INSERT OR UPDATE OR DELETE ON review
+FOR EACH ROW EXECUTE PROCEDURE update_event_rating();
 
 --Trigger 02
 --When a user tries to enroll in an event that is already at full capacity, an error message should be displayed.
@@ -285,7 +310,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER check_event_capacity 
-	BEFORE INSERT ON ticket
+	BEFORE INSERT ON ticket FOR EACH ROW
 	EXECUTE PROCEDURE check_capacity ();
 
 --Trigger 03
@@ -314,10 +339,10 @@ END
 $BODY$ 
 LANGUAGE plpgsql;
 
-CREATE TRIGGER delete_ticket AFTER DELETE ON ticket
+CREATE TRIGGER delete_ticket AFTER DELETE ON ticket FOR EACH ROW
 EXECUTE PROCEDURE _delete_ticket();
 
-CREATE TRIGGER create_ticket BEFORE INSERT ON ticket
+CREATE TRIGGER create_ticket BEFORE INSERT ON ticket FOR EACH ROW
 EXECUTE PROCEDURE _create_ticket();
 
 /** Users **/
@@ -388,80 +413,34 @@ SELECT setval('user__userID_seq', (SELECT MAX(userID) from "user_"));
 
 /** Tags **/
 
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (1, 'music', 'MSC');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (2, 'visual-arts', 'VA');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (3, 'film', 'FLM');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (4, 'fashion', 'FSH');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (5, 'cooking', 'COK');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (6, 'charities', 'CHR');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (7, 'sports', 'SPO');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (8, 'nightlife', 'NGT');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (9, 'family', 'FAM');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (10, 'books', 'BOK');
-	
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (11, 'technology', 'TEC');
+INSERT INTO tag (tagID, name, symbol) VALUES (1, 'music', 'MSC');
+INSERT INTO tag (tagID, name, symbol) VALUES (2, 'visual-arts', 'VA');
+INSERT INTO tag (tagID, name, symbol) VALUES (3, 'film', 'FLM');
+INSERT INTO tag (tagID, name, symbol) VALUES (4, 'fashion', 'FSH');
+INSERT INTO tag (tagID, name, symbol) VALUES (5, 'cooking', 'COK');
+INSERT INTO tag (tagID, name, symbol) VALUES (6, 'charities', 'CHR');
+INSERT INTO tag (tagID, name, symbol) VALUES (7, 'sports', 'SPO');
+INSERT INTO tag (tagID, name, symbol) VALUES (8, 'nightlife', 'NGT');
+INSERT INTO tag (tagID, name, symbol) VALUES (9, 'family', 'FAM');
+INSERT INTO tag (tagID, name, symbol) VALUES (10, 'books', 'BOK');
+INSERT INTO tag (tagID, name, symbol) VALUES (11, 'technology', 'TEC');
 
 SELECT setval('tag_tagID_seq', (SELECT MAX(tagID) from "tag"));
 
-
 /** Countries **/
 
-INSERT INTO country (countryID, name)
-    VALUES (1, 'Bahrain');
-
-INSERT INTO country (countryID, name)
-    VALUES (2, 'Saudi Arabia');
-
-INSERT INTO country (countryID, name)
-    VALUES (3, 'Australia');
-
-INSERT INTO country (countryID, name)
-    VALUES (4, 'Italy');
-
-INSERT INTO country (countryID, name)
-    VALUES (5, 'United States');
-
-INSERT INTO country (countryID, name)
-    VALUES (6, 'Monaco');
-
-INSERT INTO country (countryID, name)
-    VALUES (7, 'Azerbaijan');
-
-INSERT INTO country (countryID, name)
-    VALUES (8, 'Canada');
-
-INSERT INTO country (countryID, name)
-    VALUES (9, 'Great Britain');
-
-INSERT INTO country (countryID, name)
-    VALUES (10, 'Portugal');
-
-INSERT INTO country (countryID, name)
-    VALUES (11, 'Spain');
-
-INSERT INTO country (countryID, name)
-    VALUES (12, 'Scotland');
-
+INSERT INTO country (countryID, name) VALUES (1, 'Bahrain');
+INSERT INTO country (countryID, name) VALUES (2, 'Saudi Arabia');
+INSERT INTO country (countryID, name) VALUES (3, 'Australia');
+INSERT INTO country (countryID, name) VALUES (4, 'Italy');
+INSERT INTO country (countryID, name) VALUES (5, 'United States');
+INSERT INTO country (countryID, name) VALUES (6, 'Monaco');
+INSERT INTO country (countryID, name) VALUES (7, 'Azerbaijan');
+INSERT INTO country (countryID, name) VALUES (8, 'Canada');
+INSERT INTO country (countryID, name) VALUES (9, 'Great Britain');
+INSERT INTO country (countryID, name) VALUES (10, 'Portugal');
+INSERT INTO country (countryID, name) VALUES (11, 'Spain');
+INSERT INTO country (countryID, name) VALUES (12, 'Scotland');
 
 SELECT setval('country_countryID_seq', (SELECT MAX(countryID) from "country"));
 
@@ -476,61 +455,25 @@ The name of the sequence is autogenerated and is always tablename_columnname_seq
 **/
 
 /** Cities **/
-INSERT INTO city (cityID, name, countryID)
-    VALUES (1, 'Manama', 1);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (2, 'Jeddah', 2);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (3, 'Melbourne', 3);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (4, 'Milan', 4);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (5, 'Austin', 5);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (6, 'Monte Carlo', 6);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (7, 'Baku', 7);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (8, 'Montreal', 8);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (9, 'Silverstone', 9);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (10, 'Portimão', 10);
-	
-INSERT INTO city (cityID, name, countryID)
-    VALUES (11, 'Coimbra', 10);
-	
-INSERT INTO city (cityID, name, countryID)
-    VALUES (12, 'Lisboa', 10);
-	
-INSERT INTO city (cityID, name, countryID)
-    VALUES (13, 'Porto', 10);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (14, 'Barcelona', 11);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (15, 'Madrid', 11);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (16, 'London', 9);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (17, 'Edinburgh', 12);
-
-
+INSERT INTO city (cityID, name, countryID) VALUES (1, 'Manama', 1);
+INSERT INTO city (cityID, name, countryID) VALUES (2, 'Jeddah', 2);
+INSERT INTO city (cityID, name, countryID) VALUES (3, 'Melbourne', 3);
+INSERT INTO city (cityID, name, countryID) VALUES (4, 'Milan', 4);
+INSERT INTO city (cityID, name, countryID) VALUES (5, 'Austin', 5);
+INSERT INTO city (cityID, name, countryID) VALUES (6, 'Monte Carlo', 6);
+INSERT INTO city (cityID, name, countryID) VALUES (7, 'Baku', 7);
+INSERT INTO city (cityID, name, countryID) VALUES (8, 'Montreal', 8);
+INSERT INTO city (cityID, name, countryID) VALUES (9, 'Silverstone', 9);
+INSERT INTO city (cityID, name, countryID) VALUES (10, 'Portimão', 10);
+INSERT INTO city (cityID, name, countryID) VALUES (11, 'Coimbra', 10);
+INSERT INTO city (cityID, name, countryID) VALUES (12, 'Lisboa', 10);
+INSERT INTO city (cityID, name, countryID) VALUES (13, 'Porto', 10);
+INSERT INTO city (cityID, name, countryID) VALUES (14, 'Barcelona', 11);
+INSERT INTO city (cityID, name, countryID) VALUES (15, 'Madrid', 11);
+INSERT INTO city (cityID, name, countryID) VALUES (16, 'London', 9);
+INSERT INTO city (cityID, name, countryID) VALUES (17, 'Edinburgh', 12);
 
 SELECT setval('city_cityID_seq', (SELECT MAX(cityID) from "city"));
-
 
 /** Events **/
 
@@ -574,6 +517,24 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
 (18, 'Cruzeiro Rio Douro', 'Venham fazer um cruzeiro pelo Rio Douro!', 300, '2023-05-03', '2022-12-04', 250, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(50, 'Visita Vigo', 'Venham visitar Vigo, uma das melhores cidades de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Vigo, Galicia', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(51, 'Visita Santiago de Compostela', 'Venham visitar Santiago de Compostela, uma das melhores cidades de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(52, 'Prova de Vinhos', 'Venham fazer uma prova de vinhos!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(53, 'Visita Museu de Arte Contemporânea', 'Venham visitar o Museu de Arte Contemporânea, um dos melhores museus de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(54, 'Museu dos Computadores', 'Venham visitar o Museu dos Computadores, um dos melhores museus de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(55, 'Museu Mercedes AMG', 'Venham visitar o Museu Mercedes AMG, um dos melhores museus de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
+
 -- Sports Events Boost
 
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
@@ -587,6 +548,27 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
 (22, 'F1 Azerbaijan Grand Prix 2022', 'The Azerbaijan Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Baku City Circuit, Baku', 7, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(43, 'Sporting vs Porto', 'Sporting vs Porto', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Estádio José Alvalade', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(44, 'Tiger Woods vs Phil Mickelson', 'Tiger Woods vs Phil Mickelson', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Shadow Creek Golf Course', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(45, 'F1 British Grand Prix 2022', 'The British Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Silverstone Circuit, Towcester', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(46, 'Roger Federer vs Rafael Nadal', 'Roger Federer vs Rafael Nadal', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Stade de Suisse, Bern', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(47, 'Jogos Olimpicos 2022', 'Jogos Olimpicos 2022', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Tokyo, Japan', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(48, 'Xadrez Mundial 2022', 'Xadrez Mundial 2022', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Porto, Portugal', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(49, 'Magnus Carlsen vs Fabiano Caruana', 'Magnus Carlsen vs Fabiano Caruana', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Porto, Portugal', 13, False);
 
 -- Music Events Boost
 
@@ -607,6 +589,24 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
 (28, 'Iron Maiden', 'Iron Maiden are an English heavy metal band formed in Leyton, East London, in 1975 by bassist and primary songwriter Steve Harris. The band''s discography has grown to 38 albums, including 16 studio albums, 14 live albums, four EPs, and four compilations.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Estádio do Dragão, Porto', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(37, 'Post Malone', 'Austin Richard Post, known professionally as Post Malone, is an American rapper, singer, songwriter, and record producer. He first gained major recognition in 2015 following the release of his debut single "White Iverson".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(38, 'Tame Impala', 'Tame Impala is an Australian psychedelic rock band formed in Perth in 2007. The band''s current lineup consists of Kevin Parker, Dominic Simper, Jay Watson, Cam Avery, and Julien Barbagallo.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(39, 'Jack Harlow', 'Jack Harlow is an American rapper, singer, and songwriter. He is best known for his singles "What''s Poppin" and "Tyler Herro".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(40, 'The Weeknd', 'Abel Makkonen Tesfaye, known professionally as The Weeknd, is a Canadian singer, songwriter, and record producer. He first gained recognition in 2011, when he anonymously uploaded several songs to YouTube under the name "The Weeknd".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(41, 'Lil Baby', 'Dominique Jones, known professionally as Lil Baby, is an American rapper. He is best known for his singles "My Dawg" and "Woah".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+(42, 'Lil Uzi Vert', 'Symere Woods, known professionally as Lil Uzi Vert, is an American rapper, singer, and songwriter. He is best known for his singles "XO Tour Llif3" and "Money Longer".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
 
 -- Tech Events Boost
@@ -674,21 +674,44 @@ INSERT INTO photo (photoID, path, eventID) VALUES (33, 'event_photos/33.jpg', 33
 INSERT INTO photo (photoID, path, eventID) VALUES (34, 'event_photos/34.jpg', 34);
 INSERT INTO photo (photoID, path, eventID) VALUES (35, 'event_photos/35.jpg', 35);
 INSERT INTO photo (photoID, path, eventID) VALUES (36, 'event_photos/36.jpg', 36);
+INSERT INTO photo (photoID, path, eventID) VALUES (37, 'event_photos/37.jpg', 37);
+INSERT INTO photo (photoID, path, eventID) VALUES (38, 'event_photos/38.jpg', 38);
+INSERT INTO photo (photoID, path, eventID) VALUES (39, 'event_photos/39.jpg', 39);
+INSERT INTO photo (photoID, path, eventID) VALUES (40, 'event_photos/40.jpg', 40);
+INSERT INTO photo (photoID, path, eventID) VALUES (41, 'event_photos/41.jpg', 41);
+INSERT INTO photo (photoID, path, eventID) VALUES (42, 'event_photos/42.jpg', 42);
+INSERT INTO photo (photoID, path, eventID) VALUES (43, 'event_photos/43.jpg', 43);
+INSERT INTO photo (photoID, path, eventID) VALUES (44, 'event_photos/44.jpg', 44);
+INSERT INTO photo (photoID, path, eventID) VALUES (45, 'event_photos/45.jpg', 45);
+INSERT INTO photo (photoID, path, eventID) VALUES (46, 'event_photos/46.jpg', 46);
+INSERT INTO photo (photoID, path, eventID) VALUES (47, 'event_photos/47.jpg', 47);
+INSERT INTO photo (photoID, path, eventID) VALUES (48, 'event_photos/48.jpg', 48);
+INSERT INTO photo (photoID, path, eventID) VALUES (49, 'event_photos/49.jpg', 49);
+INSERT INTO photo (photoID, path, eventID) VALUES (50, 'event_photos/50.jpg', 50);
+INSERT INTO photo (photoID, path, eventID) VALUES (51, 'event_photos/51.jpg', 51);
+INSERT INTO photo (photoID, path, eventID) VALUES (52, 'event_photos/52.jpg', 52);
+INSERT INTO photo (photoID, path, eventID) VALUES (53, 'event_photos/53.jpg', 53);
+INSERT INTO photo (photoID, path, eventID) VALUES (54, 'event_photos/54.jpg', 54);
+INSERT INTO photo (photoID, path, eventID) VALUES (55, 'event_photos/55.jpg', 55);
 
 
 SELECT setval('photo_photoID_seq', (SELECT MAX(photoID) from "photo"));
 
 /** Reviews **/
 
-INSERT INTO review (rating, userID, eventID)
-    VALUES (4, 1, 5);
-
+INSERT INTO review (rating, userID, eventID) VALUES (4, 1, 5);
 INSERT INTO review (rating, userID, eventID)
     VALUES (3, 1, 1);
-
+INSERT INTO review (rating, userID, eventID)
+    VALUES (5, 2, 1);
+INSERT INTO review (rating, userID, eventID)
+    VALUES (5, 3, 1);
+INSERT INTO review (rating, userID, eventID)
+    VALUES (5, 4, 1);
+INSERT INTO review (rating, userID, eventID)
+    VALUES (5, 5, 1);
 INSERT INTO review (rating, userID, eventID)
     VALUES (4, 2, 2);
-
 INSERT INTO review (rating, userID, eventID)
     VALUES (5, 3, 3);
 
@@ -774,114 +797,62 @@ INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
 
 /* Event hosts */
 
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 1);
+INSERT INTO event_host (userID, eventID) VALUES (1, 1);
+INSERT INTO event_host (userID, eventID) VALUES (1, 2);
+INSERT INTO event_host (userID, eventID) VALUES (1, 3);
+INSERT INTO event_host (userID, eventID) VALUES (1, 4);
+INSERT INTO event_host (userID, eventID) VALUES (2, 5);
+INSERT INTO event_host (userID, eventID) VALUES (2, 6);
+INSERT INTO event_host (userID, eventID) VALUES (2, 7);
+INSERT INTO event_host (userID, eventID) VALUES (2, 8);
+INSERT INTO event_host (userID, eventID) VALUES (1, 9);
+INSERT INTO event_host (userID, eventID) VALUES (1, 10);
+INSERT INTO event_host (userID, eventID) VALUES (1, 11);
+INSERT INTO event_host (userID, eventID) VALUES (1, 12);
+INSERT INTO event_host (userID, eventID) VALUES (2, 13);
+INSERT INTO event_host (userID, eventID) VALUES (2, 14);
+INSERT INTO event_host (userID, eventID) VALUES (2, 15);
+INSERT INTO event_host (userID, eventID) VALUES (2, 16);
+INSERT INTO event_host (userID, eventID) VALUES (2, 17);
+INSERT INTO event_host (userID, eventID) VALUES (3, 18);
+INSERT INTO event_host (userID, eventID) VALUES (3, 19);
+INSERT INTO event_host (userID, eventID) VALUES (3, 20);
+INSERT INTO event_host (userID, eventID) VALUES (3, 21);
+INSERT INTO event_host (userID, eventID) VALUES (3, 22);
+INSERT INTO event_host (userID, eventID) VALUES (3, 23);
+INSERT INTO event_host (userID, eventID) VALUES (3, 24);
+INSERT INTO event_host (userID, eventID) VALUES (3, 25);
+INSERT INTO event_host (userID, eventID) VALUES (3, 26);
+INSERT INTO event_host (userID, eventID) VALUES (4, 27);
+INSERT INTO event_host (userID, eventID) VALUES (4, 28);
+INSERT INTO event_host (userID, eventID) VALUES (4, 29);
+INSERT INTO event_host (userID, eventID) VALUES (4, 30);
+INSERT INTO event_host (userID, eventID) VALUES (4, 31);
+INSERT INTO event_host (userID, eventID) VALUES (4, 32);
+INSERT INTO event_host (userID, eventID) VALUES (4, 33);
+INSERT INTO event_host (userID, eventID) VALUES (4, 34);
+INSERT INTO event_host (userID, eventID) VALUES (4, 35);
+INSERT INTO event_host (userID, eventID) VALUES (4, 36);
+INSERT INTO event_host (userID, eventID) VALUES (5, 37);
+INSERT INTO event_host (userID, eventID) VALUES (5, 38);
+INSERT INTO event_host (userID, eventID) VALUES (5, 39);
+INSERT INTO event_host (userID, eventID) VALUES (5, 40);
+INSERT INTO event_host (userID, eventID) VALUES (5, 41);
+INSERT INTO event_host (userID, eventID) VALUES (5, 42);
+INSERT INTO event_host (userID, eventID) VALUES (6, 43);
+INSERT INTO event_host (userID, eventID) VALUES (6, 44);
+INSERT INTO event_host (userID, eventID) VALUES (6, 45);
+INSERT INTO event_host (userID, eventID) VALUES (6, 46);
+INSERT INTO event_host (userID, eventID) VALUES (6, 47);
+INSERT INTO event_host (userID, eventID) VALUES (6, 48);
+INSERT INTO event_host (userID, eventID) VALUES (6, 49);
+INSERT INTO event_host (userID, eventID) VALUES (7, 50);
+INSERT INTO event_host (userID, eventID) VALUES (7, 51);
+INSERT INTO event_host (userID, eventID) VALUES (7, 52);
+INSERT INTO event_host (userID, eventID) VALUES (7, 53);
+INSERT INTO event_host (userID, eventID) VALUES (7, 54);
+INSERT INTO event_host (userID, eventID) VALUES (7, 55);
 
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 2);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 3);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 4);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 5);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 6);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 7);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 8);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 9);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 10);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 11);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 12);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 13);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 14);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 15);
-
-INSERT INTO event_host (userID, eventID) 
-    VALUES (2, 16);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 17);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 18);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 19);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 20);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 21);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 22);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 23);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 24);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 25);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 26);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 27);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 28);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 29);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 30);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 31);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 32);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 33);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 34);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 35);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 36);
-    
 /* Comments */
 
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (1, 'Just cant believe!!', '2021/4/13', '3:20', 1, 6);
