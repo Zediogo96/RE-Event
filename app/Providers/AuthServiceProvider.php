@@ -22,6 +22,8 @@ class AuthServiceProvider extends ServiceProvider
       'App\Models\Card' => 'App\Policies\CardPolicy',
       'App\Models\Item' => 'App\Policies\ItemPolicy',
       'App\Models\Event' => 'App\Policies\EventPolicy',
+      'App\Models\Comment' => 'App\Policies\CommentPolicy',
+
       Event::Class => EventPolicy::Class,
     ];
 

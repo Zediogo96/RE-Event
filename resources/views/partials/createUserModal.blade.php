@@ -105,6 +105,7 @@
             return false;
         } else {
             name.classList.remove('is-invalid');
+            name.classList.add('is-valid');
             return true;
         }
     }
@@ -118,6 +119,7 @@
             return false;
         } else {
             email.classList.remove('is-invalid');
+            email.classList.add('is-valid');
             return true;
         }
     }
@@ -132,6 +134,7 @@
             return false;
         } else {
             birthdate.classList.remove('is-invalid');
+            birthdate.classList.add('is-valid');
             return true;
         }
     }
@@ -157,6 +160,7 @@
             return false;
         } else {
             password.classList.remove('is-invalid');
+            password.classList.add('is-valid');
             return true;
         }
         

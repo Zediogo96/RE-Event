@@ -1,5 +1,8 @@
 // USED FOR THE LIVE SEARCH FUNCTIONALITY IN THE SEARCH BAR ACROSS ALL APPLICATION
 document.getElementById("searchInput").addEventListener("keyup", function (e) {
+    if (e.target.value.length < 2) {
+        return;
+    }
     fetch("search" + "?" + new URLSearchParams({
         search: e.target.value
     }), {
