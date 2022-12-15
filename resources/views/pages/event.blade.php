@@ -70,7 +70,7 @@
             <li class="list active">
                 <a href="#" onclick="showUserDiv()">
                     <span class="icon">
-                        <ion-icon name="home-outline"></ion-icon>
+                        <ion-icon name="logo-steam"></ion-icon>
                     </span>
                     <span class="title">Event Host</span>
                 </a>
@@ -421,7 +421,7 @@
     @endif
 
     <script type="text/javascript">
-        // Polling for the Event Page Countdown display 
+        // Polling for the Event Page Countdown display
         setTimeout(function() {
             displayCountdownEvent('{{$event->date}}');
         }, 1000);

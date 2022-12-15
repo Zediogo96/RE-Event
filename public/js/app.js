@@ -41,10 +41,10 @@ const notificationTextHandler = function () {
         }
 
         else if (count == 1) {
-            document.getElementById("notification_text").innerHTML = "You have 1 new notification!";
+            document.getElementById("notification_text").innerHTML = "<i class='fa fa-bell ml-1'></i>You have 1 new notification!";
         }
         else {
-            document.getElementById("notification_text").innerHTML = "You have " + count + " new notifications!";
+            document.getElementById("notification_text").innerHTML = "<i class='fa fa-bell mr-1'></i>    You have " + count + " new notifications!";
         }
     }
 }

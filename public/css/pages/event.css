@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap'); */
 /* EVENT MAIN CONTENTS */
 
 #event-content {
@@ -29,8 +29,8 @@
     justify-content: center;
     gap: 20px;
     position: absolute;
-    top: 30rem;
-    left: 25rem;
+    top: 60%;
+    left: 30%;
 }
 
 .countdown-event>div {
@@ -63,7 +63,7 @@
     background: linear-gradient(-45deg, #414119, #ff8f2f, #ff554d, #eb1267);
     background-size: 300%;
     font-family: 'Poppins', sans-serif;
-    font-size: 5em;
+    font-size: 4.5em;
     font-weight: bold;
     letter-spacing: px;
     word-spacing: 10px;
@@ -101,30 +101,6 @@ div.wrapper-res {
     width: 100%;
 }
 
-
-@media screen and (max-width:600px) {
-
-    #event-content div#event-name {
-        font-size: 3rem;
-    }
-
-    #event-content div#event-date {
-        font-size: 1.5rem;
-    }
-
-    #event-content img {
-        height: 30rem;
-    }
-
-    #event-content div#event-name {
-        width: 70%;
-    }
-
-    #event-content button {
-        width: 10rem;
-    }
-}
-
 /* TOAST ALERT NOTIFICATION */
 
 #myAlert {
@@ -140,16 +116,10 @@ div.wrapper-res {
     background-color: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(10px);
-    
+
     border-radius: 10px;
     border: 1px solid white;
     z-index: 300 !important;
-}
-
-@media screen and (max-width:600px) {
-    #myAlert {
-        opacity: 0.8;
-    }
 }
 
 .myAlert-text-icon {
@@ -313,26 +283,6 @@ div.wrapper-res {
     white-space: nowrap;
 }
 
-@media screen and (max-width:600px) {
-    .navigation {
-        width: 3.5rem;
-    }
-
-    .navigation ul li.active::after {
-        transform: translateY(-10%) scaleX(1);
-        opacity: 1;
-        width: 100%;
-    }
-
-    .navigation ul li span.title {
-        display: none;
-    }
-
-    .navigation ul li a .icon {
-        margin-left: -2rem;
-    }
-}
-
 #info-navbar-container>div {
     position: absolute;
     top: 7rem;
@@ -429,32 +379,6 @@ div.wrapper-res {
     text-align: center;
 }
 
-
-@media screen and (max-width:600px) {
-    #info-navbar-container>div {
-        position: absolute;
-        left: 4rem;
-        top: 10rem;
-    }
-
-    #outroDiv {
-        width: 33rem;
-    }
-
-    #outroDiv input {
-        width: 85%;
-    }
-
-    #outroDiv tbody button {
-        width: 100%;
-        height: 3rem;
-    }
-
-    #outroDiv tbody td button {
-        font-size: 0.9rem;
-    }
-}
-
 .animate {
     animation: fadeIn 500ms ease-out backwards;
 }
@@ -532,7 +456,7 @@ div.wrapper-res {
     list-style-type: none;
     position: absolute;
     top: 40rem;
-    left: 15rem;
+    left: 17%;
 }
 
 .menu-info-item {
@@ -544,19 +468,6 @@ div.wrapper-res {
     height: 5rem;
 }
 
-@media screen and (max-width:600px) {
-
-    #menu-info {
-        left: -1rem;
-        top: 25rem;
-    }
-
-    .menu-info-item {
-        width: 10rem;
-        height: 5rem;
-    }
-
-}
 
 .menu-info-item p {
     margin: 0px 10px 0px 10px;
@@ -572,6 +483,8 @@ div.wrapper-res {
     background-image: linear-gradient(62deg, #fbb040 0%, #fbb079 50%);
     border: 1px solid blue;
     border-radius: 10%;
+    width: 15em;
+    height: 3rem;
 }
 
 /* COMMENT SECTION */
@@ -588,14 +501,6 @@ div.wrapper-res {
 #comment-section-container {
     position: relative;
     margin-top: 3em;
-}
-
-@media screen and (max-width:600px) {
-
-    #comment-section-container {
-        margin-top: 5vh;
-        width: 89%;
-    }
 }
 
 #new-comment {
@@ -786,4 +691,141 @@ div.wrapper-res {
 .trigger-btn {
     display: inline-block;
     margin: 100px auto;
+}
+
+@media screen and (max-width:1300px) {
+    #menu-info {
+        font-size: 1.5rem;
+        width: 10%;
+    }
+
+    #event-content div#event-name {
+        font-size: 3.5rem;
+    }
+
+    #menu-info p {
+        font-size: 0.7rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: wrap;
+    }
+
+    #menu-info-item {
+        width: 10rem;
+        height: 5rem;
+    }
+
+    .menu-info-item:last-child p:hover {
+        height: 2.5rem;
+    }
+}
+
+@media screen and (max-width:600px) {
+
+    .countdown-event {
+        left: 15%;
+    }
+
+    .countdown-event > div {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+
+    .countdown-event span.number {
+        font-size: 1.5rem;
+    }
+
+    .countdown-event> div > span:last-child {
+        font-size: 0.8rem;
+    }
+
+   /* Related to the menu info bar container */
+    #menu-info {
+        left: 1.25rem;
+        top: 25rem;
+    }
+
+    .menu-info-item {
+        width: 10rem;
+        height: 5rem;
+    }
+
+    /* Toast Notification */
+    #myAlert {
+        opacity: 0.8;
+    }
+
+    /* Related to the main event container */
+
+    #event-content div#event-name {
+        font-size: 2rem;
+    }
+
+    #event-content div#event-date {
+        font-size: 1.5rem;
+    }
+
+    #event-content img {
+        height: 30rem;
+    }
+
+    #event-content div#event-name {
+        width: 70%;
+    }
+
+    #event-content button {
+        width: 5rem;
+        height: 5rem;
+        top: 5%;
+    }
+
+    /* Comment section */
+    #comment-section-container {
+        margin-top: 5vh;
+        width: 89%;
+    }
+
+    /* Nav sidebar related */
+
+    .navigation {
+        width: 3.5rem;
+    }
+
+    .navigation ul li.active::after {
+        transform: translateY(-10%) scaleX(1);
+        opacity: 1;
+        width: 100%;
+    }
+
+    .navigation ul li span.title {
+        display: none;
+    }
+
+    .navigation ul li a .icon {
+        margin-left: -2rem;
+    }
+
+    /* Initially info containers that belong to the sidebar */
+    #info-navbar-container>div {
+        position: absolute;
+        left: 2.3rem;
+        top: 10rem;
+    }
+
+    #outroDiv {
+        width: 33rem;
+    }
+
+    #outroDiv input {
+        width: 85%;
+    }
+
+    #outroDiv tbody button {
+        width: 100%;
+        height: 3rem;
+    }
+
+    #outroDiv tbody td button {
+        font-size: 0.9rem;
+    }
 }

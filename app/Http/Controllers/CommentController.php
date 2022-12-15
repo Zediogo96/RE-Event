@@ -42,9 +42,18 @@ class CommentController extends Controller
 
         $this->authorize('create', Comment::class, $user);
 
-        if ($request->input('text')) {
+        $text = $request->input('text');
+
+        if ($text != null) {
+
+            // some input sanitization to avoid security exploits
+            $text = strip_tags($text);
+            $text = stripslashes($text);
+            $text = htmlspecialchars($text);
+            $text = trim($text);
+            
             $comment = new Comment;
-            $comment->text = $request->input('text');
+            $comment->text = $text;
             $comment->userid = $request->input('userid');
             $comment->eventid = $request->input('eventid');
             $comment->save();
