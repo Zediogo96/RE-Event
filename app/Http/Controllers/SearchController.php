@@ -59,6 +59,33 @@ class SearchController extends Controller
         }
     }
 
+    public function searchAttendees(Request $request)
+    {
+        if ($request->ajax()) {
+
+            if ($request->search != '') {
+
+                /* EVENTS BY NAME OR DESCRIPTIONS*/
+                $users = User::query()->where('name', 'LIKE', "%{$request->search}%")->orWhere('email', 'LIKE', "%{$request->search}%")->take(7)->get();
+                $attendees = [];
+                if ($users) {
+                    foreach ($users as $key => $user) {
+                        $ticket = DB::table('ticket')->where('userid', $user->userid)->where('eventid', $request->event_id)->first();
+                        // if user is not invited to event
+                        (is_null($ticket)) ? (true) : ($attendees[] = $user);
+                    }
+                    return Response($attendees);
+                }
+            }
+            else{
+                $attendees = User::join('ticket', 'ticket.userid', '=', 'user_.userid')
+                                ->where('ticket.eventid', '=', $id)
+                                ->select(['*'])->get();
+                return Response($attendees);
+            }
+        }
+    }
+
     public function searchUsersAdmin(Request $request)
     {
         if ($request->ajax()) {

@@ -429,6 +429,10 @@ div.wrapper-res {
     text-align: center;
 }
 
+#attendeesDiv{
+    width: 30em;
+    padding: 0 0 1em;
+}
 
 @media screen and (max-width:600px) {
     #info-navbar-container>div {
@@ -437,20 +441,20 @@ div.wrapper-res {
         top: 10rem;
     }
 
-    #outroDiv {
+    #outroDiv, #attendeesDiv{
         width: 33rem;
     }
 
-    #outroDiv input {
+    #outroDiv input, #attendeesDiv input {
         width: 85%;
     }
 
-    #outroDiv tbody button {
+    #outroDiv tbody button, #attendeesDiv tbody button {
         width: 100%;
         height: 3rem;
     }
 
-    #outroDiv tbody td button {
+    #outroDiv tbody td button, #attendeesDiv tbody button{
         font-size: 0.9rem;
     }
 }
@@ -515,7 +519,7 @@ div.wrapper-res {
 
 #info-navbar-container div table tr td:last-child {
     padding: 5px 0;
-    text-align: right;
+    text-align: center;
 }
 
 #info-navbar-container div table tr td {

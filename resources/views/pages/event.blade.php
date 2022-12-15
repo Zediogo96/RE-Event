@@ -75,16 +75,6 @@
                     <span class="title">Event Host</span>
                 </a>
             </li>
-            @if (Auth::user() != NULL &&Auth::user()->userid == $host->userid)
-            <li class="list">
-                <a href="#" onclick="showOutroDiv()">
-                    <span class="icon">
-                        <ion-icon name="person-outline"></ion-icon>
-                    </span>
-                    <span class="title">Attendees</span>
-                </a>
-            </li>
-            @endif
             <li class="list">
                 <a href="#">
                     <span class="icon">
@@ -93,6 +83,36 @@
                     <span class="title">Contact</span>
                 </a>
             </li>
+
+            @if (Auth::user() != NULL && in_array(Auth::user()->userid, $attendees))
+            <li class="list">
+                <a href="#" onclick="showAttendeesDiv()">
+                    <span class="icon">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </span>
+                    <span class="title">Attendees</span>
+                </a>
+            </li>
+            @endif
+
+            @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
+            <li class="list">
+                <a href="#" onclick="showOutroDiv()">
+                    <span class="icon">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </span>
+                    <span class="title">Attendees</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="#" onclick="showOutroDiv()">
+                    <span class="icon">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </span>
+                    <span class="title">Attendees</span>
+                </a>
+            </li>
+            
             <li class="list">
                 <a href="#" onclick="showInviteDiv()">
                     <span class="icon">
@@ -101,6 +121,7 @@
                     <span class="title">Send Invite</span>
                 </a>
             </li>
+            @endif
         </ul>
     </div>
 
@@ -139,6 +160,22 @@
             <button id="close-modal-button"></button>
         </div>
         @endif
+
+        <div id="attendeesDiv" data-mdb-animation="slide-in-right" style="display:none;" class="answer_list">
+
+            <input type="text" class="form-controller" id="search-attendees" name="search"></input>
+            <table class="table table-bordered table-hover" style="margin-top:1rem;">
+                <thead>
+                    <tr>
+                        <th>UserName</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id="table-attendees-res">
+                </tbody>
+            </table>
+            <button id="close-modal-button"></button>
+        </div>
 
         <div id="inviteDiv" data-mdb-animation="slide-in-right" style="display:none;" class="answer_list">
             Please enter the email of the user you wish to invite
@@ -417,8 +454,83 @@
             }, 500);
             d.style.display = "block";
         }
+
     </script>
     @endif
+
+    <script>
+
+        function auxSearch(){
+            let search = ".";
+            if (document.getElementById("search-attendees").value != ''){
+                search = document.getElementById("search-attendees").value;
+            }
+            let eventid = document.getElementById("eventid").value;
+            fetch("searchAttendees" + "?" + new URLSearchParams({
+                search: search,
+                event_id: eventid
+            }), {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-Token": '{{ csrf_token() }}'
+                },
+                method: "get",
+                credentials: "same-origin",
+        
+            }).then(function(data) {
+                return data.json();
+            }).then(function(data) {
+                let container = document.getElementById("table-attendees-res");
+                container.innerHTML = "";
+                data.forEach(function(user) {
+        
+                    console.log(eventid);
+        
+                    let tr = document.createElement("tr");
+                    let td1 = document.createElement("td");
+                    let td2 = document.createElement("td");
+                    
+                    td1.innerHTML = user.name;
+                    td2.innerHTML = user.email;
+        
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    container.appendChild(tr);
+        
+                });
+            }).catch(function(error) {
+                console.log(error);
+            });
+        }
+        
+        document.getElementById("search-attendees").addEventListener("keyup", function(e) {auxSearch()});
+
+        function showAttendeesDiv() {
+            document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+            let d = document.getElementById('attendeesDiv');
+            d.classList.add("animate");
+            setTimeout(function() {
+                d.classList.remove("animate");
+            }, 500);
+            d.style.display = "block";
+            auxSearch();
+        }
+
+
+        document.querySelector('#attendeesDiv button').addEventListener('click', function() {
+            let d = document.getElementById('attendeesDiv');
+            d.classList.add("animate-out");
+            setTimeout(function() {
+                d.classList.remove("animate-out");
+            }, 500);
+            setTimeout(function() {
+                d.style.display = "none";
+            }, 450);
+        })
+
+    </script>
 
     <script type="text/javascript">
         // Polling for the Event Page Countdown display 
