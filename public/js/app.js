@@ -292,7 +292,7 @@ function inviteHandler() {
         console.log("User already attending event");
     }
     else if (this.status === 403) {
-        console.log("User is not host");
+        console.log("User is blocked");
     }
 }
 

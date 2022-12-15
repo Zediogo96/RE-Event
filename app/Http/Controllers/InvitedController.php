@@ -90,9 +90,8 @@ class InvitedController extends Controller
     public function create(InviteRequest $request) {
         if (!Auth::check()) {return response(route('login'), 302);}
         $inviter_user = Auth::user();
-        $event = Event::find($request['event_id']);
         
-        $this->authorize('create', $inviter_user, $event);
+        $this->authorize('create', $inviter_user);
 
         $eventid = $request['event_id'];
         $invited_user_id = InvitedController::get_id_from_email($request['invited_user']);

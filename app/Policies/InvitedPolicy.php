@@ -39,7 +39,7 @@ class InvitedPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user, Event $event)
+    public function create(User $user)
     {
         return (!$user->isblocked);
     }
