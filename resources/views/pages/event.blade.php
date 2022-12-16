@@ -115,6 +115,7 @@
             
             @endif
             
+            @if (Auth::user() != NULL)
             <li class="list">
                 <a href="#" onclick="showInviteDiv()">
                     <span class="icon">
@@ -123,6 +124,7 @@
                     <span class="title">Send Invite</span>
                 </a>
             </li>
+            @endif
         </ul>
     </div>
 
