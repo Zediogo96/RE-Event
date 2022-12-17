@@ -34,22 +34,22 @@
 
                 <!-- Start Login Form -->
                 <form class="login" method="POST" action="{{ route('login') }}">
-                {{ csrf_field() }}
+                    {{ csrf_field() }}
                     <div class="field input-group">
 
                         <input type="email" class="form-control" placeholder="Email" id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
                         @if ($errors->has('email'))
-                            <span class="error">
+                        <span class="error">
                             {{ $errors->first('email') }}
-                            </span>
+                        </span>
                         @endif
                     </div>
                     <div class="field input-group input-icons">
                         <input class="form-control" placeholder="Password" id="password" type="password" name="password" required></input>
                         @if ($errors->has('password'))
-                            <span class="error">
-                                {{ $errors->first('password') }}
-                            </span>
+                        <span class="error">
+                            {{ $errors->first('password') }}
+                        </span>
                         @endif
                     </div>
                     <div class="pass-link">
@@ -66,27 +66,20 @@
                 </form>
 
                 <!-- Start Signup Form -->
-                <form method="POST" action="{{route('register')}}" class="signup">
+                <form method="POST" action="{{route('register')}}" class="signup" id="__registerUserForm">
                     {{ csrf_field() }}
 
                     <div class="field input-group">
-                        <input class="form-control" placeholder="User Name" id="name" type="text" name="name" value="{{ old('name') }}" required autofocus>
-                        @if ($errors->has('name'))
-                            <span class="error">
-                                {{ $errors->first('name') }}
-                            </span>
-                        @endif
+                        <input class="form-control" placeholder="User Name" id="name" type="text" name="name" value="{{ old('name') }}" autofocus>
+                        <div class="invalid-feedback"></div>
                     </div>
                     <div class="field input-group">
-                        <input  class="form-control" placeholder="Email Address" id="email" type="email" name="email" value="{{ old('email') }}" required>
-                        @if ($errors->has('email'))
-                            <span class="error">
-                                {{ $errors->first('email') }}
-                            </span>
-                        @endif
+                        <input class="form-control" placeholder="Email Address" id="email" type="email" name="email" value="{{ old('email') }}">
+                        <div class="invalid-feedback"></div>
                     </div>
                     <div class="field input-group">
-                        <input type="date" class="form-control" value="2023-11-16" min="1850-01-01" max="2022-11-16" id="birthdate" name="birthdate" value="{{old('birthdate')}}" required/>
+                        <input type="date" class="form-control" value="2023-11-16" min="1850-01-01" max="2030-11-30" id="birthdate" name="birthdate" value="{{old('birthdate')}}"/>
+                        <div class="invalid-feedback"></div>
                     </div>
                     <select class="form-select field input-group" id="gender" name="gender" value={{old('gender')}} aria-label="Default select example">
                         <option disabled="disabled" selected class="form-control">Gender</option>
@@ -95,20 +88,17 @@
                         <option value="O">Other</option>
                     </select>
                     <div class="field input-group">
-                        <input class="form-control" placeholder="Password" id="password" type="password" name="password" required>
-                        @if ($errors->has('password'))
-                            <span class="error">
-                                {{ $errors->first('password') }}
-                            </span>
-                        @endif
+                        <input class="form-control" placeholder="Password" id="password" type="password" name="password">
+                        <div class="invalid-feedback"></div>
                     </div>
                     <div class="field input-group">
-                        <input class="form-control" placeholder="Confirm password" id="password-confirm" type="password" name="password_confirmation" required>
+                        <input class="form-control" placeholder="Confirm password" id="password-confirm" type="password" name="password_confirmation">
+                        <div class="invalid-feedback"></div>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label" style="padding-top:7px;"> Profile Photo </label>
+                    <div class="mb-3" id="reg_form_photo">
+                        <label for="formFile" class="form-label"> Profile Photo </label>
                         <input class="form-control input-group" type="file" id="formFile">
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="field input-group">

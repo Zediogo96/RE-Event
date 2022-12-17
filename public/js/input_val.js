@@ -5,57 +5,93 @@ function displayError(element, message) {
     element.nextElementSibling.innerHTML = message;
 }
 
+// VALIDATION OF REGISTER FORM IN LOGIN/REGISTER PAGE
+
+let registerForm = document.getElementById('__registerUserForm');
+console.log(registerForm);
+
+if (window.location.href.includes('login')) {
+
+    registerForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        let name = registerForm.querySelector('input[name="name"]');
+        let email = registerForm.querySelector('input[name="email"]');
+        let birthdate = registerForm.querySelector('input[name="birthdate"]');
+        let password = registerForm.querySelector('input[name="password"]');
+        let password_confirmation = registerForm.querySelector('input[name="password_confirmation"]');
+        let photo = registerForm.querySelector('input[name="profilePic"]');
+
+        let validName = validateName(name);
+        let validEmail = validateEmail(email);
+        let validBirthdate = validateBirthdate(birthdate);
+        let validPassword = validatePassword(password);
+        let validPasswordConfirmation = validatePasswordConfirmation(password, password_confirmation);
+        let validPhoto = validatePhoto(photo);
+
+        if (validName && validEmail && validBirthdate && validPassword && validPasswordConfirmation && validPhoto) {
+            registerForm.submit();
+        }
+    });
+}
+
+
+
 // VALIDATION FOR USER EDIT FORM
 
 let edit_userProfilePorm = document.getElementById('profileDetailsForm');
 
-edit_userProfilePorm.addEventListener('submit', function (e) {
-    e.preventDefault();
+if (window.location.href.includes('user')) {
 
-    let name = edit_userProfilePorm.querySelector('input[name="name"]');
-    let email = edit_userProfilePorm.querySelector('input[name="email"]');
-    let birthdate = edit_userProfilePorm.querySelector('input[name="birthdate"]');
-    let password = edit_userProfilePorm.querySelector('input[name="password"]');
-    let photo = edit_userProfilePorm.querySelector('input[name="profilePic"]');
+    edit_userProfilePorm.addEventListener('submit', function (e) {
+        e.preventDefault();
 
-    let validName = validateName(name);
-    let validEmail = validateEmail(email);
-    let validBirthdate = validateBirthdate(birthdate);
-    let validPassword = validatePassword(password);
-    let validPhoto = validatePhoto(photo);
+        let name = edit_userProfilePorm.querySelector('input[name="name"]');
+        let email = edit_userProfilePorm.querySelector('input[name="email"]');
+        let birthdate = edit_userProfilePorm.querySelector('input[name="birthdate"]');
+        let password = edit_userProfilePorm.querySelector('input[name="password"]');
+        let photo = edit_userProfilePorm.querySelector('input[name="profilePic"]');
 
-    if (validName && validEmail && validBirthdate && validPassword && validPhoto) {
-        edit_userProfilePorm.submit();
-    }
-});
+        let validName = validateName(name);
+        let validEmail = validateEmail(email);
+        let validBirthdate = validateBirthdate(birthdate);
+        let validPassword = validatePassword(password);
+        let validPhoto = validatePhoto(photo);
 
-// VALIDATION FOR USER CREATE FORM
+        if (validName && validEmail && validBirthdate && validPassword && validPhoto) {
+            edit_userProfilePorm.submit();
+        }
+    });
 
-let form = document.getElementById('_formCreateUser');
+    // VALIDATION FOR USER CREATE FORM
 
-form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    let name = form.querySelector('#name');
-    let email = form.querySelector('#email');
-    let birthdate = form.querySelector('#birthdate');
-    let password = form.querySelector('#password');
-    console.log(password, password.value)
+    let form = document.getElementById('_formCreateUser');
 
-    /*
-    MUST BE CALLED LIKE THIS OTHERWISE THEY ARE ONLY CALLED IN A SEQUENCIAL FASHION:
-    MEANING THAT IF NAME AND PASSWORD ARE NOT VALID, ONLY NAME WILL BE DISPLAYED AS INVALID!
-    */
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        let name = form.querySelector('#name');
+        let email = form.querySelector('#email');
+        let birthdate = form.querySelector('#birthdate');
+        let password = form.querySelector('#password');
+        console.log(password, password.value)
 
-    let validName = validateName(name);
-    let validEmail = validateEmail(email);
-    let validBirthdate = validateBirthdate(birthdate);
-    let validPassword = validatePassword(password);
+        /*
+        MUST BE CALLED LIKE THIS OTHERWISE THEY ARE ONLY CALLED IN A SEQUENCIAL FASHION:
+        MEANING THAT IF NAME AND PASSWORD ARE NOT VALID, ONLY NAME WILL BE DISPLAYED AS INVALID!
+        */
 
-    if (validName && validEmail && validBirthdate && validPassword) {
-        form.submit();
-    }
+        let validName = validateName(name);
+        let validEmail = validateEmail(email);
+        let validBirthdate = validateBirthdate(birthdate);
+        let validPassword = validatePassword(password);
 
-});
+        if (validName && validEmail && validBirthdate && validPassword) {
+            form.submit();
+        }
+
+    });
+
+}
 
 function validateName(name) {
     if (name.value.length < 8 || name.value.length > 15) {
@@ -130,6 +166,21 @@ function validatePassword(password) {
     }
 }
 
+function validatePasswordConfirmation(password, passwordConfirmation) {
+    if (passwordConfirmation.value === '') {
+        displayError(passwordConfirmation, 'Password confirmation is required');
+        return false;
+    } else if (passwordConfirmation.value !== password.value) {
+        displayError(passwordConfirmation, 'Password confirmation does not match password');
+        return false;
+    } else {
+        passwordConfirmation.classList.remove('is-invalid');
+        passwordConfirmation.classList.add('is-valid');
+        return true;
+    }
+}
+
+
 function validatePhoto(photo) {
 
     if (photo.value !== '') {
@@ -147,7 +198,9 @@ function validatePhoto(photo) {
     return true;
 }
 
-    // VALIDATION FOR EVENT CREATE FORM
+// VALIDATION FOR EVENT CREATE FORM
+
+if (window.location.href.includes('user')) {
 
     let createEventModal = document.getElementById('createEventModal');
     let formEvent = createEventModal.querySelector('form');
@@ -219,161 +272,167 @@ function validatePhoto(photo) {
         }
     });
 
-    function validateEventName(name) {
-        if (name.value.length == 0) {
-            displayError(name, 'Field name cannot be empty');
-            return false;
-        }
-        else if (name.value.length < 8 || name.value.length > 25) {
-            displayError(name, 'Name must be at least 8 characters long and no more than 25 characters');
-            return false;
-        } /* check if the first character of name is uppercase */
-        else if (!/^[A-Z]/.test(name.value)) {
-            displayError(name, 'Name must start with an uppercase letter');
-            return false;
-        } else {
-            name.classList.remove('is-invalid');
-            name.classList.add('is-valid');
-            return true;
-        }
-    }
+}
 
-    function validateEventDesc(desc) {
-        if (desc.value.length == 0) {
-            displayError(desc, 'Field name cannot be empty');
-            return false;
-        }
-        else if (desc.value.length < 15 || desc.value.length > 100) {
-            displayError(desc, 'Name must be at least 15 characters long and no more than 100 characters');
-            return false;
-        }
-        else {
-            desc.classList.remove('is-invalid');
-            desc.classList.add('is-valid');
-            return true;
-        }
+function validateEventName(name) {
+    if (name.value.length == 0) {
+        displayError(name, 'Field name cannot be empty');
+        return false;
     }
-
-    function validateEventDate(date) {
-        if (date.value === '') {
-            displayError(date, 'Date is required');
-            return false;
-        }
-        else if (new Date(date.value) < new Date()) {
-            displayError(date, 'Do you wanna travel back in time? ;)');
-            return false;
-        } else {
-            date.classList.remove('is-invalid');
-            date.classList.add('is-valid');
-            return true;
-        }
+    else if (name.value.length < 8 || name.value.length > 25) {
+        displayError(name, 'Name must be at least 8 characters long and no more than 25 characters');
+        return false;
+    } /* check if the first character of name is uppercase */
+    else if (!/^[A-Z]/.test(name.value)) {
+        displayError(name, 'Name must start with an uppercase letter');
+        return false;
+    } else {
+        name.classList.remove('is-invalid');
+        name.classList.add('is-valid');
+        return true;
     }
+}
 
-    function validateEventCapacity(capacity) {
-        if (capacity.value === '') {
-            displayError(capacity, 'Capacity is required');
-            return false;
-        } else if (capacity.value < 5 || capacity.value > 100000) {
-            displayError(capacity, 'Capacity must be greater than 5 and less than 100000');
-            return false;
-        } else {
-            capacity.classList.remove('is-invalid');
-            capacity.classList.add('is-valid');
-            return true;
-        }
+function validateEventDesc(desc) {
+    if (desc.value.length == 0) {
+        displayError(desc, 'Field name cannot be empty');
+        return false;
     }
-
-
-    function validateEventCity(city) {
-        if (city.value === '') {
-            displayError(city, 'City is required');
-            return false;
-        } /* REGEX FOR CITY NAME */
-        else if (!/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(city.value)) {
-            displayError(city, 'Please enter a valid city name');
-            return false;
-        } else {
-            city.classList.remove('is-invalid');
-            city.classList.add('is-valid');
-            return true;
-        }
+    else if (desc.value.length < 15 || desc.value.length > 100) {
+        displayError(desc, 'Name must be at least 15 characters long and no more than 100 characters');
+        return false;
     }
-
-    function validateEventCountry(country) {
-        if (country.value === '') {
-            displayError(country, 'Country is required');
-            return false;
-        } else if (!/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(country.value)) {
-            displayError(country, 'Please enter a valid country name');
-            return false;
-        } else {
-            country.classList.remove('is-invalid');
-            country.classList.add('is-valid');
-            return true;
-        }
+    else {
+        desc.classList.remove('is-invalid');
+        desc.classList.add('is-valid');
+        return true;
     }
+}
 
-    function validateEventPrice(price) {
-        if (price.value === '') {
-            displayError(price, 'Price is required');
-            return false;
-        } else if (price.value < 0 || price.value > 100000) {
-            displayError(price, 'Price must be greater than 0 and less than 100000');
-            return false;
-        } else {
-            price.classList.remove('is-invalid');
-            price.classList.add('is-valid');
-            return true;
-        }
+function validateEventDate(date) {
+    if (date.value === '') {
+        displayError(date, 'Date is required');
+        return false;
     }
+    else if (new Date(date.value) < new Date()) {
+        displayError(date, 'Do you wanna travel back in time? ;)');
+        return false;
+    } else {
+        date.classList.remove('is-invalid');
+        date.classList.add('is-valid');
+        return true;
+    }
+}
 
-    function validateEventAddress(address) {
-        if (address.value === '') {
-            displayError(address, 'Address is required');
-            return false;
-        }
-        else if (!/^[a-zA-Z0-9\s,'-]*$/.test(address.value)) {
-            displayError(address, 'Please enter a valid address');
-            return false;
-        }
-        else {
-            address.classList.remove('is-invalid');
-            address.classList.add('is-valid');
-            return true;
-        }
+function validateEventCapacity(capacity) {
+    if (capacity.value === '') {
+        displayError(capacity, 'Capacity is required');
+        return false;
+    } else if (capacity.value < 5 || capacity.value > 100000) {
+        displayError(capacity, 'Capacity must be greater than 5 and less than 100000');
+        return false;
+    } else {
+        capacity.classList.remove('is-invalid');
+        capacity.classList.add('is-valid');
+        return true;
     }
+}
 
-    function validateEventTag(tag) {
-        if (tag.value === '') {
-            displayError(tag, 'Tag is required');
-            return false;
-        }
-        else if (!/^(sports|music|family|tech)$/.test(tag.value)) {
-            displayError(tag, 'Please choose a valid tag');
-            return false;
-        }
-        else {
-            tag.classList.remove('is-invalid');
-            tag.classList.add('is-valid');
-            return true;
-        }
-    }
 
-    function validateEventPhoto(photoFile) {
-        if (photoFile.value === '') {
-            displayError(photoFile, 'Photo is required');
-            return false;
-        } /* validate if photo format is good */
-        else if (!/(\.jpg|\.jpeg|\.png|\.gif)$/i.test(photoFile.value)) {
-            displayError(photoFile, 'Please choose a valid photo format');
-            return false;
-        }
-        else {
-            photoFile.classList.remove('is-invalid');
-            photoFile.classList.add('is-valid');
-            return true;
-        }
+function validateEventCity(city) {
+    if (city.value === '') {
+        displayError(city, 'City is required');
+        return false;
+    } /* REGEX FOR CITY NAME */
+    else if (!/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(city.value)) {
+        displayError(city, 'Please enter a valid city name');
+        return false;
+    } else {
+        city.classList.remove('is-invalid');
+        city.classList.add('is-valid');
+        return true;
     }
+}
+
+function validateEventCountry(country) {
+    if (country.value === '') {
+        displayError(country, 'Country is required');
+        return false;
+    } else if (!/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(country.value)) {
+        displayError(country, 'Please enter a valid country name');
+        return false;
+    } else {
+        country.classList.remove('is-invalid');
+        country.classList.add('is-valid');
+        return true;
+    }
+}
+
+function validateEventPrice(price) {
+    if (price.value === '') {
+        displayError(price, 'Price is required');
+        return false;
+    } else if (price.value < 0 || price.value > 100000) {
+        displayError(price, 'Price must be greater than 0 and less than 100000');
+        return false;
+    } else {
+        price.classList.remove('is-invalid');
+        price.classList.add('is-valid');
+        return true;
+    }
+}
+
+function validateEventAddress(address) {
+    if (address.value === '') {
+        displayError(address, 'Address is required');
+        return false;
+    }
+    else if (!/^[a-zA-Z0-9\s,'-]*$/.test(address.value)) {
+        displayError(address, 'Please enter a valid address');
+        return false;
+    }
+    else {
+        address.classList.remove('is-invalid');
+        address.classList.add('is-valid');
+        return true;
+    }
+}
+
+function validateEventTag(tag) {
+    if (tag.value === '') {
+        displayError(tag, 'Tag is required');
+        return false;
+    }
+    else if (!/^(sports|music|family|tech)$/.test(tag.value)) {
+        displayError(tag, 'Please choose a valid tag');
+        return false;
+    }
+    else {
+        tag.classList.remove('is-invalid');
+        tag.classList.add('is-valid');
+        return true;
+    }
+}
+
+function validateEventPhoto(photoFile) {
+    if (photoFile.value === '') {
+        displayError(photoFile, 'Photo is required');
+        return false;
+    } /* validate if photo format is good */
+    else if (!/(\.jpg|\.jpeg|\.png|\.gif)$/i.test(photoFile.value)) {
+        displayError(photoFile, 'Please choose a valid photo format');
+        return false;
+    }
+    else {
+        photoFile.classList.remove('is-invalid');
+        photoFile.classList.add('is-valid');
+        return true;
+    }
+}
+
+
+
+
 
 
 
