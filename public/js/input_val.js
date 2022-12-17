@@ -111,7 +111,43 @@ function validatePassword(password) {
 
 let createEventModal = document.getElementById('createEventModal');
 let formEvent = createEventModal.querySelector('form');
+// get elements that their ID contains the string editModal
+let editEventModals = document.querySelectorAll('[id*="editModal"]');
 
+editEventModals.forEach(function (editEventModal) {
+    let editEventForm = editEventModal.querySelector('form');
+
+    editEventForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        let e_name = editEventForm.querySelector('#name');
+        let e_desc = editEventForm.querySelector('#description');
+        let e_date = editEventForm.querySelector('#date');
+        let e_capacity = editEventForm.querySelector('#capacity');
+        let e_city = editEventForm.querySelector('#city');
+        let e_country = editEventForm.querySelector('#country');
+        let e_price = editEventForm.querySelector('#price');
+        let e_address = editEventForm.querySelector('#address');
+        let e_tag = editEventForm.querySelector('#tag');
+        let e_image = editEventForm.querySelector('#img');
+
+        let val_e_name = validateEventName(e_name);
+        let val_e_desc = validateEventDesc(e_desc);
+        let val_e_date = validateEventDate(e_date);
+        let val_e_capacity = validateEventCapacity(e_capacity);
+        let val_e_city = validateEventCity(e_city);
+        let val_e_country = validateEventCountry(e_country);
+        let val_e_price = validateEventPrice(e_price);
+        let val_e_address = validateEventAddress(e_address);
+        let val_e_tag = validateEventTag(e_tag);
+        let val_e_image = validateEventPhoto(e_image);
+
+        if (val_e_name && val_e_desc && val_e_date && val_e_capacity && val_e_city && val_e_country && val_e_price && val_e_address && val_e_tag && val_e_image) {
+            editEventForm.submit();
+        }
+
+    });
+});
 
 formEvent.addEventListener('submit', function (e) {
     e.preventDefault();
