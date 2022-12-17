@@ -459,10 +459,17 @@ div.wrapper-res {
     left: 17%;
 }
 
+.menu-info-item, #event-content button {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(0, 0, 0, 0.1), 0 0 0 5px rgba(0, 0, 0, 0.1), 0 0 0 6px rgba(0, 0, 0, 0.1), 0 0 0 7px rgba(0, 0, 0, 0.1), 0 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
 .menu-info-item {
 
     background-image: linear-gradient(62deg, #fbb040 0%, #fbb079 50%);
-    border: 1px solid orangered;
+    /* add shadowbox to this element */
+
+    border: 1px solid orange;
+
     border-radius: 10%;
     width: 15rem;
     height: 5rem;
@@ -693,7 +700,7 @@ div.wrapper-res {
     margin: 100px auto;
 }
 
-@media screen and (max-width:1300px) {
+@media screen and (max-width:1400px) {
     #menu-info {
         font-size: 1.5rem;
         width: 10%;
@@ -717,6 +724,24 @@ div.wrapper-res {
 
     .menu-info-item:last-child p:hover {
         height: 2.5rem;
+    }
+
+    .navigation {
+        width: 3.5rem;
+    }
+
+    .navigation ul li.active::after {
+        transform: translateY(-10%) scaleX(1);
+        opacity: 1;
+        width: 100%;
+    }
+
+    .navigation ul li span.title {
+        display: none;
+    }
+
+    .navigation ul li a .icon {
+        margin-left: -2rem;
     }
 }
 
@@ -747,7 +772,7 @@ div.wrapper-res {
 
     .menu-info-item {
         width: 10rem;
-        height: 5rem;
+        height: 4.5rem;
     }
 
     /* Toast Notification */
@@ -787,23 +812,7 @@ div.wrapper-res {
 
     /* Nav sidebar related */
 
-    .navigation {
-        width: 3.5rem;
-    }
 
-    .navigation ul li.active::after {
-        transform: translateY(-10%) scaleX(1);
-        opacity: 1;
-        width: 100%;
-    }
-
-    .navigation ul li span.title {
-        display: none;
-    }
-
-    .navigation ul li a .icon {
-        margin-left: -2rem;
-    }
 
     /* Initially info containers that belong to the sidebar */
     #info-navbar-container>div {

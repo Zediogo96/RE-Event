@@ -318,43 +318,72 @@ div.form-event-edit:first-child {
 
 div#preview-container {
     position: absolute;
-    bottom: 35rem;
+    bottom: 37rem;
     left: 37em;
     display: inline-block;
 }
 
-div#preview-container img {
+div#preview-container #preview-image {
+    position: absolute;
+    top: -2rem;
     width: 50rem;
     height: 33rem;
+    border-radius: 5%;
 }
 
-#preview-container h1 {
+#preview-container #preview-name {
     position: absolute;
-    top: 0;
-    left: 1rem;
+    top: -1rem;
+    left: 1.5rem;
     text-align: left;
-    color: white;
+    width: 50rem;
+
+    background: linear-gradient(-45deg, #414119, #ff8f2f, #ff554d, #eb1267);
+    background-size: 300%;
+    font-size: 3rem;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: zee 7s linear infinite;
+
+    z-index: 1 !important;
 }
+
+@keyframes zee {
+    0% {
+        background-position: 0px 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0px 50%;
+    }
+}
+
 
 #preview-container h3 {
     position: absolute;
-    top: 5rem;
-    left: 1rem;
+    top: 3rem;
+    left: 1.7rem;
+    font-size: 1.5rem;
     text-align: left;
     color: white;
 }
 
-#preview-container button {
+#preview-container button.btn {
     position: absolute;
     top: 2rem;
-    right: 2rem;
+    left: 42rem;
     text-align: left;
 }
 
-#preview-container nav {
+#preview-container ul#menu-info {
     position: absolute;
-    top: -12rem;
-    left: -9rem;
+    top: 27.5rem;
+    left: 6rem;
 }
 
 #teste-form button {
@@ -367,7 +396,7 @@ div#preview-container img {
 }
 
 .single-post-title button {
-    margin-left: 51.5rem;
+    margin-left: 48rem;
 }
 
 .single-post-content {
@@ -404,22 +433,23 @@ div#preview-container img {
 }
 
 #createUserModal div.modal-content {
-    /* CONTAINER */
     height: 80vh;
     width: 50rem;
     position: relative;
     left: 50%;
     top: 20rem;
     transform: translate(-50%, -50%);
+}
+
+#createEventModal div.modal-content {
+    height: 90vh !important;
 
 }
 
-#createUserModal div.modal-body {
-    max-height: calc(100vh - 200px);
+#createEventModal div.modal-body {
     overflow-y: auto;
+    max-height: calc(90vh - 150px) !important;
 }
-
-
 
 tbody tr {
     border-bottom: 1px solid whitesmoke;
