@@ -58,10 +58,8 @@
                         </div>
                         <div class="input-group switch round blue-white-switch mt-2">
                             <div class="form-check form-switch" style="padding-top: 0.7rem;">
-
                                 <input class="form-check-input" type="checkbox" role="switch" style='height: 1.5rem; width: 3rem;' id="flexSwitchCheckChecked" checked>
                                 <label class="form-check-label" for="flexSwitchCheckChecked" style="padding-left: 2.1rem; font-size: 1.5rem"> Is the Event private? </label>
-
                             </div>
                             <div class="invalid-feedback"></div>
                         </div>

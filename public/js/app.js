@@ -250,6 +250,21 @@ const loginText = document.querySelector(".title-text .login");
 const signupText = document.querySelector(".title-text .signup");
 
 
+signupBtn.onclick = () => {
+    loginForm.style.marginLeft = "-50%";
+    loginText.style.marginLeft = "-50%";
+  };
+
+  loginBtn.onclick = () => {
+    loginForm.style.marginLeft = "0%";
+    loginText.style.marginLeft = "0%";
+  };
+
+  signupLink.onclick = () => {
+    signupBtn.click();
+  };
+
+
 function createInvite(event_id) {
     let invited_user = document.getElementById("sendInvite").value;
     sendAjaxRequest(
