@@ -1,5 +1,6 @@
 // GENERIC FUNCTION TO DISPLAY ERROR MESSAGE
 function displayError(element, message) {
+
     element.classList.add('is-invalid');
     element.nextElementSibling.innerHTML = message;
 }
@@ -124,14 +125,20 @@ formEvent.addEventListener('submit', function (e) {
     let e_price = formEvent.querySelector('#price');
     let e_address = formEvent.querySelector('#address');
     let e_tag = formEvent.querySelector('#tag');
-
+    let e_image = formEvent.querySelector('#img');
 
     let val_e_name = validateEventName(e_name);
     let val_e_desc = validateEventDesc(e_desc);
     let val_e_date = validateEventDate(e_date);
     let val_e_capacity = validateEventCapacity(e_capacity);
+    let val_e_city = validateEventCity(e_city);
+    let val_e_country = validateEventCountry(e_country);
+    let val_e_price = validateEventPrice(e_price);
+    let val_e_address = validateEventAddress(e_address);
+    let val_e_tag = validateEventTag(e_tag);
+    let val_e_image = validateEventPhoto(e_image);
 
-    if (val_e_name && val_e_desc && val_e_date && val_e_capacity) {
+    if (val_e_name && val_e_desc && val_e_date && val_e_capacity && val_e_city && val_e_country && val_e_price && val_e_address && val_e_tag && val_e_image) {
         formEvent.submit();
     }
 });
@@ -203,7 +210,7 @@ function validateEventCapacity(capacity) {
 
 function validateEventCity(city) {
     if (city.value === '') {
-        displayError(capacity, 'City is required');
+        displayError(city, 'City is required');
         return false;
     } /* REGEX FOR CITY NAME */
     else if (!/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(city.value)) {
@@ -212,6 +219,82 @@ function validateEventCity(city) {
     } else {
         city.classList.remove('is-invalid');
         city.classList.add('is-valid');
+        return true;
+    }
+}
+
+function validateEventCountry(country) {
+    if (country.value === '') {
+        displayError(country, 'Country is required');
+        return false;
+    } else if (!/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(country.value)) {
+        displayError(country, 'Please enter a valid country name');
+        return false;
+    } else {
+        country.classList.remove('is-invalid');
+        country.classList.add('is-valid');
+        return true;
+    }
+}
+
+function validateEventPrice(price) {
+    if (price.value === '') {
+        displayError(price, 'Price is required');
+        return false;
+    } else if (price.value < 0 || price.value > 100000) {
+        displayError(price, 'Price must be greater than 0 and less than 100000');
+        return false;
+    } else {
+        price.classList.remove('is-invalid');
+        price.classList.add('is-valid');
+        return true;
+    }
+}
+
+function validateEventAddress(address) {
+    if (address.value === '') {
+        displayError(address, 'Address is required');
+        return false;
+    }
+    else if (!/^[a-zA-Z0-9\s,'-]*$/.test(address.value)) {
+        displayError(address, 'Please enter a valid address');
+        return false;
+    }
+    else {
+        address.classList.remove('is-invalid');
+        address.classList.add('is-valid');
+        return true;
+    }
+}
+
+function validateEventTag(tag) {
+    if (tag.value === '') {
+        displayError(tag, 'Tag is required');
+        return false;
+    }
+    else if (!/^(sports|music|family|tech)$/.test(tag.value)) {
+        displayError(tag, 'Please choose a valid tag');
+        return false;
+    }
+    else {
+        tag.classList.remove('is-invalid');
+        tag.classList.add('is-valid');
+        return true;
+    }
+}
+
+function validateEventPhoto(photoFile) {
+    if (photoFile.value === '') {
+        displayError(photoFile, 'Photo is required');
+        return false;
+    } /* validate if photo format is good */
+    else if (!/(\.jpg|\.jpeg|\.png|\.gif)$/i.test(photoFile.value)) {
+        displayError(photoFile, 'Please choose a valid photo format');
+        return false;
+    }
+    else {
+        photoFile.classList.remove('is-invalid');
+        photoFile.classList.add('is-valid');
         return true;
     }
 }
