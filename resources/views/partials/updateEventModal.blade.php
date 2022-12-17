@@ -14,38 +14,47 @@
                         <div class="form-group mb-3 form-event-edit">
                             <label for="name" class="form-label">Event Name</label>
                             <input id="name" type="text" name="name" onKeyUp="handleNameChange({{$event->eventid}})" value="{{$event->name}}" class="input-group form-control">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="description" class="form-label">Description</label>
                             <input id="description" type="text" name="description" value="{{$event->description}}" class="input-group form-control">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="date" class="form-label">Date</label>
                             <input id="date" type="datetime-local" name="date" value="{{$event->date}}" class="input-group form-control">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="capacity" class="form-label">Capacity</label>
                             <input id="capacity" type="number" name="capacity" onKeyUp="handleCapacityChange({{$event->eventid}})" value="{{$event->capacity}}" class="input-group form-control">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="city" class="form-label">City</label>
                             <input id="city" type="text" name="city" onKeyUp="handleLocationChange({{$event->eventid}})" value="{{$event->city->name}}" class="input-group form-control">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="country" class="form-label">Country</label>
                             <input id="country" type="text" name="country" onKeyUp="handleLocationChange({{$event->eventid}})" value="{{$event->city->country->name}}" class="input-group form-control">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="price" class="form-label">Price</label>
                             <input id="price" type="number " min="1" step="any" name="price" value="{{$event->price}}" class="input-group form-control">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="address" class="form-label">Address</label>
                             <input id="address" type="text" name="address" onKeyUp="handleAddressChange({{$event->eventid}})" value="{{$event->address}}" class="input-group form-control">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group mb-3 form-event-edit">
                             <label for="tag" class="form-label">Event Tag</label>
                             <input id="tag" type="text" name="tag" value="{{$event->eventTag->name}}" class="input-group form-control">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="input-group switch round blue-white-switch mt-2">
                             <div class="form-check form-switch" style="padding-top: 0.7rem;">
@@ -54,6 +63,7 @@
                                 <label class="form-check-label" for="flexSwitchCheckChecked" style="padding-left: 2.1rem; font-size: 1.5rem"> Is the Event private? </label>
 
                             </div>
+                            <div class="invalid-feedback"></div>
                         </div>
 
                         <button type="submit" class="input-group btn btn-primary">

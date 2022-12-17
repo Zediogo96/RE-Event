@@ -5,6 +5,28 @@ function displayError(element, message) {
     element.nextElementSibling.innerHTML = message;
 }
 
+// VALIDATION FOR USER EDIT FORM
+
+let edit_userProfilePorm = document.getElementById('profileDetailsForm');
+
+edit_userProfilePorm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    let name = edit_userProfilePorm.querySelector('input[name="name"]');
+    let email = edit_userProfilePorm.querySelector('input[name="email"]');
+    let birthdate = edit_userProfilePorm.querySelector('input[name="birthdate"]');
+    let password = edit_userProfilePorm.querySelector('input[name="password"]');
+
+    let validName = validateName(name);
+    let validEmail = validateEmail(email);
+    let validBirthdate = validateBirthdate(birthdate);
+    let validPassword = validatePassword(password);
+
+    if (validName && validEmail && validBirthdate && validPassword) {
+        edit_userProfilePorm.submit();
+    }
+});
+
 // VALIDATION FOR USER CREATE FORM
 
 let form = document.getElementById('_formCreateUser');

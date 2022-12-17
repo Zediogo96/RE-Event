@@ -71,20 +71,24 @@
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="name"> Name </label>
                             <input type="text" name="name" id="profileDetailsNameInput" value="{{$user->name}}">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="email"> Email </label>
                             <input type="email" name="email" id="profileDetailsEmailInput" value="{{$user->email}}">
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="birthday"> Birthday </label>
                             <input type="date" name="birthdate" id="profileDetailsBirthdayInput" value="{{$user->birthdate}}">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="password"> Password </label>
                             <input type="password" name="password" id="profileDetailsPasswordInput" placeholder="New Password">
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="updateProfileDetailsRow">
@@ -99,6 +103,7 @@
                         <div class="updateProfileInputBoxes">
                             <label for="profilePic"> Profile Picture </label>
                             <input type="file" name="profilePic" id="profileDetailsProfilePicInput">
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
 
