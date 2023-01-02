@@ -5,7 +5,8 @@ html {
 html,
 body {
     max-width: 100%;
-    overflow-x: hidden;
+    max-height: 100%;
+    overflow-x: clip;
 }
 
 body {
@@ -343,6 +344,10 @@ tbody tr td:not(:last-child) {
     #faq-container {
         height: 70rem;
     }
+}
+
+.container {
+    height: 90%;
 }
 
 /*** END FAQ PAGE *************************************/

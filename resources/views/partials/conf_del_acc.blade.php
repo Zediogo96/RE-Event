@@ -14,7 +14,7 @@
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 
-                <form action="{{ route('deleteUser') }}" method="POST">
+                <form method="POST">
                     @csrf
                     <input type="hidden" name="userid" value="{{Auth::user()->userid}}">
                     <button type="submit" class="btn btn-danger" id="confirm-del-btn">Delete</button>

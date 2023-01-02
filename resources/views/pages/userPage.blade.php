@@ -28,8 +28,7 @@
                     <div id="myEventsOption" class="option" onclick="selectOption(2)">My Events</div>
                     <div id="myEventsSubmenu" class="submenuSleep">
                         <ul>
-                            <li onclick="showDetails(1)" id="pastEventsOption" class="optionSelected subOption">Past Events</li>
-                            <li onclick="showDetails(2)" id="futureEventsOption" class="subOption">Future Events</li>
+                            <li onclick="showDetails(2)" id="futureEventsOption" class="subOption"> Events I'm attending </li>
                             <li onclick="showDetails(3)" id="eventsCreatedByMeOption" class="subOption">Events Created By Me</li>
                         </ul>
                     </div>
@@ -112,61 +111,14 @@
                 <button href="#del_acc_modal" data-toggle="modal" id="del_account" type="button" class="btn btn-danger"> Delete Account </button>
             </div>
             <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
-                <div id="pastEvents" class="details submenuSleep">
-                    <div class="container">
-                        <div class="section">
-                            <div class="blog-post blog-single-post">
-                                <div class="single-post-title" style="padding-bottom: 1rem;">
-                                    <h2>Past Events</h2>
-                                </div>
-                                <div class="single-post-content">
-                                    <table class="events-list">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Name</th>
-                                                <th>City</th>
-                                                <th></th>
-
-                                            </tr>
-
-                                        </thead>
-
-                                        @foreach($user->attendingEvents as $event)
-                                        @if ($event->date < date('Y-m-d'))
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day"> {{substr($event->date, 8, 2)}}</div>
-                                                    <div class="event-month"> {{substr(date('F', mktime(0, 0, 0, substr($event->date, 5,2), 10)), 0, 3);}}</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{$event->name}}
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> {{$event->city->name}}</td>
-                                            <td><button href="#" class="btn btn-danger btn-sm btn-edit-event">Leave Event</button></td>
-                                        </tr>
-                                        @endif
-                                        @endforeach
-
-
-
-                                    </table>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div id="futureEvents" class="details submenuSleep">
                     <div class="container">
                         <div class="section">
                             <div class="blog-post blog-single-post">
                                 <div class="single-post-title" style="padding-bottom: 1rem;">
-                                    <h2>Future Events</h2>
+                                    <h2> Events I'm attending </h2>
                                 </div>
-                                <div class="single-post-content">
+                                <div class="single-post-content scrollable">
                                     <table class="events-list">
                                         <thead>
                                             <tr>
@@ -211,7 +163,7 @@
                                 <h2>Events you're hosting</h2>
                                 <button class="btn btn-success" data-toggle="modal" data-target="#createEventModal"> New Event </button>
                             </div>
-                            <div class="single-post-content">
+                            <div class="single-post-content scrollable">
                                 <table class="events-list">
                                     <thead>
                                         <tr>
@@ -226,7 +178,7 @@
                                     </thead>
 
                                     @foreach($user->hostedEvents as $event)
-                                    <tr id ="{{$event->eventid}}">
+                                    <tr id="{{$event->eventid}}">
                                         <td>
                                             <div class="event-date">
                                                 <div class="event-day"> {{substr($event->date, 8, 2)}}</div>
@@ -289,7 +241,7 @@
                                 <div class="single-post-title" style="padding-bottom: 1rem;">
                                     <h2>Received Invites</h2>
                                 </div>
-                                <div class="single-post-content">
+                                <div class="single-post-content scrollable">
                                     <table class="events-list">
                                         <thead>
                                             <tr>

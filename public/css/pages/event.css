@@ -432,6 +432,8 @@ div.wrapper-res {
     background-color: blue;
 }
 
+
+
 #info-navbar-container div table tr td, .events-list tr td {
     padding: 5px 20px 10px 10px;
 }
@@ -464,6 +466,12 @@ div.wrapper-res {
     margin-top: 5rem;
     display: block;
 
+}
+
+.scrollable {
+    overflow-y: auto;
+    max-height: 30rem;
+    scrollbar-color: #c520af #ECEFF1;
 }
 
 /* MENU INFO OF EVENT CONTENT */
