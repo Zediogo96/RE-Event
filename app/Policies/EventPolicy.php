@@ -81,7 +81,7 @@ class EventPolicy
      */
     public function delete(User $user, Event $event, EventHost $eventHost)
     {
-        return ($user->userid == $eventHost->userid && $event->eventid == $eventHost->eventid || $user->admin)  && (!$user->isblocked);
+        return $user->userid === $eventHost->userid && $event->eventid === $eventHost->eventid || $user->admin;
     }
     
 

@@ -272,11 +272,77 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $event)
+    public function destroy(Request $request)
     {
-        //
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($request->eventid);
+        $user = User::find(Auth::user()->userid);
+        //find the eventhost entry with the eventid and userid
+        $eventhost = EventHost::where('eventid', $event->eventid)->first();
+        //find photo entry with the eventid
+        $photo = Photo::where('eventid', $event->eventid)->first();
+        //authorize
+        $this->authorize('delete', [$event, $eventhost]);  
+        //delete all info related to the event
+        $photo->delete();
+        $eventhost->delete();
+        $event->delete();
+        return redirect('/home');
+
+/*         //shit based on removeUser
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($request->eventid);
+        $user = User::find(Auth::user()->userid);
+        //find the eventhost entry with the eventid and userid
+        $eventhost = EventHost::where('eventid', $event->eventid)->first();
+        //authorize only if the user is host of the event
+        $this->authorize('isHost', [$event, $eventhost]);  
+        
+        //delete ticket record with user userid and event eventid
+        $ticket = Ticket::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
+        $ticket->delete();
+        // return redirect('/event' . $request->eventid); */
     }
-    
+
+
+    public function transferOwnership(Request $request)
+    {
+        if (!Auth::check()) return redirect('/login');
+
+        $event = Event::find($request->eventid);
+        $user = Auth::user();
+
+        //dd($user);
+        //find the eventhost entry with the eventid and userid
+        $eventhost = EventHost::where('eventid', $event->eventid)->first();   
+        //dd($eventhost);
+        //authorize only if the user is host of the event
+        $this->authorize('isHost', [$event, $eventhost]); 
+
+        $eventhost->delete();
+
+        //create a nw eventhost table entry with a new userid from request and eventid from request
+        $neweventhost = new EventHost;
+        $neweventhost->userid = $request->newuserid;
+        $neweventhost->eventid = $request->eventid;
+        $neweventhost->save();
+
+        dd(EventHost::all());
+
+        return redirect('/event' . $request->eventid);
+    }
+
+    //Join an event
+    public function join($event_id)
+    {
+        if (!Auth::check()) return redirect('/login');
+        $event = Event::find($event_id);
+        $this->authorize('join', $event);
+        $user = Auth::user();
+        $event->participants()->attach($user->userID);
+        return redirect('event' . $event->eventID);
+    }
+
     public function addUser(Request $request)
     {
         if (!Auth::check()) return redirect('/login');
