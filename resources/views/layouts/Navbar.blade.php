@@ -1,5 +1,5 @@
 <header>
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-xxl">
         <div class="container">
 
             <a class="navbar-brand text-white " href="{{route('home.show')}}"><i class="fa fa-solid fa-camera-retro fa-lg mr-2"></i> RE-EVENT </a>
@@ -22,20 +22,22 @@
                         <a class="nav-link"><i class="fa fa-fw fa-search mr-1"></i> Search </a>
                     </li>
                     @if (Auth::check())
+
                     <li class="nav-item">
                         <a id="notification_text" class="nav-link" href="{{route('user.show', Auth::user()->userid)}}"> </a>
                     </li>
                     <li class="nav-item pl-1">
-                        <a class="nav-link" href="{{route('user.show', Auth::user()->userid)}}"><i class="fa fa-user fa-fw mr-1"></i> {{Auth::user()->name}} </a>
+                        <a class="nav-link" id="__nav-bar-user"  href="{{route('user.show', Auth::user()->userid)}}"><i class="fa fa-user fa-fw mr-1"></i> {{Auth::user()->name}} </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('logout')}}"><i class="fa fa-sign-in-alt fa-fw mr-1"></i> Logout </a>
+                        <a class="nav-link" id="__nav-bar-logout" href="{{route('logout')}}"><i class="fa fa-sign-in-alt fa-fw mr-1"></i> Logout </a>
                     </li>
                     @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('login')}}"><i class="fa fa-user fa-fw mr-1"></i> Login </a>
+                        <a class="nav-link" id="__nav-bar-login" href="{{route('login')}}"><i class="fa fa-user fa-fw mr-1"></i> Login </a>
                     </li>
                     @endif
+
 
                 </ul>
             </div>

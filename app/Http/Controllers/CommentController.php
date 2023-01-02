@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
@@ -35,17 +36,28 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {   
+    public function store(Request $request, User $user)
+    {
         $user = User::find($request->input('eventid'));
-        // $this->authorize('create', $user);
-        
-        if ($request->input('text'))
-        $comment = new Comment;
-        $comment->text = $request->input('text');
-        $comment->userid = $request->input('userid');
-        $comment->eventid = $request->input('eventid');
-        $comment->save();
+
+        $this->authorize('create', Comment::class, $user);
+
+        $text = $request->input('text');
+
+        if ($text != null) {
+
+            // some input sanitization to avoid security exploits
+            $text = strip_tags($text);
+            $text = stripslashes($text);
+            $text = htmlspecialchars($text);
+            $text = trim($text);
+            
+            $comment = new Comment;
+            $comment->text = $text;
+            $comment->userid = $request->input('userid');
+            $comment->eventid = $request->input('eventid');
+            $comment->save();
+        }
     }
 
     /**
@@ -114,5 +126,4 @@ class CommentController extends Controller
         $comment = Comment::where('commentid', $request->input('comment_id'))->first();
         $comment->delete();
     }
-    
 }

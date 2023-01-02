@@ -1,5 +1,8 @@
 // USED FOR THE LIVE SEARCH FUNCTIONALITY IN THE SEARCH BAR ACROSS ALL APPLICATION
 document.getElementById("searchInput").addEventListener("keyup", function (e) {
+    if (e.target.value.length < 2) {
+        return;
+    }
     fetch("search" + "?" + new URLSearchParams({
         search: e.target.value
     }), {
@@ -175,7 +178,7 @@ function ajax_remUser(userid, eventid) {
     });
 };
 
-// REQUESTS USED TO GET THE 
+// REQUESTS USED TO GET THE
 function getComments(id, shouldScroll) {
     fetch("getComments" + "?" + new URLSearchParams({
         event_id: id
@@ -245,6 +248,9 @@ function getComments(id, shouldScroll) {
             let a4 = document.createElement('a');
             a4.setAttribute('class', 'link-danger small ms-3');
             a4.innerHTML = 'report';
+            a4.style += 'cursor: pointer;'
+            a4.href = '#reportModal';
+            a4.dataset.toggle = 'modal';
 
             div5.appendChild(a2);
             a2.appendChild(i);
@@ -274,10 +280,7 @@ function getComments(id, shouldScroll) {
 
 
 // REQUEST FOR ADMIN TO BE ABLE TO SEARCH FOR USERS
-document.getElementById("search-users-admin").addEventListener("keyup", function (e) {
-
-    if (e.target.value == "") return;
-
+document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
     fetch("searchUsersAdmin" + "?" + new URLSearchParams({
         search: e.target.value
     }), {
@@ -285,34 +288,50 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
             "Content-Type": "application/json",
             "Accept": "application/json",
             "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            "X-CSRF-Token": '{{csrf_token()}}'
         },
         method: "get",
         credentials: "same-origin",
-    }).then(function (data) {
+    }).then(function(data) {
         return data.json();
-    }).then(function (data) {
+    }).then(function(data) {
         let container = document.getElementById("search-admin-users-res");
         container.innerHTML = "";
-        data.forEach(function (user) {
+        data.forEach(function(user) {
 
             let tr = document.createElement("tr");
             let td1 = document.createElement("td");
             let td2 = document.createElement("td");
             let td3 = document.createElement("td");
             let td4 = document.createElement("td");
+
             td4.style.textAlign = "center";
+
             let btn = document.createElement("button");
             btn.setAttribute("class", "btn btn-success");
             btn.innerHTML = "View Page";
-            btn.addEventListener("click", function () {
+            btn.addEventListener("click", function() {
                 window.location.href = "user" + user.userid
+            });
+
+            let btn2 = document.createElement("button");
+            btn2.setAttribute("class", "btn btn-danger");
+            btn2.setAttribute("id", "blockStatus");
+
+            if(user.isblocked){
+                btn2.innerHTML = "Unblock User";
+            }
+            else {btn2.innerHTML = "Block User";}
+
+            btn2.addEventListener("click", function() {
+                changeBlockStatusUser(user.userid, user.isblocked);
             });
 
             td1.innerHTML = user.userid;
             td2.innerHTML = user.name;
             td3.innerHTML = user.email;
             td4.appendChild(btn);
+            td4.appendChild(btn2);
 
             tr.appendChild(td1);
             tr.appendChild(td2);
@@ -321,7 +340,7 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
             container.appendChild(tr);
         });
 
-    }).catch(function (error) {
+    }).catch(function(error) {
         console.log(error);
     });
 });

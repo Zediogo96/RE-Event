@@ -41,10 +41,10 @@ const notificationTextHandler = function () {
         }
 
         else if (count == 1) {
-            document.getElementById("notification_text").innerHTML = "You have 1 new notification!";
+            document.getElementById("notification_text").innerHTML = "<i class='fa fa-bell ml-1'></i>You have 1 new notification!";
         }
         else {
-            document.getElementById("notification_text").innerHTML = "You have " + count + " new notifications!";
+            document.getElementById("notification_text").innerHTML = "<i class='fa fa-bell mr-1'></i>    You have " + count + " new notifications!";
         }
     }
 }
@@ -248,6 +248,21 @@ const signupLink = document.querySelector(".signup-link a");
 const loginText = document.querySelector(".title-text .login");
 
 const signupText = document.querySelector(".title-text .signup");
+
+
+signupBtn.onclick = () => {
+    loginForm.style.marginLeft = "-50%";
+    loginText.style.marginLeft = "-50%";
+  };
+
+  loginBtn.onclick = () => {
+    loginForm.style.marginLeft = "0%";
+    loginText.style.marginLeft = "0%";
+  };
+
+  signupLink.onclick = () => {
+    signupBtn.click();
+  };
 
 
 function createInvite(event_id) {

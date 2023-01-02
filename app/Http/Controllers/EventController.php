@@ -155,7 +155,6 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
-        $step = EventHost::where('eventid', $id)->first()->step;
         $host = User::find(EventHost::where('eventid', $id)->first()->userid);
 
         $attendees = User::join('ticket', 'ticket.userid', '=', 'user_.userid')

@@ -71,20 +71,24 @@
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="name"> Name </label>
                             <input type="text" name="name" id="profileDetailsNameInput" value="{{$user->name}}">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="email"> Email </label>
                             <input type="email" name="email" id="profileDetailsEmailInput" value="{{$user->email}}">
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="updateProfileDetailsRow">
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="birthday"> Birthday </label>
                             <input type="date" name="birthdate" id="profileDetailsBirthdayInput" value="{{$user->birthdate}}">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="updateProfileInputBoxes updateProfileTextInput">
                             <label for="password"> Password </label>
                             <input type="password" name="password" id="profileDetailsPasswordInput" placeholder="New Password">
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="updateProfileDetailsRow">
@@ -99,6 +103,7 @@
                         <div class="updateProfileInputBoxes">
                             <label for="profilePic"> Profile Picture </label>
                             <input type="file" name="profilePic" id="profileDetailsProfilePicInput">
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
 
@@ -125,47 +130,26 @@
                                             </tr>
 
                                         </thead>
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day">16</div>
-                                                    <div class="event-month">MAR</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Donec hendrerit massa metus, a ultrices elit iaculis eu. Pellentesque ullamcorper augue lacus.
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Siemens Arena</td>
 
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
+                                        @foreach($user->attendingEvents as $event)
+                                        @if ($event->date < date('Y-m-d'))
                                         <tr>
                                             <td>
                                                 <div class="event-date">
-                                                    <div class="event-day">5</div>
-                                                    <div class="event-month">APR</div>
+                                                    <div class="event-day"> {{substr($event->date, 8, 2)}}</div>
+                                                    <div class="event-month"> {{substr(date('F', mktime(0, 0, 0, substr($event->date, 5,2), 10)), 0, 3);}}</div>
                                                 </div>
                                             </td>
                                             <td>
-                                                Phasellus et est quis diam iaculis fringilla id nec sapien.
+                                                {{$event->name}}
                                             </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Nike Arena</td>
+                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> {{$event->city->name}}</td>
+                                            <td><button href="#" class="btn btn-danger btn-sm btn-edit-event">Leave Event</button></td>
+                                        </tr>
+                                        @endif
+                                        @endforeach
 
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day">31</div>
-                                                    <div class="event-month">MAY</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Ut consectetur commodo justo, sed sollicitudin massa venenatis ut 2013.
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Samsung Arena</td>
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
+
 
                                     </table>
 
@@ -356,312 +340,15 @@
 
     @foreach($user->hostedEvents as $event)
 
-    <div class="modal fade" id="editModal{{$event->eventid}}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" id="edit-modal-content">
-                <div class="modal-header">
-                    <button id="close-modal-button" data-dismiss="modal"></button>
-                    <h4 class="modal-title" id="editModalLabel">Edit Event</h4>
-                </div>
-                <div class="modal-body">
-
-                    <form id="teste-form" method='post' action="{{ route('updateEvent', ['eventid' => $event->eventid])}}" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        @csrf
-                        <!-- get value from event-id2 in laravel  -->
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="name" class="form-label">Event Name</label>
-                            <input id="name" type="text" name="name" onKeyUp="handleNameChange({{$event->eventid}})" value="{{$event->name}}" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="description" class="form-label">Description</label>
-                            <input id="description" type="text" name="description" value="{{$event->description}}" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="date" class="form-label">Date</label>
-                            <input id="date" type="datetime-local" name="date" value="{{$event->date}}" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="capacity" class="form-label">Capacity</label>
-                            <input id="capacity" type="number" name="capacity" onKeyUp="handleCapacityChange({{$event->eventid}})" value="{{$event->capacity}}" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="city" class="form-label">City</label>
-                            <input id="city" type="text" name="city" onKeyUp="handleLocationChange({{$event->eventid}})" value="{{$event->city->name}}" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="country" class="form-label">Country</label>
-                            <input id="country" type="text" name="country" onKeyUp="handleLocationChange({{$event->eventid}})" value="{{$event->city->country->name}}" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="price" class="form-label">Price</label>
-                            <input id="price" type="number " min="1" step="any" name="price" value="{{$event->price}}" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="address" class="form-label">Address</label>
-                            <input id="address" type="text" name="address" onKeyUp="handleAddressChange({{$event->eventid}})" value="{{$event->address}}" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="tag" class="form-label">Event Tag</label>
-                            <input id="tag" type="text" name="tag" value="{{$event->eventTag->name}}" class="input-group form-control">
-                        </div>
-                        <div class="input-group switch round blue-white-switch mt-2">
-                            <div class="form-check form-switch" style="padding-top: 0.7rem;">
-
-                                <input class="form-check-input" type="checkbox" role="switch" style='height: 1.5rem; width: 3rem;' id="flexSwitchCheckChecked" checked>
-                                <label class="form-check-label" for="flexSwitchCheckChecked" style="padding-left: 2.1rem; font-size: 1.5rem"> Is the Event private? </label>
-
-                            </div>
-                        </div>
-
-                        <button type="submit" class="input-group btn btn-primary">
-                            Submit
-                        </button>
-                    </form>
-
-                    <div id="preview-container" style="position:relative">
-
-                        <img src="{{$event->photos[0]->path}}" id="preview-image" style="border-radius: 5%;">
-                        <h1 id="preview-name"> {{$event->name}} </h1>
-                        <h3 id="preview-date"> {{date('Y-m-d', strtotime($event->date))}} </h3>
-                        <button class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
-                                BUY TICKETS </a></button>
-
-                        <nav>
-                            <ul id="menu-info">
-                                <li class="menu-info-item text-center" style="width: 11rem;">
-                                    <div> Location </div>
-                                    <p style="font-size: 15px" id="preview-location"> {{$event->city->country->name}} , {{$event->city->name}} </p>
-                                </li>
-                                <li class="menu-info-item text-center" style="width: 11rem;">
-                                    <div> Capacity </div>
-                                    <p id="preview-capacity" style="font-size: 15px"> {{$event->capacity}} places </p>
-                                </li>
-                                <li class="menu-info-item text-center" style="width: 11rem;">
-                                    <div> Address </div>
-                                    <p id="preview-address" style="font-size: 15px"> {{$event->address}} </p>
-                                </li>
-                            </ul>
-                        </nav>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End of Modal with bootstrap -->
-    </div>
+    @include('partials.updateEventModal', ['event' => $event])
 
     @endforeach
 
     <!-- CREATE EVENT MODAL -->
-    <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="createEventModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" id="edit-modal-content" style="height: 85vh">
-                <div class="modal-header">
-                    <button id="close-modal-button" data-dismiss="modal"></button>
-                    <h4 class="modal-title" id="editModalLabel">Edit Event</h4>
-                </div>
-                <div class="modal-body">
-
-                    <form id="teste-form" method='post' action="{{ route('storeEvent')}}" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        @csrf
-                        <!-- get value from event-id2 in laravel  -->
-
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="name" class="form-label">Event Name</label>
-                            <input id="name" type="text" name="name" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="description" class="form-label">Description</label>
-                            <input id="description" type="text" name="description" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="date" class="form-label">Date</label>
-                            <input id="date" type="datetime-local" name="date" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="capacity" class="form-label">Capacity</label>
-                            <input id="capacity" type="number" name="capacity" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="city" class="form-label">City</label>
-                            <input id="city" type="text" name="city" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="country" class="form-label">Country</label>
-                            <input id="country" type="text" name="country" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="price" class="form-label">Price</label>
-                            <input id="price" type="number " min="1" step="any" name="price" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="address" class="form-label">Address</label>
-                            <input id="address" type="text" name="address" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="tag" class="form-label">Event Tag</label>
-                            <input id="tag" type="text" name="tag" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3 form-event-edit">
-                            <label for="img" class="form-label">Event Image</label>
-                            <input id="img" type="file" name="img" onChange="preview_image()" placeholder="Upload an image for you event" class="input-group form-control">
-                        </div>
-                        <div class="input-group switch round blue-white-switch mt-2">
-                            <div class="form-check form-switch" style="padding-top: 0.7rem;">
-                                <input class="form-check-input" type="checkbox" role="switch" style='height: 1.5rem; width: 3rem;' id="flexSwitchCheckChecked" checked>
-                                <label class="form-check-label" for="flexSwitchCheckChecked" style="padding-left: 2.1rem; font-size: 1.5rem"> Is the Event private? </label>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="input-group btn btn-primary">
-                            Submit
-                        </button>
-                    </form>
-
-                    <div id="preview-container" style="position:relative; bottom: 40rem;">
-
-                        <img src="event_photos/default_event.jpg" id="preview-image" style="border-radius: 5%;">
-                        <h1 id="preview-name"> Event Name </h1>
-                        <h3 id="preview-date"> 2023-01-23 </h3>
-                        <button class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
-                                BUY TICKETS </a></button>
-
-                        <nav>
-                            <ul id="menu-info">
-                                <li class="menu-info-item text-center" style="width: 11rem;">
-                                    <div> Location </div>
-                                    <p style="font-size: 15px" id="preview-location"> Country , City </p>
-                                </li>
-                                <li class="menu-info-item text-center" style="width: 11rem;">
-                                    <div> Capacity </div>
-                                    <p id="preview-capacity" style="font-size: 15px"> 4500 places </p>
-                                </li>
-                                <li class="menu-info-item text-center" style="width: 11rem;">
-                                    <div> Address </div>
-                                    <p id="preview-address" style="font-size: 15px"> Pavilhão Atlântico </p>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" id="edit-modal-content" style="height: 85vh">
-                <div class="modal-header">
-                    <button id="close-modal-button" data-dismiss="modal"></button>
-                    <h4 class="modal-title" id="editModalLabel">Create New User </h4>
-                </div>
-                <div class="modal-body">
-                    <form method='post' action="{{ route('storeUser')}}" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        @csrf
-                        <div class="form-group mb-3">
-                            <label for="name" class="form-label">User Name</label>
-                            <input id="name" type="text" name="name" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input id="email" type="text" name="email" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="birthdate" class="form-label">Birthdate</label>
-                            <input id="birthdate" type="datetime-local" name="birthdate" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input id="password" type="password" name="password" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="gender" class="form-label">Gender</label>
-                            <input id="gender" type="text" name="gender" value="" class="input-group form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="profilePic" class="form-label">Profile Picture</label>
-                            <input id="profilePic" type="file" name="profilePic" value="" class="input-group form-control">
-                        </div>
-                        <button type="submit" class="input-group btn btn-primary">
-                            Submit
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('partials.createEventModal')
+    @include('partials.createUserModal')
 
 </body>
-<script type="text/javascript" defer>
-    document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
-        fetch("{{route('searchUsersAdmin')}}" + "?" + new URLSearchParams({
-            search: e.target.value
-        }), {
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRF-Token": '{{csrf_token()}}'
-            },
-            method: "get",
-            credentials: "same-origin",
-        }).then(function(data) {
-            return data.json();
-        }).then(function(data) {
-            let container = document.getElementById("search-admin-users-res");
-            container.innerHTML = "";
-            data.forEach(function(user) {
-
-                let tr = document.createElement("tr");
-                let td1 = document.createElement("td");
-                let td2 = document.createElement("td");
-                let td3 = document.createElement("td");
-                let td4 = document.createElement("td");
-                
-                td4.style.textAlign = "center";
-
-                let btn = document.createElement("button");
-                btn.setAttribute("class", "btn btn-success");
-                btn.innerHTML = "View Page";
-                btn.addEventListener("click", function() {
-                    window.location.href = "user" + user.userid
-                });
-
-                let btn2 = document.createElement("button");
-                btn2.setAttribute("class", "btn btn-danger");
-                btn2.setAttribute("id", "blockStatus");
-                
-                if(user.isblocked){
-                    btn2.innerHTML = "Unblock User";
-                }
-                else {btn2.innerHTML = "Block User";}
-
-                btn2.addEventListener("click", function() {
-                    changeBlockStatusUser(user.userid, user.isblocked);
-                });
-
-                td1.innerHTML = user.userid;
-                td2.innerHTML = user.name;
-                td3.innerHTML = user.email;
-                td4.appendChild(btn);
-                td4.appendChild(btn2);
-
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-                tr.appendChild(td3);
-                tr.appendChild(td4);
-                container.appendChild(tr);
-            });
-
-        }).catch(function(error) {
-            console.log(error);
-        });
-    });
-</script>
 
 </html>
 

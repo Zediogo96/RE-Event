@@ -122,10 +122,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         if (!Auth::check()) return redirect('/login');
-        //$user = User::find($request->input('userid'));
-        // $creating_user = Auth::user();
-        // $this->authorize('create', $creating_user);
+
         $user = new User;
 
         $user_id = User::max('userid') + 1;
@@ -150,6 +149,7 @@ class UserController extends Controller
 
         if (!is_null($request->input('gender'))) {
             $user->gender= $request->input('gender');
+
         }
 
         if ($request->hasFile('profilePic')) {
