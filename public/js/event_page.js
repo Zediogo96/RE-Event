@@ -80,7 +80,7 @@ formTO.addEventListener("submit", function(e) {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#report-form').addEventListener('submit', function(event) {
-        // TO PREVENT REQUESTS BEING SET WHILE DATA IS EMPTY
+        // TO PREVENT REQUESTS BEG SET WHILE DATA IS EMPTY
         var formData = new FormData(this);
         var empty = false;
         for (var value of formData.values()) {
@@ -109,4 +109,54 @@ function hide_report_modal() {
     document.getElementById('confirm-report-btn').setAttribute('data-dismiss', 'modal');
     document.getElementById('confirm-report-btn').click();
     document.getElementById('confirm-report-btn').setAttribute('data-dismiss', '');
+}
+
+function showUserDiv() {
+    document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+    let d = document.getElementById('userDiv');
+    d.classList.add("animate");
+    setTimeout(function () {
+        d.classList.remove("animate");
+    }, 500);
+    d.style.display = "block";
+}
+
+function showInviteDiv() {
+    document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+    let d = document.getElementById('inviteDiv');
+    d.classList.add("animate");
+    setTimeout(function () {
+        d.classList.remove("animate");
+    }, 500);
+    d.style.display = "block";
+}
+document.querySelector('#userDiv > button').addEventListener('click', function () {
+
+    let d = document.getElementById('userDiv');
+    d.classList.add("animate-out");
+    setTimeout(function () {
+        d.classList.remove("animate-out");
+    }, 500);
+    setTimeout(function () {
+        d.style.display = "none";
+    }, 500);
+})
+document.querySelector('#inviteDiv > .skrr').addEventListener('click', function () {
+    let d = document.getElementById('inviteDiv');
+    d.classList.add("animate-out");
+    setTimeout(function () {
+        d.classList.remove("animate-out");
+    }, 500);
+    setTimeout(function () {
+        d.style.display = "none";
+    }, 500);
+})
+
+function isEmpty(obj) {
+    for (var prop in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+            return false;
+        }
+    }
+    return JSON.stringify(obj) === JSON.stringify({});
 }
