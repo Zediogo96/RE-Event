@@ -77,3 +77,36 @@ formTO.addEventListener("submit", function(e) {
         formTO.submit();
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('#report-form').addEventListener('submit', function(event) {
+        // TO PREVENT REQUESTS BEING SET WHILE DATA IS EMPTY
+        var formData = new FormData(this);
+        var empty = false;
+        for (var value of formData.values()) {
+            if (value == '') {
+                empty = true;
+            }
+        }
+        if (empty) {
+            event.preventDefault();
+            return;
+        }
+        var data = this;
+        fetch(data.getAttribute('action'), {
+                method: data.getAttribute('method'),
+                body: new FormData(data)
+            }).then(res => res.text())
+            .then(function(data) {
+                hide_report_modal();
+                showAlert('newReport');
+            });
+        event.preventDefault();
+    });
+});
+
+function hide_report_modal() {
+    document.getElementById('confirm-report-btn').setAttribute('data-dismiss', 'modal');
+    document.getElementById('confirm-report-btn').click();
+    document.getElementById('confirm-report-btn').setAttribute('data-dismiss', '');
+}

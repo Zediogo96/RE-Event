@@ -16,6 +16,8 @@
         @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
         <button href="#transferOwnershipModal" data-toggle="modal" class="btn btn-warning"> <a> <i class="fa fa-layer-group fa-fw"></i>
                 Transfer Ownership</a></button>
+        <button href="#del_Event_Modal" data-toggle="modal" id="del_event" class="btn btn-danger"> <a> <i class="fa fa-times fa-fw"></i>
+                Delete Event </a></button>
         @elseif (Auth::user() != NULL && !Auth::user()->attendingEvents->contains($event->eventid))
         <button onclick="ajax_selfAddUser('{{Auth::user()->userid}}', '{{$event->eventid}}')" class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
                 Enroll Event </a></button>
@@ -87,7 +89,7 @@
                 </a>
             </li>
 
-            @if (Auth::user() != NULL && in_array(Auth::user()->userid, $attendees))
+            <!-- @if (Auth::user() != NULL && in_array(Auth::user()->userid, $attendees))
             <li class="list">
                 <a href="#" onclick="showAttendeesDiv()">
                     <span class="icon">
@@ -96,7 +98,7 @@
                     <span class="title">Attendees</span>
                 </a>
             </li>
-            @endif
+            @endif -->
 
             @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
             <li class="list">
@@ -107,14 +109,6 @@
                     <span class="title">Attendees</span>
                 </a>
             </li>
-            <!-- <li class="list">
-                <a href="#" onclick="showOutroDiv()">
-                    <span class="icon">
-                        <ion-icon name="person-outline"></ion-icon>
-                    </span>
-                    <span class="title">Attendees</span>
-                </a>
-            </li> -->
 
             @endif
 
@@ -262,44 +256,10 @@
         @endif
         @include('partials.confirm_modal')
         @include('partials.reportModal')
+        @include('partials.conf_del_event')
     </div>
 
-    <script type="text/javascript" defer>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('#report-form').addEventListener('submit', function(event) {
-                // TO PREVENT REQUESTS BEING SET WHILE DATA IS EMPTY
-                var formData = new FormData(this);
-                var empty = false;
-                for (var value of formData.values()) {
-                    if (value == '') {
-                        empty = true;
-                    }
-                }
-                if (empty) {
-                    event.preventDefault();
-                    return;
-                }
-                var data = this;
-                fetch(data.getAttribute('action'), {
-                        method: data.getAttribute('method'),
-                        body: new FormData(data)
-                    }).then(res => res.text())
-                    .then(function(data) {
-                        hide_report_modal();
-                        showAlert('newReport');
-                    });
-                event.preventDefault();
-            });
-        });
-
-        function hide_report_modal() {
-            document.getElementById('confirm-report-btn').setAttribute('data-dismiss', 'modal');
-            document.getElementById('confirm-report-btn').click();
-            document.getElementById('confirm-report-btn').setAttribute('data-dismiss', '');
-        }
-    </script>
-
-    <script type="text/javascript" defer>
+<script type="text/javascript" defer>
         function renew_btns() {
 
             let del_btn = document.querySelectorAll(".__del_btn");

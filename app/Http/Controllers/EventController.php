@@ -288,20 +288,6 @@ class EventController extends Controller
         $eventhost->delete();
         $event->delete();
         return redirect('/home');
-
-/*         //shit based on removeUser
-        if (!Auth::check()) return redirect('/login');
-        $event = Event::find($request->eventid);
-        $user = User::find(Auth::user()->userid);
-        //find the eventhost entry with the eventid and userid
-        $eventhost = EventHost::where('eventid', $event->eventid)->first();
-        //authorize only if the user is host of the event
-        $this->authorize('isHost', [$event, $eventhost]);
-
-        //delete ticket record with user userid and event eventid
-        $ticket = Ticket::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
-        $ticket->delete();
-        // return redirect('/event' . $request->eventid); */
     }
 
 
