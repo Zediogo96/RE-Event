@@ -7,7 +7,7 @@
 <div class="container-event-page">
     <div class="container" id="event-content">
         <input type="hidden" id="eventid" value="{{$event->eventid}}">
-        <img src="{{$event -> photos[0]->path}}" alt="Event {{$event->eventid}} photo">
+        <img src="{{$event -> photos[0]->path}}" alt="Event {{$event->name}} photo">
         <div class="wrapper-res">
             <div id="event-name"> {{$event->name}} </div>
             <div id="event-date"> {{date('Y-m-d', strtotime($event->date))}} </div>
