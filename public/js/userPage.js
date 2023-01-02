@@ -18,11 +18,15 @@ form_del_acc.addEventListener("submit", (event) => {
         if (response.status === 200) {
             window.location.href = "/home";
         }
-        else if (response.status === 418) {
+        else if (response.status === 401) {
+
+            // close bootstrap 5 modal with vanilla js
+            document.getElementById("del_acc_modal").querySelector(".btn.btn-secondary").click();
+
             Swal.fire({
                 title: 'Error!',
                 text: 'You are still hosting events. Please delete or transfer their ownership first.',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonText: 'Continue'
               })
         }

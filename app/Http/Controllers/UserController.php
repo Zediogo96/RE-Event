@@ -179,7 +179,7 @@ class UserController extends Controller
         $events = $user->hostedEvents()->get();
         if (count($events) > 0) {
             // return response with status 200
-            return response()->json(['status' => 'error'], 418);
+            return response()->json(['status' => 'error'], 401);
         }
         $this->authorize('delete', $user);
         $user->delete();
