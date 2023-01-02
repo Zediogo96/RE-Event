@@ -13,7 +13,7 @@
 
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{$events[0]->photos[0]->path}}" class="w-100 h-200">
+                <img src="{{$events[0]->photos[0]->path}}" class="w-100 h-200" alt="Event {{$events[0]->name}} photo">
                 <div class="carousel-caption ">
                     <input type="hidden" name="event-date" value="{{$events[0]->date}}">
 
@@ -24,13 +24,13 @@
                 </div>
             </div>
             @for ($i = 1; $i <= 2; $i++) <div class="carousel-item">
-                <img src="{{$events[$i]->photos[0]->path}}" class="w-100 h-200 ">
+                <img src="{{$events[$i]->photos[0]->path}}" class="w-100 h-200 " alt="Event {{$events[$i]->name}} photo">
                 <div class="carousel-caption ">
                     <input type="hidden" name="event-date" value="{{$events[$i]->date}}">
                     <h5>{{$events[$i] -> name}}</h5>
                     <p>{{$events[$i] -> description}}</p>
                     <!-- button to buy tickets -->
-                    <a href="{{route('event.show', $events[$i]->eventid)}}" class="btn btn-primary">Buy Tickets</a>
+                    <a href="{{route('event.show', $events[$i]->eventid)}}" class="btn btn-primary">View Event</a>
                 </div>
         </div>
         @endfor
@@ -149,7 +149,7 @@
     @foreach ($events as $event)
     <a href="{{route('event.show', $event->eventid)}}">
         <div class="event-card">
-            <img loading="lazy" src="{{$event -> photos[0]->path}}" alt="" class="card-image">
+            <img loading="lazy" src="{{$event -> photos[0]->path}}" alt="" class="card-image" alt="Event {{$event->name}} photo">
             <h3 class="card-title"> {{$event->name}} </h3>
         </div>
     </a>

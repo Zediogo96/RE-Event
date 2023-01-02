@@ -7,7 +7,7 @@
 <div class="container-event-page">
     <div class="container" id="event-content">
         <input type="hidden" id="eventid" value="{{$event->eventid}}">
-        <img src="{{$event -> photos[0]->path}}">
+        <img src="{{$event -> photos[0]->path}}" alt="Event {{$event->name}} photo">
         <div class="wrapper-res">
             <div id="event-name"> {{$event->name}} </div>
             <div id="event-date"> {{date('Y-m-d', strtotime($event->date))}} </div>
@@ -133,7 +133,7 @@
             <div class="svg-background2"></div>
             <div class="circle"></div>
 
-            <img class="profile-img" src="{{$host->profilepic}}">
+            <img class="profile-img" src="{{$host->profilepic}}" alt="Event host profile picture">
             <div class="text-container">
                 <p class="title-text"> {{$host->name}}</p>
                 <p class="info-text">Event Host</p>
@@ -195,7 +195,7 @@
         <div class="p-4 mb-2" id="new-comment">
             <!-- New Comment //-->
             <div class="">
-                <img class="rounded-circle me-4" style="width:5rem;height:5rem; float:left;" src="{{Auth::user()->profilepic}}">
+                <img class="rounded-circle me-4" style="width:5rem;height:5rem; float:left;" src="{{Auth::user()->profilepic}}" alt="User profile picture">
                 <div class="flex-grow-1">
                     <div class="gap-2">
                         <p href="#" class="fw-bold">{{Auth::user()->name}}</p>
@@ -221,7 +221,7 @@
                 <div class="py-3" id="new-comments-container">
                     @foreach ($event->comments()->get() as $comment)
                     <div class="d-flex comment">
-                        <img class="rounded-circle comment-img" src="{{$comment->user->profilepic}}" />
+                        <img class="rounded-circle comment-img" src="{{$comment->user->profilepic}}" alt="User profile picture"/>
                         <div class="flex-grow-1 ms-3">
                             <div class="mb-1"><a href="#" class="fw-bold link-dark me-1">{{$comment->user->name}}</a>
                                 <span class="text-muted text-nowrap"> {{$comment->date}}</span>
