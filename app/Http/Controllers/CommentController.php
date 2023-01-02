@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 
-
+use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
@@ -35,14 +36,28 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
-        if ($request->input('text'))
-        $comment = new Comment;
-        $comment->text = $request->input('text');
-        $comment->userid = $request->input('userid');
-        $comment->eventid = $request->input('eventid');
-        $comment->save();
+        $user = User::find($request->input('eventid'));
+
+        $this->authorize('create', Comment::class, $user);
+
+        $text = $request->input('text');
+
+        if ($text != null) {
+
+            // some input sanitization to avoid security exploits
+            $text = strip_tags($text);
+            $text = stripslashes($text);
+            $text = htmlspecialchars($text);
+            $text = trim($text);
+            
+            $comment = new Comment;
+            $comment->text = $text;
+            $comment->userid = $request->input('userid');
+            $comment->eventid = $request->input('eventid');
+            $comment->save();
+        }
     }
 
     /**
@@ -87,6 +102,28 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        // 
+    }
+
+    public function getComments(Request $request)
+    {
+        $comments = Comment::where('eventid', $request->input('event_id'))->get();
+        for ($i = 0; $i < count($comments); $i++) {
+            $comments[$i]->user_profilePic = $comments[$i]->user->profilepic;
+            $comments[$i]->user_name = $comments[$i]->user->name;
+            $comments[$i]->upvote_count = $comments[$i]->upvotes->count();
+            if (Auth::user() && $comments[$i]->upvotes->where('userid', Auth::user()->userid)->first()) {
+                $comments[$i]->upvoted = true;
+            } else {
+                $comments[$i]->upvoted = false;
+            }
+        }
+        return Response($comments);
+    }
+
+    public function deleteComment(Request $request)
+    {
+        $comment = Comment::where('commentid', $request->input('comment_id'))->first();
+        $comment->delete();
     }
 }

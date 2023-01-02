@@ -114,7 +114,11 @@ input[type="checkb"] {
 .form-inner form .field {
   height: 50px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 25px;
+}
+
+#reg_form_photo {
+    margin-top: 40px;
 }
 
 .form-inner form .field input {
@@ -170,4 +174,9 @@ form .field input[type="submit"] {
 
 input[type=date] {
   color: var(--bs-gray);
+}
+
+.error {
+    color: red;
+    font-size: 5px;
 }

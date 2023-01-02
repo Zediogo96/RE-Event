@@ -1,7 +1,6 @@
 -- create schema if not exists lbaw;
 -- set search_path to lbaw;
 
-
 -- Remove Duplicate Tables --------------
 DROP TABLE IF EXISTS user_ CASCADE;
 DROP TABLE IF EXISTS event CASCADE;
@@ -10,6 +9,7 @@ DROP TABLE IF EXISTS invited CASCADE;
 DROP TABLE IF EXISTS ticket CASCADE;
 DROP TABLE IF EXISTS review CASCADE;
 DROP TABLE IF EXISTS comment CASCADE;
+DROP TABLE IF EXISTS upvote_comment CASCADE;
 DROP TABLE IF EXISTS report CASCADE;
 DROP TABLE IF EXISTS photo CASCADE;
 DROP TABLE IF EXISTS tag CASCADE;
@@ -51,8 +51,9 @@ CREATE TABLE user_ (
     birthDate date NOT NULL,
     password TEXT NOT NULL,
     gender Gender NOT NULL,
-    profilePic text DEFAULT 'profile_pictures/generic_pic.png',
-    admin boolean DEFAULT FALSE
+    profilePic text DEFAULT 'profile_pictures/generic_pic.jpg',
+    admin boolean DEFAULT FALSE,
+    isBlocked boolean DEFAULT FALSE
 );
 
 CREATE TABLE tag (
@@ -94,6 +95,7 @@ CREATE TABLE event_host (
 );
 
 CREATE TABLE invited (
+    read BOOLEAN DEFAULT FALSE, --sempre que eu abrir a tab dos invites, todas as notificacoes com user id auth ficam a read
     status boolean DEFAULT FALSE,
     invitedUserID integer REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
     inviterUserID integer REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -124,6 +126,12 @@ CREATE TABLE comment (
     eventID integer NOT NULL REFERENCES event (eventID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE upvote_comment (
+    userID integer NOT NULL REFERENCES user_ (userID) ON UPDATE CASCADE ON DELETE CASCADE,
+    commentID integer NOT NULL REFERENCES comment (commentID) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (userID, commentID)
+);
+
 CREATE TABLE report (
     reason Reason NOT NULL,
     description text NOT NULL,
@@ -144,7 +152,7 @@ CREATE TABLE photo (
 
 -- Indexes -------------------------------
 
-CREATE INDEX user_name ON user_ USING HASH(name);  
+CREATE INDEX user_name ON user_ USING HASH(name);
 
 CREATE INDEX event_date ON event USING BTREE(date);
 
@@ -158,14 +166,14 @@ ADD COLUMN tsvectors TSVECTOR;
 
 CREATE FUNCTION event_search_update() RETURNS TRIGGER AS $$
 BEGIN
-    IF TG_OP = 'INSERT' THEN 
+    IF TG_OP = 'INSERT' THEN
         NEW.tsvectors = (
             setweight(to_tsvector('english', coalesce(NEW.name,'')), 'A') ||
             setweight(to_tsvector('english', coalesce(NEW.description,'')), 'B')
         );
     END IF;
 
-    IF TG_OP = 'UPDATE' THEN 
+    IF TG_OP = 'UPDATE' THEN
         IF (NEW.name <> OLD.name OR NEW.description <> OLD.description) THEN
             NEW.tsvectors = (
                 setweight(to_tsvector('english', coalesce(NEW.name,'')), 'A') ||
@@ -177,7 +185,7 @@ BEGIN
 END $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE 
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
     ON Event FOR EACH ROW EXECUTE PROCEDURE event_search_update();
 
  CREATE INDEX event_search ON Event USING GIN(tsvectors);
@@ -187,13 +195,13 @@ ADD COLUMN tsvectors_city TSVECTOR;
 
 CREATE FUNCTION city_search_update() RETURNS TRIGGER AS $$
 BEGIN
-    IF TG_OP = 'INSERT' THEN 
+    IF TG_OP = 'INSERT' THEN
         NEW.tsvectors_city = (
             setweight(to_tsvector('english', coalesce(NEW.name,'')), 'C')
         );
     END IF;
 
-    IF TG_OP = 'UPDATE' THEN 
+    IF TG_OP = 'UPDATE' THEN
         IF (NEW.name <> OLD.name) THEN
             NEW.tsvectors_city = (
                 setweight(to_tsvector('english', coalesce(NEW.name,'')), 'C')
@@ -204,8 +212,8 @@ BEGIN
 END $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER tsvectorupdate_city BEFORE INSERT OR UPDATE 
-    ON City FOR EACH ROW EXECUTE PROCEDURE city_search_update(); 
+CREATE TRIGGER tsvectorupdate_city BEFORE INSERT OR UPDATE
+    ON City FOR EACH ROW EXECUTE PROCEDURE city_search_update();
 
  CREATE INDEX city_search ON City USING GIN(tsvectors_city);
 
@@ -214,13 +222,13 @@ ADD COLUMN tsvectors_country TSVECTOR;
 
 CREATE FUNCTION country_search_update() RETURNS TRIGGER AS $$
 BEGIN
-    IF TG_OP = 'INSERT' THEN 
+    IF TG_OP = 'INSERT' THEN
         NEW.tsvectors_country = (
             setweight(to_tsvector('english', coalesce(NEW.name,'')), 'C')
         );
     END IF;
 
-    IF TG_OP = 'UPDATE' THEN 
+    IF TG_OP = 'UPDATE' THEN
         IF (NEW.name <> OLD.name) THEN
             NEW.tsvectors_country = (
                 setweight(to_tsvector('english', coalesce(NEW.name,'')), 'C')
@@ -231,17 +239,17 @@ BEGIN
 END $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER tsvectorupdate_country BEFORE INSERT OR UPDATE 
-    ON Country FOR EACH ROW EXECUTE PROCEDURE country_search_update();  
+CREATE TRIGGER tsvectorupdate_country BEFORE INSERT OR UPDATE
+    ON Country FOR EACH ROW EXECUTE PROCEDURE country_search_update();
 
 CREATE INDEX country_search ON Country USING GIN(tsvectors_country);
 
 -- Triggers and UDFs -------------------------------
 
 --Trigger 01
---When some user creates or updates a review, the event average rating must be updated so that it can be used for sorting or searching purposes. 
+--When some user creates or updates a review, the event average rating must be updated so that it can be used for sorting or searching purposes.
 
-CREATE FUNCTION update_event_rating() RETURNS TRIGGER AS
+/* CREATE FUNCTION update_event_rating () RETURNS TRIGGER AS
 $BODY$
 BEGIN
 	UPDATE event
@@ -253,13 +261,37 @@ BEGIN
     );
 	RETURN NEW;
 END
-$BODY$ 
+$BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER event_avg_rating
-	AFTER INSERT OR UPDATE OR DELETE ON review
-    FOR EACH ROW
-	EXECUTE PROCEDURE update_event_rating();    
+	AFTER INSERT OR UPDATE OR DELETE ON review FOR EACH ROW
+	EXECUTE PROCEDURE update_event_rating ();    */
+
+-- CREATE TRIGGER TO UPDATE EVENT avg_rating after INSERT, UPDATE, DELETE on review
+CREATE OR REPLACE FUNCTION update_event_rating() RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        UPDATE event
+        SET avg_rating = (SELECT AVG(rating) FROM review WHERE eventID = NEW.eventID)
+        WHERE eventID = NEW.eventID;
+    ELSIF TG_OP = 'UPDATE' THEN
+        UPDATE event
+        SET avg_rating = (SELECT AVG(rating) FROM review WHERE eventID = NEW.eventID)
+        WHERE eventID = NEW.eventID;
+    ELSIF TG_OP = 'DELETE' THEN
+        UPDATE event
+        SET avg_rating = (SELECT AVG(rating) FROM review WHERE eventID = OLD.eventID)
+        WHERE eventID = OLD.eventID;
+    END IF;
+    RETURN NULL;
+END;
+
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_event_rating
+AFTER INSERT OR UPDATE OR DELETE ON review
+FOR EACH ROW EXECUTE PROCEDURE update_event_rating();
 
 --Trigger 02
 --When a user tries to enroll in an event that is already at full capacity, an error message should be displayed.
@@ -273,17 +305,17 @@ BEGIN
 	END IF;
 	RETURN NEW;
 END
-$BODY$ 
+$BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER check_event_capacity 
-	BEFORE INSERT ON ticket
+CREATE TRIGGER check_event_capacity
+	BEFORE INSERT ON ticket FOR EACH ROW
 	EXECUTE PROCEDURE check_capacity ();
 
 --Trigger 03
 --When a ticket is deleted or bought, the corresponding event capacity should be updated.
 
-CREATE FUNCTION _create_ticket() RETURNS TRIGGER AS 
+CREATE FUNCTION _create_ticket () RETURNS TRIGGER AS
 $BODY$
 BEGIN
 	UPDATE event
@@ -295,21 +327,21 @@ END
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE FUNCTION _delete_ticket () RETURNS TRIGGER AS 
-$BODY$ 
+CREATE FUNCTION _delete_ticket () RETURNS TRIGGER AS
+$BODY$
 BEGIN
 	UPDATE event
 	SET capacity = event.capacity + 1
 	WHERE eventID = OLD.eventID;
 	RETURN OLD;
-END 
-$BODY$ 
+END
+$BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER delete_ticket AFTER DELETE ON ticket
+CREATE TRIGGER delete_ticket AFTER DELETE ON ticket FOR EACH ROW
 EXECUTE PROCEDURE _delete_ticket();
 
-CREATE TRIGGER create_ticket BEFORE INSERT ON ticket
+CREATE TRIGGER create_ticket BEFORE INSERT ON ticket FOR EACH ROW
 EXECUTE PROCEDURE _create_ticket();
 
 /** Users **/
@@ -328,132 +360,86 @@ INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic,
 
 /* Users */
 
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (5, 'Thomas Orwig', 'Paul_Pak78@hotmail.com', '2020/12/11', '9644949e2bbdf42153ee331ef896b0f6120339bca2027442604af3d9c0c3eb56', 'O', 'profile_pictures/5.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (6, 'Frank Miller', 'Ike_Can93@gmail.com', '2021/12/26', '779dcd499d7988e1939e4dcdb4738f2c57fe953498a9bea2db9682da201828fb', 'M', 'profile_pictures/6.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (7, 'Fred Cannon', 'Ty_Law93@yahoo.pt', '2021/12/8', '352ea9e27fb3b8e1c16cda3027ddf82cc655ed3ce39c1b302e987cb066fcea32', 'O', 'profile_pictures/7.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (8, 'Alex Nugent', 'Steve_Nug89@hotmail.com', '2022/7/1', 'f13cd9be3e9a8d9701ea5fcd2e4b38c027e03410faba96893fa93967e53275d4', 'F', 'profile_pictures/8.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (9, 'Tim Knutson', 'George_Nug88@hotmail.com', '2021/12/14', 'bad35a58c5baf00cdf7eca85f29cb160ad58ea9fc3bb5b7e112198f7027fe39e', 'F', 'profile_pictures/9.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (10, 'Tim Hesch', 'Fred_Dei77@hotmail.com', '2021/11/1', '922aa4976cfd717be112e1cb351d8fefac85f53a56d582aaabbe3de054ffaf2e', 'O', 'profile_pictures/10.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (11, 'George Boyd', 'Steve_McC96@hotmail.com', '2022/8/3', 'a32f293eee304390ed6da23ae4ab0590df1badcc473ae31ac363335dddd1a303', 'F', 'profile_pictures/11.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (12, 'Fred McCormack', 'Walter_Bat96@yahoo.pt', '2020/5/22', '122d3e811d54aec7dd9c383e28cfe41814cb86de810c5fa9e3d4577df9404d53', 'M', 'profile_pictures/12.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (13, 'Ty Ebner', 'David_And96@yahoo.pt', '2020/3/26', '922cad714594f58883ceccf409b64673921f2754718a73ffedd5f2a940ec9003', 'O', 'profile_pictures/13.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (14, 'Joe Ashwoon', 'Dan_Hes84@yahoo.pt', '2020/8/20', '139eba792e702794e3bbea815d4a29714ebb334e68704f17976e61c69c562ae8', 'F', 'profile_pictures/14.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (15, 'Fred Lawicki', 'Roger_Aik88@hotmail.com', '2020/1/11', '445960f22ccade2bbc48dca89574e4b04e378b4be9e671acc9e896e9be4a90ca', 'O', 'profile_pictures/15.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (16, 'Mark Deitz', 'Jack_Aik95@gmail.com', '2022/12/14', '3f8800d771e57f2b4ff96de4abbf003bf174452ea6083b0213a60473947afbe0', 'M', 'profile_pictures/16.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (17, 'Steve Knutson', 'David_Orw83@hotmail.com', '2020/8/16', 'f6d642c0a06524720de2be173938cff675682f96caa5282deee9a6995bb49b3c', 'M', 'profile_pictures/17.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (18, 'Matthew Quinn', 'Adam_Qui94@gmail.com', '2020/1/8', '1aa5c97b42d3bc6b4700e4080c801edac54d9ec30f901c4f40ff86ffa509ba1d', 'O', 'profile_pictures/18.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (19, 'Frank Ebner', 'Roger_Dei73@hotmail.com', '2022/4/7', '2f7a3b2a67a6855f4b49feaa7b7e8f2fff24315fc2c1a743168f1db3c5ef51a8', 'M', 'profile_pictures/19.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (20, 'John Ebner', 'Paul_Bow79@gmail.com', '2020/5/4', 'bd5479f8e2004b5bb78033425ea93d9793806f45f3eb638416564206ceb9abe5', 'O', 'profile_pictures/20.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (21, 'Hal Quinn', 'Monte_Mcc80@hotmail.com', '2022/4/16', '1b5232a2e0bcc326698673978afc2c73e61ef25c35bd030781cf964959f3311f', 'O', 'profile_pictures/21.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (22, 'Aaron Lawless', 'Alex_Mcc77@gmail.com', '2021/7/23', 'c426f6564ff3fe43262fb80919164b628e9cbed0689b2baad181d00bc81fb8f6', 'M', 'profile_pictures/22.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (23, 'David Paiser', 'Adam_Pet98@hotmail.com', '2021/2/5', '18139f04d65e32e7ba88278ceb04d37ae778919c01b25081c8f5d1e55df8858e', 'M', 'profile_pictures/23.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (24, 'Roger Ebner', 'Aaron_McC87@yahoo.pt', '2020/10/20', '3d8aad9c272b2deadd95cda08af36258275a06bd16611fb7ff28675aeea77ffc', 'O', 'profile_pictures/24.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (25, 'Walter Paiser', 'Aaron_Orw88@yahoo.pt', '2022/10/29', '2ab13944e0c68d7711827aa5745df82864578e3735660d557bfdf785a6585210', 'M', 'profile_pictures/25.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (26, 'Aaron Myers', 'Paul_Aik86@gmail.com', '2022/6/24', 'c5a9facb04d5d9a718ca051829e7d14ae95c56a4e49d11a4196a77eb52c7d8d7', 'M', 'profile_pictures/26.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (27, 'Hank Deitz', 'Roger_Mcc72@yahoo.pt', '2022/7/4', '540e50b6791811ac0d3543a8cffdddcd23b06979b1faebd9c1fe29099832e499', 'F', 'profile_pictures/27.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (28, 'Ike Orwig', 'Edward_Bat83@gmail.com', '2022/11/6', 'db665c32a8da636aa5ab51c36d0ff13377b78dde38c6c232adb8c50fd833ae87', 'O', 'profile_pictures/28.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (29, 'Carl Ortiz', 'Dan_Aik85@yahoo.pt', '2020/8/20', '710061e0f7a143f23afeefaca6bf03f864406846bb7d07b74c37e5e83d54e460', 'M', 'profile_pictures/29.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (30, 'Peter Ashwoon', 'Ty_Hof70@hotmail.com', '2020/1/23', '8dba5e63966fb272f559dccdc5cf1c680cdceb9d806db675744112febba740c2', 'M', 'profile_pictures/30.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (31, 'John Cannon', 'Thomas_Haw83@hotmail.com', '2020/3/2', '606ce7c94159e59dcdf5c5de805b146c6a8860f37b815c5bebb3b74e24e0e4e4', 'O', 'profile_pictures/31.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (32, 'Peter Lawicki', 'Roger_Bat93@gmail.com', '2020/3/1', '56a68e287d32395a30a1e97f31dbb47beaf3f14c6f63fce5858f8fd3a9e39e26', 'O', 'profile_pictures/32.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (33, 'Frank Frick', 'Fred_Qui96@gmail.com', '2021/6/10', '60aa464cd09bcf6343cb5186e88d9b7c2b735c2929379843b670a13bb467ac72', 'O', 'profile_pictures/33.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (34, 'Adam Bateman', 'Edward_Qui81@hotmail.com', '2022/9/26', '319b4a8073489120daf23966dbc4318b9ecf3c7624bbb591e34a106164202535', 'F', 'profile_pictures/34.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (35, 'Hal Kassing', 'Steve_Mil89@gmail.com', '2021/4/16', '0d73af7d297096e3e9d360c14189c192e664d1383ec3f2aa65bf4da7e9d35b5c', 'O', 'profile_pictures/35.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (36, 'Adam Haworth', 'Roger_Ory87@hotmail.com', '2022/4/23', '69c6a296d7e7fac5ef03893b2da899672640c3a8d978fef3b384fbbba557432e', 'O', 'profile_pictures/36.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (37, 'Carl Orwig', 'Jack_Kas84@gmail.com', '2020/8/22', 'ca9796a5be1c082214027081765562fbe6cd103e5de15fb3688c219edc1b8785', 'O', 'profile_pictures/37.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (38, 'Paul Quinn', 'Ike_Mil74@yahoo.pt', '2020/10/3', '552a8d48c1c0a691f21de1cc04cba4310fab707e0d6cbf409b0e7fb848d43956', 'M', 'profile_pictures/38.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (39, 'Roger Frick', 'Aaron_Bow72@yahoo.pt', '2022/2/26', 'd79998dd9271329f11e5bb248b274da5b9bff79f9ec9f00c03323feb88fa009e', 'F', 'profile_pictures/39.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (40, 'Nathan Deitz', 'Fred_Aik90@hotmail.com', '2021/9/5', '7bb368f7f697084d9d682a9694127304eac06f9b42d20cea1250703b9c0ed7bf', 'F', 'profile_pictures/40.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (41, 'Roger McCormack', 'Matthew_Nug97@yahoo.pt', '2021/6/17', '5289899450d8c2b03f89c4a9f6936801c13a05982c0b0f5c8547237a779493af', 'O', 'profile_pictures/41.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (42, 'Ty Boyd', 'Aaron_Pet90@yahoo.pt', '2022/10/5', 'b5df7550709a0cc4e054be75a9046ef4227e493cb885994c381d172e433e552b', 'M', 'profile_pictures/42.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (43, 'Aaron Pak', 'Peter_Mye96@hotmail.com', '2022/2/9', 'f0cb14d1d2d63197bc93047ddb993fba2661111cdb83b258a7359979dfa6e3c1', 'M', 'profile_pictures/43.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (44, 'George Nugent', 'Ben_Cas83@gmail.com', '2022/4/28', '4e4b1a50e531380ba48f8cb95927c119558955613e50b86413b1b64de4bf058b', 'M', 'profile_pictures/44.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (45, 'Carl Kassing', 'Steve_Law89@hotmail.com', '2022/3/15', 'dab6a8176fa718f523c78b9cafd184d398eff4b41dc4ddb60f1e3487989a80c7', 'O', 'profile_pictures/45.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (46, 'David Bowers', 'David_Fri73@hotmail.com', '2020/7/9', '14760187fce728b7316dda6cde9f35896b4eb4716d3944d697ad41461f7b8323', 'F', 'profile_pictures/46.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (47, 'Alex Haworth', 'Steve_Boy82@gmail.com', '2021/1/12', 'fe14adb6950368a8e1fe764ae31c0dbc86dc6e615c2d48d2960a7f74ff5dc911', 'O', 'profile_pictures/47.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (48, 'Nathan Orwig', 'Ty_Boy93@hotmail.com', '2021/12/5', '06b7fe3d366c8f3394c9a0c2e2c71968ec5eb6c663b7e2f0f0315e851fae72b1', 'O', 'profile_pictures/48.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (49, 'Frank Lawless', 'Hal_Can72@yahoo.pt', '2020/11/4', 'fa52087106f92dbad59ceaab27a40583fe019e69f7db7d1598d67f6349693606', 'O', 'profile_pictures/49.jpg', False);
-INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin) VALUES (50, 'George Ebner', 'john_McC71@hotmail.com', '2020/3/30', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'F', 'profile_pictures/50.jpg', False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (5, 'Thomas Orwig', 'Paul_Pak78@hotmail.com', '2020/12/11', '9644949e2bbdf42153ee331ef896b0f6120339bca2027442604af3d9c0c3eb56', 'O', 'profile_pictures/5.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (6, 'Frank Miller', 'Ike_Can93@gmail.com', '2021/12/26', '779dcd499d7988e1939e4dcdb4738f2c57fe953498a9bea2db9682da201828fb', 'M', 'profile_pictures/6.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (7, 'Fred Cannon', 'Ty_Law93@yahoo.pt', '2021/12/8', '352ea9e27fb3b8e1c16cda3027ddf82cc655ed3ce39c1b302e987cb066fcea32', 'O', 'profile_pictures/7.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (8, 'Alex Nugent', 'Steve_Nug89@hotmail.com', '2022/7/1', 'f13cd9be3e9a8d9701ea5fcd2e4b38c027e03410faba96893fa93967e53275d4', 'F', 'profile_pictures/8.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (9, 'Tim Knutson', 'George_Nug88@hotmail.com', '2021/12/14', 'bad35a58c5baf00cdf7eca85f29cb160ad58ea9fc3bb5b7e112198f7027fe39e', 'F', 'profile_pictures/9.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (10, 'Tim Hesch', 'Fred_Dei77@hotmail.com', '2021/11/1', '922aa4976cfd717be112e1cb351d8fefac85f53a56d582aaabbe3de054ffaf2e', 'O', 'profile_pictures/10.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (11, 'George Boyd', 'Steve_McC96@hotmail.com', '2022/8/3', 'a32f293eee304390ed6da23ae4ab0590df1badcc473ae31ac363335dddd1a303', 'F', 'profile_pictures/11.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (12, 'Fred McCormack', 'Walter_Bat96@yahoo.pt', '2020/5/22', '122d3e811d54aec7dd9c383e28cfe41814cb86de810c5fa9e3d4577df9404d53', 'M', 'profile_pictures/12.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (13, 'Ty Ebner', 'David_And96@yahoo.pt', '2020/3/26', '922cad714594f58883ceccf409b64673921f2754718a73ffedd5f2a940ec9003', 'O', 'profile_pictures/13.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (14, 'Joe Ashwoon', 'Dan_Hes84@yahoo.pt', '2020/8/20', '139eba792e702794e3bbea815d4a29714ebb334e68704f17976e61c69c562ae8', 'F', 'profile_pictures/14.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (15, 'Fred Lawicki', 'Roger_Aik88@hotmail.com', '2020/1/11', '445960f22ccade2bbc48dca89574e4b04e378b4be9e671acc9e896e9be4a90ca', 'O', 'profile_pictures/15.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (16, 'Mark Deitz', 'Jack_Aik95@gmail.com', '2022/12/14', '3f8800d771e57f2b4ff96de4abbf003bf174452ea6083b0213a60473947afbe0', 'M', 'profile_pictures/16.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (17, 'Steve Knutson', 'David_Orw83@hotmail.com', '2020/8/16', 'f6d642c0a06524720de2be173938cff675682f96caa5282deee9a6995bb49b3c', 'M', 'profile_pictures/17.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (18, 'Matthew Quinn', 'Adam_Qui94@gmail.com', '2020/1/8', '1aa5c97b42d3bc6b4700e4080c801edac54d9ec30f901c4f40ff86ffa509ba1d', 'O', 'profile_pictures/18.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (19, 'Frank Ebner', 'Roger_Dei73@hotmail.com', '2022/4/7', '2f7a3b2a67a6855f4b49feaa7b7e8f2fff24315fc2c1a743168f1db3c5ef51a8', 'M', 'profile_pictures/19.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (20, 'John Ebner', 'Paul_Bow79@gmail.com', '2020/5/4', 'bd5479f8e2004b5bb78033425ea93d9793806f45f3eb638416564206ceb9abe5', 'O', 'profile_pictures/20.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (21, 'Hal Quinn', 'Monte_Mcc80@hotmail.com', '2022/4/16', '1b5232a2e0bcc326698673978afc2c73e61ef25c35bd030781cf964959f3311f', 'O', 'profile_pictures/21.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (22, 'Aaron Lawless', 'Alex_Mcc77@gmail.com', '2021/7/23', 'c426f6564ff3fe43262fb80919164b628e9cbed0689b2baad181d00bc81fb8f6', 'M', 'profile_pictures/22.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (23, 'David Paiser', 'Adam_Pet98@hotmail.com', '2021/2/5', '18139f04d65e32e7ba88278ceb04d37ae778919c01b25081c8f5d1e55df8858e', 'M', 'profile_pictures/23.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (24, 'Roger Ebner', 'Aaron_McC87@yahoo.pt', '2020/10/20', '3d8aad9c272b2deadd95cda08af36258275a06bd16611fb7ff28675aeea77ffc', 'O', 'profile_pictures/24.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (25, 'Walter Paiser', 'Aaron_Orw88@yahoo.pt', '2022/10/29', '2ab13944e0c68d7711827aa5745df82864578e3735660d557bfdf785a6585210', 'M', 'profile_pictures/25.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (26, 'Aaron Myers', 'Paul_Aik86@gmail.com', '2022/6/24', 'c5a9facb04d5d9a718ca051829e7d14ae95c56a4e49d11a4196a77eb52c7d8d7', 'M', 'profile_pictures/26.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (27, 'Hank Deitz', 'Roger_Mcc72@yahoo.pt', '2022/7/4', '540e50b6791811ac0d3543a8cffdddcd23b06979b1faebd9c1fe29099832e499', 'F', 'profile_pictures/27.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (28, 'Ike Orwig', 'Edward_Bat83@gmail.com', '2022/11/6', 'db665c32a8da636aa5ab51c36d0ff13377b78dde38c6c232adb8c50fd833ae87', 'O', 'profile_pictures/28.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (29, 'Carl Ortiz', 'Dan_Aik85@yahoo.pt', '2020/8/20', '710061e0f7a143f23afeefaca6bf03f864406846bb7d07b74c37e5e83d54e460', 'M', 'profile_pictures/29.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (30, 'Peter Ashwoon', 'Ty_Hof70@hotmail.com', '2020/1/23', '8dba5e63966fb272f559dccdc5cf1c680cdceb9d806db675744112febba740c2', 'M', 'profile_pictures/30.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (31, 'John Cannon', 'Thomas_Haw83@hotmail.com', '2020/3/2', '606ce7c94159e59dcdf5c5de805b146c6a8860f37b815c5bebb3b74e24e0e4e4', 'O', 'profile_pictures/31.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (32, 'Peter Lawicki', 'Roger_Bat93@gmail.com', '2020/3/1', '56a68e287d32395a30a1e97f31dbb47beaf3f14c6f63fce5858f8fd3a9e39e26', 'O', 'profile_pictures/32.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (33, 'Frank Frick', 'Fred_Qui96@gmail.com', '2021/6/10', '60aa464cd09bcf6343cb5186e88d9b7c2b735c2929379843b670a13bb467ac72', 'O', 'profile_pictures/33.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (34, 'Adam Bateman', 'Edward_Qui81@hotmail.com', '2022/9/26', '319b4a8073489120daf23966dbc4318b9ecf3c7624bbb591e34a106164202535', 'F', 'profile_pictures/34.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (35, 'Hal Kassing', 'Steve_Mil89@gmail.com', '2021/4/16', '0d73af7d297096e3e9d360c14189c192e664d1383ec3f2aa65bf4da7e9d35b5c', 'O', 'profile_pictures/35.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (36, 'Adam Haworth', 'Roger_Ory87@hotmail.com', '2022/4/23', '69c6a296d7e7fac5ef03893b2da899672640c3a8d978fef3b384fbbba557432e', 'O', 'profile_pictures/36.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (37, 'Carl Orwig', 'Jack_Kas84@gmail.com', '2020/8/22', 'ca9796a5be1c082214027081765562fbe6cd103e5de15fb3688c219edc1b8785', 'O', 'profile_pictures/37.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (38, 'Paul Quinn', 'Ike_Mil74@yahoo.pt', '2020/10/3', '552a8d48c1c0a691f21de1cc04cba4310fab707e0d6cbf409b0e7fb848d43956', 'M', 'profile_pictures/38.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (39, 'Roger Frick', 'Aaron_Bow72@yahoo.pt', '2022/2/26', 'd79998dd9271329f11e5bb248b274da5b9bff79f9ec9f00c03323feb88fa009e', 'F', 'profile_pictures/39.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (40, 'Nathan Deitz', 'Fred_Aik90@hotmail.com', '2021/9/5', '7bb368f7f697084d9d682a9694127304eac06f9b42d20cea1250703b9c0ed7bf', 'F', 'profile_pictures/40.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (41, 'Roger McCormack', 'Matthew_Nug97@yahoo.pt', '2021/6/17', '5289899450d8c2b03f89c4a9f6936801c13a05982c0b0f5c8547237a779493af', 'O', 'profile_pictures/41.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (42, 'Ty Boyd', 'Aaron_Pet90@yahoo.pt', '2022/10/5', 'b5df7550709a0cc4e054be75a9046ef4227e493cb885994c381d172e433e552b', 'M', 'profile_pictures/42.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (43, 'Aaron Pak', 'Peter_Mye96@hotmail.com', '2022/2/9', 'f0cb14d1d2d63197bc93047ddb993fba2661111cdb83b258a7359979dfa6e3c1', 'M', 'profile_pictures/43.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (44, 'George Nugent', 'Ben_Cas83@gmail.com', '2022/4/28', '4e4b1a50e531380ba48f8cb95927c119558955613e50b86413b1b64de4bf058b', 'M', 'profile_pictures/44.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (45, 'Carl Kassing', 'Steve_Law89@hotmail.com', '2022/3/15', 'dab6a8176fa718f523c78b9cafd184d398eff4b41dc4ddb60f1e3487989a80c7', 'O', 'profile_pictures/45.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (46, 'David Bowers', 'David_Fri73@hotmail.com', '2020/7/9', '14760187fce728b7316dda6cde9f35896b4eb4716d3944d697ad41461f7b8323', 'F', 'profile_pictures/46.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (47, 'Alex Haworth', 'Steve_Boy82@gmail.com', '2021/1/12', 'fe14adb6950368a8e1fe764ae31c0dbc86dc6e615c2d48d2960a7f74ff5dc911', 'O', 'profile_pictures/47.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (48, 'Nathan Orwig', 'Ty_Boy93@hotmail.com', '2021/12/5', '06b7fe3d366c8f3394c9a0c2e2c71968ec5eb6c663b7e2f0f0315e851fae72b1', 'O', 'profile_pictures/48.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (49, 'Frank Lawless', 'Hal_Can72@yahoo.pt', '2020/11/4', 'fa52087106f92dbad59ceaab27a40583fe019e69f7db7d1598d67f6349693606', 'O', 'profile_pictures/49.jpg', False, False);
+INSERT INTO user_ (userID, name, email, birthDate, password, gender, profilePic, admin, isBlocked) VALUES (50, 'George Ebner', 'john_McC71@hotmail.com', '2020/3/30', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'F', 'profile_pictures/50.jpg', False, False);
 /** +#PY'(}N **/
 
 SELECT setval('user__userID_seq', (SELECT MAX(userID) from "user_"));
 
 /** Tags **/
 
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (1, 'music', 'MSC');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (2, 'visual-arts', 'VA');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (3, 'film', 'FLM');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (4, 'fashion', 'FSH');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (5, 'cooking', 'COK');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (6, 'charities', 'CHR');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (7, 'sports', 'SPO');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (8, 'nightlife', 'NGT');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (9, 'family', 'FAM');
-
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (10, 'books', 'BOK');
-	
-INSERT INTO tag (tagID, name, symbol)
-    VALUES (11, 'technology', 'TEC');
+INSERT INTO tag (tagID, name, symbol) VALUES (1, 'music', 'MSC');
+INSERT INTO tag (tagID, name, symbol) VALUES (2, 'visual-arts', 'VA');
+INSERT INTO tag (tagID, name, symbol) VALUES (3, 'film', 'FLM');
+INSERT INTO tag (tagID, name, symbol) VALUES (4, 'fashion', 'FSH');
+INSERT INTO tag (tagID, name, symbol) VALUES (5, 'cooking', 'COK');
+INSERT INTO tag (tagID, name, symbol) VALUES (6, 'charities', 'CHR');
+INSERT INTO tag (tagID, name, symbol) VALUES (7, 'sports', 'SPO');
+INSERT INTO tag (tagID, name, symbol) VALUES (8, 'nightlife', 'NGT');
+INSERT INTO tag (tagID, name, symbol) VALUES (9, 'family', 'FAM');
+INSERT INTO tag (tagID, name, symbol) VALUES (10, 'books', 'BOK');
+INSERT INTO tag (tagID, name, symbol) VALUES (11, 'technology', 'TEC');
 
 SELECT setval('tag_tagID_seq', (SELECT MAX(tagID) from "tag"));
 
-
 /** Countries **/
 
-INSERT INTO country (countryID, name)
-    VALUES (1, 'Bahrain');
-
-INSERT INTO country (countryID, name)
-    VALUES (2, 'Saudi Arabia');
-
-INSERT INTO country (countryID, name)
-    VALUES (3, 'Australia');
-
-INSERT INTO country (countryID, name)
-    VALUES (4, 'Italy');
-
-INSERT INTO country (countryID, name)
-    VALUES (5, 'United States');
-
-INSERT INTO country (countryID, name)
-    VALUES (6, 'Monaco');
-
-INSERT INTO country (countryID, name)
-    VALUES (7, 'Azerbaijan');
-
-INSERT INTO country (countryID, name)
-    VALUES (8, 'Canada');
-
-INSERT INTO country (countryID, name)
-    VALUES (9, 'Great Britain');
-
-INSERT INTO country (countryID, name)
-    VALUES (10, 'Portugal');
-
-INSERT INTO country (countryID, name)
-    VALUES (11, 'Spain');
-
-INSERT INTO country (countryID, name)
-    VALUES (12, 'Scotland');
-
+INSERT INTO country (countryID, name) VALUES (1, 'Bahrain');
+INSERT INTO country (countryID, name) VALUES (2, 'Saudi Arabia');
+INSERT INTO country (countryID, name) VALUES (3, 'Australia');
+INSERT INTO country (countryID, name) VALUES (4, 'Italy');
+INSERT INTO country (countryID, name) VALUES (5, 'United States');
+INSERT INTO country (countryID, name) VALUES (6, 'Monaco');
+INSERT INTO country (countryID, name) VALUES (7, 'Azerbaijan');
+INSERT INTO country (countryID, name) VALUES (8, 'Canada');
+INSERT INTO country (countryID, name) VALUES (9, 'Great Britain');
+INSERT INTO country (countryID, name) VALUES (10, 'Portugal');
+INSERT INTO country (countryID, name) VALUES (11, 'Spain');
+INSERT INTO country (countryID, name) VALUES (12, 'Scotland');
 
 SELECT setval('country_countryID_seq', (SELECT MAX(countryID) from "country"));
 
@@ -468,61 +454,25 @@ The name of the sequence is autogenerated and is always tablename_columnname_seq
 **/
 
 /** Cities **/
-INSERT INTO city (cityID, name, countryID)
-    VALUES (1, 'Manama', 1);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (2, 'Jeddah', 2);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (3, 'Melbourne', 3);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (4, 'Milan', 4);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (5, 'Austin', 5);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (6, 'Monte Carlo', 6);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (7, 'Baku', 7);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (8, 'Montreal', 8);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (9, 'Silverstone', 9);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (10, 'Portimão', 10);
-	
-INSERT INTO city (cityID, name, countryID)
-    VALUES (11, 'Coimbra', 10);
-	
-INSERT INTO city (cityID, name, countryID)
-    VALUES (12, 'Lisboa', 10);
-	
-INSERT INTO city (cityID, name, countryID)
-    VALUES (13, 'Porto', 10);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (14, 'Barcelona', 11);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (15, 'Madrid', 11);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (16, 'London', 9);
-
-INSERT INTO city (cityID, name, countryID)
-    VALUES (17, 'Edinburgh', 12);
-
-
+INSERT INTO city (cityID, name, countryID) VALUES (1, 'Manama', 1);
+INSERT INTO city (cityID, name, countryID) VALUES (2, 'Jeddah', 2);
+INSERT INTO city (cityID, name, countryID) VALUES (3, 'Melbourne', 3);
+INSERT INTO city (cityID, name, countryID) VALUES (4, 'Milan', 4);
+INSERT INTO city (cityID, name, countryID) VALUES (5, 'Austin', 5);
+INSERT INTO city (cityID, name, countryID) VALUES (6, 'Monte Carlo', 6);
+INSERT INTO city (cityID, name, countryID) VALUES (7, 'Baku', 7);
+INSERT INTO city (cityID, name, countryID) VALUES (8, 'Montreal', 8);
+INSERT INTO city (cityID, name, countryID) VALUES (9, 'Silverstone', 9);
+INSERT INTO city (cityID, name, countryID) VALUES (10, 'Portimão', 10);
+INSERT INTO city (cityID, name, countryID) VALUES (11, 'Coimbra', 10);
+INSERT INTO city (cityID, name, countryID) VALUES (12, 'Lisboa', 10);
+INSERT INTO city (cityID, name, countryID) VALUES (13, 'Porto', 10);
+INSERT INTO city (cityID, name, countryID) VALUES (14, 'Barcelona', 11);
+INSERT INTO city (cityID, name, countryID) VALUES (15, 'Madrid', 11);
+INSERT INTO city (cityID, name, countryID) VALUES (16, 'London', 9);
+INSERT INTO city (cityID, name, countryID) VALUES (17, 'Edinburgh', 12);
 
 SELECT setval('city_cityID_seq', (SELECT MAX(cityID) from "city"));
-
 
 /** Events **/
 
@@ -539,96 +489,151 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 
 -- Family Events Boost
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (10, 'Visita Parque Biológico Gaia', 'Venham visitar o Parque Biológico de Gaia, um dos melhores parques de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (11, 'Festival Canal Panda', 'O mítico festival do Canal Panda está de volta a Portugal!', 10000, '2023-06-19', '2022-10-01', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (12, 'Festival de Verão', 'O melhor festival de verão está de volta a Portugal!', 10000, '2023-07-19', '2022-10-01', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (13, 'SEA Life Porto', 'Venham visitar o SEA Life Porto, um dos melhores aquários de Portugal!', 500, '2023-05-03', '2022-12-04', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (14, 'Buggy Ride Familiar', 'Venham fazer um passeio de buggy familiar!', 100, '2023-05-03', '2022-12-04', 200, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (15, 'Visita ao Museu do Vinho do Porto', 'Venham visitar o Museu do Vinho do Porto, um dos melhores museus de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (16, 'Visita ao Museu do Carro Elétrico', 'Venham visitar o Museu do Carro Elétrico, um dos melhores museus de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (17, 'Zoo Santo Inácio Tour', 'Venham visitar o Zoo Santo Inácio, um dos melhores zoológicos de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Zoo de Santo Inácio', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (18, 'Cruzeiro Rio Douro', 'Venham fazer um cruzeiro pelo Rio Douro!', 300, '2023-05-03', '2022-12-04', 250, 9, 'Porto, Vila Nova de Gaia', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(50, 'Visita Vigo', 'Venham visitar Vigo, uma das melhores cidades de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Vigo, Galicia', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(51, 'Visita Santiago de Compostela', 'Venham visitar Santiago de Compostela, uma das melhores cidades de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(52, 'Prova de Vinhos', 'Venham fazer uma prova de vinhos!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(53, 'Visita Museu de Arte Contemporânea', 'Venham visitar o Museu de Arte Contemporânea, um dos melhores museus de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(54, 'Museu dos Computadores', 'Venham visitar o Museu dos Computadores, um dos melhores museus de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(55, 'Museu Mercedes AMG', 'Venham visitar o Museu Mercedes AMG, um dos melhores museus de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
 
 -- Sports Events Boost
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (19, 'F1 Spain Grand Prix 2022', 'Formula 1 returns to the streets of Barcelona, where Max Verstappen won last year. Will Red Bull be capable of stealing the victory this season?', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Circuit de Barcelona-Catalunya, 08100 Montmeló, Barcelona', 14, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (20, 'F1 Monaco Grand Prix 2022', 'The Monaco Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Circuit de Monaco, 98000 Monaco', 6, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (21, 'F1 Portugal Grand Prix 2022', 'The Portuguese Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Autódromo Internacional do Algarve, 8005-139 Portimão', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (22, 'F1 Azerbaijan Grand Prix 2022', 'The Azerbaijan Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Baku City Circuit, Baku', 7, False);
 
-SELECT setval('event_eventID_seq', (SELECT MAX(eventID) from "event"));
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(43, 'Sporting vs Porto', 'Sporting vs Porto', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Estádio José Alvalade', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(44, 'Tiger Woods vs Phil Mickelson', 'Tiger Woods vs Phil Mickelson', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Shadow Creek Golf Course', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(45, 'F1 British Grand Prix 2022', 'The British Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Silverstone Circuit, Towcester', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(46, 'Roger Federer vs Rafael Nadal', 'Roger Federer vs Rafael Nadal', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Stade de Suisse, Bern', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(47, 'Jogos Olimpicos 2022', 'Jogos Olimpicos 2022', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Tokyo, Japan', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(48, 'Xadrez Mundial 2022', 'Xadrez Mundial 2022', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Porto, Portugal', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(49, 'Magnus Carlsen vs Fabiano Caruana', 'Magnus Carlsen vs Fabiano Caruana', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Porto, Portugal', 13, False);
 
 -- Music Events Boost
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (23, 'Metallica', 'Metallica is an American heavy metal band from Los Angeles, California. The band was formed in 1981 by drummer Lars Ulrich and vocalist/guitarist James Hetfield, and has been based in San Francisco for most of its career.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (24, 'Chico Buarque', 'Chico Buarque de Hollanda is a Brazilian singer-songwriter, composer, actor, and politician. He is considered one of the most important Brazilian songwriters of the 20th century.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (25, 'Red Hot Chilli Peppers', 'Red Hot Chili Peppers are an American rock band formed in Los Angeles in 1983. The groups musical style primarily consists of rock with an emphasis on funk, as well as elements from other genres such as punk rock and psychedelic rock.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (26, 'Tash Sultana', 'Tash Sultana is an Australian singer-songwriter and multi-instrumentalist. She is known for her live looping, which she uses to create complex rhythms and layers of sound.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Estadio do Dragão', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (27, 'Jorja Smith', 'Jorja Smith is an English singer and songwriter. She is signed to FAMM, a subsidiary of Black Butter Records, and has released two EPs, Project 11 and Lost & Found, and one studio album, Lost & Found.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (28, 'Iron Maiden', 'Iron Maiden are an English heavy metal band formed in Leyton, East London, in 1975 by bassist and primary songwriter Steve Harris. The band''s discography has grown to 38 albums, including 16 studio albums, 14 live albums, four EPs, and four compilations.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Estádio do Dragão, Porto', 13, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(37, 'Post Malone', 'Austin Richard Post, known professionally as Post Malone, is an American rapper, singer, songwriter, and record producer. He first gained major recognition in 2015 following the release of his debut single "White Iverson".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(38, 'Tame Impala', 'Tame Impala is an Australian psychedelic rock band formed in Perth in 2007. The band''s current lineup consists of Kevin Parker, Dominic Simper, Jay Watson, Cam Avery, and Julien Barbagallo.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(39, 'Jack Harlow', 'Jack Harlow is an American rapper, singer, and songwriter. He is best known for his singles "What''s Poppin" and "Tyler Herro".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(40, 'The Weeknd', 'Abel Makkonen Tesfaye, known professionally as The Weeknd, is a Canadian singer, songwriter, and record producer. He first gained recognition in 2011, when he anonymously uploaded several songs to YouTube under the name "The Weeknd".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(41, 'Lil Baby', 'Dominique Jones, known professionally as Lil Baby, is an American rapper. He is best known for his singles "My Dawg" and "Woah".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
+
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
+(42, 'Lil Uzi Vert', 'Symere Woods, known professionally as Lil Uzi Vert, is an American rapper, singer, and songwriter. He is best known for his singles "XO Tour Llif3" and "Money Longer".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
 
 -- Tech Events Boost
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (29, 'Global Metaverse Carnival', 'The Global Metaverse Carnival is a 3-day event that will bring together the most influential leaders in the Metaverse, including CEOs, founders, investors, and developers.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (30, 'Lisbon Tech Job Fair 2023', 'The Lisbon Tech Job Fair is a 3-day event that will bring together the most influential leaders in the Metaverse, including CEOs, founders, investors, and developers.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (31, 'Beer in the Bloq', 'Where the best of the tech world meets the best of the beer world.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (32, 'Mobile World Congress', 'The Mobile World Congress is the world''s largest gathering for the mobile industry, organised by the GSMA and held in the Mobile World Capital Barcelona.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Fira Gran Via', 14, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (33, 'Cloudfest', 'Cloudfest events are a series of conferences and workshops that bring together the best minds in the cloud industry to share their knowledge and experience.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'La Nave de Espana', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (34, 'London Tech Week', 'London Tech Week is a week-long festival of technology, innovation and entrepreneurship, taking place across London in June 2023.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'ExCeL London', 16, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (35, 'Turing Fest 2023', 'Turing Fest is a dedicated conference for developers, by developers, and is the only conference in the world that is 100% focused on the Microsoft Azure cloud platform.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Scotland Arena', 17, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (36, 'AI & Big Data Expo', 'The AI & Big Data Expo is the world''s leading Artificial Intelligence and Big Data event, taking place in London on 21-22 June 2023.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'ExCeL London', 16, False);
 
-
+SELECT setval('event_eventID_seq', (SELECT MAX(eventID) from "event"));
 
 /** (Event) Photos **/
 
@@ -668,21 +673,44 @@ INSERT INTO photo (photoID, path, eventID) VALUES (33, 'event_photos/33.jpg', 33
 INSERT INTO photo (photoID, path, eventID) VALUES (34, 'event_photos/34.jpg', 34);
 INSERT INTO photo (photoID, path, eventID) VALUES (35, 'event_photos/35.jpg', 35);
 INSERT INTO photo (photoID, path, eventID) VALUES (36, 'event_photos/36.jpg', 36);
+INSERT INTO photo (photoID, path, eventID) VALUES (37, 'event_photos/37.jpg', 37);
+INSERT INTO photo (photoID, path, eventID) VALUES (38, 'event_photos/38.jpg', 38);
+INSERT INTO photo (photoID, path, eventID) VALUES (39, 'event_photos/39.jpg', 39);
+INSERT INTO photo (photoID, path, eventID) VALUES (40, 'event_photos/40.jpg', 40);
+INSERT INTO photo (photoID, path, eventID) VALUES (41, 'event_photos/41.jpg', 41);
+INSERT INTO photo (photoID, path, eventID) VALUES (42, 'event_photos/42.jpg', 42);
+INSERT INTO photo (photoID, path, eventID) VALUES (43, 'event_photos/43.jpg', 43);
+INSERT INTO photo (photoID, path, eventID) VALUES (44, 'event_photos/44.jpg', 44);
+INSERT INTO photo (photoID, path, eventID) VALUES (45, 'event_photos/45.jpg', 45);
+INSERT INTO photo (photoID, path, eventID) VALUES (46, 'event_photos/46.jpg', 46);
+INSERT INTO photo (photoID, path, eventID) VALUES (47, 'event_photos/47.jpg', 47);
+INSERT INTO photo (photoID, path, eventID) VALUES (48, 'event_photos/48.jpg', 48);
+INSERT INTO photo (photoID, path, eventID) VALUES (49, 'event_photos/49.jpg', 49);
+INSERT INTO photo (photoID, path, eventID) VALUES (50, 'event_photos/50.jpg', 50);
+INSERT INTO photo (photoID, path, eventID) VALUES (51, 'event_photos/51.jpg', 51);
+INSERT INTO photo (photoID, path, eventID) VALUES (52, 'event_photos/52.jpg', 52);
+INSERT INTO photo (photoID, path, eventID) VALUES (53, 'event_photos/53.jpg', 53);
+INSERT INTO photo (photoID, path, eventID) VALUES (54, 'event_photos/54.jpg', 54);
+INSERT INTO photo (photoID, path, eventID) VALUES (55, 'event_photos/55.jpg', 55);
 
 
 SELECT setval('photo_photoID_seq', (SELECT MAX(photoID) from "photo"));
 
 /** Reviews **/
 
-INSERT INTO review (rating, userID, eventID)
-    VALUES (4, 1, 5);
-
+INSERT INTO review (rating, userID, eventID) VALUES (4, 1, 5);
 INSERT INTO review (rating, userID, eventID)
     VALUES (3, 1, 1);
-
+INSERT INTO review (rating, userID, eventID)
+    VALUES (5, 2, 1);
+INSERT INTO review (rating, userID, eventID)
+    VALUES (5, 3, 1);
+INSERT INTO review (rating, userID, eventID)
+    VALUES (5, 4, 1);
+INSERT INTO review (rating, userID, eventID)
+    VALUES (5, 5, 1);
 INSERT INTO review (rating, userID, eventID)
     VALUES (4, 2, 2);
-
 INSERT INTO review (rating, userID, eventID)
     VALUES (5, 3, 3);
 
@@ -706,182 +734,123 @@ INSERT INTO review (rating, userID, eventID)
 
 /** Invited **/
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (TRUE, 2, 7, 8);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, TRUE, 2, 7, 8);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (TRUE, 3, 4, 8);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, TRUE, 3, 4, 8);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 1, 3, 5);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 1, 3, 5);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 7, 3, 2);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 7, 3, 2);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (TRUE, 8, 3, 1);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, TRUE, 8, 3, 1);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 3, 2, 7);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 3, 2, 7);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (TRUE, 10, 8,  1);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, TRUE, 10, 8,  1);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 3, 6, 5);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 3, 6, 5);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 1, 50, 4);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 1, 50, 4);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (TRUE, 5, 2, 8);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, TRUE, 5, 2, 8);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 8, 2, 5);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 8, 2, 5);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (TRUE, 10, 3, 7);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, TRUE, 10, 3, 7);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 2, 8, 8);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 2, 8, 8);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 50, 3, 1);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 50, 3, 1);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 7, 1, 6);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 7, 1, 6);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (TRUE, 1, 7, 3);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, TRUE, 1, 7, 3);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (TRUE, 6, 2, 3);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (TRUE, TRUE, 6, 2, 3);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 1, 5, 6);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 1, 5, 6);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 5, 7, 5);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 5, 7, 5);
 
-INSERT INTO invited (status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, 2, 6, 4);
+INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
+    VALUES (FALSE, FALSE, 2, 6, 4);
 
 /* Event hosts */
 
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 1);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 2);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 3);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 4);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 5);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 6);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 7);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 8);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 9);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 10);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 11);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (1, 12);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 13);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 14);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 15);
-
-INSERT INTO event_host (userID, eventID) 
-    VALUES (2, 16);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (2, 17);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 18);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 19);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 20);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 21);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 22);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 23);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 24);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 25);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (3, 26);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 27);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 28);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 29);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 30);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 31);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 32);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 33);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 34);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 35);
-
-INSERT INTO event_host (userID, eventID)
-    VALUES (4, 36);
-        
-
-
-
-
-
-
+INSERT INTO event_host (userID, eventID) VALUES (1, 1);
+INSERT INTO event_host (userID, eventID) VALUES (1, 2);
+INSERT INTO event_host (userID, eventID) VALUES (1, 3);
+INSERT INTO event_host (userID, eventID) VALUES (1, 4);
+INSERT INTO event_host (userID, eventID) VALUES (2, 5);
+INSERT INTO event_host (userID, eventID) VALUES (2, 6);
+INSERT INTO event_host (userID, eventID) VALUES (2, 7);
+INSERT INTO event_host (userID, eventID) VALUES (2, 8);
+INSERT INTO event_host (userID, eventID) VALUES (1, 9);
+INSERT INTO event_host (userID, eventID) VALUES (1, 10);
+INSERT INTO event_host (userID, eventID) VALUES (1, 11);
+INSERT INTO event_host (userID, eventID) VALUES (1, 12);
+INSERT INTO event_host (userID, eventID) VALUES (2, 13);
+INSERT INTO event_host (userID, eventID) VALUES (2, 14);
+INSERT INTO event_host (userID, eventID) VALUES (2, 15);
+INSERT INTO event_host (userID, eventID) VALUES (2, 16);
+INSERT INTO event_host (userID, eventID) VALUES (2, 17);
+INSERT INTO event_host (userID, eventID) VALUES (3, 18);
+INSERT INTO event_host (userID, eventID) VALUES (3, 19);
+INSERT INTO event_host (userID, eventID) VALUES (3, 20);
+INSERT INTO event_host (userID, eventID) VALUES (3, 21);
+INSERT INTO event_host (userID, eventID) VALUES (3, 22);
+INSERT INTO event_host (userID, eventID) VALUES (3, 23);
+INSERT INTO event_host (userID, eventID) VALUES (3, 24);
+INSERT INTO event_host (userID, eventID) VALUES (3, 25);
+INSERT INTO event_host (userID, eventID) VALUES (3, 26);
+INSERT INTO event_host (userID, eventID) VALUES (4, 27);
+INSERT INTO event_host (userID, eventID) VALUES (4, 28);
+INSERT INTO event_host (userID, eventID) VALUES (4, 29);
+INSERT INTO event_host (userID, eventID) VALUES (4, 30);
+INSERT INTO event_host (userID, eventID) VALUES (4, 31);
+INSERT INTO event_host (userID, eventID) VALUES (4, 32);
+INSERT INTO event_host (userID, eventID) VALUES (4, 33);
+INSERT INTO event_host (userID, eventID) VALUES (4, 34);
+INSERT INTO event_host (userID, eventID) VALUES (4, 35);
+INSERT INTO event_host (userID, eventID) VALUES (4, 36);
+INSERT INTO event_host (userID, eventID) VALUES (5, 37);
+INSERT INTO event_host (userID, eventID) VALUES (5, 38);
+INSERT INTO event_host (userID, eventID) VALUES (5, 39);
+INSERT INTO event_host (userID, eventID) VALUES (5, 40);
+INSERT INTO event_host (userID, eventID) VALUES (5, 41);
+INSERT INTO event_host (userID, eventID) VALUES (5, 42);
+INSERT INTO event_host (userID, eventID) VALUES (6, 43);
+INSERT INTO event_host (userID, eventID) VALUES (6, 44);
+INSERT INTO event_host (userID, eventID) VALUES (6, 45);
+INSERT INTO event_host (userID, eventID) VALUES (6, 46);
+INSERT INTO event_host (userID, eventID) VALUES (6, 47);
+INSERT INTO event_host (userID, eventID) VALUES (6, 48);
+INSERT INTO event_host (userID, eventID) VALUES (6, 49);
+INSERT INTO event_host (userID, eventID) VALUES (7, 50);
+INSERT INTO event_host (userID, eventID) VALUES (7, 51);
+INSERT INTO event_host (userID, eventID) VALUES (7, 52);
+INSERT INTO event_host (userID, eventID) VALUES (7, 53);
+INSERT INTO event_host (userID, eventID) VALUES (7, 54);
+INSERT INTO event_host (userID, eventID) VALUES (7, 55);
 
 /* Comments */
 
@@ -907,6 +876,12 @@ INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (19, '
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (20, 'So excited!', '2020/9/9', '10:58', 20, 4);
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (21, 'Real fans know Hamilton got robbed in the 2021 WDC!', '2020/9/9', '10:58', 3, 1);
 INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (22, 'So excited for this one!', '2020/9/9', '10:58', 2, 1);
+INSERT INTO comment (commentID, text, date, time, userID, eventID) VALUES (23, 'Btw, who yall think will win this year?', '2021/10/12', '10:58', 2, 1);
+
+INSERT INTO upvote_comment (userID, commentID) VALUES (1, 21);
+INSERT INTO upvote_comment (userID, commentID) VALUES (1, 22);
+INSERT INTO upvote_comment (userID, commentID) VALUES (2, 21);
+INSERT INTO upvote_comment (userID, commentID) VALUES (3, 21);
 
 SELECT setval('comment_commentID_seq', (SELECT MAX(commentID) from "comment"));
 

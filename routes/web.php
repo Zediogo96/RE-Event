@@ -40,6 +40,7 @@ Route::get('faq', 'PageController@faq')->name('faq.index');
 
 Route::get('search','SearchController@search');
 Route::get('searchUsers','SearchController@searchUsers')->name('searchUsers');
+Route::get('searchAttendees','SearchController@searchAttendees')->name('searchAttendees');
 Route::get('searchUsersAdmin','SearchController@searchUsersAdmin')->name('searchUsersAdmin');
 Route::get('searchEventsByTag','SearchController@searchEventsByTag')->name('searchEventsByTag');
 
@@ -56,19 +57,23 @@ Route::get('events', 'EventController@index');
 
 // Comments
 Route::post('storeComment', 'CommentController@store')->name('storeComment');
+Route::post('deleteComment', 'CommentController@deleteComment')->name('deleteComment');
+Route::get('getComments', 'CommentController@getComments')->name('getComments');
+// Upvotes
+Route::post('addUpvote', 'UpvoteController@addUpvote')->name('addUpvote');
+Route::post('removeUpvote', 'UpvoteController@removeUpvote')->name('removeUpvote');
+// Report Comment
+Route::post('storeReport', 'ReportController@store')->name('storeReport');
+
 
 //Invites
 Route::post('api/invite', 'InvitedController@create')->name('createInvite');
 Route::put('api/inviteAccept', 'InvitedController@accept')->name('acceptInvite');
 Route::delete('api/inviteReject', 'InvitedController@reject')->name('rejectInvite');
+Route::put('api/clearNotifications', 'InvitedController@read')->name('readNotifications');
+Route::get('api/numberNotifications', 'InvitedController@numberNotifications')->name('numberNotifications');
 
-Route::get('debug/invites', function() {
-    return App\Models\Invited::get();
-});
-
-/* Route::get('play', function() {
-    return view('pages.play');
-}); */
+Route::put('api/changeBlockStatus', 'UserController@block')->name('changeBlockStatusUser');
 
 Route::get('auth', 'Auth\LoginController@getUser');
 

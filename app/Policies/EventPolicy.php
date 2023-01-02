@@ -57,7 +57,7 @@ class EventPolicy
      */
     public function create(User $user)
     {
-        return Auth::check();
+        return Auth::check() && (!$user->isblocked);
     }
 
     /**
@@ -69,7 +69,7 @@ class EventPolicy
      */
     public function update(User $user, Event $event, EventHost $eventHost)
     {
-        return $user->userid === $eventHost->userid || $user->admin;
+        return ($user->userid === $eventHost->userid || $user->admin) && (!$user->isblocked);
     }
 
     /**
@@ -94,7 +94,7 @@ class EventPolicy
      */
     public function restore(User $user, Event $event, EventHost $eventHost)
     {
-        return $user->userid == $eventHost->userid && $event->eventid == $eventHost->eventid || $user->admin;
+        return ($user->userid == $eventHost->userid && $event->eventid == $eventHost->eventid || $user->admin)  && (!$user->isblocked);
     }
 
     /**

@@ -4,12 +4,13 @@ namespace App\Policies;
 
 use App\Models\Comment;
 use App\Models\User;
-
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
 
 class CommentPolicy
 {
+    use HandlesAuthorization;
+
     use HandlesAuthorization;
 
     /**
@@ -32,7 +33,7 @@ class CommentPolicy
      */
     public function view(User $user, Comment $comment)
     {
-        return Auth::check();
+        return Auth::check() && (!$user->isblocked);
     }
 
     /**
@@ -43,7 +44,7 @@ class CommentPolicy
      */
     public function create(User $user)
     {
-        return Auth::check();
+        return Auth::check() && (!$user->isblocked);
     }
 
     /**
@@ -55,7 +56,7 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment)
     {
-        return $user->id == $comment->user_id;
+        return ($user->id == $comment->user_id) && (!$user->isblocked);
     }
 
     /**
@@ -79,7 +80,7 @@ class CommentPolicy
      */
     public function restore(User $user, Comment $comment)
     {
-        return $user->id == $comment->user_id;
+        return ($user->id == $comment->user_id) && (!$user->isblocked);
     }
 
     /**

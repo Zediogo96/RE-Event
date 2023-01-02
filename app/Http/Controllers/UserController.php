@@ -9,6 +9,8 @@ use App\Models\Event;
 use App\Models\Ticket;
 use App\Models\Invited;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -35,6 +37,7 @@ class UserController extends Controller
         $user = User::find($id);
         $this->authorize('view', $user);
 
+        $number = Invited::where('invited.inviteduserid', '=',  $id)->get()->count();
 
         $sentInvites = Invited::join('event', 'event.eventid', '=', 'invited.eventid')
                                 ->join('user_', 'user_.userid', '=', 'invited.inviteduserid')
@@ -49,7 +52,7 @@ class UserController extends Controller
                                     ->select(['city.name as cityName', 'user_.email as email','*', 'event.name as name'])->get();
 
         
-        return view('pages.userPage', ['user' => $user, 'receivedInvites' => $receivedInvites, 'sentInvites' => $sentInvites]);
+        return view('pages.userPage', ['user' => $user, 'receivedInvites' => $receivedInvites, 'sentInvites' => $sentInvites, 'numberInvites' => $number]);
     }
 
     /**
@@ -119,10 +122,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         if (!Auth::check()) return redirect('/login');
-        //$user = User::find($request->input('userid'));
-        // $creating_user = Auth::user();
-        // $this->authorize('create', $creating_user);
+
         $user = new User;
 
         $user_id = User::max('userid') + 1;
@@ -147,6 +149,7 @@ class UserController extends Controller
 
         if (!is_null($request->input('gender'))) {
             $user->gender= $request->input('gender');
+
         }
 
         if ($request->hasFile('profilePic')) {
@@ -208,6 +211,28 @@ class UserController extends Controller
         
         $user_ticket = Ticket::where('userid', $user->userid)->where('eventid', $event->eventid);
         $user_ticket->delete();
+    }
+
+    public function block(Request $request){
+
+        if(User::find($request->userID)->userid == Auth::user()->userid){
+            return response("Can't block self", 403);
+        }
+        
+        $this->authorize('changeBlock', Auth::user());
+        
+        $userToBlock = $request->userID;
+        $blocked = !(User::find($userToBlock)->isblocked);
+
+        DB::table('user_')
+        ->where('user_.userid', '=',  $userToBlock)
+        ->update(['isblocked'=> $blocked]);
+
+        $blocked = User::find($userToBlock)->isblocked;
+
+        $converted_res = $blocked ? 'Unblock User' : 'Block User';
+
+        return response($converted_res, 200);
     }
 
 }
