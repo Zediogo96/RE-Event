@@ -47,27 +47,33 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
     });
 });
 
-let currentChosen = null;
+let currentChosen = document.getElementById("currentChosen");
+
+currentChosen.value = 0;
+
 // select a row of table
 document.getElementById("search-attendees-response").addEventListener("click", function(e) {
-
     // reset all rows colors
     let rows = document.getElementById("search-attendees-response").getElementsByTagName("tr")
     for (let i = 0; i < rows.length; i++) {
         (i % 2 == 0) ? rows[i].style.backgroundColor = 'rgba(255, 255, 255, 0.5)' : rows[i].style.backgroundColor = 'rgba(202, 160, 229, 0.7)'
     }
     e.target.parentElement.style.backgroundColor = "rgba(138,238,130, 0.8";
-    currentChosen = e.target.parentElement.children[0].innerHTML
+    currentChosen.value = e.target.parentElement.children[0].innerHTML
+    console.log(currentChosen.value)
 });
 
 // submit transfer ownership
 
-document.getElementById("submitTOwn").addEventListener("click", function(e) {
-    if (currentChosen == null) {
+let formTO = document.getElementById("tranferOwnershipForm");
+formTO.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    if (currentChosen.value == 0) {
         alert("Please select a user to transfer ownership")
         return
     }
     else {
-        console.log('cenas')
+        formTO.submit();
     }
 });

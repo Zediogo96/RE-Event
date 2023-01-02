@@ -138,7 +138,7 @@ class EventController extends Controller
         $eventhost = new EventHost;
         $eventhost->userid = Auth::user()->userid;
         $eventhost->eventid = $event->eventid;
-        $eventhost->save(); 
+        $eventhost->save();
 
         return redirect('/event' . $event->eventid);
     }
@@ -147,7 +147,7 @@ class EventController extends Controller
      * Display the specified resource.
      * * @param  \App\Models\Event  $event
      * * @return \Illuminate\Http\Response
-     * 
+     *
      * *********************************************
      * CHANGE THIS TO BE DYNAMIC, SHOULD RECEIVE AN eventID AND DISPLAY THAT ONE
      * *********************************************
@@ -240,8 +240,8 @@ class EventController extends Controller
 
         $cityexistsid = City::where('name', '=', $request->input('city'))->first()->cityid;
 
-        //$event->cityid = City::where('name', $request->input('city'))->first()->cityid; 
-        //$event->cityid = 1; 
+        //$event->cityid = City::where('name', $request->input('city'))->first()->cityid;
+        //$event->cityid = 1;
         $event->cityid = $cityexistsid;
 
         if (!is_null($request->input('price'))) {
@@ -282,7 +282,7 @@ class EventController extends Controller
         //find photo entry with the eventid
         $photo = Photo::where('eventid', $event->eventid)->first();
         //authorize
-        $this->authorize('delete', [$event, $eventhost]);  
+        $this->authorize('delete', [$event, $eventhost]);
         //delete all info related to the event
         $photo->delete();
         $eventhost->delete();
@@ -296,8 +296,8 @@ class EventController extends Controller
         //find the eventhost entry with the eventid and userid
         $eventhost = EventHost::where('eventid', $event->eventid)->first();
         //authorize only if the user is host of the event
-        $this->authorize('isHost', [$event, $eventhost]);  
-        
+        $this->authorize('isHost', [$event, $eventhost]);
+
         //delete ticket record with user userid and event eventid
         $ticket = Ticket::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
         $ticket->delete();
@@ -314,10 +314,10 @@ class EventController extends Controller
 
         //dd($user);
         //find the eventhost entry with the eventid and userid
-        $eventhost = EventHost::where('eventid', $event->eventid)->first();   
+        $eventhost = EventHost::where('eventid', $event->eventid)->first();
         //dd($eventhost);
         //authorize only if the user is host of the event
-        $this->authorize('isHost', [$event, $eventhost]); 
+        $this->authorize('isHost', [$event, $eventhost]);
 
         $eventhost->delete();
 
@@ -326,8 +326,6 @@ class EventController extends Controller
         $neweventhost->userid = $request->newuserid;
         $neweventhost->eventid = $request->eventid;
         $neweventhost->save();
-
-        dd(EventHost::all());
 
         return redirect('/event' . $request->eventid);
     }
@@ -351,7 +349,7 @@ class EventController extends Controller
         //find the eventhost entry with the eventid and userid
         $eventhost = EventHost::where('eventid', $event->eventid)->first();
         //authorize only if the user is host of the event
-        $this->authorize('isHost', [$event, $eventhost]);  
+        $this->authorize('isHost', [$event, $eventhost]);
 
         //create a new ticket with user userid and event eventid
         $ticket = new Ticket;
@@ -371,8 +369,8 @@ class EventController extends Controller
         //find the eventhost entry with the eventid and userid
         $eventhost = EventHost::where('eventid', $event->eventid)->first();
         //authorize only if the user is host of the event
-        $this->authorize('isHost', [$event, $eventhost]);  
-        
+        $this->authorize('isHost', [$event, $eventhost]);
+
         //delete ticket record with user userid and event eventid
         $ticket = Ticket::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
         $ticket->delete();

@@ -35,7 +35,7 @@ class CountryController extends Controller
         //dd($host);
 
         $countries = Country::all();
-        return view('pages.deletetest', ['countries' => $countries]);
+        return view('pages.transfertest', ['countries' => $countries]);
     }
 
     /**
