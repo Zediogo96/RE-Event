@@ -71,3 +71,7 @@ Route::get('debug/invites', function() {
 }); */
 
 Route::get('auth', 'Auth\LoginController@getUser');
+
+
+Route::post('transferOwnership', 'EventController@transferOwnership')->name('transferOwnership'); //transfer the ownership of an event
+Route::post('deleteEvent', 'EventController@destroy')->name('deleteEvent'); //delete an event

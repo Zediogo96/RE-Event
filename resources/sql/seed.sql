@@ -241,7 +241,7 @@ CREATE INDEX country_search ON Country USING GIN(tsvectors_country);
 --Trigger 01
 --When some user creates or updates a review, the event average rating must be updated so that it can be used for sorting or searching purposes. 
 
-CREATE FUNCTION update_event_rating () RETURNS TRIGGER AS
+CREATE FUNCTION update_event_rating() RETURNS TRIGGER AS
 $BODY$
 BEGIN
 	UPDATE event
@@ -258,7 +258,8 @@ LANGUAGE plpgsql;
 
 CREATE TRIGGER event_avg_rating
 	AFTER INSERT OR UPDATE OR DELETE ON review
-	EXECUTE PROCEDURE update_event_rating ();    
+    FOR EACH ROW
+	EXECUTE PROCEDURE update_event_rating();    
 
 --Trigger 02
 --When a user tries to enroll in an event that is already at full capacity, an error message should be displayed.
@@ -282,7 +283,7 @@ CREATE TRIGGER check_event_capacity
 --Trigger 03
 --When a ticket is deleted or bought, the corresponding event capacity should be updated.
 
-CREATE FUNCTION _create_ticket () RETURNS TRIGGER AS 
+CREATE FUNCTION _create_ticket() RETURNS TRIGGER AS 
 $BODY$
 BEGIN
 	UPDATE event
@@ -527,8 +528,8 @@ SELECT setval('city_cityID_seq', (SELECT MAX(cityID) from "city"));
 
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (1, 'F1 STC Saudi Arabian Grand Prix 2023', 'The brand new Jeddah Corniche Circuit has once again opened its gates to F1 drivers, teams, and fans for an exhilarating race under the lights', 100000, '2023-03-19', '2022-10-01', 50, 7, 'Jeddah Cornice Circuit, Jeddah 23512, Saudi Arabia', 2, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (2, 'Coldplay', 'Music of the Spheres World Tour is the ongoing eighth concert tour currently being undertaken by Coldplay. As always, an unique experience awaits you.', 40000, '2023-05-17', '2022-08-20', 50, 1, 'Estadio Cidade de Coimbra, 3030-320 Coimbra', 11, False);
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (3, 'Web Summit 2022', 'The most important conference about internet technology, emerging technologies, and venture capitalism', 35000, '2022-12-19', '2022-01-01', 60, 11, 'Altice Arena 1990-231 Lisbon', 12, False);
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (4, 'Porto vs Benfica', 'Porto and Benfica face each other in a thrilling match that can decide the Portuguese Chmpionship', 45000, '2022-12-30', '2022-09-05', 15, 7, 'Estadio do Dragao, 4350-415 Porto', 13, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (3, 'Web Summit 2022', 'The most important conference about internet technology, emerging technologies, and venture capitalism', 35000, '2023-12-19', '2022-01-01', 60, 11, 'Altice Arena 1990-231 Lisbon', 12, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (4, 'Porto vs Benfica', 'Porto and Benfica face each other in a thrilling match that can decide the Portuguese Chmpionship', 45000, '2023-12-30', '2022-09-05', 15, 7, 'Estadio do Dragao, 4350-415 Porto', 13, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (5, 'Arctic Monkeys', 'The iconic band returns to Portugal and promises to deliver the show their fans have been waiting for for a long time', 65000, '2023-12-05', '2022-07-03', 60, 1, 'Parque da Bela Vista, Lisbon', 12, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (6, 'F1 Heineken Australian Grand Prix 2022', 'Formula 1 returns to the streets of Melbourne, where Charles Leclerc won last year. Will Red Bull be capable of stealing the victory this season?', 150000, '2023-04-02', '2022-10-01', 50, 7, 'Albert Park Grand Prix Circuit, Albert Park VIC 3206, Melbourne', 3, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (7, 'Slipknot', 'Slipknot is heading back out on tour this Fall for KNOTFEST ROADSHOW. This is your last chance to catch Slipknot on tour in the U.S. for a while', 70000, '2023-11-21', '2022-10-01', 30, 1, 'DKR Texas Memorial Stadium, 2139 San Jacinto Blvd, Austin, TX 78712, USA', 5, False);

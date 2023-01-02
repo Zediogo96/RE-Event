@@ -272,8 +272,13 @@ class EventController extends Controller
         $user = User::find(Auth::user()->userid);
         //find the eventhost entry with the eventid and userid
         $eventhost = EventHost::where('eventid', $event->eventid)->first();
+        //find photo entry with the eventid
+        $photo = Photo::where('eventid', $event->eventid)->first();
         //authorize
         $this->authorize('delete', [$event, $eventhost]);  
+        //delete all info related to the event
+        $photo->delete();
+        $eventhost->delete();
         $event->delete();
         return redirect('/home');
 
@@ -296,24 +301,28 @@ class EventController extends Controller
     public function transferOwnership(Request $request)
     {
         if (!Auth::check()) return redirect('/login');
-        $event = Event::find($request->eventid);
-        $user = User::find(Auth::user()->userid);
-        //find the eventhost entry with the eventid and userid
-        $eventhost = EventHost::where('eventid', $event->eventid)->first();
-        //authorize only if the user is host of the event
-        $this->authorize('isHost', [$event, $eventhost]);  
 
-        //delete entry from eventhost table with user userid and event eventid
-        $eventhost = EventHost::where('userid', '=', $request->userid)->where('eventid', '=', $request->eventid);
+        $event = Event::find($request->eventid);
+        $user = Auth::user();
+
+        //dd($user);
+        //find the eventhost entry with the eventid and userid
+        $eventhost = EventHost::where('eventid', $event->eventid)->first();   
+        //dd($eventhost);
+        //authorize only if the user is host of the event
+        $this->authorize('isHost', [$event, $eventhost]); 
+
         $eventhost->delete();
 
         //create a nw eventhost table entry with a new userid from request and eventid from request
-        $eventhost = new EventHost;
-        $eventhost->userid = $request->newuserid;
-        $eventhost->eventid = $request->eventid;
-        $eventhost->save();
+        $neweventhost = new EventHost;
+        $neweventhost->userid = $request->newuserid;
+        $neweventhost->eventid = $request->eventid;
+        $neweventhost->save();
 
-        // return redirect('/event' . $request->eventid);
+        dd(EventHost::all());
+
+        return redirect('/event' . $request->eventid);
     }
 
     
