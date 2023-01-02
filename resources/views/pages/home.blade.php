@@ -30,7 +30,7 @@
                     <h5>{{$events[$i] -> name}}</h5>
                     <p>{{$events[$i] -> description}}</p>
                     <!-- button to buy tickets -->
-                    <a href="{{route('event.show', $events[$i]->eventid)}}" class="btn btn-primary">Buy Tickets</a>
+                    <a href="{{route('event.show', $events[$i]->eventid)}}" class="btn btn-primary">View Event</a>
                 </div>
         </div>
         @endfor
