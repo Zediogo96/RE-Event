@@ -165,6 +165,22 @@ class UserController extends Controller
         return redirect('/user' . $user->userid);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        if (!Auth::check()) return redirect('/login');
+        $user = User::find($id);
+        $this->authorize('delete', $user);
+        $user->delete();
+        return redirect('/home');
+    }
+
+
 
     public function attendEvent(Request $request) {
         if (!Auth::check()) return redirect('/login');

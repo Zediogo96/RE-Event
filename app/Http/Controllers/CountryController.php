@@ -12,6 +12,8 @@ use App\Models\Ticket;
 use App\Models\Invited;
 use App\Models\Tag;
 
+use App\Models\EventHost;
+
 use Illuminate\Http\Request;
 
 
@@ -27,11 +29,13 @@ class CountryController extends Controller
 
         $tag_id = Tag::where('name', 'music')->get()->first()->tagid;
         // find event that has tag
-        $events = Event::where('tagid', $tag_id)->get();
-        dd($events);
+        //$events = Event::where('tagid', $tag_id)->get();
+
+        $host = User::find(EventHost::where('eventid', 2)->first()->userid);
+        //dd($host);
 
         $countries = Country::all();
-        return view('layouts.countries', ['countries' => $countries]);
+        return view('pages.deletetest', ['countries' => $countries]);
     }
 
     /**

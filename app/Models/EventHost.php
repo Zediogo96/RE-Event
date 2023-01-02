@@ -30,4 +30,12 @@ class EventHost extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+
+
+    protected function setKeysForSaveQuery($query)
+    {
+        return $query->where('userid', $this->getAttribute('userid'))
+            ->where('eventid', $this->getAttribute('eventid'));
+    }
 }
