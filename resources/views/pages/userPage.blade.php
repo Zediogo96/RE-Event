@@ -225,7 +225,7 @@
                                     </thead>
 
                                     @foreach($user->hostedEvents as $event)
-                                    <tr>
+                                    <tr id ="{{$event->eventid}}">
                                         <td>
                                             <div class="event-date">
                                                 <div class="event-day"> {{substr($event->date, 8, 2)}}</div>

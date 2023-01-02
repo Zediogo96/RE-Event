@@ -1,3 +1,15 @@
+var trs = document.getElementById('eventsCreatedByMe').getElementsByTagName('tr');
+
+for (var i = 0; i < trs.length; i++) {
+    trs[i].addEventListener('click', function (e) {
+        let t = e.target.parentNode;
+        let id = t.getAttribute('id');
+        window.location.href = '/event' + id;
+    })
+
+};
+
+
 const selectOption = function (option) {
 
     Array.from(document.getElementsByClassName('option')).forEach((element) => {
@@ -235,3 +247,5 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
         console.log(error);
     });
 });
+
+
