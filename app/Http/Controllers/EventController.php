@@ -157,7 +157,15 @@ class EventController extends Controller
         $event = Event::find($id);
         $host = User::find(EventHost::where('eventid', $id)->first()->userid);
 
-        return view('pages.event', ['event' => $event, 'host' => $host]);
+        $attendees = User::join('ticket', 'ticket.userid', '=', 'user_.userid')
+                                ->where('ticket.eventid', '=', $id)
+                                ->select(['user_.userid'])->get();
+        $ids = [];
+        foreach($attendees as $attendee){
+            $ids[] = $attendee->userid;
+        }
+
+        return view('pages.event', ['event' => $event, 'host' => $host, 'attendees' => $ids]);
     }
 
     /**
