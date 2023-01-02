@@ -73,8 +73,7 @@ if (window.location.href.includes('user')) {
         let email = form.querySelector('#email');
         let birthdate = form.querySelector('#birthdate');
         let password = form.querySelector('#password');
-        console.log(password, password.value)
-
+  
         /*
         MUST BE CALLED LIKE THIS OTHERWISE THEY ARE ONLY CALLED IN A SEQUENCIAL FASHION:
         MEANING THAT IF NAME AND PASSWORD ARE NOT VALID, ONLY NAME WILL BE DISPLAYED AS INVALID!

@@ -1,7 +1,6 @@
 -- create schema if not exists lbaw;
 -- set search_path to lbaw;
 
-
 -- Remove Duplicate Tables --------------
 DROP TABLE IF EXISTS user_ CASCADE;
 DROP TABLE IF EXISTS event CASCADE;
@@ -153,7 +152,7 @@ CREATE TABLE photo (
 
 -- Indexes -------------------------------
 
-CREATE INDEX user_name ON user_ USING HASH(name);  
+CREATE INDEX user_name ON user_ USING HASH(name);
 
 CREATE INDEX event_date ON event USING BTREE(date);
 
@@ -167,14 +166,14 @@ ADD COLUMN tsvectors TSVECTOR;
 
 CREATE FUNCTION event_search_update() RETURNS TRIGGER AS $$
 BEGIN
-    IF TG_OP = 'INSERT' THEN 
+    IF TG_OP = 'INSERT' THEN
         NEW.tsvectors = (
             setweight(to_tsvector('english', coalesce(NEW.name,'')), 'A') ||
             setweight(to_tsvector('english', coalesce(NEW.description,'')), 'B')
         );
     END IF;
 
-    IF TG_OP = 'UPDATE' THEN 
+    IF TG_OP = 'UPDATE' THEN
         IF (NEW.name <> OLD.name OR NEW.description <> OLD.description) THEN
             NEW.tsvectors = (
                 setweight(to_tsvector('english', coalesce(NEW.name,'')), 'A') ||
@@ -186,7 +185,7 @@ BEGIN
 END $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE 
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
     ON Event FOR EACH ROW EXECUTE PROCEDURE event_search_update();
 
  CREATE INDEX event_search ON Event USING GIN(tsvectors);
@@ -196,13 +195,13 @@ ADD COLUMN tsvectors_city TSVECTOR;
 
 CREATE FUNCTION city_search_update() RETURNS TRIGGER AS $$
 BEGIN
-    IF TG_OP = 'INSERT' THEN 
+    IF TG_OP = 'INSERT' THEN
         NEW.tsvectors_city = (
             setweight(to_tsvector('english', coalesce(NEW.name,'')), 'C')
         );
     END IF;
 
-    IF TG_OP = 'UPDATE' THEN 
+    IF TG_OP = 'UPDATE' THEN
         IF (NEW.name <> OLD.name) THEN
             NEW.tsvectors_city = (
                 setweight(to_tsvector('english', coalesce(NEW.name,'')), 'C')
@@ -213,8 +212,8 @@ BEGIN
 END $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER tsvectorupdate_city BEFORE INSERT OR UPDATE 
-    ON City FOR EACH ROW EXECUTE PROCEDURE city_search_update(); 
+CREATE TRIGGER tsvectorupdate_city BEFORE INSERT OR UPDATE
+    ON City FOR EACH ROW EXECUTE PROCEDURE city_search_update();
 
  CREATE INDEX city_search ON City USING GIN(tsvectors_city);
 
@@ -223,13 +222,13 @@ ADD COLUMN tsvectors_country TSVECTOR;
 
 CREATE FUNCTION country_search_update() RETURNS TRIGGER AS $$
 BEGIN
-    IF TG_OP = 'INSERT' THEN 
+    IF TG_OP = 'INSERT' THEN
         NEW.tsvectors_country = (
             setweight(to_tsvector('english', coalesce(NEW.name,'')), 'C')
         );
     END IF;
 
-    IF TG_OP = 'UPDATE' THEN 
+    IF TG_OP = 'UPDATE' THEN
         IF (NEW.name <> OLD.name) THEN
             NEW.tsvectors_country = (
                 setweight(to_tsvector('english', coalesce(NEW.name,'')), 'C')
@@ -240,15 +239,15 @@ BEGIN
 END $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER tsvectorupdate_country BEFORE INSERT OR UPDATE 
-    ON Country FOR EACH ROW EXECUTE PROCEDURE country_search_update();  
+CREATE TRIGGER tsvectorupdate_country BEFORE INSERT OR UPDATE
+    ON Country FOR EACH ROW EXECUTE PROCEDURE country_search_update();
 
 CREATE INDEX country_search ON Country USING GIN(tsvectors_country);
 
 -- Triggers and UDFs -------------------------------
 
 --Trigger 01
---When some user creates or updates a review, the event average rating must be updated so that it can be used for sorting or searching purposes. 
+--When some user creates or updates a review, the event average rating must be updated so that it can be used for sorting or searching purposes.
 
 /* CREATE FUNCTION update_event_rating () RETURNS TRIGGER AS
 $BODY$
@@ -262,12 +261,12 @@ BEGIN
     );
 	RETURN NEW;
 END
-$BODY$ 
+$BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER event_avg_rating
 	AFTER INSERT OR UPDATE OR DELETE ON review FOR EACH ROW
-	EXECUTE PROCEDURE update_event_rating ();    */ 
+	EXECUTE PROCEDURE update_event_rating ();    */
 
 -- CREATE TRIGGER TO UPDATE EVENT avg_rating after INSERT, UPDATE, DELETE on review
 CREATE OR REPLACE FUNCTION update_event_rating() RETURNS TRIGGER AS $$
@@ -306,17 +305,17 @@ BEGIN
 	END IF;
 	RETURN NEW;
 END
-$BODY$ 
+$BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER check_event_capacity 
+CREATE TRIGGER check_event_capacity
 	BEFORE INSERT ON ticket FOR EACH ROW
 	EXECUTE PROCEDURE check_capacity ();
 
 --Trigger 03
 --When a ticket is deleted or bought, the corresponding event capacity should be updated.
 
-CREATE FUNCTION _create_ticket () RETURNS TRIGGER AS 
+CREATE FUNCTION _create_ticket () RETURNS TRIGGER AS
 $BODY$
 BEGIN
 	UPDATE event
@@ -328,15 +327,15 @@ END
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE FUNCTION _delete_ticket () RETURNS TRIGGER AS 
-$BODY$ 
+CREATE FUNCTION _delete_ticket () RETURNS TRIGGER AS
+$BODY$
 BEGIN
 	UPDATE event
 	SET capacity = event.capacity + 1
 	WHERE eventID = OLD.eventID;
 	RETURN OLD;
-END 
-$BODY$ 
+END
+$BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER delete_ticket AFTER DELETE ON ticket FOR EACH ROW
@@ -479,8 +478,8 @@ SELECT setval('city_cityID_seq', (SELECT MAX(cityID) from "city"));
 
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (1, 'F1 STC Saudi Arabian Grand Prix 2023', 'The brand new Jeddah Corniche Circuit has once again opened its gates to F1 drivers, teams, and fans for an exhilarating race under the lights', 100000, '2023-03-19', '2022-10-01', 50, 7, 'Jeddah Cornice Circuit, Jeddah 23512, Saudi Arabia', 2, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (2, 'Coldplay', 'Music of the Spheres World Tour is the ongoing eighth concert tour currently being undertaken by Coldplay. As always, an unique experience awaits you.', 40000, '2023-05-17', '2022-08-20', 50, 1, 'Estadio Cidade de Coimbra, 3030-320 Coimbra', 11, False);
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (3, 'Web Summit 2022', 'The most important conference about internet technology, emerging technologies, and venture capitalism', 35000, '2022-12-19', '2022-01-01', 60, 11, 'Altice Arena 1990-231 Lisbon', 12, False);
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (4, 'Porto vs Benfica', 'Porto and Benfica face each other in a thrilling match that can decide the Portuguese Chmpionship', 45000, '2022-12-30', '2022-09-05', 15, 7, 'Estadio do Dragao, 4350-415 Porto', 13, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (3, 'Web Summit 2022', 'The most important conference about internet technology, emerging technologies, and venture capitalism', 35000, '2023-12-19', '2022-01-01', 60, 11, 'Altice Arena 1990-231 Lisbon', 12, False);
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (4, 'Porto vs Benfica', 'Porto and Benfica face each other in a thrilling match that can decide the Portuguese Chmpionship', 45000, '2023-12-30', '2022-09-05', 15, 7, 'Estadio do Dragao, 4350-415 Porto', 13, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (5, 'Arctic Monkeys', 'The iconic band returns to Portugal and promises to deliver the show their fans have been waiting for for a long time', 65000, '2023-12-05', '2022-07-03', 60, 1, 'Parque da Bela Vista, Lisbon', 12, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (6, 'F1 Heineken Australian Grand Prix 2022', 'Formula 1 returns to the streets of Melbourne, where Charles Leclerc won last year. Will Red Bull be capable of stealing the victory this season?', 150000, '2023-04-02', '2022-10-01', 50, 7, 'Albert Park Grand Prix Circuit, Albert Park VIC 3206, Melbourne', 3, False);
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES (7, 'Slipknot', 'Slipknot is heading back out on tour this Fall for KNOTFEST ROADSHOW. This is your last chance to catch Slipknot on tour in the U.S. for a while', 70000, '2023-11-21', '2022-10-01', 30, 1, 'DKR Texas Memorial Stadium, 2139 San Jacinto Blvd, Austin, TX 78712, USA', 5, False);
@@ -490,148 +489,148 @@ INSERT INTO event (eventID, name, description, capacity, date, creationDate, pri
 
 -- Family Events Boost
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (10, 'Visita Parque Biológico Gaia', 'Venham visitar o Parque Biológico de Gaia, um dos melhores parques de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (11, 'Festival Canal Panda', 'O mítico festival do Canal Panda está de volta a Portugal!', 10000, '2023-06-19', '2022-10-01', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
 INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (12, 'Festival de Verão', 'O melhor festival de verão está de volta a Portugal!', 10000, '2023-07-19', '2022-10-01', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (13, 'SEA Life Porto', 'Venham visitar o SEA Life Porto, um dos melhores aquários de Portugal!', 500, '2023-05-03', '2022-12-04', 50, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (14, 'Buggy Ride Familiar', 'Venham fazer um passeio de buggy familiar!', 100, '2023-05-03', '2022-12-04', 200, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (15, 'Visita ao Museu do Vinho do Porto', 'Venham visitar o Museu do Vinho do Porto, um dos melhores museus de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (16, 'Visita ao Museu do Carro Elétrico', 'Venham visitar o Museu do Carro Elétrico, um dos melhores museus de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (17, 'Zoo Santo Inácio Tour', 'Venham visitar o Zoo Santo Inácio, um dos melhores zoológicos de Portugal!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Zoo de Santo Inácio', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (18, 'Cruzeiro Rio Douro', 'Venham fazer um cruzeiro pelo Rio Douro!', 300, '2023-05-03', '2022-12-04', 250, 9, 'Porto, Vila Nova de Gaia', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (50, 'Visita Vigo', 'Venham visitar Vigo, uma das melhores cidades de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Vigo, Galicia', 14, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (51, 'Visita Santiago de Compostela', 'Venham visitar Santiago de Compostela, uma das melhores cidades de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (52, 'Prova de Vinhos', 'Venham fazer uma prova de vinhos!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (53, 'Visita Museu de Arte Contemporânea', 'Venham visitar o Museu de Arte Contemporânea, um dos melhores museus de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (54, 'Museu dos Computadores', 'Venham visitar o Museu dos Computadores, um dos melhores museus de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (55, 'Museu Mercedes AMG', 'Venham visitar o Museu Mercedes AMG, um dos melhores museus de Espanha!', 300, '2023-05-03', '2022-12-04', 0, 9, 'Santiago de Compostela, Galicia', 14, False);
 
 -- Sports Events Boost
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (19, 'F1 Spain Grand Prix 2022', 'Formula 1 returns to the streets of Barcelona, where Max Verstappen won last year. Will Red Bull be capable of stealing the victory this season?', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Circuit de Barcelona-Catalunya, 08100 Montmeló, Barcelona', 14, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (20, 'F1 Monaco Grand Prix 2022', 'The Monaco Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Circuit de Monaco, 98000 Monaco', 6, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (21, 'F1 Portugal Grand Prix 2022', 'The Portuguese Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Autódromo Internacional do Algarve, 8005-139 Portimão', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (22, 'F1 Azerbaijan Grand Prix 2022', 'The Azerbaijan Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Baku City Circuit, Baku', 7, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (43, 'Sporting vs Porto', 'Sporting vs Porto', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Estádio José Alvalade', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (44, 'Tiger Woods vs Phil Mickelson', 'Tiger Woods vs Phil Mickelson', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Shadow Creek Golf Course', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (45, 'F1 British Grand Prix 2022', 'The British Grand Prix is one of the most', 150000, '2023-05-01', '2022-10-01', 50, 7, 'Silverstone Circuit, Towcester', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (46, 'Roger Federer vs Rafael Nadal', 'Roger Federer vs Rafael Nadal', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Stade de Suisse, Bern', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (47, 'Jogos Olimpicos 2022', 'Jogos Olimpicos 2022', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Tokyo, Japan', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (48, 'Xadrez Mundial 2022', 'Xadrez Mundial 2022', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Porto, Portugal', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (49, 'Magnus Carlsen vs Fabiano Caruana', 'Magnus Carlsen vs Fabiano Caruana', 50000, '2023-05-01', '2022-10-01', 50, 7, 'Porto, Portugal', 13, False);
 
 -- Music Events Boost
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (23, 'Metallica', 'Metallica is an American heavy metal band from Los Angeles, California. The band was formed in 1981 by drummer Lars Ulrich and vocalist/guitarist James Hetfield, and has been based in San Francisco for most of its career.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (24, 'Chico Buarque', 'Chico Buarque de Hollanda is a Brazilian singer-songwriter, composer, actor, and politician. He is considered one of the most important Brazilian songwriters of the 20th century.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (25, 'Red Hot Chilli Peppers', 'Red Hot Chili Peppers are an American rock band formed in Los Angeles in 1983. The groups musical style primarily consists of rock with an emphasis on funk, as well as elements from other genres such as punk rock and psychedelic rock.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (26, 'Tash Sultana', 'Tash Sultana is an Australian singer-songwriter and multi-instrumentalist. She is known for her live looping, which she uses to create complex rhythms and layers of sound.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Estadio do Dragão', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (27, 'Jorja Smith', 'Jorja Smith is an English singer and songwriter. She is signed to FAMM, a subsidiary of Black Butter Records, and has released two EPs, Project 11 and Lost & Found, and one studio album, Lost & Found.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (28, 'Iron Maiden', 'Iron Maiden are an English heavy metal band formed in Leyton, East London, in 1975 by bassist and primary songwriter Steve Harris. The band''s discography has grown to 38 albums, including 16 studio albums, 14 live albums, four EPs, and four compilations.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Estádio do Dragão, Porto', 13, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (37, 'Post Malone', 'Austin Richard Post, known professionally as Post Malone, is an American rapper, singer, songwriter, and record producer. He first gained major recognition in 2015 following the release of his debut single "White Iverson".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (38, 'Tame Impala', 'Tame Impala is an Australian psychedelic rock band formed in Perth in 2007. The band''s current lineup consists of Kevin Parker, Dominic Simper, Jay Watson, Cam Avery, and Julien Barbagallo.', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (39, 'Jack Harlow', 'Jack Harlow is an American rapper, singer, and songwriter. He is best known for his singles "What''s Poppin" and "Tyler Herro".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (40, 'The Weeknd', 'Abel Makkonen Tesfaye, known professionally as The Weeknd, is a Canadian singer, songwriter, and record producer. He first gained recognition in 2011, when he anonymously uploaded several songs to YouTube under the name "The Weeknd".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (41, 'Lil Baby', 'Dominique Jones, known professionally as Lil Baby, is an American rapper. He is best known for his singles "My Dawg" and "Woah".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (42, 'Lil Uzi Vert', 'Symere Woods, known professionally as Lil Uzi Vert, is an American rapper, singer, and songwriter. He is best known for his singles "XO Tour Llif3" and "Money Longer".', 50000, '2023-05-01', '2022-10-01', 50, 1, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
 
 -- Tech Events Boost
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (29, 'Global Metaverse Carnival', 'The Global Metaverse Carnival is a 3-day event that will bring together the most influential leaders in the Metaverse, including CEOs, founders, investors, and developers.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (30, 'Lisbon Tech Job Fair 2023', 'The Lisbon Tech Job Fair is a 3-day event that will bring together the most influential leaders in the Metaverse, including CEOs, founders, investors, and developers.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (31, 'Beer in the Bloq', 'Where the best of the tech world meets the best of the beer world.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Passeio Marítimo de Algés, 1495-038 Algés', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (32, 'Mobile World Congress', 'The Mobile World Congress is the world''s largest gathering for the mobile industry, organised by the GSMA and held in the Mobile World Capital Barcelona.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Fira Gran Via', 14, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (33, 'Cloudfest', 'Cloudfest events are a series of conferences and workshops that bring together the best minds in the cloud industry to share their knowledge and experience.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'La Nave de Espana', 12, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (34, 'London Tech Week', 'London Tech Week is a week-long festival of technology, innovation and entrepreneurship, taking place across London in June 2023.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'ExCeL London', 16, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (35, 'Turing Fest 2023', 'Turing Fest is a dedicated conference for developers, by developers, and is the only conference in the world that is 100% focused on the Microsoft Azure cloud platform.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'Scotland Arena', 17, False);
 
-INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES 
+INSERT INTO event (eventID, name, description, capacity, date, creationDate, price, tagID, address, cityID, isPrivate) VALUES
 (36, 'AI & Big Data Expo', 'The AI & Big Data Expo is the world''s leading Artificial Intelligence and Big Data event, taking place in London on 21-22 June 2023.', 50000, '2023-05-01', '2022-10-01', 50, 11, 'ExCeL London', 16, False);
 
 SELECT setval('event_eventID_seq', (SELECT MAX(eventID) from "event"));

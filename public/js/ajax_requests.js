@@ -178,7 +178,7 @@ function ajax_remUser(userid, eventid) {
     });
 };
 
-// REQUESTS USED TO GET THE 
+// REQUESTS USED TO GET THE
 function getComments(id, shouldScroll) {
     fetch("getComments" + "?" + new URLSearchParams({
         event_id: id
@@ -248,6 +248,9 @@ function getComments(id, shouldScroll) {
             let a4 = document.createElement('a');
             a4.setAttribute('class', 'link-danger small ms-3');
             a4.innerHTML = 'report';
+            a4.style += 'cursor: pointer;'
+            a4.href = '#reportModal';
+            a4.dataset.toggle = 'modal';
 
             div5.appendChild(a2);
             a2.appendChild(i);
@@ -301,7 +304,7 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
             let td2 = document.createElement("td");
             let td3 = document.createElement("td");
             let td4 = document.createElement("td");
-            
+
             td4.style.textAlign = "center";
 
             let btn = document.createElement("button");
@@ -314,7 +317,7 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
             let btn2 = document.createElement("button");
             btn2.setAttribute("class", "btn btn-danger");
             btn2.setAttribute("id", "blockStatus");
-            
+
             if(user.isblocked){
                 btn2.innerHTML = "Unblock User";
             }

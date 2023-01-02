@@ -130,47 +130,26 @@
                                             </tr>
 
                                         </thead>
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day">16</div>
-                                                    <div class="event-month">MAR</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Donec hendrerit massa metus, a ultrices elit iaculis eu. Pellentesque ullamcorper augue lacus.
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Siemens Arena</td>
 
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
+                                        @foreach($user->attendingEvents as $event)
+                                        @if ($event->date < date('Y-m-d'))
                                         <tr>
                                             <td>
                                                 <div class="event-date">
-                                                    <div class="event-day">5</div>
-                                                    <div class="event-month">APR</div>
+                                                    <div class="event-day"> {{substr($event->date, 8, 2)}}</div>
+                                                    <div class="event-month"> {{substr(date('F', mktime(0, 0, 0, substr($event->date, 5,2), 10)), 0, 3);}}</div>
                                                 </div>
                                             </td>
                                             <td>
-                                                Phasellus et est quis diam iaculis fringilla id nec sapien.
+                                                {{$event->name}}
                                             </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Nike Arena</td>
+                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> {{$event->city->name}}</td>
+                                            <td><button href="#" class="btn btn-danger btn-sm btn-edit-event">Leave Event</button></td>
+                                        </tr>
+                                        @endif
+                                        @endforeach
 
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day">31</div>
-                                                    <div class="event-month">MAY</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Ut consectetur commodo justo, sed sollicitudin massa venenatis ut 2013.
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> Samsung Arena</td>
-                                            <td><button href="#" class="btn btn-success btn-sm btn-edit-event">View Event</button></td>
-                                        </tr>
+
 
                                     </table>
 
