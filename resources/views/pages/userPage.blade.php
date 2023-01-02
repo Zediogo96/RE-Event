@@ -107,8 +107,9 @@
                         </div>
                     </div>
 
-                    <button type="submit" id="updateProfileDetailsButton" style="margin-left:80%" class="btn btn-success">Update Profile Details</button>
+                    <button type="submit" class="btn btn-success">Update Profile Details</button>
                 </form>
+                <button href="#del_acc_modal" data-toggle="modal" id="del_account" type="button" class="btn btn-danger"> Delete Account </button>
             </div>
             <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
                 <div id="pastEvents" class="details submenuSleep">
@@ -347,6 +348,8 @@
     <!-- CREATE EVENT MODAL -->
     @include('partials.createEventModal')
     @include('partials.createUserModal')
+    <!-- DELETE ACCOUNT MODAL -->
+    @include('partials.conf_del_acc')
 
 </body>
 

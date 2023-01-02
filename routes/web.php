@@ -32,7 +32,7 @@ Route::get('createEvent', 'EventController@create')->name('event.create');  //ed
 Route::post('storeEvent', 'EventController@store')->name('storeEvent'); //create a new event
 
 Route::post('addEventUsers', 'EventController@addUser')->name('addUser'); //update the details of an event
-Route::post('removeEventUsers', 'EventController@removeUser')->name('removeUser'); //update the details of an event 
+Route::post('removeEventUsers', 'EventController@removeUser')->name('removeUser'); //update the details of an event
 
 // Static Pages
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
@@ -49,6 +49,7 @@ Route::post('updateUser/{userid?}', 'UserController@update')->name('updateUser')
 Route::post('selfAddUser', 'UserController@attendEvent')->name('selfAddUser');
 Route::post('selfRemoveUser', 'UserController@leaveEvent')->name('selfRemoveUser');
 Route::post('storeUser', 'UserController@store')->name('storeUser');
+Route::post('deleteUser', 'UserController@delete')->name('deleteUser');
 
 //testing database data
 Route::get('cities', 'CityController@index');

@@ -154,6 +154,17 @@
     width: 100%;
 }
 
+#myProfileDetails button:first-of-type {
+    margin-left:80%;
+}
+
+#del_account {
+    position: absolute;
+    width: 10rem;
+    top: 24.1rem;
+    right: 20rem;
+}
+
 .updateProfileInputBoxes {
     display: flex;
     flex-direction: column;

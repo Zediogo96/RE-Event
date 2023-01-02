@@ -1,3 +1,35 @@
+let form_del_acc = document.getElementById("del_acc_modal").querySelector("form");
+
+form_del_acc.addEventListener("submit", (event) => {
+    event.preventDefault();
+    fetch("deleteUser", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+            userid: document.querySelector('meta[name="auth-check-id"]').getAttribute('content')
+        })
+    }).then((response) => {
+        if (response.status === 200) {
+            window.location.href = "/home";
+        }
+        else if (response.status === 418) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'You are still hosting events. Please delete or transfer their ownership first.',
+                icon: 'error',
+                confirmButtonText: 'Continue'
+              })
+        }
+    });
+});
+
+
 var trs = document.getElementById('eventsCreatedByMe').getElementsByTagName('tr');
 
 for (var i = 0; i < trs.length; i++) {
@@ -207,11 +239,11 @@ function preview_image() {
     c_modal.querySelector("#preview-image").src = URL.createObjectURL(event.target.files[0]);
 }
 
-function readHandler(){
+function readHandler() {
     console.log("result: ", this, this.responseText);
 }
 
-document.getElementById("search-attendees-teste").addEventListener("keyup", function(e) {
+document.getElementById("search-attendees-teste").addEventListener("keyup", function (e) {
     fetch("searchUsersAdmin" + "?" + new URLSearchParams({
         search: e.target.value
     }), {
@@ -223,12 +255,12 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
         },
         method: "get",
         credentials: "same-origin",
-    }).then(function(data) {
+    }).then(function (data) {
         return data.json();
-    }).then(function(data) {
+    }).then(function (data) {
         let container = document.getElementById("search-attendees-response");
         container.innerHTML = "";
-        data.forEach(function(user) {
+        data.forEach(function (user) {
             let row = document.createElement("tr");
             let name = document.createElement("td");
             let email = document.createElement("td");
@@ -243,9 +275,11 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
             container.appendChild(row);
         });
 
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log(error);
     });
 });
+
+
 
 
