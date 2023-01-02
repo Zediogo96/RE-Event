@@ -48,10 +48,8 @@ const setCurrentPage = (pageNum) => {
     let jsonData = [];
     listItems.forEach((item) => {
         jsonData.push(item);
-        
-    });
 
-    console.log(jsonData.length);
+    });
 
     jsonData.forEach((item, index) => {
 

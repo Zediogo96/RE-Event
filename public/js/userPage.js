@@ -198,3 +198,40 @@ function preview_image() {
 function readHandler(){
     console.log("result: ", this, this.responseText);
 }
+
+document.getElementById("search-attendees-teste").addEventListener("keyup", function(e) {
+    fetch("searchUsersAdmin" + "?" + new URLSearchParams({
+        search: e.target.value
+    }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": '{{csrf_token()}}'
+        },
+        method: "get",
+        credentials: "same-origin",
+    }).then(function(data) {
+        return data.json();
+    }).then(function(data) {
+        let container = document.getElementById("search-attendees-response");
+        container.innerHTML = "";
+        data.forEach(function(user) {
+            let row = document.createElement("tr");
+            let name = document.createElement("td");
+            let email = document.createElement("td");
+            let link = document.createElement("a");
+            link.href = "/user/" + user.id;
+            link.classList.add("link-dark");
+            link.innerHTML = user.name;
+            name.appendChild(link);
+            email.innerHTML = user.email;
+            row.appendChild(name);
+            row.appendChild(email);
+            container.appendChild(row);
+        });
+
+    }).catch(function(error) {
+        console.log(error);
+    });
+});

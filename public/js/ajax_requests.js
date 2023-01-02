@@ -345,6 +345,9 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
     });
 });
 
+
+
+
 // REQUESTS TO BE USED WHILE ADDING / REMOVING UPVOTES
 
 function addUpvote(userID, commentID) {
@@ -519,3 +522,4 @@ function getDataFromTag(tag) {
         console.log(error);
     });
 }
+

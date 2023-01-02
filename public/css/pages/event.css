@@ -423,27 +423,38 @@ div.wrapper-res {
     background-color: blue;
 }
 
-#info-navbar-container div table tr td {
+#info-navbar-container div table tr td, .events-list tr td {
     padding: 5px 20px 10px 10px;
 }
 
-#info-navbar-container div table tr:nth-child(odd) {
+#info-navbar-container div table tr:nth-child(odd), .events-list tr:nth-child(odd){
     background-color: rgba(255, 255, 255, 0.5);
 }
 
-#info-navbar-container div table tr:nth-child(even) {
+#info-navbar-container div table tr:nth-child(even), .events-list tr:nth-child(even) {
 
     background-color: rgba(202, 160, 229, 0.7);
     color: #000;
 }
 
-#info-navbar-container div table tr td:last-child {
+#info-navbar-container div table tr td:last-child,  .events-list tr td:last-child{
     padding: 5px 0;
     text-align: center;
 }
 
-#info-navbar-container div table tr td {
+#info-navbar-container div table tr td, .events-list tr td {
     vertical-align: middle;
+}
+
+#transferOwnershipModal .events-list {
+    width: 100%;
+}
+
+#transferOwnershipModal .modal-body button {
+    margin: 0 auto;
+    margin-top: 5rem;
+    display: block;
+
 }
 
 /* MENU INFO OF EVENT CONTENT */
@@ -811,7 +822,6 @@ div.wrapper-res {
     }
 
     /* Nav sidebar related */
-
 
 
     /* Initially info containers that belong to the sidebar */

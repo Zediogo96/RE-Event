@@ -8,7 +8,6 @@ function displayError(element, message) {
 // VALIDATION OF REGISTER FORM IN LOGIN/REGISTER PAGE
 
 let registerForm = document.getElementById('__registerUserForm');
-console.log(registerForm);
 
 if (window.location.href.includes('login')) {
 
@@ -73,7 +72,7 @@ if (window.location.href.includes('user')) {
         let email = form.querySelector('#email');
         let birthdate = form.querySelector('#birthdate');
         let password = form.querySelector('#password');
-  
+
         /*
         MUST BE CALLED LIKE THIS OTHERWISE THEY ARE ONLY CALLED IN A SEQUENCIAL FASHION:
         MEANING THAT IF NAME AND PASSWORD ARE NOT VALID, ONLY NAME WILL BE DISPLAYED AS INVALID!

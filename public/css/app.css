@@ -414,7 +414,7 @@ tbody tr td:not(:last-child) {
 }
 
 #searchInput,
-#search-users {
+#search-users, #search-attendees-teste {
     width: 90%;
     /* center input */
     margin-left: 5%;
@@ -433,6 +433,10 @@ tbody tr td:not(:last-child) {
     transition: width 0.8s ease-in-out;
     outline: none;
     opacity: 0.9;
+}
+
+#search-attendees-teste {
+    margin-top: 3%;
 }
 
 #search-users {

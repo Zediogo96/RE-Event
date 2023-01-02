@@ -27,6 +27,7 @@
   <script type="text/javascript" src="{{ asset('js/ajax_requests.js') }}" defer> </script>
   <script type="text/javascript" src="{{ asset('js/pagination.js') }}" defer> </script>
   <script type="text/javascript" src="{{ asset('js/input_val.js') }}" defer> </script>
+  <script type="text/javascript" src="{{ asset('js/event_page.js') }}" defer> </script>
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>

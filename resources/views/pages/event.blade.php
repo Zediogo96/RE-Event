@@ -13,14 +13,15 @@
             <div id="event-date"> {{date('Y-m-d', strtotime($event->date))}} </div>
         </div>
 
-        @if (Auth::user() != NULL && !Auth::user()->attendingEvents->contains($event->eventid))
+        @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
+        <button href="#transferOwnershipModal" data-toggle="modal" class="btn btn-warning"> <a> <i class="fa fa-layer-group fa-fw"></i>
+                Transfer Ownership</a></button>
+        @elseif (Auth::user() != NULL && !Auth::user()->attendingEvents->contains($event->eventid))
         <button onclick="ajax_selfAddUser('{{Auth::user()->userid}}', '{{$event->eventid}}')" class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
                 Enroll Event </a></button>
-        @else
-        @if ((Auth::user() != NULL))
+        @elseif ((Auth::user() != NULL))
         <button onclick="ajax_selfRemoveUser('{{Auth::user()->userid}}', '{{$event->eventid}}')" class="btn btn-danger"> <a> <i class="fa fa-layer-group fa-fw"></i>
                 Leave Event </a></button>
-        @endif
         @endif
 
         <div class="countdown-event">
@@ -65,6 +66,8 @@
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     </div>
 
+    @include ('partials.transferOwn')
+
     <div class="navigation">
         <ul>
             <li class="list active">
@@ -104,17 +107,17 @@
                     <span class="title">Attendees</span>
                 </a>
             </li>
-            <li class="list">
+            <!-- <li class="list">
                 <a href="#" onclick="showOutroDiv()">
                     <span class="icon">
                         <ion-icon name="person-outline"></ion-icon>
                     </span>
                     <span class="title">Attendees</span>
                 </a>
-            </li>
-            
+            </li> -->
+
             @endif
-            
+
             @if (Auth::user() != NULL)
             <li class="list">
                 <a href="#" onclick="showInviteDiv()">
@@ -481,33 +484,33 @@
                 },
                 method: "get",
                 credentials: "same-origin",
-        
+
             }).then(function(data) {
                 return data.json();
             }).then(function(data) {
                 let container = document.getElementById("table-attendees-res");
                 container.innerHTML = "";
                 data.forEach(function(user) {
-        
+
                     console.log(eventid);
-        
+
                     let tr = document.createElement("tr");
                     let td1 = document.createElement("td");
                     let td2 = document.createElement("td");
-                    
+
                     td1.innerHTML = user.name;
                     td2.innerHTML = user.email;
-        
+
                     tr.appendChild(td1);
                     tr.appendChild(td2);
                     container.appendChild(tr);
-        
+
                 });
             }).catch(function(error) {
                 console.log(error);
             });
         }
-        
+
         document.getElementById("search-attendees").addEventListener("keyup", function(e) {auxSearch()});
 
         function showAttendeesDiv() {
