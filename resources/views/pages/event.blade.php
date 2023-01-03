@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @push('page-scripts')
-<script type="text/javascript" src="{{ asset('js/event_page.js') }}" defer> </script>
+<script src="{{ asset('js/event_page.js') }}" defer> </script>
 
 @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
-<script type="text/javascript" src="{{ asset('js/event_host.js') }}" defer> </script>
+<script src="{{ asset('js/event_host.js') }}" defer> </script>
 @endif
 
 @if (Auth::user() != NULL)
-<script type="text/javascript" src="{{ asset('js/auth_user.js') }}" defer> </script>
+<script src="{{ asset('js/auth_user.js') }}" defer> </script>
 @endif
 @endpush
 
