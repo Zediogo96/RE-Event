@@ -36,6 +36,7 @@ class CountryController extends Controller
 
         $countries = Country::all();
         return view('pages.transfertest', ['countries' => $countries]);
+
     }
 
     /**
