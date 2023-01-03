@@ -70,7 +70,9 @@ function sendAjaxRequest(method, url, data, handler) {
         "Content-Type",
         "application/x-www-form-urlencoded"
     );
-    request.addEventListener("load", handler);
+    request.addEventListener("load", function() {
+        handler(request);
+    });
     //console.log("data ", data, document.querySelector('meta[name="csrf-token"]').content)
     request.send(encodeForAjax(data));
 }
@@ -379,14 +381,16 @@ function move() {
     }
 }
 
-function blockHandler() {
-    if (this.status == 200) {
-        document.getElementById("blockStatus").innerHTML = this.responseText;
+function blockHandler(response, userid) {
+    if (response.status == 200) {
+        document.getElementById("blockStatus" + userid).innerHTML = response.response;
     }
 }
 
 function changeBlockStatusUser(userid, blockStatus) {
-    sendAjaxRequest("put", "/api/changeBlockStatus", { userID: userid, blockStatus: blockStatus }, blockHandler);
+    sendAjaxRequest("put", "/api/changeBlockStatus", { userID: userid, blockStatus: blockStatus }, function(response) {
+        blockHandler(response, userid);
+    });
 }
 
 

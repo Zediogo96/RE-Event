@@ -317,7 +317,7 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
 
             let btn2 = document.createElement("button");
             btn2.setAttribute("class", "btn btn-danger");
-            btn2.setAttribute("id", "blockStatus");
+            btn2.setAttribute("id", "blockStatus" + user.userid);
 
             if(user.isblocked){
                 btn2.innerHTML = "Unblock User";
