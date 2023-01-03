@@ -217,7 +217,6 @@
             <h4 class="mb-4"> {{count($event->comments()->get())}} Comments</h4>
             <div class="">
                 <!-- Comment //-->
-
                 <div class="py-3" id="new-comments-container">
                     @foreach ($event->comments()->get() as $comment)
                     <div class="d-flex comment">

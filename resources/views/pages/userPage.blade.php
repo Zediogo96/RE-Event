@@ -294,6 +294,7 @@
             </div>
             @if ($user->admin)
             <div id="viewReports" class="details submenuSleep">
+            <button type="button" data-toggle="modal" data-target="#view_comment_report" style="visibility:hidden"> </button>
                 <div class="container">
                     <div class="section">
                         <div class="blog-post blog-single-post">
@@ -307,7 +308,7 @@
                                             <th>Date</th>
                                             <th>Username</th>
                                             <th>Reason</th>
-                                            <th> Description </th>
+                                            <th>Description </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -337,6 +338,9 @@
     @include('partials.createUserModal')
     <!-- DELETE ACCOUNT MODAL -->
     @include('partials.conf_del_acc')
+    @if ($user->admin)
+    @include('partials.viewCommentReport')
+    @endif
 
 </body>
 

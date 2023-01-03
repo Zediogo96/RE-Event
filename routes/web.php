@@ -60,6 +60,8 @@ Route::get('events', 'EventController@index');
 Route::post('storeComment', 'CommentController@store')->name('storeComment');
 Route::post('deleteComment', 'CommentController@deleteComment')->name('deleteComment');
 Route::get('getComments', 'CommentController@getComments')->name('getComments');
+Route::get('getSingleComment', 'CommentController@getSingleComment')->name('getSingleComment');
+
 // Upvotes
 Route::post('addUpvote', 'UpvoteController@addUpvote')->name('addUpvote');
 Route::post('removeUpvote', 'UpvoteController@removeUpvote')->name('removeUpvote');

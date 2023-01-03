@@ -28,7 +28,7 @@ form_del_acc.addEventListener("submit", (event) => {
                 text: 'You are still hosting events. Please delete or transfer their ownership first.',
                 icon: 'warning',
                 confirmButtonText: 'Continue'
-              })
+            })
         }
     });
 });
@@ -44,6 +44,7 @@ for (var i = 0; i < trs.length; i++) {
     })
 
 };
+
 
 function getReports() {
     fetch("getReportedComments", {
@@ -68,14 +69,12 @@ function getReports() {
             })
         }
         else {
-            console.log(data)
             let table = document.getElementById("viewReports").querySelector("table");
-            console.log(table);
             let tbody = table.querySelector("tbody");
-            console.log(tbody)
             tbody.innerHTML = "";
             for (let i = 0; i < data.length; i++) {
                 let tr = document.createElement("tr");
+                tr.setAttribute("id", data[i].commentid);
                 let td1 = document.createElement("td");
                 let td2 = document.createElement("td");
                 let td3 = document.createElement("td");
@@ -86,13 +85,16 @@ function getReports() {
                 td3.innerHTML = data[i].reason;
                 td4.innerHTML = data[i].description;
 
-
                 tr.appendChild(td1);
                 tr.appendChild(td2);
                 tr.appendChild(td3);
                 tr.appendChild(td4);
 
                 tbody.appendChild(tr);
+
+                tr.addEventListener('click', function (e) {
+                    getSingleComment(data[i].commentid);
+                })
             }
         }
     }).catch(function (error) {
@@ -101,7 +103,36 @@ function getReports() {
     );
 }
 
+function change_view_comment_report(comment) {
+    let modal = document.getElementById("view_comment_report");
+    console.log(comment)
+    modal.querySelector("img").setAttribute("src", comment.user_profilePic);
+    modal.querySelector("h4.name").innerHTML = comment.user_name;
+    modal.querySelector("p.text").innerHTML = comment.text;
 
+    document.querySelector("#viewReports").querySelector("button").click();
+}
+
+function getSingleComment(id) {
+    fetch('getSingleComment' + "?" + new URLSearchParams({
+        comment_id: id
+    }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": '{{csrf_token()}}'
+        },
+        method: "get",
+        credentials: "same-origin",
+    }).then(function (data) {
+        return data.json();
+    }).then(function (data) {
+        change_view_comment_report(data);
+    }).catch(function (error) {
+        console.log(error);
+    })
+}
 
 document.querySelector("#viewReportsOption").addEventListener("click", function (e) {
     getReports();

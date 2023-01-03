@@ -155,7 +155,7 @@
 }
 
 #myProfileDetails button:first-of-type {
-    margin-left:80%;
+    margin-left: 80%;
 }
 
 #del_account {
@@ -478,3 +478,54 @@ tbody tr td:not(:last-child) {
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap");
+
+
+.comment-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    height: 20rem;
+}
+
+.comment-container img {
+    position: absolute;
+    width: 9rem;
+    height: 9rem;
+    border-radius: 5%;
+    top: 1rem;
+    left: 1rem;
+}
+
+.comment-container h4.name {
+    position: absolute;
+    top: 1rem;
+    left: 12rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.comment-container p.text {
+    position: absolute;
+    top: 7rem;
+    left: 12rem;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.div1 {
+    grid-area: 1 / 1 / 3 / 3;
+}
+
+.div2 {
+    grid-area: 1 / 3 / 2 / 6;
+}
+
+.div3 {
+    grid-area: 2 / 3 / 3 / 6;
+}
+
+.div4 {
+    grid-area: 3 / 1 / 6 / 6;
+}
