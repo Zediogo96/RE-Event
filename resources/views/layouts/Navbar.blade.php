@@ -52,7 +52,7 @@
             <div class="modal-content" id="modal-content-box" style="height: 18rem;">
 
                 <div class="form-group">
-                    <input type="text" class="form-controller" id="searchInput" name="search"></input>
+                    <input type="text" class="form-controller" id="searchInput" name="search">
                 </div>
                 <table class="table table-bordered table-hover" style="margin-top:1rem;">
                     <thead>

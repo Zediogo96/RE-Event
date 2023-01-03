@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container bg-body" id="faq-container">
-    <h1 class="text-center">FAQ</h3>
+    <h1 class="text-center">FAQ</h1>
     <p class="text-center mb-5">
         Find the answers for the most frequently asked questions below
     </p>
@@ -52,7 +52,7 @@
         <div class="col-md-6 col-lg-4 mb-4">
             <h6 class="mb-3 text-primary"><i class="fas fa-book-open text-primary pe-2"></i> If I make a mistake creating an Event, can I change some information about it?</h6>
             <p>
-                Of course! We understand that sometimes we make mistakes, so you can always edit your Events. You can do that by navigating to your profile and clicking on the event you 
+                Of course! We understand that sometimes we make mistakes, so you can always edit your Events. You can do that by navigating to your profile and clicking on the event you
                 want to edit.
             </p>
         </div>

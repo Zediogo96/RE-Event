@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @push('page-scripts')
-<script type="text/javascript" src="{{ asset('js/pagination.js') }}" defer> </script>
-<script type="text/javascript" src="{{ asset('js/home.js') }}" defer> </script>
+<script src="{{ asset('js/pagination.js') }}" defer> </script>
+<script src="{{ asset('js/home.js') }}" defer> </script>
 @endpush
 
 @section('content')
@@ -50,10 +50,6 @@
     </a>
 </div>
 <!-- END CAROUSEL SLIDER -->
-
-<script type="text/javascript" defer>
-
-</script>
 
 <!-- COUNTDOWN TIMER -->
 <div class="countdown">
@@ -109,7 +105,7 @@
     @foreach ($events as $event)
     <a href="{{route('event.show', $event->eventid)}}">
         <div class="event-card">
-            <img loading="lazy" src="{{$event -> photos[0]->path}}" alt="" class="card-image" alt="Event {{$event->name}} photo">
+            <img loading="lazy" src="{{$event -> photos[0]->path}}" class="card-image" alt="Event {{$event->name}} photo">
             <h3 class="card-title"> {{$event->name}} </h3>
         </div>
     </a>
@@ -134,7 +130,7 @@
     <div class="modal-dialog">
         <div class="modal-content" style="height: 18rem;">
             <div class="form-group">
-                <input type="text" class="form-controller" id="searchInput" name="search"></input>
+                <input type="text" class="form-controller" id="searchInput" name="search">
             </div>
             <table class="table table-bordered table-hover" style="margin-top:1rem;">
                 <thead>
