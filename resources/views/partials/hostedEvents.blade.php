@@ -1,15 +1,3 @@
-<thead>
-    <tr>
-        <th>Date</th>
-        <th>Name</th>
-        <th>City</th>
-        <th>Privacy</th>
-        <th></th>
-
-    </tr>
-
-</thead>
-
 <tr>
     <td>
         <div class="event-date">
