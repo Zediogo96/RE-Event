@@ -111,11 +111,10 @@
                             <div class="invalid-feedback"></div>
                         </div>
                     </div>
-                </form>
-                <div class = "buttonsDiv">
+
                     <button type="submit" class="btn btn-success">Update Profile Details</button>
-                    <button href="#del_acc_modal" data-toggle="modal" id="del_account" type="button" class="btn btn-danger"> Delete Account </button>
-                </div>
+                </form>
+                <button href="#del_acc_modal" data-toggle="modal" id="del_account" type="button" class="btn btn-danger"> Delete Account </button>
             </div>
             <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
                 <div id="futureEvents" class="details submenuSleep">

@@ -154,34 +154,15 @@
     width: 100%;
 }
 
-.searchDiv {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 15px 0 0 0;
+#myProfileDetails button:first-of-type {
+    margin-left: 80%;
 }
 
-.headerDiv{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-
-.buttonsDiv{
-    display: flex;
-    flex-direction: row-reverse;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    padding-right: 45px;
-}
-
-.buttonsDiv button{
-    margin-left: 20px;
+#del_account {
+    position: absolute;
+    width: 10rem;
+    top: 24.1rem;
+    right: 20rem;
 }
 
 .updateProfileInputBoxes {
@@ -495,46 +476,6 @@ tbody tr {
 tbody tr td:not(:last-child) {
     border-right: 1px solid whitesmoke;
 }
-
-@media screen and (max-width:800px) {
-    .profileAndDetails {
-        width: 100%;
-        margin: 0;
-    }
-    .details{
-        padding: 30px 0px 30px 0px;
-    }
-
-    .userProfile {
-        flex-direction: column;
-    }
-
-    .events-list tr td:last-child {
-        padding: 5px 10px;
-        display: flex;
-        justify-content: space-evenly;
-        margin: 1rem 0;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .tableContainer{
-        overflow: scroll;
-    }
-
-    .buttonsDiv button{
-        margin-left: 0;
-    }
-
-    .buttonsDiv{
-        margin-top: 30px;
-        justify-content: center;
-        padding-right: 0;
-        justify-content: space-between;
-    }
-
-}
-
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap");
 
