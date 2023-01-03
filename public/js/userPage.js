@@ -103,14 +103,67 @@ function getReports() {
     );
 }
 
+let form_ban = document.getElementById("view_comment_report").querySelector("form");
+form_ban.addEventListener("submit", function (e) {
+
+    e.preventDefault();
+    let form = e.target;
+    let userid = form.querySelector("input[name='__rep_user_id']").value;
+
+    if (userid == 0) return;
+
+    fetch("banUser", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+            userID: userid
+        })
+    }).then(function (data) {
+        return data.json();
+    }
+    ).then(function (data) {
+        if (data.status == 200) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'User banned successfully.',
+                icon: 'success',
+                confirmButtonText: 'Continue'
+            })
+        }
+        else {
+            Swal.fire({
+                title: 'Error!',
+                text: 'User is already banned.',
+                icon: 'error',
+                confirmButtonText: 'Continue'
+            })
+        }
+
+        getReports();
+        document.getElementById("view_comment_report").querySelector(".close").click();
+
+    }).catch(function (error) {
+        console.log(error);
+    }
+    );
+});
+
+
 function change_view_comment_report(comment, report) {
     let modal = document.getElementById("view_comment_report");
     modal.querySelector("img").setAttribute("src", comment.user_profilePic);
     modal.querySelector("h4.name").innerHTML = comment.user_name;
     modal.querySelector("p.text").innerHTML = comment.text;
     modal.querySelector("li.rep_date").innerHTML = "Date: " + report.date;
-    modal.querySelector("li.rep_reason").innerHTML = "Reason: " +  report.reason;
+    modal.querySelector("li.rep_reason").innerHTML = "Reason: " + report.reason;
     modal.querySelector("li.rep_description").innerHTML = "Description: " + report.description;
+    modal.querySelector("input[name='__rep_user_id").setAttribute("value", report.userid);
 
     document.querySelector("#viewReports").querySelector("button").click();
 }

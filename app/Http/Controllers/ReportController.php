@@ -65,12 +65,20 @@ class ReportController extends Controller
             return response()->json(['status' => 'error', 'message' => 'No reports found'], 204);
         }
 
+        $response_array = array();
+
         foreach ($reports as $report) {
+
+            if ($report->user->isblocked == 1) {
+                continue;
+            }
             $report->comment;
             $report->user;
+            array_push($response_array, $report);
+
         }
         // return reports
-        return response()->json($reports, 200);
+        return response()->json($response_array, 200);
     }
 
     /**

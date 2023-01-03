@@ -77,9 +77,9 @@ Route::put('api/clearNotifications', 'InvitedController@read')->name('readNotifi
 Route::get('api/numberNotifications', 'InvitedController@numberNotifications')->name('numberNotifications');
 
 Route::put('api/changeBlockStatus', 'UserController@block')->name('changeBlockStatusUser');
+Route::post('banUser', 'UserController@ban_user')->name('banUser');
 
 Route::get('auth', 'Auth\LoginController@getUser');
-
 
 Route::post('transferOwnership', 'EventController@transferOwnership')->name('transferOwnership'); //transfer the ownership of an event
 Route::post('deleteEvent', 'EventController@destroy')->name('deleteEvent'); //delete an event
