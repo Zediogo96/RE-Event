@@ -140,3 +140,7 @@ Route::post('/reset-password', function (Request $request) {
 })->middleware('guest')->name('password.update');
 
 // $schedule->command('auth:clear-resets')->everyFifteenMinutes();
+
+use App\Http\Controllers\TestController;
+
+Route::get('/send-email', [TestController::class, 'sendEmail']);
