@@ -252,6 +252,7 @@ const loginText = document.querySelector(".title-text .login");
 const signupText = document.querySelector(".title-text .signup");
 
 
+if (document.location.pathname === "/login") {
 signupBtn.onclick = () => {
     loginForm.style.marginLeft = "-50%";
     loginText.style.marginLeft = "-50%";
@@ -265,6 +266,7 @@ signupBtn.onclick = () => {
   signupLink.onclick = () => {
     signupBtn.click();
   };
+}
 
 
 function createInvite(event_id) {

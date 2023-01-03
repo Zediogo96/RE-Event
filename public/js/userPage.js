@@ -46,7 +46,6 @@ form_del_acc.addEventListener("submit", (event) => {
 //     })
 // };
 
-
 function getReports() {
     fetch("getReportedComments", {
         headers: {

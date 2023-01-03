@@ -281,6 +281,7 @@ function getComments(id, shouldScroll) {
 
 
 // REQUEST FOR ADMIN TO BE ABLE TO SEARCH FOR USERS
+if (document.location.pathname == "/user") {
 document.getElementById("search-users-admin").addEventListener("keyup", function(e) {
     fetch("searchUsersAdmin" + "?" + new URLSearchParams({
         search: e.target.value
@@ -345,8 +346,7 @@ document.getElementById("search-users-admin").addEventListener("keyup", function
         console.log(error);
     });
 });
-
-
+}
 
 
 // REQUESTS TO BE USED WHILE ADDING / REMOVING UPVOTES
