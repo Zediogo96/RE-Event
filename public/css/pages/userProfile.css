@@ -7,26 +7,6 @@
 
 }
 
-@media screen and (max-width:800px) {
-    .userProfile {
-        flex-direction: column;
-    }
-
-    .events-list tr td:last-child {
-        padding: 5px 10px;
-        display: flex;
-        justify-content: space-evenly;
-        margin: 1rem 0;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .tableContainer{
-        overflow: scroll;
-    }
-
-}
-
 .profileAndDetails {
     width: 22vw;
     display: flex;
@@ -40,12 +20,6 @@
 
 }
 
-@media screen and (max-width:800px) {
-    .profileAndDetails {
-        width: 100%;
-        margin: 0;
-    }
-}
 
 
 #profileUserCard {
@@ -89,6 +63,7 @@
 }
 
 .submenuActive {
+    width: 100%;
     display: flex;
     position: relative;
     overflow: hidden;
@@ -155,7 +130,14 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+}
+
+#myProfileDetails{
     padding: 30px 0px 30px 0px;
+}
+
+.details{
+    padding: 30px 30px 30px 0px;
 }
 
 .optionDetailsHidden {
@@ -164,6 +146,15 @@
 
 #profileDetailsForm {
     width: 100%;
+}
+
+.searchDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 15px 0 0 0;
 }
 
 .updateProfileInputBoxes {
@@ -185,7 +176,7 @@
     background-color: none;
     border-color: none;
     outline: none !important;
-
+    
 }
 
 .updateProfileDetailsRow {
@@ -483,5 +474,36 @@ tbody tr {
 tbody tr td:not(:last-child) {
     border-right: 1px solid whitesmoke;
 }
+
+@media screen and (max-width:800px) {
+    .profileAndDetails {
+        width: 100%;
+        margin: 0;
+    }
+    .details{
+        padding: 30px 0px 30px 0px;
+    }
+}
+
+@media screen and (max-width:800px) {
+    .userProfile {
+        flex-direction: column;
+    }
+
+    .events-list tr td:last-child {
+        padding: 5px 10px;
+        display: flex;
+        justify-content: space-evenly;
+        margin: 1rem 0;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .tableContainer{
+        overflow: scroll;
+    }
+
+}
+
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap");

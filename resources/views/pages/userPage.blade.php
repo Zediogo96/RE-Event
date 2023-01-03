@@ -62,8 +62,8 @@
 
         </section>
         <section id="selectDetails" class="profile">
+
             <div id="myProfileDetails" class="optionDetails">
-                <h4>My Profile</h4>
                 <form action="{{route('updateUser', ['userid' => $user->userid])}}" method="post" id="profileDetailsForm" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="userid" value="{{$user->userid}}">
@@ -110,6 +110,7 @@
                     <button type="submit" id="updateProfileDetailsButton" style="margin-left:80%" class="btn btn-success">Update Profile Details</button>
                 </form>
             </div>
+            
             <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
                 <div id="pastEvents" class="details submenuSleep">
                     <div>
@@ -152,56 +153,29 @@
 
                     </div>
                 </div>
-            </div>
-            <div id="eventsCreatedByMe" class="details submenuSleep">
-                <div>
-                    <h2>Events you're hosting</h2>
-                    <button class="btn btn-success" data-toggle="modal" data-target="#createEventModal"> New Event </button>
-                </div>
-                <div class="tableContainer">
-                    <table class="events-list">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Name</th>
-                            <th>City</th>
-                            <th>Privacy</th>
-                            <th></th>
-
-                        </tr>
-
-                    </thead>
-                        @each('partials.hostedEvents', $user->hostedEvents, 'event')
-                    </table>
-                </div>
-            </div>
-
-
-            @if ($user->admin)
-            <div id="userSearch" class="details submenuSleep">
-                <div>
-                    <h2>User Search Tool</h2>
-                    <button class="btn btn-success" data-toggle="modal" data-target="#createUserModal"> Create User </button>
-                </div>
-                <div class="tableContainer">
-                    <input type="text" class="form-controller" id="search-users-admin" name="search" placeholder="Search for the user.."></input>
-                    <table class="events-list" style="margin-top: 2rem;">
-
-                    <thead>
-                            <tr>
-                                <th>UserID</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="search-admin-users-res">
-                        </tbody>
-                    </table>
+                <div id="eventsCreatedByMe" class="details submenuSleep">
+                    <div>
+                        <h2>Events you're hosting</h2>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#createEventModal"> New Event </button>
+                    </div>
+                    <div class="tableContainer">
+                        <table class="events-list">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>City</th>
+                                    <th>Privacy</th>
+                                    <th></th>
+                                    
+                                </tr>
+                                
+                            </thead>
+                            @each('partials.hostedEvents', $user->hostedEvents, 'event')
+                        </table>
+                    </div>
                 </div>
             </div>
-            @endif
-
 
             <div id="myInvitesDetails" class="optionDetails optionDetailsHidden">
                 <div id="receivedInvites" class="details submenuSleep">
@@ -243,6 +217,34 @@
                     </div>
                 </div>
             </div>
+
+            @if ($user->admin)
+            <div id="userSearch" class="details submenuSleep">
+                <div>
+                    <h2>User Search Tool</h2>
+                    <div class="searchDiv">
+                        <input type="text" class="form-controller" id="search-users-admin" name="search" placeholder="Search for the user.."></input>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#createUserModal"> Create User </button>
+                    </div>
+                </div>
+                <div class="tableContainer">
+                    <table class="events-list" style="margin-top: 2rem;">
+
+                    <thead>
+                            <tr>
+                                <th>UserID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="search-admin-users-res">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
         </section>
     </div>
     <!-- Modal with bootstrap -->
