@@ -415,14 +415,6 @@ function changeBlockStatusUser(userid, blockStatus) {
 }
 
 
-const list = document.querySelectorAll('.list')
-
-function activeLink() {
-    list.forEach((item) => item.classList.remove('active'))
-    this.classList.add('active')
-}
-
-list.forEach((item) => item.addEventListener('click', activeLink))
 
 // EVENT PAGE COUNTDOWN TIMER
 function displayCountdownEvent(info) {
@@ -436,7 +428,6 @@ function displayCountdownEvent(info) {
 
     let string = day + " " + month + " " + year + " " + split_[1];
     const newDate = Date.parse(string);
-
 
     const countdown = setInterval(() => {
         const date = new Date().getTime();
