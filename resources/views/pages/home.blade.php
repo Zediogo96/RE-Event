@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('page-scripts')
+<script type="text/javascript" src="{{ asset('js/pagination.js') }}" defer> </script>
+@endpush
+
 @section('content')
 
 <div class="container" style="margin-top: 40px">

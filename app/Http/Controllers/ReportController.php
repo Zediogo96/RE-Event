@@ -69,18 +69,15 @@ class ReportController extends Controller
 
         foreach ($reports as $report) {
 
-            if ($report->comment->user->isblocked == 1) {
-                continue;
+            if (!$report->comment->user->isblocked && !$report->isresolved) {
+                $report->comment;
+                $report->user;
+                array_push($response_array, $report);
             }
-
-            $report->comment;
-            $report->user;
-            array_push($response_array, $report);
-
         }
 
         // return reports
-        return response()->json($response_array , 200);
+        return response()->json($response_array, 200);
     }
 
     /**

@@ -244,7 +244,7 @@ class UserController extends Controller
     public function ban_user(Request $request) {
 
         if($request->userID == Auth::user()->userid){
-            return response()->json(['status' => 'error', 'msg' => 'Cant ban self'], 403);
+            return response()->json(['status' => '403', 'msg' => 'Cant ban self'], 403);
         }
         $this->authorize('changeBlock', Auth::user());
 
@@ -253,14 +253,14 @@ class UserController extends Controller
         ($banned) ? $converted_res = 'User is already banned!' : $converted_res = 'User was banned!';
 
         if ($banned) {
-            return response()->json(['status' => 'error', 'msg' => $converted_res], 401);
+            return response()->json(['status' => '401', 'msg' => $converted_res], 401);
         }
 
         $user = User::find($request->userID);
         $user->isblocked = true;
         $user->save();
 
-        return response()->json(['status' => 'success', 'msg' => $converted_res], 200);
+        return response()->json(['status' => '200', 'msg' => $converted_res], 200);
     }
 
 }

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('page-scripts')
+<script type="text/javascript" src="{{ asset('js/event_page.js') }}" defer> </script>
+@endpush
+
 @section('content')
 
 @include('partials.toast')

@@ -136,10 +136,18 @@ form_ban.addEventListener("submit", function (e) {
                 confirmButtonText: 'Continue'
             })
         }
-        else {
+        else if (data.status == 401){
             Swal.fire({
                 title: 'Error!',
                 text: 'User is already banned.',
+                icon: 'error',
+                confirmButtonText: 'Continue'
+            })
+        }
+        else if (data.status == 403) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'You cannot ban yourself.',
                 icon: 'error',
                 confirmButtonText: 'Continue'
             })
