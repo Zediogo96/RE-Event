@@ -241,10 +241,10 @@ const selectOption = function (option) {
             document.getElementById('myEventsSubmenu').classList.remove('submenuSleep');
 
             /*predefenir o pastEvents*/
-            document.getElementById('pastEvents').classList.add('submenuActive');
-            document.getElementById('pastEvents').classList.remove('submenuSleep');
+            document.getElementById('futureEvents').classList.add('submenuActive');
+            document.getElementById('futureEvents').classList.remove('submenuSleep');
 
-            document.getElementById('pastEventsOption').classList.add('optionSelected');
+            document.getElementById('futureEventsOption').classList.add('optionSelected');
 
             break;
         }
