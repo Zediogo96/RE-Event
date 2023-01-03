@@ -1,3 +1,13 @@
+<thead>
+    <tr>
+        <th>Date</th>
+        <th>Name of Event</th>
+        <th>Email of invited person</th>
+        <th>Invite Status</th>
+    </tr>
+
+</thead>
+
 <tr>
     <td>
         <div class="event-date">

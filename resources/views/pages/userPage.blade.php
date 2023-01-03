@@ -112,147 +112,43 @@
             </div>
             <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
                 <div id="pastEvents" class="details submenuSleep">
-                    <div class="container">
-                        <div class="section">
-                            <div class="blog-post blog-single-post">
                                 <div class="single-post-title" style="padding-bottom: 1rem;">
                                     <h2>Past Events</h2>
                                 </div>
                                 <div class="single-post-content">
                                     <table class="events-list">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Name</th>
-                                                <th>City</th>
-                                                <th></th>
-
-                                            </tr>
-
-                                        </thead>
-
-                                        @foreach($user->attendingEvents as $event)
-                                        @if ($event->date < date('Y-m-d'))
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day"> {{substr($event->date, 8, 2)}}</div>
-                                                    <div class="event-month"> {{substr(date('F', mktime(0, 0, 0, substr($event->date, 5,2), 10)), 0, 3);}}</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{$event->name}}
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> {{$event->city->name}}</td>
-                                            <td><button href="#" class="btn btn-danger btn-sm btn-edit-event">Leave Event</button></td>
-                                        </tr>
-                                        @endif
-                                        @endforeach
-
-
-
+                                        @each('partials.pastEvents', $user->attendingEvents, 'event')
                                     </table>
-
                                 </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div id="futureEvents" class="details submenuSleep">
-                    <div class="container">
-                        <div class="section">
-                            <div class="blog-post blog-single-post">
                                 <div class="single-post-title" style="padding-bottom: 1rem;">
                                     <h2>Future Events</h2>
                                 </div>
                                 <div class="single-post-content">
                                     <table class="events-list">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Name</th>
-                                                <th>City</th>
-                                                <th></th>
-
-                                            </tr>
-
-                                        </thead>
-                                        @foreach($user->attendingEvents as $event)
-
-                                        <tr>
-                                            <td>
-                                                <div class="event-date">
-                                                    <div class="event-day"> {{substr($event->date, 8, 2)}}</div>
-                                                    <div class="event-month"> {{substr(date('F', mktime(0, 0, 0, substr($event->date, 5,2), 10)), 0, 3);}}</div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{$event->name}}
-                                            </td>
-                                            <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> {{$event->city->name}}</td>
-                                            <td><button href="#" class="btn btn-danger btn-sm btn-edit-event">Leave Event</button></td>
-                                        </tr>
-                                        @endforeach
+                                    @each('partials.futureEvents', $user->attendingEvents, 'event')
                                     </table>
 
                                 </div>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
             </div>
             <div id="eventsCreatedByMe" class="details submenuSleep">
-                <div class="container">
-                    <div class="section">
-                        <div class="blog-post blog-single-post">
                             <div class="single-post-title" style="padding-bottom: 1rem;">
                                 <h2>Events you're hosting</h2>
                                 <button class="btn btn-success" data-toggle="modal" data-target="#createEventModal"> New Event </button>
                             </div>
                             <div class="single-post-content">
                                 <table class="events-list">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Name</th>
-                                            <th>City</th>
-                                            <th>Privacy</th>
-                                            <th></th>
-
-                                        </tr>
-
-                                    </thead>
-
-                                    @foreach($user->hostedEvents as $event)
-                                    <tr>
-                                        <td>
-                                            <div class="event-date">
-                                                <div class="event-day"> {{substr($event->date, 8, 2)}}</div>
-                                                <div class="event-month"> {{substr(date('F', mktime(0, 0, 0, substr($event->date, 5,2), 10)), 0, 3);}}</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {{$event->name}}
-                                        </td>
-                                        <td class="event-venue hidden-xs"><i class="icon-map-marker"></i> {{$event->city->name}}</td>
-                                        <td> {{$event->isprivate ? ('Private'): ('Public')}}</td>
-                                        <td><button href=" #" class="btn btn-warning btn-sm btn-edit-event" data-toggle="modal" data-target="#editModal{{$event->eventid}}" value="{{$event->eventid}}">Edit Event</button></td>
-                                    </tr>
-                                    @endforeach
-
+                                    @each('partials.hostedEvents', $user->hostedEvents, 'event')
                                 </table>
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
+
+
             @if ($user->admin)
             <div id="userSearch" class="details submenuSleep">
-                <div class="container">
-                    <div class="section">
-                        <div class="blog-post blog-single-post">
                             <div class="single-post-title" style="padding-bottom: 1rem;">
                                 <h2>User Search Tool</h2>
                                 <button class="btn btn-success" data-toggle="modal" data-target="#createUserModal"> Create User </button>
@@ -261,7 +157,7 @@
                                 <input type="text" class="form-controller" id="search-users-admin" name="search" placeholder="Search for the user.."></input>
                                 <table class="events-list" style="margin-top: 2rem;">
 
-                                    <thead>
+                                <thead>
                                         <tr>
                                             <th>UserID</th>
                                             <th>Username</th>
@@ -273,65 +169,31 @@
                                     </tbody>
                                 </table>
 
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             @endif
             <div id="myInvitesDetails" class="optionDetails optionDetailsHidden">
                 <div id="receivedInvites" class="details submenuSleep">
-                    <div class="container">
-                        <div class="section">
-                            <div class="blog-post blog-single-post">
                                 <div class="single-post-title" style="padding-bottom: 1rem;">
                                     <h2>Received Invites</h2>
                                 </div>
                                 <div class="single-post-content">
                                     <table class="events-list">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Name of Event</th>
-                                                <th>City</th>
-                                                <th>Email of inviter</th>
-                                                <th>Respond to Invite</th>
-                                            </tr>
-
-                                        </thead>
                                         @each('partials.receivedInvite', $receivedInvites, 'invite')
                                     </table>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div id="sentInvites" class="details submenuSleep">
-                    <div class="container">
-                        <div class="section">
-                            <div class="blog-post blog-single-post">
                                 <div class="single-post-title" style="padding-bottom: 1rem;">
                                     <h2>Sent Invites</h2>
                                 </div>
                                 <div class="single-post-content">
                                     <table class="events-list">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Name of Event</th>
-                                                <th>Email of invited person</th>
-                                                <th>Invite Status</th>
-                                            </tr>
-
-                                        </thead>
                                         @each('partials.sentInvite', $sentInvites, 'invite')
                                     </table>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
         </section>

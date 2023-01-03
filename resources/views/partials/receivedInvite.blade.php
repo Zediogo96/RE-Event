@@ -1,3 +1,12 @@
+<thead>
+    <tr>
+        <th>Date</th>
+        <th>Name of Event</th>
+        <th>City</th>
+        <th>Email of inviter</th>
+        <th>Respond to Invite</th>
+    </tr>
+</thead>
 
 <tr>
     <td>
