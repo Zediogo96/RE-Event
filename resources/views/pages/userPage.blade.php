@@ -216,7 +216,7 @@
                                 <h2>User Search Tool</h2>
                                 <button class="btn btn-success" data-toggle="modal" data-target="#createUserModal"> Create User </button>
                             </div>
-                            <div class="single-post-content">
+                            <div class="single-post-content scrollable">
                                 <input type="text" class="form-controller" id="search-users-admin" name="search" placeholder="Search for the user.."></input>
                                 <table class="events-list" style="margin-top: 2rem;">
 
