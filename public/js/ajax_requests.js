@@ -194,7 +194,6 @@ function getComments(id, shouldScroll) {
     }).then(function (data) {
         return data.json();
     }).then(function (data) {
-        console.log(data);
         let container = document.querySelector("#new-comments-container");
         container.innerHTML = '';
         data.forEach(function (comment) {
