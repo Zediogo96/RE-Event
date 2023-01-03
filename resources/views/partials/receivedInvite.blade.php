@@ -1,3 +1,4 @@
+
 <tr>
     <td>
         <div class="event-date">

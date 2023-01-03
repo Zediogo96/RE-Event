@@ -7,6 +7,12 @@
 
 }
 
+@media screen and (max-width:800px) {
+    .userProfile {
+        flex-direction: column;
+    }
+}
+
 .profileAndDetails {
     width: 22vw;
     display: flex;
@@ -20,7 +26,12 @@
 
 }
 
-
+@media screen and (max-width:800px) {
+    .profileAndDetails {
+        width: 100%;
+        margin: 0;
+    }
+}
 
 #profileUserCard {
     display: flex;
@@ -63,7 +74,6 @@
 }
 
 .submenuActive {
-    width: 100%;
     display: flex;
     position: relative;
     overflow: hidden;
@@ -77,13 +87,16 @@
 }
 
 .details.submenuActive {
-    flex-direction: column;
+    position: absolute;
+    top: 10%;
+    left: 18%;
+    height: 100vh;
+    width: 100rem;
+    z-index: 1;
 }
 
 #selectDetails {
     width: 100%;
-    display: flex;
-    justify-content: left;
 }
 
 .optionSelected {
@@ -129,15 +142,8 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-}
-
-#myProfileDetails{
+    align-items: center;
     padding: 30px 0px 30px 0px;
-}
-
-.details{
-    padding: 30px 30px 30px 0px;
 }
 
 .optionDetailsHidden {
@@ -146,23 +152,6 @@
 
 #profileDetailsForm {
     width: 100%;
-}
-
-.searchDiv {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 15px 0 0 0;
-}
-
-.headerDiv{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-end;
 }
 
 #myProfileDetails button:first-of-type {
@@ -195,7 +184,7 @@
     background-color: none;
     border-color: none;
     outline: none !important;
-    
+
 }
 
 .updateProfileDetailsRow {
@@ -224,16 +213,7 @@
 }
 
 .events-list tr td {
-    padding: 10px;
-}
-
-th, tr {
-    text-align: center;
-    padding: 15px;
-}
-
-th {
-    white-space: nowrap;
+    padding: 5px 20px 10px 10px;
 }
 
 .events-list tr:nth-child(odd) {
@@ -247,7 +227,7 @@ th {
 }
 
 .events-list tr td:last-child {
-    padding: 0 10px;
+    padding: 5px 0;
     display: flex;
     justify-content: space-evenly;
     margin: 1rem 0;
@@ -270,8 +250,6 @@ th {
 .events-list tr td:last-child button {
     display: flex;
     height: fit-content;
-    white-space: nowrap;
-    margin: 10px;
 }
 
 .events-list tr:hover .event-date {
@@ -401,9 +379,6 @@ div#preview-container #preview-image {
     }
 }
 
-.tableContainer{
-    padding-top: 15px;
-}
 
 #preview-container h3 {
     position: absolute;
@@ -501,37 +476,6 @@ tbody tr {
 tbody tr td:not(:last-child) {
     border-right: 1px solid whitesmoke;
 }
-
-@media screen and (max-width:800px) {
-    .profileAndDetails {
-        width: 100%;
-        margin: 0;
-    }
-    .details{
-        padding: 30px 0px 30px 0px;
-    }
-}
-
-@media screen and (max-width:800px) {
-    .userProfile {
-        flex-direction: column;
-    }
-
-    .events-list tr td:last-child {
-        padding: 5px 10px;
-        display: flex;
-        justify-content: space-evenly;
-        margin: 1rem 0;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .tableContainer{
-        overflow: scroll;
-    }
-
-}
-
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap");
 
