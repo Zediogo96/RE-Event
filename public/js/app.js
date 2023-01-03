@@ -275,12 +275,13 @@ function createInvite(event_id) {
         {
             invited_user: invited_user,
             event_id: event_id
-        },
-        inviteHandler,
+        }, function(response) {
+            inviteHandler(response);
+        }
     );
 }
 
-function inviteHandler() {
+function inviteHandler(response) {
 
     if (this.status === 302) {
         window.location.href = this.responseText;
@@ -300,22 +301,42 @@ function inviteHandler() {
         console.log("Invite Doesn't Exist");
     }
     else if (this.status === 409) {
-        console.log("User Already Invited");
+        Swal.fire({
+            title: 'Error!',
+            text: 'User is already invited!',
+            icon: 'warning',
+            confirmButtonText: 'Continue'
+        })
     }
     else if (this.status === 400) {
-        console.log("Not possible to invite yourself");
+        Swal.fire({
+            title: 'Error!',
+            text: 'You cannot invite yourself!',
+            icon: 'warning',
+            confirmButtonText: 'Continue'
+        })
     }
-    else if (this.status === 412) {
-        console.log("User already attending event");
+    else if (response.status === 412) {
+        Swal.fire({
+            title: 'Error!',
+            text: 'User is already in this event!',
+            icon: 'warning',
+            confirmButtonText: 'Continue'
+        })
     }
     else if (this.status === 403) {
-        console.log("User is blocked");
+        Swal.fire({
+            title: 'Error!',
+            text: 'User is blocked!',
+            icon: 'warning',
+            confirmButtonText: 'Continue'
+        })
     }
 }
 
 function rejectInvite(eventID) {
     // console.log("reject");
-    sendAjaxRequest("delete", "/api/inviteReject", { event_id: eventID }, inviteHandler);
+    sendAjaxRequest("delete", "/api/inviteReject", { event_id: eventID }, inviteHandler(response));
 }
 
 function acceptInvite(event_id) {

@@ -408,7 +408,7 @@ function preview_image() {
 }
 
 function readHandler() {
-    console.log("result: ", this, this.responseText);
+    // console.log("result: ", this, this.responseText);
 }
 
 document.getElementById("search-attendees-teste").addEventListener("keyup", function (e) {
