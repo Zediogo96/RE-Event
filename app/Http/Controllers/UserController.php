@@ -252,13 +252,18 @@ class UserController extends Controller
 
         ($banned) ? $converted_res = 'User is already banned!' : $converted_res = 'User was banned!';
 
+
+
         if ($banned) {
             return response()->json(['status' => '401', 'msg' => $converted_res], 401);
         }
 
         $user = User::find($request->userID);
+        $user->getComment()->delete();
         $user->isblocked = true;
         $user->save();
+
+
 
         return response()->json(['status' => '200', 'msg' => $converted_res], 200);
     }
