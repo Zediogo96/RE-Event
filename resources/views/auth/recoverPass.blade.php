@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & SignUp Form </title>
+    <title>Recover Password Form</title>
     <link href="{{ asset('css/pages/login.css') }}" rel="stylesheet">
 </head>
 
@@ -18,16 +18,6 @@
         <div class="title-text">
             <div class="title login">Recover Password Form</div>
         </div>
-
-        <!-- Start Form Container -->
-        <div class="form-container">
-            <div class="slide-controls">
-                <input type="radio" name="slider" id="login" checked>
-                <input type="radio" name="slider" id="signup">
-                <label for="login" class="slide login">Login</label>
-                <label for="signup" class="slide signup"> Signup</label>
-                <div class="slide-tab"></div>
-            </div>
 
             <div class="form-inner">
 
