@@ -121,7 +121,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="fureEvents" class="details submenuSleep">
+                <div id="futureEvents" class="details submenuSleep">
                     <div class="single-post-title" style="padding-bottom: 1rem;">
                         <h2>Future Events</h2>
                     </div>
