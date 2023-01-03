@@ -18,11 +18,20 @@
 
 #event-content button {
     position: absolute;
-    top: 3rem;
-    right: 3rem;
     width: 12rem;
     height: 3.5rem;
+    right: 3rem;
 }
+
+#event-content button:first-of-type{
+    top: 3rem;
+}
+
+#event-content button:nth-of-type(2) {
+    top: 8rem;
+
+}
+
 
 .countdown-event {
     display: flex;
@@ -368,11 +377,16 @@ div.wrapper-res {
 }
 
 #inviteDiv {
-    background-color: rgba(210, 145, 255, 1);
+    background-image: linear-gradient(to right, rgba(210, 145, 255, 0.9) 0%, rgba(110, 110, 110, 0.5)100%);
     width: 29rem;
     height: 12rem;
     padding: 2em;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 500;
 }
+
+
 
 #emailInvite {
     padding: 2em;
@@ -423,6 +437,8 @@ div.wrapper-res {
     background-color: blue;
 }
 
+
+
 #info-navbar-container div table tr td, .events-list tr td {
     padding: 5px 20px 10px 10px;
 }
@@ -455,6 +471,12 @@ div.wrapper-res {
     margin-top: 5rem;
     display: block;
 
+}
+
+.scrollable {
+    overflow-y: auto;
+    max-height: 30rem;
+    scrollbar-color: #c520af #ECEFF1;
 }
 
 /* MENU INFO OF EVENT CONTENT */
@@ -534,6 +556,8 @@ div.wrapper-res {
     background-color: rgba(211, 188, 238, 0.9);
     border-radius: 20px;
 }
+
+
 
 /* Standard syntax */
 @keyframes shake {
@@ -847,4 +871,12 @@ div.wrapper-res {
     #outroDiv tbody td button {
         font-size: 0.9rem;
     }
+}
+
+#del_event {
+    background-color: rgba(255, 0, 0, 0.5);
+    border-radius: 20px;
+    box-shadow: 5px 5px 0px #d291ff;
+    width: 50%;
+    top: 10rem
 }

@@ -1,5 +1,17 @@
 @extends('layouts.app')
 
+@push('page-scripts')
+<script type="text/javascript" src="{{ asset('js/event_page.js') }}" defer> </script>
+
+@if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
+<script type="text/javascript" src="{{ asset('js/event_host.js') }}" defer> </script>
+@endif
+
+@if (Auth::user() != NULL)
+<script type="text/javascript" src="{{ asset('js/auth_user.js') }}" defer> </script>
+@endif
+@endpush
+
 @section('content')
 
 @include('partials.toast')
@@ -7,7 +19,7 @@
 <div class="container-event-page">
     <div class="container" id="event-content">
         <input type="hidden" id="eventid" value="{{$event->eventid}}">
-        <img src="{{$event -> photos[0]->path}}">
+        <img src="{{$event -> photos[0]->path}}" alt="Event {{$event->name}} photo">
         <div class="wrapper-res">
             <div id="event-name"> {{$event->name}} </div>
             <div id="event-date"> {{date('Y-m-d', strtotime($event->date))}} </div>
@@ -16,6 +28,8 @@
         @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
         <button href="#transferOwnershipModal" data-toggle="modal" class="btn btn-warning"> <a> <i class="fa fa-layer-group fa-fw"></i>
                 Transfer Ownership</a></button>
+        <button href="#del_Event_Modal" data-toggle="modal" id="del_event" class="btn btn-danger"> <a> <i class="fa fa-times fa-fw"></i>
+                Delete Event </a></button>
         @elseif (Auth::user() != NULL && !Auth::user()->attendingEvents->contains($event->eventid))
         <button onclick="ajax_selfAddUser('{{Auth::user()->userid}}', '{{$event->eventid}}')" class="btn btn-info"> <a> <i class="fa fa-layer-group fa-fw"></i>
                 Enroll Event </a></button>
@@ -87,7 +101,7 @@
                 </a>
             </li>
 
-            @if (Auth::user() != NULL && in_array(Auth::user()->userid, $attendees))
+            <!-- @if (Auth::user() != NULL && in_array(Auth::user()->userid, $attendees))
             <li class="list">
                 <a href="#" onclick="showAttendeesDiv()">
                     <span class="icon">
@@ -96,7 +110,7 @@
                     <span class="title">Attendees</span>
                 </a>
             </li>
-            @endif
+            @endif -->
 
             @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
             <li class="list">
@@ -107,14 +121,6 @@
                     <span class="title">Attendees</span>
                 </a>
             </li>
-            <!-- <li class="list">
-                <a href="#" onclick="showOutroDiv()">
-                    <span class="icon">
-                        <ion-icon name="person-outline"></ion-icon>
-                    </span>
-                    <span class="title">Attendees</span>
-                </a>
-            </li> -->
 
             @endif
 
@@ -139,7 +145,7 @@
             <div class="svg-background2"></div>
             <div class="circle"></div>
 
-            <img class="profile-img" src="{{$host->profilepic}}">
+            <img class="profile-img" src="{{$host->profilepic}}" alt="Event host profile picture">
             <div class="text-container">
                 <p class="title-text"> {{$host->name}}</p>
                 <p class="info-text">Event Host</p>
@@ -201,7 +207,7 @@
         <div class="p-4 mb-2" id="new-comment">
             <!-- New Comment //-->
             <div class="">
-                <img class="rounded-circle me-4" style="width:5rem;height:5rem; float:left;" src="{{Auth::user()->profilepic}}">
+                <img class="rounded-circle me-4" style="width:5rem;height:5rem; float:left;" src="{{Auth::user()->profilepic}}" alt="User profile picture">
                 <div class="flex-grow-1">
                     <div class="gap-2">
                         <p href="#" class="fw-bold">{{Auth::user()->name}}</p>
@@ -220,14 +226,19 @@
         </div>
         @endif
         <div class="shadow-sm p-4" id="comments-section">
-            <h4 class="mb-4"> {{count($event->comments()->get())}} Comments</h4>
+            <h4 class="mb-4"> @php $eventcomments = $event->comments()->get(); $unblockedcomments = array(); for ($i = 0; $i < count($eventcomments); $i++) {
+                if ($eventcomments[$i]->userIsBlocked()) {
+                    continue;
+                }
+                array_push($unblockedcomments, $eventcomments[$i]);
+            } @endphp {{count($unblockedcomments)}} Comments</h4>
             <div class="">
                 <!-- Comment //-->
-
                 <div class="py-3" id="new-comments-container">
                     @foreach ($event->comments()->get() as $comment)
+                    @if ($comment->userIsBlocked() == false)
                     <div class="d-flex comment">
-                        <img class="rounded-circle comment-img" src="{{$comment->user->profilepic}}" />
+                        <img class="rounded-circle comment-img" src="{{$comment->user->profilepic}}" alt="User profile picture" />
                         <div class="flex-grow-1 ms-3">
                             <div class="mb-1"><a href="#" class="fw-bold link-dark me-1">{{$comment->user->name}}</a>
                                 <span class="text-muted text-nowrap"> {{$comment->date}}</span>
@@ -253,6 +264,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     @endforeach
 
                 </div>
@@ -262,286 +274,15 @@
         @endif
         @include('partials.confirm_modal')
         @include('partials.reportModal')
+        @include('partials.conf_del_event')
     </div>
 
-    <script type="text/javascript" defer>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('#report-form').addEventListener('submit', function(event) {
-                // TO PREVENT REQUESTS BEING SET WHILE DATA IS EMPTY
-                var formData = new FormData(this);
-                var empty = false;
-                for (var value of formData.values()) {
-                    if (value == '') {
-                        empty = true;
-                    }
-                }
-                if (empty) {
-                    event.preventDefault();
-                    return;
-                }
-                var data = this;
-                fetch(data.getAttribute('action'), {
-                        method: data.getAttribute('method'),
-                        body: new FormData(data)
-                    }).then(res => res.text())
-                    .then(function(data) {
-                        hide_report_modal();
-                        showAlert('newReport');
-                    });
-                event.preventDefault();
-            });
-        });
+</div>
+<script type="text/javascript">
+    // Polling for the Event Page Countdown display
+    setTimeout(function() {
+        displayCountdownEvent('{{$event->date}}');
+    }, 1000);
+</script>
 
-        function hide_report_modal() {
-            document.getElementById('confirm-report-btn').setAttribute('data-dismiss', 'modal');
-            document.getElementById('confirm-report-btn').click();
-            document.getElementById('confirm-report-btn').setAttribute('data-dismiss', '');
-        }
-    </script>
-
-    <script type="text/javascript" defer>
-        function renew_btns() {
-
-            let del_btn = document.querySelectorAll(".__del_btn");
-            del_btn.forEach((btn) => {
-
-                btn.addEventListener("click", () => {
-
-                    document.getElementById('confirm-del-btn').setAttribute('onClick', 'deleteComment(' + btn.getAttribute('value') + ')');
-                });
-
-            });
-        }
-
-        renew_btns();
-
-        function renew_report_btns() {
-
-            let report_btn = document.querySelectorAll(".__report_btn");
-            report_btn.forEach((btn) => {
-
-                btn.addEventListener("click", () => {
-                    let rep_form = document.getElementById('report-form');
-                    let a = rep_form.querySelector('input[name="comment_id"]').value = btn.getAttribute('value')
-                    let b = rep_form.querySelector('input[name="event_id"]').value = document.querySelector('#eventid').value;
-                    let c = rep_form.querySelector('input[name="user_id"]').value = document.querySelector('meta[name="auth-check-id"]').getAttribute('content');
-                });
-
-            });
-        }
-        renew_report_btns();
-    </script>
-
-    @if (Auth::user() != NULL)
-    <script type="text/javascript">
-        // REQUEST USED FOR THE AUTHENTICATED USER TO BE ABLE TO COMMENT IN A EVENT (IN THE EVENT PAGE)
-        document.querySelector('#new-comment button').addEventListener('click', function(e) {
-            e.preventDefault();
-
-            var comment = document.querySelector('#my-comment');
-
-            if (comment.value == '') {
-                let error = document.querySelector('#new-comment label');
-                error.innerHTML = 'Error: Comment cannot be empty';
-                error.style.color = 'red';
-                document.querySelector('#new-comment form').classList.add("apply-shake");
-                setTimeout(function() {
-                    document.querySelector('#new-comment form').classList.remove("apply-shake");
-                }, 500);
-                return;
-            } else {
-                fetch("{{route('storeComment')}}", {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-Requested-With": "XMLHttpRequest",
-                        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    method: "post",
-                    credentials: "same-origin",
-                    body: JSON.stringify({
-                        userid: "{{Auth::user()->userid}}",
-                        eventid: "{{$event->eventid}}",
-                        text: document.querySelector('#my-comment').value,
-                    })
-                }).then(function(data) {
-                    getComments('{{$event->eventid}}', true);
-                    showAlert("newcomment");
-
-                }).catch(function(error) {
-                    console.log(error);
-                });
-            }
-        });
-    </script>
-    @endif
-
-    <!-- ONLY AVAILABLE FOR HOST -->
-    @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
-    <script type="text/javascript" defer>
-        document.getElementById("search-users").addEventListener("keyup", function(e) {
-            if (document.getElementById("search-users").value == '') return;
-            let eventid = document.getElementById("eventid").value;
-            fetch("searchUsers" + "?" + new URLSearchParams({
-                search: document.getElementById("search-users").value,
-                event_id: eventid
-            }), {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRF-Token": '{{ csrf_token() }}'
-                },
-                method: "get",
-                credentials: "same-origin",
-
-            }).then(function(data) {
-                return data.json();
-            }).then(function(data) {
-                let container = document.getElementById("table-user-res");
-                container.innerHTML = "";
-                data.forEach(function(user) {
-
-                    let tr = document.createElement("tr");
-                    let td1 = document.createElement("td");
-                    let td2 = document.createElement("td");
-                    let td3 = document.createElement("td");
-
-                    td3.style.textAlign = "center";
-                    let btn = document.createElement("button");
-
-                    if (user.attending_event == true) {
-                        btn.setAttribute("class", "btn btn-danger");
-                        btn.innerHTML = "Remove";
-                        btn.addEventListener('click', function(e) {
-                            ajax_remUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    } else {
-                        btn.setAttribute("class", "btn btn-success");
-                        btn.innerHTML = "Add to Event";
-                        btn.addEventListener('click', function(e) {
-                            ajax_addUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    }
-                    td1.innerHTML = user.name;
-                    td2.innerHTML = user.email;
-                    td3.appendChild(btn);
-
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    tr.appendChild(td3);
-                    container.appendChild(tr);
-
-                });
-            }).catch(function(error) {
-                console.log(error);
-            });
-        });
-
-        document.querySelector('#outroDiv button').addEventListener('click', function() {
-            let d = document.getElementById('outroDiv');
-            d.classList.add("animate-out");
-            setTimeout(function() {
-                d.classList.remove("animate-out");
-            }, 500);
-            setTimeout(function() {
-                d.style.display = "none";
-            }, 450);
-        })
-
-        function showOutroDiv() {
-            document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-            let d = document.getElementById('outroDiv');
-            d.classList.add("animate");
-            setTimeout(function() {
-                d.classList.remove("animate");
-            }, 500);
-            d.style.display = "block";
-        }
-
-    </script>
-    @endif
-
-    <script>
-
-        function auxSearch(){
-            let search = ".";
-            if (document.getElementById("search-attendees").value != ''){
-                search = document.getElementById("search-attendees").value;
-            }
-            let eventid = document.getElementById("eventid").value;
-            fetch("searchAttendees" + "?" + new URLSearchParams({
-                search: search,
-                event_id: eventid
-            }), {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRF-Token": '{{ csrf_token() }}'
-                },
-                method: "get",
-                credentials: "same-origin",
-
-            }).then(function(data) {
-                return data.json();
-            }).then(function(data) {
-                let container = document.getElementById("table-attendees-res");
-                container.innerHTML = "";
-                data.forEach(function(user) {
-
-                    console.log(eventid);
-
-                    let tr = document.createElement("tr");
-                    let td1 = document.createElement("td");
-                    let td2 = document.createElement("td");
-
-                    td1.innerHTML = user.name;
-                    td2.innerHTML = user.email;
-
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    container.appendChild(tr);
-
-                });
-            }).catch(function(error) {
-                console.log(error);
-            });
-        }
-
-        document.getElementById("search-attendees").addEventListener("keyup", function(e) {auxSearch()});
-
-        function showAttendeesDiv() {
-            document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-            let d = document.getElementById('attendeesDiv');
-            d.classList.add("animate");
-            setTimeout(function() {
-                d.classList.remove("animate");
-            }, 500);
-            d.style.display = "block";
-            auxSearch();
-        }
-
-
-        document.querySelector('#attendeesDiv button').addEventListener('click', function() {
-            let d = document.getElementById('attendeesDiv');
-            d.classList.add("animate-out");
-            setTimeout(function() {
-                d.classList.remove("animate-out");
-            }, 500);
-            setTimeout(function() {
-                d.style.display = "none";
-            }, 450);
-        })
-
-    </script>
-
-    <script type="text/javascript">
-        // Polling for the Event Page Countdown display
-        setTimeout(function() {
-            displayCountdownEvent('{{$event->date}}');
-        }, 1000);
-    </script>
-    @endsection
+@endsection

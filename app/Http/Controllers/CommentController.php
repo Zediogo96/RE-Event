@@ -51,7 +51,7 @@ class CommentController extends Controller
             $text = stripslashes($text);
             $text = htmlspecialchars($text);
             $text = trim($text);
-            
+
             $comment = new Comment;
             $comment->text = $text;
             $comment->userid = $request->input('userid');
@@ -102,13 +102,22 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        // 
+        //
     }
 
     public function getComments(Request $request)
     {
         $comments = Comment::where('eventid', $request->input('event_id'))->get();
+
+        $responseComments = array();
+
         for ($i = 0; $i < count($comments); $i++) {
+
+            
+            if ($comments[$i]->userIsBlocked()) {
+                continue;
+            }
+
             $comments[$i]->user_profilePic = $comments[$i]->user->profilepic;
             $comments[$i]->user_name = $comments[$i]->user->name;
             $comments[$i]->upvote_count = $comments[$i]->upvotes->count();
@@ -117,8 +126,17 @@ class CommentController extends Controller
             } else {
                 $comments[$i]->upvoted = false;
             }
+            array_push($responseComments, $comments[$i]);
         }
-        return Response($comments);
+        return Response($responseComments);
+    }
+
+    public function getSingleComment(Request $request) {
+        $comment = Comment::where('commentid', $request->input('comment_id'))->first();
+        $comment->user_profilePic = $comment->user->profilepic;
+        $comment->user_name = $comment->user->name;
+        $comment->upvote_count = $comment->upvotes->count();
+        return Response($comment);
     }
 
     public function deleteComment(Request $request)

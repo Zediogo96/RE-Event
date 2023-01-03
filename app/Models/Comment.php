@@ -55,4 +55,9 @@ class Comment extends Model
     public function getUpvoteCount() {
         return $this->upvotes->count();
     }
+
+    public function userIsBlocked() {
+        return $this->user->isblocked;
+    }
+
 }

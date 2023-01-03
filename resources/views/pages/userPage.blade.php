@@ -28,9 +28,8 @@
                     <div id="myEventsOption" class="option" onclick="selectOption(2)">My Events</div>
                     <div id="myEventsSubmenu" class="submenuSleep">
                         <ul>
-                            <li onclick="showDetails(1)" id="pastEventsOption" class="optionSelected subOption">Past Events</li>
-                            <li onclick="showDetails(2)" id="futureEventsOption" class="subOption">Future Events</li>
-                            <li onclick="showDetails(3)" id="eventsCreatedByMeOption" class="subOption">Events Created By Me</li>
+                            <li onclick="showDetails(2)" id="futureEventsOption" class="subOption"> Events I'm attending</li>
+                            <li onclick="showDetails(3)" id="eventsCreatedByMeOption" class="subOption">Events I'm hosting</li>
                         </ul>
                     </div>
                 </div>
@@ -56,7 +55,13 @@
                 <div>
                     <div id="usersSearchOption" onclick="selectOption(4)" class="option">Search Users
                     </div>
-                    @endif
+
+                </div>
+                @endif
+
+                <div>
+                    <div id="viewReportsOption" onclick="selectOption(5)" class="option"> View Reports
+                    </div>
                 </div>
 
 
@@ -107,34 +112,15 @@
                         </div>
                     </div>
 
-                    <button type="submit" id="updateProfileDetailsButton" style="margin-left:80%" class="btn btn-success">Update Profile Details</button>
+                    <button type="submit" class="btn btn-success">Update Profile Details</button>
                 </form>
+                <button href="#del_acc_modal" data-toggle="modal" id="del_account" type="button" class="btn btn-danger"> Delete Account </button>
             </div>
             
             <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
-                <div id="pastEvents" class="details submenuSleep">
-                    <div>
-                        <h2>Past Events</h2>
-                    </div>
-                    <div class="tableContainer">
-                        <table class="events-list">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>City</th>
-                                <th></th>
-
-                            </tr>
-
-                        </thead>
-                            @each('partials.pastEvents', $user->attendingEvents, 'event')
-                        </table>
-                    </div>
-                </div>
                 <div id="futureEvents" class="details submenuSleep">
                     <div>
-                        <h2>Future Events</h2>
+                        <h2>Events I'm attending</h2>
                     </div>
                     <div class="tableContainer">
                         <table class="events-list">
@@ -154,8 +140,8 @@
                     </div>
                 </div>
                 <div id="eventsCreatedByMe" class="details submenuSleep">
-                    <div>
-                        <h2>Events you're hosting</h2>
+                    <div class="headerDiv">
+                        <h2>Events I'm hosting</h2>
                         <button class="btn btn-success" data-toggle="modal" data-target="#createEventModal"> New Event </button>
                     </div>
                     <div class="tableContainer">
@@ -228,7 +214,7 @@
                     </div>
                 </div>
                 <div class="tableContainer">
-                    <table class="events-list" style="margin-top: 2rem;">
+                    <table class="events-list">
 
                     <thead>
                             <tr>
@@ -243,8 +229,29 @@
                     </table>
                 </div>
             </div>
-            @endif
 
+            <div id="viewReports" class="details submenuSleep">
+                <button type="button" data-toggle="modal" data-target="#view_comment_report" style="visibility:hidden"> </button>
+                <div>
+                    <h2> View Reports </h2>
+                </div>
+                <div class="tableContainer">
+                    <table class="events-list">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Username</th>
+                                <th>Reason</th>
+                                <th>Description </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            @endif
         </section>
     </div>
     <!-- Modal with bootstrap -->
@@ -258,6 +265,11 @@
     <!-- CREATE EVENT MODAL -->
     @include('partials.createEventModal')
     @include('partials.createUserModal')
+    <!-- DELETE ACCOUNT MODAL -->
+    @include('partials.conf_del_acc')
+    @if ($user->admin)
+    @include('partials.viewCommentReport')
+    @endif
 
 </body>
 

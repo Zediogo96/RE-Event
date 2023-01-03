@@ -1,3 +1,208 @@
+let form_del_acc = document.getElementById("del_acc_modal").querySelector("form");
+
+form_del_acc.addEventListener("submit", (event) => {
+    event.preventDefault();
+    fetch("deleteUser", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+            userid: document.querySelector('meta[name="auth-check-id"]').getAttribute('content')
+        })
+    }).then((response) => {
+        if (response.status === 200) {
+            window.location.href = "/home";
+        }
+        else if (response.status === 401) {
+
+            // close bootstrap 5 modal with vanilla js
+            document.getElementById("del_acc_modal").querySelector(".btn.btn-secondary").click();
+
+            Swal.fire({
+                title: 'Error!',
+                text: 'You are still hosting events. Please delete or transfer their ownership first.',
+                icon: 'warning',
+                confirmButtonText: 'Continue'
+            })
+        }
+    });
+});
+
+
+var trs = document.getElementById('eventsCreatedByMe').getElementsByTagName('tr');
+
+for (var i = 0; i < trs.length; i++) {
+    trs[i].addEventListener('click', function (e) {
+        let t = e.target.parentNode;
+        let id = t.getAttribute('id');
+        window.location.href = '/event' + id;
+    })
+
+};
+
+
+function getReports() {
+    fetch("getReportedComments", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": '{{csrf_token()}}'
+        },
+        method: "get",
+        credentials: "same-origin",
+    }).then(function (data) {
+        return data.json();
+    }
+    ).then(function (data) {
+        if (data.status == 204) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'There are no reported comments.',
+                icon: 'warning',
+                confirmButtonText: 'Continue'
+            })
+        }
+        else {
+            let table = document.getElementById("viewReports").querySelector("table");
+            let tbody = table.querySelector("tbody");
+            tbody.innerHTML = "";
+            for (let i = 0; i < data.length; i++) {
+                let tr = document.createElement("tr");
+                tr.setAttribute("id", data[i].commentid);
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
+                let td4 = document.createElement("td");
+
+                td1.innerHTML = data[i].date;
+                td2.innerHTML = data[i].user.name;
+                td3.innerHTML = data[i].reason;
+                td4.innerHTML = data[i].description;
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+
+                tbody.appendChild(tr);
+
+                tr.addEventListener('click', function (e) {
+                    getSingleComment(data[i]);
+                })
+            }
+        }
+    }).catch(function (error) {
+        console.log(error);
+    }
+    );
+}
+
+let form_ban = document.getElementById("view_comment_report").querySelector("form");
+form_ban.addEventListener("submit", function (e) {
+
+    e.preventDefault();
+    let form = e.target;
+    let userid = form.querySelector("input[name='__rep_user_id']").value;
+
+    if (userid == 0) return;
+
+    fetch("banUser", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+            userID: userid
+        })
+    }).then(function (data) {
+        return data.json();
+    }
+    ).then(function (data) {
+        if (data.status == 200) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'User banned successfully.',
+                icon: 'success',
+                confirmButtonText: 'Continue'
+            })
+        }
+        else if (data.status == 401){
+            Swal.fire({
+                title: 'Error!',
+                text: 'User is already banned.',
+                icon: 'error',
+                confirmButtonText: 'Continue'
+            })
+        }
+        else if (data.status == 403) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'You cannot ban yourself.',
+                icon: 'error',
+                confirmButtonText: 'Continue'
+            })
+        }
+
+        getReports();
+        document.getElementById("view_comment_report").querySelector(".close").click();
+
+    }).catch(function (error) {
+        console.log(error);
+    }
+    );
+});
+
+
+function change_view_comment_report(comment, report) {
+    let modal = document.getElementById("view_comment_report");
+    modal.querySelector("img").setAttribute("src", comment.user_profilePic);
+    modal.querySelector("h4.name").innerHTML = comment.user_name;
+    modal.querySelector("p.text").innerHTML = comment.text;
+    modal.querySelector("li.rep_date").innerHTML = "Date: " + report.date;
+    modal.querySelector("li.rep_reason").innerHTML = "Reason: " + report.reason;
+    modal.querySelector("li.rep_description").innerHTML = "Description: " + report.description;
+    modal.querySelector("input[name='__rep_user_id").setAttribute("value", report.userid);
+
+    document.querySelector("#viewReports").querySelector("button").click();
+}
+
+function getSingleComment(report) {
+
+    fetch('getSingleComment' + "?" + new URLSearchParams({
+        comment_id: report.commentid
+    }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": '{{csrf_token()}}'
+        },
+        method: "get",
+        credentials: "same-origin",
+    }).then(function (data) {
+        return data.json();
+    }).then(function (data) {
+        change_view_comment_report(data, report);
+    }).catch(function (error) {
+        console.log(error);
+    })
+}
+
+document.querySelector("#viewReportsOption").addEventListener("click", function (e) {
+    getReports();
+});
+
+
 const selectOption = function (option) {
 
     Array.from(document.getElementsByClassName('option')).forEach((element) => {
@@ -36,10 +241,10 @@ const selectOption = function (option) {
             document.getElementById('myEventsSubmenu').classList.remove('submenuSleep');
 
             /*predefenir o pastEvents*/
-            document.getElementById('pastEvents').classList.add('submenuActive');
-            document.getElementById('pastEvents').classList.remove('submenuSleep');
+            document.getElementById('futureEvents').classList.add('submenuActive');
+            document.getElementById('futureEvents').classList.remove('submenuSleep');
 
-            document.getElementById('pastEventsOption').classList.add('optionSelected');
+            document.getElementById('futureEventsOption').classList.add('optionSelected');
 
             break;
         }
@@ -73,6 +278,13 @@ const selectOption = function (option) {
 
             break;
         }
+
+        case 5: {
+            document.getElementById('viewReportsOption').classList.add('optionSelected');
+            document.getElementById('viewReports').classList.remove('submenuSleep');
+            document.getElementById('viewReports').classList.add('submenuActive');
+        }
+
     }
 
 }
@@ -195,11 +407,11 @@ function preview_image() {
     c_modal.querySelector("#preview-image").src = URL.createObjectURL(event.target.files[0]);
 }
 
-function readHandler(){
-    console.log("result: ", this, this.responseText);
+function readHandler() {
+    // console.log("result: ", this, this.responseText);
 }
 
-document.getElementById("search-attendees-teste").addEventListener("keyup", function(e) {
+document.getElementById("search-attendees-teste").addEventListener("keyup", function (e) {
     fetch("searchUsersAdmin" + "?" + new URLSearchParams({
         search: e.target.value
     }), {
@@ -211,12 +423,12 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
         },
         method: "get",
         credentials: "same-origin",
-    }).then(function(data) {
+    }).then(function (data) {
         return data.json();
-    }).then(function(data) {
+    }).then(function (data) {
         let container = document.getElementById("search-attendees-response");
         container.innerHTML = "";
-        data.forEach(function(user) {
+        data.forEach(function (user) {
             let row = document.createElement("tr");
             let name = document.createElement("td");
             let email = document.createElement("td");
@@ -231,7 +443,13 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
             container.appendChild(row);
         });
 
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log(error);
     });
 });
+
+
+
+
+
+

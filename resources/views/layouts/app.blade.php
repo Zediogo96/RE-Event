@@ -22,14 +22,20 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
 
+
+
   <!-- SCRIPTS -->
+
+  @stack('page-scripts')
+
   <script type="text/javascript" src="{{ asset('js/app.js') }}" defer> </script>
   <script type="text/javascript" src="{{ asset('js/ajax_requests.js') }}" defer> </script>
-  <script type="text/javascript" src="{{ asset('js/pagination.js') }}" defer> </script>
+  <!-- <script type="text/javascript" src="{{ asset('js/pagination.js') }}" defer> </script> -->
   <script type="text/javascript" src="{{ asset('js/input_val.js') }}" defer> </script>
-  <script type="text/javascript" src="{{ asset('js/event_page.js') }}" defer> </script>
+  <!-- <script type="text/javascript" src="{{ asset('js/event_page.js') }}" defer> </script> -->
 
-
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- This is used for bootstrap only -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 </head>

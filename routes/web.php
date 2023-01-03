@@ -32,7 +32,7 @@ Route::get('createEvent', 'EventController@create')->name('event.create');  //ed
 Route::post('storeEvent', 'EventController@store')->name('storeEvent'); //create a new event
 
 Route::post('addEventUsers', 'EventController@addUser')->name('addUser'); //update the details of an event
-Route::post('removeEventUsers', 'EventController@removeUser')->name('removeUser'); //update the details of an event 
+Route::post('removeEventUsers', 'EventController@removeUser')->name('removeUser'); //update the details of an event
 
 // Static Pages
 Route::get('aboutUs', 'PageController@aboutUs')->name('aboutUs.index');
@@ -49,6 +49,7 @@ Route::post('updateUser/{userid?}', 'UserController@update')->name('updateUser')
 Route::post('selfAddUser', 'UserController@attendEvent')->name('selfAddUser');
 Route::post('selfRemoveUser', 'UserController@leaveEvent')->name('selfRemoveUser');
 Route::post('storeUser', 'UserController@store')->name('storeUser');
+Route::post('deleteUser', 'UserController@delete')->name('deleteUser');
 
 //testing database data
 Route::get('cities', 'CityController@index');
@@ -59,12 +60,14 @@ Route::get('events', 'EventController@index');
 Route::post('storeComment', 'CommentController@store')->name('storeComment');
 Route::post('deleteComment', 'CommentController@deleteComment')->name('deleteComment');
 Route::get('getComments', 'CommentController@getComments')->name('getComments');
+Route::get('getSingleComment', 'CommentController@getSingleComment')->name('getSingleComment');
+
 // Upvotes
 Route::post('addUpvote', 'UpvoteController@addUpvote')->name('addUpvote');
 Route::post('removeUpvote', 'UpvoteController@removeUpvote')->name('removeUpvote');
 // Report Comment
+Route::get('getReportedComments', 'ReportController@getReportedComments')->name('getReportedComments');
 Route::post('storeReport', 'ReportController@store')->name('storeReport');
-
 
 //Invites
 Route::post('api/invite', 'InvitedController@create')->name('createInvite');
@@ -74,9 +77,9 @@ Route::put('api/clearNotifications', 'InvitedController@read')->name('readNotifi
 Route::get('api/numberNotifications', 'InvitedController@numberNotifications')->name('numberNotifications');
 
 Route::put('api/changeBlockStatus', 'UserController@block')->name('changeBlockStatusUser');
+Route::post('banUser', 'UserController@ban_user')->name('banUser');
 
 Route::get('auth', 'Auth\LoginController@getUser');
-
 
 Route::post('transferOwnership', 'EventController@transferOwnership')->name('transferOwnership'); //transfer the ownership of an event
 Route::post('deleteEvent', 'EventController@destroy')->name('deleteEvent'); //delete an event

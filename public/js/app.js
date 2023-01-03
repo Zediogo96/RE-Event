@@ -70,7 +70,9 @@ function sendAjaxRequest(method, url, data, handler) {
         "Content-Type",
         "application/x-www-form-urlencoded"
     );
-    request.addEventListener("load", handler);
+    request.addEventListener("load", function() {
+        handler(request);
+    });
     //console.log("data ", data, document.querySelector('meta[name="csrf-token"]').content)
     request.send(encodeForAjax(data));
 }
@@ -273,12 +275,13 @@ function createInvite(event_id) {
         {
             invited_user: invited_user,
             event_id: event_id
-        },
-        inviteHandler,
+        }, function(response) {
+            inviteHandler(response);
+        }
     );
 }
 
-function inviteHandler() {
+function inviteHandler(response) {
 
     if (this.status === 302) {
         window.location.href = this.responseText;
@@ -298,22 +301,42 @@ function inviteHandler() {
         console.log("Invite Doesn't Exist");
     }
     else if (this.status === 409) {
-        console.log("User Already Invited");
+        Swal.fire({
+            title: 'Error!',
+            text: 'User is already invited!',
+            icon: 'warning',
+            confirmButtonText: 'Continue'
+        })
     }
     else if (this.status === 400) {
-        console.log("Not possible to invite yourself");
+        Swal.fire({
+            title: 'Error!',
+            text: 'You cannot invite yourself!',
+            icon: 'warning',
+            confirmButtonText: 'Continue'
+        })
     }
-    else if (this.status === 412) {
-        console.log("User already attending event");
+    else if (response.status === 412) {
+        Swal.fire({
+            title: 'Error!',
+            text: 'User is already in this event!',
+            icon: 'warning',
+            confirmButtonText: 'Continue'
+        })
     }
     else if (this.status === 403) {
-        console.log("User is blocked");
+        Swal.fire({
+            title: 'Error!',
+            text: 'User is blocked!',
+            icon: 'warning',
+            confirmButtonText: 'Continue'
+        })
     }
 }
 
 function rejectInvite(eventID) {
     // console.log("reject");
-    sendAjaxRequest("delete", "/api/inviteReject", { event_id: eventID }, inviteHandler);
+    sendAjaxRequest("delete", "/api/inviteReject", { event_id: eventID }, inviteHandler(response));
 }
 
 function acceptInvite(event_id) {
@@ -379,75 +402,19 @@ function move() {
     }
 }
 
-function blockHandler() {
-    if (this.status == 200) {
-        document.getElementById("blockStatus").innerHTML = this.responseText;
+function blockHandler(response, userid) {
+    if (response.status == 200) {
+        document.getElementById("blockStatus" + userid).innerHTML = response.response;
     }
 }
 
 function changeBlockStatusUser(userid, blockStatus) {
-    sendAjaxRequest("put", "/api/changeBlockStatus", { userID: userid, blockStatus: blockStatus }, blockHandler);
+    sendAjaxRequest("put", "/api/changeBlockStatus", { userID: userid, blockStatus: blockStatus }, function(response) {
+        blockHandler(response, userid);
+    });
 }
 
 
-const list = document.querySelectorAll('.list')
-
-function activeLink() {
-    list.forEach((item) => item.classList.remove('active'))
-    this.classList.add('active')
-}
-
-list.forEach((item) => item.addEventListener('click', activeLink))
-
-function showUserDiv() {
-    document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-    let d = document.getElementById('userDiv');
-    d.classList.add("animate");
-    setTimeout(function () {
-        d.classList.remove("animate");
-    }, 500);
-    d.style.display = "block";
-}
-
-function showInviteDiv() {
-    document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-    let d = document.getElementById('inviteDiv');
-    d.classList.add("animate");
-    setTimeout(function () {
-        d.classList.remove("animate");
-    }, 500);
-    d.style.display = "block";
-}
-document.querySelector('#userDiv > button').addEventListener('click', function () {
-
-    let d = document.getElementById('userDiv');
-    d.classList.add("animate-out");
-    setTimeout(function () {
-        d.classList.remove("animate-out");
-    }, 500);
-    setTimeout(function () {
-        d.style.display = "none";
-    }, 500);
-})
-document.querySelector('#inviteDiv > .skrr').addEventListener('click', function () {
-    let d = document.getElementById('inviteDiv');
-    d.classList.add("animate-out");
-    setTimeout(function () {
-        d.classList.remove("animate-out");
-    }, 500);
-    setTimeout(function () {
-        d.style.display = "none";
-    }, 500);
-})
-
-function isEmpty(obj) {
-    for (var prop in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
-            return false;
-        }
-    }
-    return JSON.stringify(obj) === JSON.stringify({});
-}
 
 // EVENT PAGE COUNTDOWN TIMER
 function displayCountdownEvent(info) {
@@ -461,7 +428,6 @@ function displayCountdownEvent(info) {
 
     let string = day + " " + month + " " + year + " " + split_[1];
     const newDate = Date.parse(string);
-
 
     const countdown = setInterval(() => {
         const date = new Date().getTime();

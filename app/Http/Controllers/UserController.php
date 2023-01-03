@@ -51,7 +51,7 @@ class UserController extends Controller
                                     ->where('invited.inviteduserid', '=', $id)
                                     ->select(['city.name as cityName', 'user_.email as email','*', 'event.name as name'])->get();
 
-        
+
         return view('pages.userPage', ['user' => $user, 'receivedInvites' => $receivedInvites, 'sentInvites' => $sentInvites, 'numberInvites' => $number]);
     }
 
@@ -64,7 +64,7 @@ class UserController extends Controller
      */
 
     public function update(Request $request)
-    {   
+    {
         if (!Auth::check()) return redirect('/login');
         $user = User::find($request->input('userid'));
         $this->authorize('update', $user);
@@ -171,10 +171,16 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Request $request)
     {
         if (!Auth::check()) return redirect('/login');
-        $user = User::find($id);
+        $user = User::find($request->input('userid'));
+        // check if user is still hosting events
+        $events = $user->hostedEvents()->get();
+        if (count($events) > 0) {
+            // return response with status 200
+            return response()->json(['status' => 'error'], 401);
+        }
         $this->authorize('delete', $user);
         $user->delete();
         return redirect('/home');
@@ -208,7 +214,7 @@ class UserController extends Controller
         // $this->authorize('leave', $event);
 
         //Se o authorize nao fizer sentido, passsar o codigo para aqui
-        
+
         $user_ticket = Ticket::where('userid', $user->userid)->where('eventid', $event->eventid);
         $user_ticket->delete();
     }
@@ -218,9 +224,9 @@ class UserController extends Controller
         if(User::find($request->userID)->userid == Auth::user()->userid){
             return response("Can't block self", 403);
         }
-        
+
         $this->authorize('changeBlock', Auth::user());
-        
+
         $userToBlock = $request->userID;
         $blocked = !(User::find($userToBlock)->isblocked);
 
@@ -233,6 +239,33 @@ class UserController extends Controller
         $converted_res = $blocked ? 'Unblock User' : 'Block User';
 
         return response($converted_res, 200);
+    }
+
+    public function ban_user(Request $request) {
+
+        if($request->userID == Auth::user()->userid){
+            return response()->json(['status' => '403', 'msg' => 'Cant ban self'], 403);
+        }
+        $this->authorize('changeBlock', Auth::user());
+
+        $banned = User::find($request->userID)->isblocked;
+
+        ($banned) ? $converted_res = 'User is already banned!' : $converted_res = 'User was banned!';
+
+
+
+        if ($banned) {
+            return response()->json(['status' => '401', 'msg' => $converted_res], 401);
+        }
+
+        $user = User::find($request->userID);
+        $user->getComment()->delete();
+        $user->isblocked = true;
+        $user->save();
+
+
+
+        return response()->json(['status' => '200', 'msg' => $converted_res], 200);
     }
 
 }
