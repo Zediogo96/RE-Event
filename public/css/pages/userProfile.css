@@ -159,10 +159,10 @@
 }
 
 #del_account {
-    position: absolute;
+    position: relative;
     width: 10rem;
-    top: 24.1rem;
-    right: 20rem;
+    top: -2.3rem;
+    right: 15rem;
 }
 
 .updateProfileInputBoxes {
