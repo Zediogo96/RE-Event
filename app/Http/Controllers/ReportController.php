@@ -56,6 +56,23 @@ class ReportController extends Controller
         //
     }
 
+    public function getReportedComments()
+    {
+        $reports = Report::orderBy('date', 'desc')->take(10)->get();
+        // if there are no reports, return http 204
+
+        if (count($reports) == 0) {
+            return response()->json(['status' => 'error', 'message' => 'No reports found'], 204);
+        }
+
+        foreach ($reports as $report) {
+            $report->comment;
+            $report->user;
+        }
+        // return reports
+        return response()->json($reports, 200);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

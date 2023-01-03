@@ -64,8 +64,8 @@ Route::get('getComments', 'CommentController@getComments')->name('getComments');
 Route::post('addUpvote', 'UpvoteController@addUpvote')->name('addUpvote');
 Route::post('removeUpvote', 'UpvoteController@removeUpvote')->name('removeUpvote');
 // Report Comment
+Route::get('getReportedComments', 'ReportController@getReportedComments')->name('getReportedComments');
 Route::post('storeReport', 'ReportController@store')->name('storeReport');
-
 
 //Invites
 Route::post('api/invite', 'InvitedController@create')->name('createInvite');

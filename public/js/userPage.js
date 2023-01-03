@@ -45,6 +45,68 @@ for (var i = 0; i < trs.length; i++) {
 
 };
 
+function getReports() {
+    fetch("getReportedComments", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": '{{csrf_token()}}'
+        },
+        method: "get",
+        credentials: "same-origin",
+    }).then(function (data) {
+        return data.json();
+    }
+    ).then(function (data) {
+        if (data.status == 204) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'There are no reported comments.',
+                icon: 'warning',
+                confirmButtonText: 'Continue'
+            })
+        }
+        else {
+            console.log(data)
+            let table = document.getElementById("viewReports").querySelector("table");
+            console.log(table);
+            let tbody = table.querySelector("tbody");
+            console.log(tbody)
+            tbody.innerHTML = "";
+            for (let i = 0; i < data.length; i++) {
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
+                let td4 = document.createElement("td");
+
+                td1.innerHTML = data[i].date;
+                td2.innerHTML = data[i].user.name;
+                td3.innerHTML = data[i].reason;
+                td4.innerHTML = data[i].description;
+
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+
+                tbody.appendChild(tr);
+            }
+        }
+    }).catch(function (error) {
+        console.log(error);
+    }
+    );
+}
+
+
+
+document.querySelector("#viewReportsOption").addEventListener("click", function (e) {
+    getReports();
+});
+
 
 const selectOption = function (option) {
 
@@ -121,6 +183,13 @@ const selectOption = function (option) {
 
             break;
         }
+
+        case 5: {
+            document.getElementById('viewReportsOption').classList.add('optionSelected');
+            document.getElementById('viewReports').classList.remove('submenuSleep');
+            document.getElementById('viewReports').classList.add('submenuActive');
+        }
+
     }
 
 }
@@ -283,6 +352,8 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
         console.log(error);
     });
 });
+
+
 
 
 

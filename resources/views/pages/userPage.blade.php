@@ -55,7 +55,13 @@
                 <div>
                     <div id="usersSearchOption" onclick="selectOption(4)" class="option">Search Users
                     </div>
-                    @endif
+
+                </div>
+                @endif
+
+                <div>
+                    <div id="viewReportsOption" onclick="selectOption(5)" class="option"> View Reports
+                    </div>
                 </div>
 
 
@@ -286,8 +292,37 @@
                     </div>
                 </div>
             </div>
+            @if ($user->admin)
+            <div id="viewReports" class="details submenuSleep">
+                <div class="container">
+                    <div class="section">
+                        <div class="blog-post blog-single-post">
+                            <div class="single-post-title" style="padding-bottom: 1rem;">
+                                <h2> View Reports </h2>
+                            </div>
+                            <div class="single-post-content">
+                                <table class="events-list scrollable">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Username</th>
+                                            <th>Reason</th>
+                                            <th> Description </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
 
-        </section>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+    </div>
+
+    </section>
     </div>
     <!-- Modal with bootstrap -->
 
