@@ -3,7 +3,7 @@
         <div class="modal-content" id="edit-modal-content">
             <div class="modal-header">
                 <button id="close-modal-button" data-dismiss="modal"></button>
-                <h4 class="modal-title" id="editModalLabel">Create New User </h4>
+                <h4 class="modal-title" id="edit_Label">Create New User </h4>
             </div>
             <div class="modal-body">
                 <form method='post' action="{{ route('storeUser')}}" enctype="multipart/form-data" id="_formCreateUser">
