@@ -28,7 +28,7 @@ form_del_acc.addEventListener("submit", (event) => {
                 text: 'You are still hosting events. Please delete or transfer their ownership first.',
                 icon: 'warning',
                 confirmButtonText: 'Continue'
-              })
+            })
         }
     });
 });
@@ -44,6 +44,163 @@ for (var i = 0; i < trs.length; i++) {
     })
 
 };
+
+
+function getReports() {
+    fetch("getReportedComments", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": '{{csrf_token()}}'
+        },
+        method: "get",
+        credentials: "same-origin",
+    }).then(function (data) {
+        return data.json();
+    }
+    ).then(function (data) {
+        if (data.status == 204) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'There are no reported comments.',
+                icon: 'warning',
+                confirmButtonText: 'Continue'
+            })
+        }
+        else {
+            let table = document.getElementById("viewReports").querySelector("table");
+            let tbody = table.querySelector("tbody");
+            tbody.innerHTML = "";
+            for (let i = 0; i < data.length; i++) {
+                let tr = document.createElement("tr");
+                tr.setAttribute("id", data[i].commentid);
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                let td3 = document.createElement("td");
+                let td4 = document.createElement("td");
+
+                td1.innerHTML = data[i].date;
+                td2.innerHTML = data[i].user.name;
+                td3.innerHTML = data[i].reason;
+                td4.innerHTML = data[i].description;
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+
+                tbody.appendChild(tr);
+
+                tr.addEventListener('click', function (e) {
+                    getSingleComment(data[i]);
+                })
+            }
+        }
+    }).catch(function (error) {
+        console.log(error);
+    }
+    );
+}
+
+let form_ban = document.getElementById("view_comment_report").querySelector("form");
+form_ban.addEventListener("submit", function (e) {
+
+    e.preventDefault();
+    let form = e.target;
+    let userid = form.querySelector("input[name='__rep_user_id']").value;
+
+    if (userid == 0) return;
+
+    fetch("banUser", {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        method: "post",
+        credentials: "same-origin",
+        body: JSON.stringify({
+            userID: userid
+        })
+    }).then(function (data) {
+        return data.json();
+    }
+    ).then(function (data) {
+        if (data.status == 200) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'User banned successfully.',
+                icon: 'success',
+                confirmButtonText: 'Continue'
+            })
+        }
+        else if (data.status == 401){
+            Swal.fire({
+                title: 'Error!',
+                text: 'User is already banned.',
+                icon: 'error',
+                confirmButtonText: 'Continue'
+            })
+        }
+        else if (data.status == 403) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'You cannot ban yourself.',
+                icon: 'error',
+                confirmButtonText: 'Continue'
+            })
+        }
+
+        getReports();
+        document.getElementById("view_comment_report").querySelector(".close").click();
+
+    }).catch(function (error) {
+        console.log(error);
+    }
+    );
+});
+
+
+function change_view_comment_report(comment, report) {
+    let modal = document.getElementById("view_comment_report");
+    modal.querySelector("img").setAttribute("src", comment.user_profilePic);
+    modal.querySelector("h4.name").innerHTML = comment.user_name;
+    modal.querySelector("p.text").innerHTML = comment.text;
+    modal.querySelector("li.rep_date").innerHTML = "Date: " + report.date;
+    modal.querySelector("li.rep_reason").innerHTML = "Reason: " + report.reason;
+    modal.querySelector("li.rep_description").innerHTML = "Description: " + report.description;
+    modal.querySelector("input[name='__rep_user_id").setAttribute("value", report.userid);
+
+    document.querySelector("#viewReports").querySelector("button").click();
+}
+
+function getSingleComment(report) {
+
+    fetch('getSingleComment' + "?" + new URLSearchParams({
+        comment_id: report.commentid
+    }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": '{{csrf_token()}}'
+        },
+        method: "get",
+        credentials: "same-origin",
+    }).then(function (data) {
+        return data.json();
+    }).then(function (data) {
+        change_view_comment_report(data, report);
+    }).catch(function (error) {
+        console.log(error);
+    })
+}
+
+document.querySelector("#viewReportsOption").addEventListener("click", function (e) {
+    getReports();
+});
 
 
 const selectOption = function (option) {
@@ -121,6 +278,13 @@ const selectOption = function (option) {
 
             break;
         }
+
+        case 5: {
+            document.getElementById('viewReportsOption').classList.add('optionSelected');
+            document.getElementById('viewReports').classList.remove('submenuSleep');
+            document.getElementById('viewReports').classList.add('submenuActive');
+        }
+
     }
 
 }
@@ -283,6 +447,8 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
         console.log(error);
     });
 });
+
+
 
 
 

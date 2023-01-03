@@ -51,7 +51,7 @@ class CommentController extends Controller
             $text = stripslashes($text);
             $text = htmlspecialchars($text);
             $text = trim($text);
-            
+
             $comment = new Comment;
             $comment->text = $text;
             $comment->userid = $request->input('userid');
@@ -102,7 +102,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        // 
+        //
     }
 
     public function getComments(Request $request)
@@ -119,6 +119,14 @@ class CommentController extends Controller
             }
         }
         return Response($comments);
+    }
+
+    public function getSingleComment(Request $request) {
+        $comment = Comment::where('commentid', $request->input('comment_id'))->first();
+        $comment->user_profilePic = $comment->user->profilepic;
+        $comment->user_name = $comment->user->name;
+        $comment->upvote_count = $comment->upvotes->count();
+        return Response($comment);
     }
 
     public function deleteComment(Request $request)

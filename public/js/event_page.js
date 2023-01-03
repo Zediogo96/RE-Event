@@ -1,4 +1,4 @@
-document.getElementById("search-attendees-teste").addEventListener("keyup", function(e) {
+document.getElementById("search-attendees-teste").addEventListener("keyup", function (e) {
     fetch("searchUsersAdmin" + "?" + new URLSearchParams({
         search: e.target.value
     }), {
@@ -10,12 +10,12 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
         },
         method: "get",
         credentials: "same-origin",
-    }).then(function(data) {
+    }).then(function (data) {
         return data.json();
-    }).then(function(data) {
+    }).then(function (data) {
         let container = document.getElementById("search-attendees-response");
         container.innerHTML = "";
-        data.forEach(function(user) {
+        data.forEach(function (user) {
             let tr = document.createElement("tr");
             let td1 = document.createElement("td");
             let td2 = document.createElement("td");
@@ -27,7 +27,7 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
             let btn = document.createElement("button");
             btn.setAttribute("class", "btn btn-success");
             btn.innerHTML = "View Page";
-            btn.addEventListener("click", function() {
+            btn.addEventListener("click", function () {
                 window.location.href = "user" + user.userid
             });
 
@@ -42,7 +42,7 @@ document.getElementById("search-attendees-teste").addEventListener("keyup", func
             container.appendChild(tr);
         });
 
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log(error);
     });
 });
@@ -52,7 +52,7 @@ let currentChosen = document.getElementById("currentChosen");
 currentChosen.value = 0;
 
 // select a row of table
-document.getElementById("search-attendees-response").addEventListener("click", function(e) {
+document.getElementById("search-attendees-response").addEventListener("click", function (e) {
     // reset all rows colors
     let rows = document.getElementById("search-attendees-response").getElementsByTagName("tr")
     for (let i = 0; i < rows.length; i++) {
@@ -66,7 +66,7 @@ document.getElementById("search-attendees-response").addEventListener("click", f
 // submit transfer ownership
 
 let formTO = document.getElementById("tranferOwnershipForm");
-formTO.addEventListener("submit", function(e) {
+formTO.addEventListener("submit", function (e) {
     e.preventDefault();
 
     if (currentChosen.value == 0) {
@@ -78,8 +78,8 @@ formTO.addEventListener("submit", function(e) {
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('#report-form').addEventListener('submit', function(event) {
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('#report-form').addEventListener('submit', function (event) {
         // TO PREVENT REQUESTS BEG SET WHILE DATA IS EMPTY
         var formData = new FormData(this);
         var empty = false;
@@ -94,10 +94,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         var data = this;
         fetch(data.getAttribute('action'), {
-                method: data.getAttribute('method'),
-                body: new FormData(data)
-            }).then(res => res.text())
-            .then(function(data) {
+            method: data.getAttribute('method'),
+            body: new FormData(data)
+        }).then(res => res.text())
+            .then(function (data) {
                 hide_report_modal();
                 showAlert('newReport');
             });
@@ -160,3 +160,109 @@ function isEmpty(obj) {
     }
     return JSON.stringify(obj) === JSON.stringify({});
 }
+
+function renew_btns() {
+
+    let del_btn = document.querySelectorAll(".__del_btn");
+    del_btn.forEach((btn) => {
+
+        btn.addEventListener("click", () => {
+
+            document.getElementById('confirm-del-btn').setAttribute('onClick', 'deleteComment(' + btn.getAttribute('value') + ')');
+        });
+
+    });
+}
+
+renew_btns();
+
+function renew_report_btns() {
+
+    let report_btn = document.querySelectorAll(".__report_btn");
+    report_btn.forEach((btn) => {
+
+        btn.addEventListener("click", () => {
+            let rep_form = document.getElementById('report-form');
+            let a = rep_form.querySelector('input[name="comment_id"]').value = btn.getAttribute('value')
+            let b = rep_form.querySelector('input[name="event_id"]').value = document.querySelector('#eventid').value;
+            let c = rep_form.querySelector('input[name="user_id"]').value = document.querySelector('meta[name="auth-check-id"]').getAttribute('content');
+        });
+
+    });
+}
+
+renew_report_btns();
+
+function auxSearch() {
+    let search = ".";
+    if (document.getElementById("search-attendees").value != '') {
+        search = document.getElementById("search-attendees").value;
+    }
+    let eventid = document.getElementById("eventid").value;
+    fetch("searchAttendees" + "?" + new URLSearchParams({
+        search: search,
+        event_id: eventid
+    }), {
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": '{{ csrf_token() }}'
+        },
+        method: "get",
+        credentials: "same-origin",
+
+    }).then(function (data) {
+        return data.json();
+    }).then(function (data) {
+        let container = document.getElementById("table-attendees-res");
+        container.innerHTML = "";
+        data.forEach(function (user) {
+
+            console.log(eventid);
+
+            let tr = document.createElement("tr");
+            let td1 = document.createElement("td");
+            let td2 = document.createElement("td");
+
+            td1.innerHTML = user.name;
+            td2.innerHTML = user.email;
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            container.appendChild(tr);
+
+        });
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
+
+document.getElementById("search-attendees").addEventListener("keyup", function (e) {
+    auxSearch()
+});
+
+function showAttendeesDiv() {
+    document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
+    let d = document.getElementById('attendeesDiv');
+    d.classList.add("animate");
+    setTimeout(function () {
+        d.classList.remove("animate");
+    }, 500);
+    d.style.display = "block";
+    auxSearch();
+}
+
+
+document.querySelector('#attendeesDiv button').addEventListener('click', function () {
+    let d = document.getElementById('attendeesDiv');
+    d.classList.add("animate-out");
+    setTimeout(function () {
+        d.classList.remove("animate-out");
+    }, 500);
+    setTimeout(function () {
+        d.style.display = "none";
+    }, 450);
+})
+
+

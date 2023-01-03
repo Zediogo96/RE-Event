@@ -1,5 +1,17 @@
 @extends('layouts.app')
 
+@push('page-scripts')
+<script type="text/javascript" src="{{ asset('js/event_page.js') }}" defer> </script>
+
+@if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
+<script type="text/javascript" src="{{ asset('js/event_host.js') }}" defer> </script>
+@endif
+
+@if (Auth::user() != NULL)
+<script type="text/javascript" src="{{ asset('js/auth_user.js') }}" defer> </script>
+@endif
+@endpush
+
 @section('content')
 
 @include('partials.toast')
@@ -217,11 +229,10 @@
             <h4 class="mb-4"> {{count($event->comments()->get())}} Comments</h4>
             <div class="">
                 <!-- Comment //-->
-
                 <div class="py-3" id="new-comments-container">
                     @foreach ($event->comments()->get() as $comment)
                     <div class="d-flex comment">
-                        <img class="rounded-circle comment-img" src="{{$comment->user->profilepic}}" alt="User profile picture"/>
+                        <img class="rounded-circle comment-img" src="{{$comment->user->profilepic}}" alt="User profile picture" />
                         <div class="flex-grow-1 ms-3">
                             <div class="mb-1"><a href="#" class="fw-bold link-dark me-1">{{$comment->user->name}}</a>
                                 <span class="text-muted text-nowrap"> {{$comment->date}}</span>
@@ -259,249 +270,12 @@
         @include('partials.conf_del_event')
     </div>
 
-<script type="text/javascript" defer>
-        function renew_btns() {
+</div>
+<script type="text/javascript">
+    // Polling for the Event Page Countdown display
+    setTimeout(function() {
+        displayCountdownEvent('{{$event->date}}');
+    }, 1000);
+</script>
 
-            let del_btn = document.querySelectorAll(".__del_btn");
-            del_btn.forEach((btn) => {
-
-                btn.addEventListener("click", () => {
-
-                    document.getElementById('confirm-del-btn').setAttribute('onClick', 'deleteComment(' + btn.getAttribute('value') + ')');
-                });
-
-            });
-        }
-
-        renew_btns();
-
-        function renew_report_btns() {
-
-            let report_btn = document.querySelectorAll(".__report_btn");
-            report_btn.forEach((btn) => {
-
-                btn.addEventListener("click", () => {
-                    let rep_form = document.getElementById('report-form');
-                    let a = rep_form.querySelector('input[name="comment_id"]').value = btn.getAttribute('value')
-                    let b = rep_form.querySelector('input[name="event_id"]').value = document.querySelector('#eventid').value;
-                    let c = rep_form.querySelector('input[name="user_id"]').value = document.querySelector('meta[name="auth-check-id"]').getAttribute('content');
-                });
-
-            });
-        }
-        renew_report_btns();
-    </script>
-
-    @if (Auth::user() != NULL)
-    <script type="text/javascript">
-        // REQUEST USED FOR THE AUTHENTICATED USER TO BE ABLE TO COMMENT IN A EVENT (IN THE EVENT PAGE)
-        document.querySelector('#new-comment button').addEventListener('click', function(e) {
-            e.preventDefault();
-
-            var comment = document.querySelector('#my-comment');
-
-            if (comment.value == '') {
-                let error = document.querySelector('#new-comment label');
-                error.innerHTML = 'Error: Comment cannot be empty';
-                error.style.color = 'red';
-                document.querySelector('#new-comment form').classList.add("apply-shake");
-                setTimeout(function() {
-                    document.querySelector('#new-comment form').classList.remove("apply-shake");
-                }, 500);
-                return;
-            } else {
-                fetch("{{route('storeComment')}}", {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-Requested-With": "XMLHttpRequest",
-                        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    method: "post",
-                    credentials: "same-origin",
-                    body: JSON.stringify({
-                        userid: "{{Auth::user()->userid}}",
-                        eventid: "{{$event->eventid}}",
-                        text: document.querySelector('#my-comment').value,
-                    })
-                }).then(function(data) {
-                    getComments('{{$event->eventid}}', true);
-                    showAlert("newcomment");
-
-                }).catch(function(error) {
-                    console.log(error);
-                });
-            }
-        });
-    </script>
-    @endif
-
-    <!-- ONLY AVAILABLE FOR HOST -->
-    @if (Auth::user() != NULL && Auth::user()->userid == $host->userid)
-    <script type="text/javascript" defer>
-        document.getElementById("search-users").addEventListener("keyup", function(e) {
-            if (document.getElementById("search-users").value == '') return;
-            let eventid = document.getElementById("eventid").value;
-            fetch("searchUsers" + "?" + new URLSearchParams({
-                search: document.getElementById("search-users").value,
-                event_id: eventid
-            }), {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRF-Token": '{{ csrf_token() }}'
-                },
-                method: "get",
-                credentials: "same-origin",
-
-            }).then(function(data) {
-                return data.json();
-            }).then(function(data) {
-                let container = document.getElementById("table-user-res");
-                container.innerHTML = "";
-                data.forEach(function(user) {
-
-                    let tr = document.createElement("tr");
-                    let td1 = document.createElement("td");
-                    let td2 = document.createElement("td");
-                    let td3 = document.createElement("td");
-
-                    td3.style.textAlign = "center";
-                    let btn = document.createElement("button");
-
-                    if (user.attending_event == true) {
-                        btn.setAttribute("class", "btn btn-danger");
-                        btn.innerHTML = "Remove";
-                        btn.addEventListener('click', function(e) {
-                            ajax_remUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    } else {
-                        btn.setAttribute("class", "btn btn-success");
-                        btn.innerHTML = "Add to Event";
-                        btn.addEventListener('click', function(e) {
-                            ajax_addUser(user.userid, eventid);
-                            refreshDiv();
-                        })
-                    }
-                    td1.innerHTML = user.name;
-                    td2.innerHTML = user.email;
-                    td3.appendChild(btn);
-
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    tr.appendChild(td3);
-                    container.appendChild(tr);
-
-                });
-            }).catch(function(error) {
-                console.log(error);
-            });
-        });
-
-        document.querySelector('#outroDiv button').addEventListener('click', function() {
-            let d = document.getElementById('outroDiv');
-            d.classList.add("animate-out");
-            setTimeout(function() {
-                d.classList.remove("animate-out");
-            }, 500);
-            setTimeout(function() {
-                d.style.display = "none";
-            }, 450);
-        })
-
-        function showOutroDiv() {
-            document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-            let d = document.getElementById('outroDiv');
-            d.classList.add("animate");
-            setTimeout(function() {
-                d.classList.remove("animate");
-            }, 500);
-            d.style.display = "block";
-        }
-
-    </script>
-    @endif
-
-    <script>
-
-        function auxSearch(){
-            let search = ".";
-            if (document.getElementById("search-attendees").value != ''){
-                search = document.getElementById("search-attendees").value;
-            }
-            let eventid = document.getElementById("eventid").value;
-            fetch("searchAttendees" + "?" + new URLSearchParams({
-                search: search,
-                event_id: eventid
-            }), {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRF-Token": '{{ csrf_token() }}'
-                },
-                method: "get",
-                credentials: "same-origin",
-
-            }).then(function(data) {
-                return data.json();
-            }).then(function(data) {
-                let container = document.getElementById("table-attendees-res");
-                container.innerHTML = "";
-                data.forEach(function(user) {
-
-                    console.log(eventid);
-
-                    let tr = document.createElement("tr");
-                    let td1 = document.createElement("td");
-                    let td2 = document.createElement("td");
-
-                    td1.innerHTML = user.name;
-                    td2.innerHTML = user.email;
-
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    container.appendChild(tr);
-
-                });
-            }).catch(function(error) {
-                console.log(error);
-            });
-        }
-
-        document.getElementById("search-attendees").addEventListener("keyup", function(e) {auxSearch()});
-
-        function showAttendeesDiv() {
-            document.getElementById("info-navbar-container").querySelectorAll('#info-navbar-container > div').forEach(n => n.style.display = 'none');
-            let d = document.getElementById('attendeesDiv');
-            d.classList.add("animate");
-            setTimeout(function() {
-                d.classList.remove("animate");
-            }, 500);
-            d.style.display = "block";
-            auxSearch();
-        }
-
-
-        document.querySelector('#attendeesDiv button').addEventListener('click', function() {
-            let d = document.getElementById('attendeesDiv');
-            d.classList.add("animate-out");
-            setTimeout(function() {
-                d.classList.remove("animate-out");
-            }, 500);
-            setTimeout(function() {
-                d.style.display = "none";
-            }, 450);
-        })
-
-    </script>
-
-    <script type="text/javascript">
-        // Polling for the Event Page Countdown display
-        setTimeout(function() {
-            displayCountdownEvent('{{$event->date}}');
-        }, 1000);
-    </script>
-    @endsection
+@endsection

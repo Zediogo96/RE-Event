@@ -60,12 +60,14 @@ Route::get('events', 'EventController@index');
 Route::post('storeComment', 'CommentController@store')->name('storeComment');
 Route::post('deleteComment', 'CommentController@deleteComment')->name('deleteComment');
 Route::get('getComments', 'CommentController@getComments')->name('getComments');
+Route::get('getSingleComment', 'CommentController@getSingleComment')->name('getSingleComment');
+
 // Upvotes
 Route::post('addUpvote', 'UpvoteController@addUpvote')->name('addUpvote');
 Route::post('removeUpvote', 'UpvoteController@removeUpvote')->name('removeUpvote');
 // Report Comment
+Route::get('getReportedComments', 'ReportController@getReportedComments')->name('getReportedComments');
 Route::post('storeReport', 'ReportController@store')->name('storeReport');
-
 
 //Invites
 Route::post('api/invite', 'InvitedController@create')->name('createInvite');
@@ -75,9 +77,9 @@ Route::put('api/clearNotifications', 'InvitedController@read')->name('readNotifi
 Route::get('api/numberNotifications', 'InvitedController@numberNotifications')->name('numberNotifications');
 
 Route::put('api/changeBlockStatus', 'UserController@block')->name('changeBlockStatusUser');
+Route::post('banUser', 'UserController@ban_user')->name('banUser');
 
 Route::get('auth', 'Auth\LoginController@getUser');
-
 
 Route::post('transferOwnership', 'EventController@transferOwnership')->name('transferOwnership'); //transfer the ownership of an event
 Route::post('deleteEvent', 'EventController@destroy')->name('deleteEvent'); //delete an event
