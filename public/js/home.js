@@ -1,8 +1,11 @@
-setTimeout(function() {
-    displayCountdown();
+// pooling every 1 second
+setInterval(function () {
+    displayCountdownHome();
 }, 1000);
 
-function displayCountdown() {
+
+
+function displayCountdownHome() {
 
     let date = document.querySelector('.carousel-item.active input[name="event-date"]').value;
 
@@ -19,6 +22,7 @@ function displayCountdown() {
     // console.log(newDate);
 
     const countdown = setInterval(() => {
+        clearInterval(countdown);
         const date = new Date().getTime();
         const diff = newDate - date;
 
@@ -42,5 +46,5 @@ function displayCountdown() {
         document.querySelector(".days").innerHTML = days < 10 ? "0" + days : days;
         document.querySelector(".months").innerHTML =
             month < 10 ? "0" + month : month;
-    });
+    }, 1000);
 }
