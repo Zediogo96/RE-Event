@@ -52,8 +52,8 @@
                         </span>
                         @endif
                     </div>
-                    <div class="pass-link">
-                        <a href="#">
+                    <div class="pass-link input-group">
+                        <a href="/forgot-password">
                             Forgot password?
                         </a>
                     </div>

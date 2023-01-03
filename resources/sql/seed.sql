@@ -28,6 +28,9 @@ DROP FUNCTION IF EXISTS check_ticket() CASCADE;
 DROP FUNCTION IF EXISTS _create_ticket() CASCADE;
 DROP FUNCTION IF EXISTS _delete_ticket() CASCADE;
 
+DROP TABLE IF EXISTS password_resets CASCADE;
+
+
 -- Types --------------------------------
 CREATE TYPE Gender AS ENUM (
     'M',
@@ -53,7 +56,8 @@ CREATE TABLE user_ (
     gender Gender NOT NULL,
     profilePic text DEFAULT 'profile_pictures/generic_pic.jpg',
     admin boolean DEFAULT FALSE,
-    isBlocked boolean DEFAULT FALSE
+    isBlocked boolean DEFAULT FALSE,
+    remember_token text
 );
 
 CREATE TABLE tag (
@@ -992,3 +996,13 @@ INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('b3a3867d2e4ac172810e
 INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('45a69dbe2980995f8b9b8aa6065c92a1b5a550bfb74aaf95f85838929ca85b74', 7,7);
 INSERT INTO ticket (qr_genstring, userID, eventID) VALUES ('527b93cdc6fcf912f9d9e0f018ab784deb4dc672ac8b6e07dc4a4cf7b00160ea', 8,8);
 
+
+
+
+
+
+CREATE TABLE password_resets (
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
