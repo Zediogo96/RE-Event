@@ -112,90 +112,88 @@
             </div>
             <div id="myEventsDetails" class="optionDetails optionDetailsHidden">
                 <div id="pastEvents" class="details submenuSleep">
-                                <div class="single-post-title" style="padding-bottom: 1rem;">
-                                    <h2>Past Events</h2>
-                                </div>
-                                <div class="single-post-content">
-                                    <table class="events-list">
-                                        @each('partials.pastEvents', $user->attendingEvents, 'event')
-                                    </table>
-                                </div>
+                    <div class="single-post-title" style="padding-bottom: 1rem;">
+                        <h2>Past Events</h2>
+                    </div>
+                    <div class="single-post-content">
+                        <table class="events-list">
+                            @each('partials.pastEvents', $user->attendingEvents, 'event')
+                        </table>
+                    </div>
                 </div>
                 <div id="fureEvents" class="details submenuSleep">
-                                <div class="single-post-title" style="padding-bottom: 1rem;">
-                                    <h2>Future Events</h2>
-                                </div>
-                                <div class="single-post-content">
-                                    <table class="events-list">
-                                    @each('partials.futureEvents', $user->attendingEvents, 'event')
-                                    </table>
+                    <div class="single-post-title" style="padding-bottom: 1rem;">
+                        <h2>Future Events</h2>
+                    </div>
+                    <div class="single-post-content">
+                        <table class="events-list">
+                        @each('partials.futureEvents', $user->attendingEvents, 'event')
+                        </table>
 
-                                </div>
-
+                    </div>
                 </div>
             </div>
             <div id="eventsCreatedByMe" class="details submenuSleep">
-                            <div class="single-post-title" style="padding-bottom: 1rem;">
-                                <h2>Events you're hosting</h2>
-                                <button class="btn btn-success" data-toggle="modal" data-target="#createEventModal"> New Event </button>
-                            </div>
-                            <div class="single-post-content">
-                                <table class="events-list">
-                                    @each('partials.hostedEvents', $user->hostedEvents, 'event')
-                                </table>
+                <div class="single-post-title" style="padding-bottom: 1rem;">
+                    <h2>Events you're hosting</h2>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#createEventModal"> New Event </button>
+                </div>
+                <div class="single-post-content">
+                    <table class="events-list">
+                        @each('partials.hostedEvents', $user->hostedEvents, 'event')
+                    </table>
                 </div>
             </div>
 
 
             @if ($user->admin)
             <div id="userSearch" class="details submenuSleep">
-                            <div class="single-post-title" style="padding-bottom: 1rem;">
-                                <h2>User Search Tool</h2>
-                                <button class="btn btn-success" data-toggle="modal" data-target="#createUserModal"> Create User </button>
-                            </div>
-                            <div class="single-post-content">
-                                <input type="text" class="form-controller" id="search-users-admin" name="search" placeholder="Search for the user.."></input>
-                                <table class="events-list" style="margin-top: 2rem;">
+                <div class="single-post-title" style="padding-bottom: 1rem;">
+                    <h2>User Search Tool</h2>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#createUserModal"> Create User </button>
+                </div>
+                <div class="single-post-content">
+                    <input type="text" class="form-controller" id="search-users-admin" name="search" placeholder="Search for the user.."></input>
+                    <table class="events-list" style="margin-top: 2rem;">
 
-                                <thead>
-                                        <tr>
-                                            <th>UserID</th>
-                                            <th>Username</th>
-                                            <th>Email</th>
-                                            <th> </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="search-admin-users-res">
-                                    </tbody>
-                                </table>
-
+                    <thead>
+                            <tr>
+                                <th>UserID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody id="search-admin-users-res">
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
             @endif
+
+
             <div id="myInvitesDetails" class="optionDetails optionDetailsHidden">
                 <div id="receivedInvites" class="details submenuSleep">
-                                <div class="single-post-title" style="padding-bottom: 1rem;">
-                                    <h2>Received Invites</h2>
-                                </div>
-                                <div class="single-post-content">
-                                    <table class="events-list">
-                                        @each('partials.receivedInvite', $receivedInvites, 'invite')
-                                    </table>
-                                </div>
+                    <div class="single-post-title" style="padding-bottom: 1rem;">
+                        <h2>Received Invites</h2>
+                    </div>
+                    <div class="single-post-content">
+                        <table class="events-list">
+                            @each('partials.receivedInvite', $receivedInvites, 'invite')
+                        </table>
+                    </div>
                 </div>
                 <div id="sentInvites" class="details submenuSleep">
-                                <div class="single-post-title" style="padding-bottom: 1rem;">
-                                    <h2>Sent Invites</h2>
-                                </div>
-                                <div class="single-post-content">
-                                    <table class="events-list">
-                                        @each('partials.sentInvite', $sentInvites, 'invite')
-                                    </table>
-                                </div>
-                            </div>
+                    <div class="single-post-title" style="padding-bottom: 1rem;">
+                        <h2>Sent Invites</h2>
+                    </div>
+                    <div class="single-post-content">
+                        <table class="events-list">
+                            @each('partials.sentInvite', $sentInvites, 'invite')
+                        </table>
+                    </div>
+                </div>
             </div>
-
         </section>
     </div>
     <!-- Modal with bootstrap -->

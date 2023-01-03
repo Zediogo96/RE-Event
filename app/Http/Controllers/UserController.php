@@ -37,7 +37,7 @@ class UserController extends Controller
         $user = User::find($id);
         $this->authorize('view', $user);
 
-        $number = Invited::where('invited.inviteduserid', '=',  $id)->get()->count();
+        $number = Invited::where('invited.inviteduserid', '=',  $id)->where('invited.read', '=', FALSE)->get()->count();
 
         $sentInvites = Invited::join('event', 'event.eventid', '=', 'invited.eventid')
                                 ->join('user_', 'user_.userid', '=', 'invited.inviteduserid')
