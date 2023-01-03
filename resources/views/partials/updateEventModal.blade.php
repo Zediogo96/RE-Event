@@ -1,9 +1,9 @@
-<div class="modal fade" id="editModal{{$event->eventid}}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal{{$event->eventid}}" tabindex="-1" role="dialog" aria-labelledby="edit_Label" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" id="edit-modal-content">
                 <div class="modal-header">
                     <button id="close-modal-button" data-dismiss="modal"></button>
-                    <h4 class="modal-title" id="editModalLabel">Edit Event</h4>
+                    <h4 class="modal-title" id="editLabel">Edit Event</h4>
                 </div>
                 <div class="modal-body">
 

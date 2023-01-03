@@ -2,6 +2,9 @@
 document.querySelector('#new-comment button').addEventListener('click', function(e) {
     e.preventDefault();
 
+    let _eventid = document.querySelector('#eventid').value;
+    let _userid = document.querySelector('meta[name="auth-check-id"]').getAttribute('content');
+
     var comment = document.querySelector('#my-comment');
 
     if (comment.value == '') {
@@ -14,7 +17,7 @@ document.querySelector('#new-comment button').addEventListener('click', function
         }, 500);
         return;
     } else {
-        fetch("{{route('storeComment')}}", {
+        fetch("storeComment", {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -24,12 +27,12 @@ document.querySelector('#new-comment button').addEventListener('click', function
             method: "post",
             credentials: "same-origin",
             body: JSON.stringify({
-                userid: "{{Auth::user()->userid}}",
-                eventid: "{{$event->eventid}}",
+                userid: _userid,
+                eventid: _eventid,
                 text: document.querySelector('#my-comment').value,
             })
         }).then(function(data) {
-            getComments('{{$event->eventid}}', true);
+            getComments(_eventid, true);
             showAlert("newcomment");
 
         }).catch(function(error) {

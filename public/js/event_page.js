@@ -1,3 +1,12 @@
+const list = document.querySelectorAll('.list')
+
+function activeLink() {
+    list.forEach((item) => item.classList.remove('active'))
+    this.classList.add('active')
+}
+
+list.forEach((item) => item.addEventListener('click', activeLink))
+
 document.getElementById("search-attendees-teste").addEventListener("keyup", function (e) {
     fetch("searchUsersAdmin" + "?" + new URLSearchParams({
         search: e.target.value
@@ -60,7 +69,6 @@ document.getElementById("search-attendees-response").addEventListener("click", f
     }
     e.target.parentElement.style.backgroundColor = "rgba(138,238,130, 0.8";
     currentChosen.value = e.target.parentElement.children[0].innerHTML
-    console.log(currentChosen.value)
 });
 
 // submit transfer ownership
@@ -218,8 +226,6 @@ function auxSearch() {
         let container = document.getElementById("table-attendees-res");
         container.innerHTML = "";
         data.forEach(function (user) {
-
-            console.log(eventid);
 
             let tr = document.createElement("tr");
             let td1 = document.createElement("td");

@@ -54,7 +54,7 @@ class InvitedController extends Controller
             ->where('invited.inviteduserid', '=',  $invited_user_id)
             ->where('invited.eventid', '=', $event_id)
             ->update(['status'=>TRUE]);
-        
+
 
         return response(route('event.show', ['eventid' => $event_id]), 302);
 
@@ -65,33 +65,33 @@ class InvitedController extends Controller
     */
     public function reject(Request $request) {
         if (!Auth::check()) {return response(route('login'), 302);}
-        
+
         $invited_user_id = Auth::user()->userid;
         $event_id = $request['event_id'];
 
         $invite = Invited::where('invited.inviteduserid', '=',  $invited_user_id)
                         ->where('invited.eventid', '=', $event_id)
                         ->first();
-        
+
         if(!$invite){
             return response("null", 404);
         }
-        
+
         $this->authorize('delete', $invite);
-        
+
         DB::table('invited')
             ->where('invited.inviteduserid', '=',  $invited_user_id)
             ->where('invited.eventid', '=', $event_id)
             ->delete();
-        
+
         return response(route('user.show', ['userid' => $invited_user_id]), 302);
     }
 
     public function create(InviteRequest $request) {
         if (!Auth::check()) {return response(route('login'), 302);}
         $inviter_user = Auth::user();
-        
-        $this->authorize('create', $inviter_user);
+
+        // $this->authorize('create', $inviter_user);
 
         $eventid = $request['event_id'];
         $invited_user_id = InvitedController::get_id_from_email($request['invited_user']);
@@ -127,25 +127,25 @@ class InvitedController extends Controller
 
     public function read(){
         if (!Auth::check()) {return response(route('login'), 302);}
-        
+
         $user_id = Auth::user()->userid;
 
         DB::table('invited')
             ->where('invited.inviteduserid', '=',  $user_id)
             ->update(['read'=>TRUE]);
-        
+
         return response(null, 200);
 
     }
 
     public function numberNotifications(){
         if (!Auth::check()) {return response(route('login'), 302);}
-        
+
         $id = Auth::user()->userid;
 
         $numberNotifications = Invited::where('invited.inviteduserid', '=',  $id)
                 ->where('invited.read', '=', FALSE)->get()->count();
-        
+
         return response($numberNotifications, 200);
     }
 

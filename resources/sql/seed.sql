@@ -354,13 +354,13 @@ INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic,
     VALUES (1, 'Zediogo96', 'zediogox@hotmail.com', '2022/12/19', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'M', 'profile_pictures/1.jpg', TRUE);
 
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
-    VALUES (2, 'EduSilva', 'edu_silva@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab','M', 'profile_pictures/2.jpg', TRUE);
+    VALUES (2, 'EduSilva', 'edu_silva@hotmail.com', '2022/12/19', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe','M', 'profile_pictures/2.jpg', TRUE);
 
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
-    VALUES (3, 'AfonsoFarr', 'af_farroco@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'profile_pictures/3.jpg', TRUE);
+    VALUES (3, 'AfonsoFarr', 'af_farroco@hotmail.com', '2022/12/19', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'M', 'profile_pictures/3.jpg', TRUE);
 
 INSERT INTO user_ (userID, name, email, birthDate, PASSWORD, gender, profilePic, admin)
-    VALUES (4, 'MatildeSilva', 'mat_silva@hotmail.com', '2022/12/19', '0c0a39b71ead9b74093f171e2ed5b912c4514bb71d1f6c2944d839e9d40f60ab', 'M', 'profile_pictures/4.jpg', TRUE);
+    VALUES (4, 'MatildeSilva', 'mat_silva@hotmail.com', '2022/12/19', '$2a$12$9efD1sxdJGKrY9Ltr/Mccu6ChlFigRmtLZZ9a8935KHYj9i6SZ.Xe', 'M', 'profile_pictures/4.jpg', TRUE);
 
 /* Users */
 
@@ -745,7 +745,7 @@ INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
     VALUES (TRUE, TRUE, 3, 4, 8);
 
 INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, FALSE, 1, 3, 5);
+    VALUES (FALSE, FALSE, 1, 10, 10);
 
 INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
     VALUES (FALSE, FALSE, 7, 3, 2);
@@ -763,7 +763,7 @@ INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
     VALUES (FALSE, FALSE, 3, 6, 5);
 
 INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
-    VALUES (FALSE, FALSE, 1, 50, 4);
+    VALUES (FALSE, FALSE, 2, 50, 4);
 
 INSERT INTO invited (read, status, invitedUserID, inviterUserID, eventID)
     VALUES (TRUE, TRUE, 5, 2, 8);

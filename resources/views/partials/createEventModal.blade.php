@@ -3,7 +3,7 @@
         <div class="modal-content" id="edit-modal-content">
             <div class="modal-header">
                 <button id="close-modal-button" data-dismiss="modal"></button>
-                <h4 class="modal-title" id="editModalLabel">Edit Event</h4>
+                <h4 class="modal-title" id="edit_Label">Edit Event</h4>
             </div>
             <div class="modal-body">
 
