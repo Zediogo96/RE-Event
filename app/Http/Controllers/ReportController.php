@@ -58,7 +58,7 @@ class ReportController extends Controller
 
     public function getReportedComments()
     {
-        $reports = Report::orderBy('date', 'desc')->take(8)->get();
+        $reports = Report::orderBy('date', 'desc')->take(15)->get();
         // if there are no reports, return http 204
 
         if (count($reports) == 0) {

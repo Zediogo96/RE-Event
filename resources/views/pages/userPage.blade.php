@@ -301,8 +301,8 @@
                             <div class="single-post-title" style="padding-bottom: 1rem;">
                                 <h2> View Reports </h2>
                             </div>
-                            <div class="single-post-content">
-                                <table class="events-list scrollable">
+                            <div class="single-post-content scrollable">
+                                <table class="events-list">
                                     <thead>
                                         <tr>
                                             <th>Date</th>
