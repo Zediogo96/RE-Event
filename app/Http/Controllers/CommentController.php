@@ -108,7 +108,16 @@ class CommentController extends Controller
     public function getComments(Request $request)
     {
         $comments = Comment::where('eventid', $request->input('event_id'))->get();
+
+        $responseComments = array();
+
         for ($i = 0; $i < count($comments); $i++) {
+
+            
+            if ($comments[$i]->userIsBlocked()) {
+                continue;
+            }
+
             $comments[$i]->user_profilePic = $comments[$i]->user->profilepic;
             $comments[$i]->user_name = $comments[$i]->user->name;
             $comments[$i]->upvote_count = $comments[$i]->upvotes->count();
@@ -117,8 +126,9 @@ class CommentController extends Controller
             } else {
                 $comments[$i]->upvoted = false;
             }
+            array_push($responseComments, $comments[$i]);
         }
-        return Response($comments);
+        return Response($responseComments);
     }
 
     public function getSingleComment(Request $request) {

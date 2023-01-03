@@ -226,11 +226,17 @@
         </div>
         @endif
         <div class="shadow-sm p-4" id="comments-section">
-            <h4 class="mb-4"> {{count($event->comments()->get())}} Comments</h4>
+            <h4 class="mb-4"> @php $eventcomments = $event->comments()->get(); $unblockedcomments = array(); for ($i = 0; $i < count($eventcomments); $i++) {
+                if ($eventcomments[$i]->userIsBlocked()) {
+                    continue;
+                }
+                array_push($unblockedcomments, $eventcomments[$i]);
+            } @endphp {{count($unblockedcomments)}} Comments</h4>
             <div class="">
                 <!-- Comment //-->
                 <div class="py-3" id="new-comments-container">
                     @foreach ($event->comments()->get() as $comment)
+                    @if ($comment->userIsBlocked() == false)
                     <div class="d-flex comment">
                         <img class="rounded-circle comment-img" src="{{$comment->user->profilepic}}" alt="User profile picture" />
                         <div class="flex-grow-1 ms-3">
@@ -258,6 +264,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     @endforeach
 
                 </div>
