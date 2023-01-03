@@ -56,7 +56,8 @@ CREATE TABLE user_ (
     gender Gender NOT NULL,
     profilePic text DEFAULT 'profile_pictures/generic_pic.jpg',
     admin boolean DEFAULT FALSE,
-    isBlocked boolean DEFAULT FALSE
+    isBlocked boolean DEFAULT FALSE,
+    remember_token text
 );
 
 CREATE TABLE tag (
