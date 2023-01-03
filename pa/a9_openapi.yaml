@@ -268,8 +268,118 @@ paths:
                 examples:
                   400:
                     description: 'Bad request. Redirect to the same user page'
-                    value: '/user{id}'                    
+                    value: '/user{id}'      
 
+  /forgot-password:
+
+    get:
+      operationId: R109
+      summary: 'R109: Forgot Password Form'
+      description: 'Form page that allows user to ask for a forgot password email. Access: PUB'
+      tags:
+        - 'M01: Authentication and User Profile'
+      responses:
+        '200':
+          description: 'Ok. Show forgot password UI'
+    post:
+        operationId: R110
+        summary: 'R110: Forgot Password Action'
+        description: 'This web resource allows the user to ask for an email to reset their password. Access: AUTH, OWN'
+        tags:
+          - 'M01: Authentication and User Profile'
+
+        requestBody:
+          required: true
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: integer
+                required:
+                  - userid
+
+        responses:
+          '302':
+            description: 'Redirect after the successful email sent.'
+            headers:
+              Location:
+                schema:
+                  type: string
+                examples:
+                  302Success:
+                    description: 'Successful reset email sent. Redirect to home page (now unauthenticated).'
+                    value: '/home'
+                  302Failure:
+                    description: 'Unsuccessful reset email sent. Redirect to the same form.'
+                    value: '/forgot-password'
+          '400':
+            description: 'Bad Request.'
+            headers:
+              Location:
+                schema:
+                  type: string
+                examples:
+                  400:
+                    description: 'Bad request. Redirect to the same form.'
+                    value: '/forgot-password'                
+
+  /reset-password:
+
+    get:
+      operationId: R111
+      summary: 'R111: Reset Password Form'
+      description: 'Form page that allows user to reset their password. Access: OWN'
+      tags:
+        - 'M01: Authentication and User Profile'
+      responses:
+        '200':
+          description: 'Ok. Show reset password password UI'
+
+    post:
+        operationId: R112
+        summary: 'R112: Reset Password Action'
+        description: 'This web resource allows the user to reset their password on the system. Access: AUTH, OWN'
+        tags:
+          - 'M01: Authentication and User Profile'
+
+        requestBody:
+          required: true
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: integer
+                required:
+                  - userid
+
+        responses:
+          '302':
+            description: 'Redirect after resetting th user password.'
+            headers:
+              Location:
+                schema:
+                  type: string
+                examples:
+                  302Success:
+                    description: 'Successful reset. Redirect to home page (now unauthenticated).'
+                    value: '/home'
+                  302Failure:
+                    description: 'Unsuccessful reset. Redirect to the same form.'
+                    value: '/reset-password{token}'
+          '400':
+            description: 'Bad Request.'
+            headers:
+              Location:
+                schema:
+                  type: string
+                examples:
+                  400:
+                    description: 'Bad request. Redirect to the same form.'
+                    value: '/reset-password{token}'  
 
 #M02 - Events
 
