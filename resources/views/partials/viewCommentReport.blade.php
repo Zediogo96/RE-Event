@@ -13,7 +13,16 @@
                     <div class="div3">
                         <p class="text">This is a great comment!</p>
                     </div>
+
+                    <ul>
+                        <li class="rep_date"></li>
+                        <li class="rep_reason"></li>
+                        <li class="rep_description"></li>
+
+                    </ul>
                 </div>
+
+
 
                 <form method="POST">
                     @csrf

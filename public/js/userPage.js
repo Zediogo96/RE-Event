@@ -93,7 +93,7 @@ function getReports() {
                 tbody.appendChild(tr);
 
                 tr.addEventListener('click', function (e) {
-                    getSingleComment(data[i].commentid);
+                    getSingleComment(data[i]);
                 })
             }
         }
@@ -103,19 +103,22 @@ function getReports() {
     );
 }
 
-function change_view_comment_report(comment) {
+function change_view_comment_report(comment, report) {
     let modal = document.getElementById("view_comment_report");
-    console.log(comment)
     modal.querySelector("img").setAttribute("src", comment.user_profilePic);
     modal.querySelector("h4.name").innerHTML = comment.user_name;
     modal.querySelector("p.text").innerHTML = comment.text;
+    modal.querySelector("li.rep_date").innerHTML = "Date: " + report.date;
+    modal.querySelector("li.rep_reason").innerHTML = "Reason: " +  report.reason;
+    modal.querySelector("li.rep_description").innerHTML = "Description: " + report.description;
 
     document.querySelector("#viewReports").querySelector("button").click();
 }
 
-function getSingleComment(id) {
+function getSingleComment(report) {
+
     fetch('getSingleComment' + "?" + new URLSearchParams({
-        comment_id: id
+        comment_id: report.commentid
     }), {
         headers: {
             "Content-Type": "application/json",
@@ -128,7 +131,7 @@ function getSingleComment(id) {
     }).then(function (data) {
         return data.json();
     }).then(function (data) {
-        change_view_comment_report(data);
+        change_view_comment_report(data, report);
     }).catch(function (error) {
         console.log(error);
     })

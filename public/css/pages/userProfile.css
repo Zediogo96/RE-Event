@@ -514,6 +514,15 @@ tbody tr td:not(:last-child) {
     font-weight: 300;
 }
 
+.comment-container ul {
+    position: absolute;
+    top: 13rem;
+    left: 1rem;
+    font-size: 1rem;
+    font-weight: 300;
+    text-align: left;
+}
+
 .div1 {
     grid-area: 1 / 1 / 3 / 3;
 }
